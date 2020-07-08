@@ -47,6 +47,6 @@ export class AppComponent implements OnInit {
   }
   add() {
     this.cancel();
-    this.tableMode = false; //dddd
+    this.tableMode = false; // github
   }
 }
