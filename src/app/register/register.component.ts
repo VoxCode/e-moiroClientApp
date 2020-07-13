@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import validate = WebAssembly.validate;
 
 @Component({
   selector: 'app-register',
@@ -12,8 +13,8 @@ export class RegisterComponent implements OnInit {
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
-      email: ['', Validators.required],
-      password: ['', Validators.required]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.minLength(6), Validators.required]]
     });
    }
 
@@ -42,5 +43,4 @@ export class RegisterComponent implements OnInit {
   get password() {
     return this.registerForm.get('password');
   }
-
 }

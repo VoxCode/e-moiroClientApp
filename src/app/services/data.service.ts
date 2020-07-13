@@ -28,7 +28,6 @@ export class DataService {
   }
   // tslint:disable-next-line:typedef
   updateProduct(product: Product) {
-
     return this.http.put(this.url, product);
   }
   // tslint:disable-next-line:typedef
