@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ConsultationTopicService } from '../services/consultation-topic.service';
-import { ConsultationTopic } from '../models/ConsultationTopic';
+import { SectionNumberService } from '../services/section-number.service';
+import { SectionNumber } from '../models/SectionNumber';
 
 @Component({
   selector: 'app-section-number',
