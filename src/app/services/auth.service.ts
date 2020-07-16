@@ -26,6 +26,11 @@ export class AuthService {
   }
 
   // tslint:disable-next-line:typedef
+  logout() {
+    localStorage.removeItem('token');
+  }
+
+  // tslint:disable-next-line:typedef
   getToken() {
     return localStorage.getItem('token');
   }
