@@ -6,11 +6,8 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class DataService {
-
   public url = environment.apiUrl + 'api/products';
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) { }
 
   // tslint:disable-next-line:typedef
   getProducts() {

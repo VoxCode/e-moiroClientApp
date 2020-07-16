@@ -3,10 +3,29 @@ import { HttpClient} from '@angular/common/http';
 import { MainLiterature } from '../models/MainLiterature';
 import { environment } from '../../environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class MainLiteratureService {
+  public url = environment.apiUrl + 'api/mainLiterature';
+  constructor(private http: HttpClient) { }
 
-  constructor() { }
+  // tslint:disable-next-line:typedef
+  getValues() {
+    return this.http.get(this.url);
+  }
+  // tslint:disable-next-line:typedef
+  getValue(id: number) {
+    return this.http.get(this.url + '/' + id);
+  }
+  // tslint:disable-next-line:typedef
+  createValue(mainLiterature: MainLiterature) {
+    return this.http.post(this.url, mainLiterature);
+  }
+  // tslint:disable-next-line:typedef
+  updateValue(mainLiterature: MainLiterature) {
+    return this.http.put(this.url, mainLiterature);
+  }
+  // tslint:disable-next-line:typedef
+  deleteValue(id: number) {
+    return this.http.delete(this.url + '/' + id);
+  }
 }

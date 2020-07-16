@@ -6,11 +6,13 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 import {ProductsComponent} from './products/products.component';
 import {HomeComponent} from './home/home.component';
+import {AdditionalLiteratureComponent} from './additional-literature/additional-literature.component';
 
 const routes: Routes = [
   { path: 'products', component: ProductsComponent },
   { path: 'home', component:  HomeComponent, canActivate: [AuthGuardService]},
   { path: 'login', component: LoginComponent},
+  { path: 'additionalLiterature', component: AdditionalLiteratureComponent},
   { path: 'register', component: RegisterComponent}
 ];
 
