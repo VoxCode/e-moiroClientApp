@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormOfEducationService } from '../services/form-of-education.service';
+import { FormOfEducation } from '../models/FormOfEducation';
 
 @Component({
   selector: 'app-form-of-education',

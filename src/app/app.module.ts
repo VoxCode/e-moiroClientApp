@@ -15,7 +15,6 @@ import { ErrorInterceptorService } from './services/error-interceptor.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { AdditionalLiteratureComponent } from './additional-literature/additional-literature.component';
-import { ConsultationTopicsComponent } from './consultation-topics/consultation-topics.component';
 import { CurriculumSectionComponent } from './curriculum-section/curriculum-section.component';
 import { CurriculumTopicComponent } from './curriculum-topic/curriculum-topic.component';
 import { DepartmentComponent } from './department/department.component';
@@ -27,8 +26,6 @@ import { SectionNumberComponent } from './section-number/section-number.componen
 import { TeacherComponent } from './teacher/teacher.component';
 import { TeacherCategoryComponent } from './teacher-category/teacher-category.component';
 import { TeachingPositionComponent } from './teaching-position/teaching-position.component';
-import { TheQuestionsComponent } from './the-questions/the-questions.component';
-import { TranningProgramComponent } from './tranning-program/tranning-program.component';
 import { TrainingProgramComponent } from './training-program/training-program.component';
 import { ConsultationTopicComponent } from './consultation-topic/consultation-topic.component';
 import { TheQuestionComponent } from './the-question/the-question.component';
@@ -41,7 +38,6 @@ import { TheQuestionComponent } from './the-question/the-question.component';
     ProductsComponent,
     HomeComponent,
     AdditionalLiteratureComponent,
-    ConsultationTopicsComponent,
     CurriculumSectionComponent,
     CurriculumTopicComponent,
     DepartmentComponent,
@@ -53,8 +49,6 @@ import { TheQuestionComponent } from './the-question/the-question.component';
     TeacherComponent,
     TeacherCategoryComponent,
     TeachingPositionComponent,
-    TheQuestionsComponent,
-    TranningProgramComponent,
     TrainingProgramComponent,
     ConsultationTopicComponent,
     TheQuestionComponent

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TeacherService } from '../services/teacher.service';
+import { Teacher } from '../models/Teacher';
 
 @Component({
   selector: 'app-teacher',

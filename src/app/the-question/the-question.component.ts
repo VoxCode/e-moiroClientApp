@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TheQuestionService } from '../services/the-question.service';
+import { TheQuestion } from '../models/TheQuestion';
 
 @Component({
   selector: 'app-the-question',

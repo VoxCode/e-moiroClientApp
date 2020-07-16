@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AdditionalLiteratureService } from '../services/additional-literature.service';
+import { AdditionalLiterature } from '../models/AdditionalLiterature';
 
 @Component({
   selector: 'app-additional-literature',

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CurriculumTopicService } from '../services/curriculum-topic.service';
+import { CurriculumTopic } from '../models/CurriculumTopic';
 
 @Component({
   selector: 'app-curriculum-topic',

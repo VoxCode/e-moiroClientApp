@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { OccupationFormService } from '../services/occupation-form.service';
+import { OccupationForm } from '../models/OccupationForm';
 
 @Component({
   selector: 'app-occupation-form',

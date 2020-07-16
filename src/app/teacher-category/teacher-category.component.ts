@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TeacherCategoryService } from '../services/teacher-category.service';
+import { TeacherCategory } from '../models/TeacherCategory';
 
 @Component({
   selector: 'app-teacher-category',
