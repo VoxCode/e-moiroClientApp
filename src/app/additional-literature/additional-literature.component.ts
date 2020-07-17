@@ -9,45 +9,45 @@ import { AdditionalLiterature } from '../models/AdditionalLiterature';
   providers: [AdditionalLiteratureService]
 })
 export class AdditionalLiteratureComponent implements OnInit {
-  additionalLiterature: AdditionalLiterature = new AdditionalLiterature();
-  additionalLiteratures: AdditionalLiterature[];
+  value: AdditionalLiterature = new AdditionalLiterature();
+  values: AdditionalLiterature[];
   tableMode = true;
 
-  constructor(private additionalLiteratureService: AdditionalLiteratureService) { }
+  constructor(private valueService: AdditionalLiteratureService) { }
 
   // tslint:disable-next-line:typedef
   ngOnInit() {
-    this.loadAdditionalLiterature();
+    this.loadValue();
   }
   // tslint:disable-next-line:typedef
-  loadAdditionalLiterature() {
-    this.additionalLiteratureService.getValues()
-      .subscribe((data: AdditionalLiterature[]) => this.additionalLiteratures = data);
+  loadValue() {
+    this.valueService.getValues()
+      .subscribe((data: AdditionalLiterature[]) => this.values = data);
   }
   // tslint:disable-next-line:typedef
   save() {
-    if (this.additionalLiterature.id == null) {
-      this.additionalLiteratureService.createValue(this.additionalLiterature)
-        .subscribe((data: AdditionalLiterature) => this.additionalLiteratures.push(data));
+    if (this.value.id == null) {
+      this.valueService.createValue(this.value)
+        .subscribe((data: AdditionalLiterature) => this.values.push(data));
     } else {
-      this.additionalLiteratureService.updateValue(this.additionalLiterature)
-        .subscribe(data => this.loadAdditionalLiterature());
+      this.valueService.updateValue(this.value)
+        .subscribe(data => this.loadValue());
     }
     this.cancel();
   }
   // tslint:disable-next-line:typedef
-  editAdditionalLiterature(p: AdditionalLiterature) {
-    this.additionalLiterature = p;
+  editValue(p: AdditionalLiterature) {
+    this.value = p;
   }
   // tslint:disable-next-line:typedef
   cancel() {
-    this.additionalLiterature = new AdditionalLiterature();
+    this.value = new AdditionalLiterature();
     this.tableMode = true;
   }
   // tslint:disable-next-line:typedef
   delete(p: AdditionalLiterature) {
-    this.additionalLiteratureService.deleteValue(p.id)
-      .subscribe(data => this.loadAdditionalLiterature());
+    this.valueService.deleteValue(p.id)
+      .subscribe(data => this.loadValue());
   }
   // tslint:disable-next-line:typedef
   add() {
