@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   login() {
+    console.log(this.loginForm);
     this.authService.login(this.loginForm.value).subscribe(data => {
       this.authService.saveToken(data.token);
       this.router.navigate(['home']);

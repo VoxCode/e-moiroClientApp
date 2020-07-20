@@ -30,6 +30,14 @@ import { TrainingProgramComponent } from './training-program/training-program.co
 import { ConsultationTopicComponent } from './consultation-topic/consultation-topic.component';
 import { TheQuestionComponent } from './the-question/the-question.component';
 
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { CurriculumTopicListComponent } from './curriculum-topic-list/curriculum-topic-list.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +59,8 @@ import { TheQuestionComponent } from './the-question/the-question.component';
     TeachingPositionComponent,
     TrainingProgramComponent,
     ConsultationTopicComponent,
-    TheQuestionComponent
+    TheQuestionComponent,
+    CurriculumTopicListComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +69,13 @@ import { TheQuestionComponent } from './the-question/the-question.component';
     HttpClientModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    FormsModule
+    FormsModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule
   ],
   providers: [
     AuthService,
