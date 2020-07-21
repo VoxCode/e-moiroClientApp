@@ -1,4 +1,4 @@
-<h1>Дополнительная литература</h1>
+<h1>Преподаватели</h1>
 <div class="row">
   <div class="col-sm-2">
     <app-curriculum-topic-list></app-curriculum-topic-list>
@@ -8,14 +8,16 @@
     <table *ngIf="tableMode; else create" class="table table-striped">
       <thead>
       <tr>
-        <td>Дополнительная литература</td>
+        <td>Имя</td>
+        <td>Категория</td>
         <td></td>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let p of values">
         <ng-template [ngIf]="value?.id != p.id" [ngIfElse]="edit">
-          <td>{{p?.content}}</td>
+          <td>{{p?.name}}</td>
+          <td>{{p?.teachingPosition.name}}</td>
           <td>
             <button class="btn btn-sm btn-primary" (click)="editValue(p)">Изменить</button>
             <button class="btn btn-sm btn-danger" (click)="delete(p)">Удалить</button>
@@ -28,7 +30,10 @@
     <!--шаблон для редактирования-->
     <ng-template #edit>
       <td>
-        <input type="text" [(ngModel)]="value.content" class="form-control" />
+        <input type="text" [(ngModel)]="value.name" class="form-control" />
+      </td>
+      <td>
+        <input type="text" [(ngModel)]="value.teachingPosition.name" class="form-control" />
       </td>
       <td>
         <input type="button" value="Сохранить" (click)="save()" class="btn btn-sm btn-success" />
@@ -39,8 +44,12 @@
     <!--шаблон для добавления-->
     <ng-template #create>
       <div class="form-group">
-        <label>Модель</label>
-        <input type="text" [(ngModel)]="value.content" class="form-control" />
+        <label>Имя</label>
+        <input type="text" [(ngModel)]="value.name" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Категория</label>
+        <input type="text" [(ngModel)]="value.teachingPosition.name" class="form-control" />
       </div>
       <div>
         <input type="button" value="Сохранить" (click)="save()" class="btn btn-success" />
