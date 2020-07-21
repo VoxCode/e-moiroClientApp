@@ -1,1 +1,52 @@
-<p>main-literature works!</p>
+<h1>Основная литература</h1>
+<div class="row">
+  <div class="col-sm-2">
+    <app-curriculum-topic-list></app-curriculum-topic-list>
+  </div>
+  <div class="col-sm">
+    <input type="button" value="Добавить" class="btn btn-default" (click)="add()" />
+    <table *ngIf="tableMode; else create" class="table table-striped">
+      <thead>
+      <tr>
+        <td>Дополнительная литература</td>
+        <td></td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let p of values">
+        <ng-template [ngIf]="value?.id != p.id" [ngIfElse]="edit">
+          <td>{{p?.content}}</td>
+          <td>
+            <button class="btn btn-sm btn-primary" (click)="editValue(p)">Изменить</button>
+            <button class="btn btn-sm btn-danger" (click)="delete(p)">Удалить</button>
+          </td>
+        </ng-template>
+      </tr>
+      </tbody>
+    </table>
+
+    <!--шаблон для редактирования-->
+    <ng-template #edit>
+      <td>
+        <input type="text" [(ngModel)]="value.content" class="form-control" />
+      </td>
+      <td>
+        <input type="button" value="Сохранить" (click)="save()" class="btn btn-sm btn-success" />
+        <input type="button" value="Отмена" (click)="cancel()" class="btn btn-sm btn-warning" />
+      </td>
+    </ng-template>
+
+    <!--шаблон для добавления-->
+    <ng-template #create>
+      <div class="form-group">
+        <label>Модель</label>
+        <input type="text" [(ngModel)]="value.content" class="form-control" />
+      </div>
+      <div>
+        <input type="button" value="Сохранить" (click)="save()" class="btn btn-success" />
+        <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
+      </div>
+    </ng-template>
+
+  </div>
+</div>

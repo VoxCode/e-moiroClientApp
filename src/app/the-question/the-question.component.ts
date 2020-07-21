@@ -5,7 +5,8 @@ import { TheQuestion } from '../models/TheQuestion';
 @Component({
   selector: 'app-the-question',
   templateUrl: './the-question.component.html',
-  styleUrls: ['./the-question.component.css']
+  styleUrls: ['./the-question.component.css'],
+  providers: [TheQuestionService]
 })
 export class TheQuestionComponent implements OnInit {
   value: TheQuestion = new TheQuestion();

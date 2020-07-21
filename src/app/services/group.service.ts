@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class GroupService {
-  public url = environment.apiUrl + 'api/group';
+  public url = environment.apiUrl + 'api/groups';
   constructor(private http: HttpClient) { }
 
   // tslint:disable-next-line:typedef

@@ -5,7 +5,8 @@ import { MainLiterature } from '../models/MainLiterature';
 @Component({
   selector: 'app-main-literature',
   templateUrl: './main-literature.component.html',
-  styleUrls: ['./main-literature.component.css']
+  styleUrls: ['./main-literature.component.css'],
+  providers: [MainLiteratureService]
 })
 export class MainLiteratureComponent implements OnInit {
   value: MainLiterature = new MainLiterature();

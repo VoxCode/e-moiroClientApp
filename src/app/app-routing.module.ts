@@ -10,9 +10,7 @@ import {ConsultationTopicComponent} from './consultation-topic/consultation-topi
 import {CurriculumSectionComponent} from './curriculum-section/curriculum-section.component';
 import {CurriculumTopicComponent} from './curriculum-topic/curriculum-topic.component';
 import {DepartmentComponent} from './department/department.component';
-import {FormOfEducation} from './models/FormOfEducation';
 import {GroupComponent} from './group/group.component';
-import {MainLiteratureComponent} from './main-literature/main-literature.component';
 import {OccupationFormComponent} from './occupation-form/occupation-form.component';
 import {SectionNumberComponent} from './section-number/section-number.component';
 import {TeacherComponent} from './teacher/teacher.component';
@@ -20,9 +18,11 @@ import {TeacherCategoryComponent} from './teacher-category/teacher-category.comp
 import {TeachingPositionComponent} from './teaching-position/teaching-position.component';
 import {TheQuestionComponent} from './the-question/the-question.component';
 import {TrainingProgramComponent} from './training-program/training-program.component';
+import {MainLiteratureComponent} from './main-literature/main-literature.component';
+import {FormOfEducationComponent} from './form-of-education/form-of-education.component';
 
 const routes: Routes = [
-  { path: 'products', component: ProductsComponent },
+  { path: 'products', component: ProductsComponent},
   { path: 'home', component:  HomeComponent, canActivate: [AuthGuardService]},
   { path: 'login', component: LoginComponent},
   { path: 'additionalLiterature', component: AdditionalLiteratureComponent},
@@ -30,16 +30,16 @@ const routes: Routes = [
   { path: 'curriculumSection', component: CurriculumSectionComponent},
   { path: 'curriculumTopic', component: CurriculumTopicComponent},
   { path: 'department', component: DepartmentComponent},
-  { path: 'formOfEducation', component: FormOfEducation},
+  { path: 'formOfEducation', component: FormOfEducationComponent},
   { path: 'group', component: GroupComponent},
-  { path: 'mainLiterature', component: MainLiteratureComponent },
-  { path: 'occupationForm', component: OccupationFormComponent },
-  { path: 'sectionNumber', component: SectionNumberComponent },
-  { path: 'teacher', component: TeacherComponent },
-  { path: 'teacherCategory', component: TeacherCategoryComponent },
-  { path: 'teachingPosition', component: TeachingPositionComponent },
-  { path: 'theQuestion', component: TheQuestionComponent },
-  { path: 'trainingProgram', component: TrainingProgramComponent },
+  { path: 'mainLiterature', component: MainLiteratureComponent},
+  { path: 'occupationForm', component: OccupationFormComponent},
+  { path: 'sectionNumber', component: SectionNumberComponent},
+  { path: 'teacher', component: TeacherComponent},
+  { path: 'teacherCategory', component: TeacherCategoryComponent},
+  { path: 'teachingPosition', component: TeachingPositionComponent},
+  { path: 'theQuestion', component: TheQuestionComponent},
+  { path: 'trainingProgram', component: TrainingProgramComponent},
   { path: 'register', component: RegisterComponent}
 ];
 

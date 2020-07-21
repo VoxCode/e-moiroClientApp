@@ -1,1 +1,71 @@
-<p>curriculum-topic works!</p>
+<h1>Программы учебных занятий</h1>
+<div class="row">
+  <div class="col-sm-2">
+    <app-curriculum-topic-list></app-curriculum-topic-list>
+  </div>
+  <div class="col-sm">
+    <input type="button" value="Добавить" class="btn btn-default" (click)="add()" />
+    <table *ngIf="tableMode; else create" class="table table-striped">
+      <thead>
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+        <td>6</td>
+        <td>7</td>
+        <td></td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let p of values">
+        <ng-template [ngIf]="value?.id != p.id" [ngIfElse]="edit">
+          <td>{{p?.topicTitle}}</td>
+          <td>{{p?.classHours}}</td>
+          <td>{{p?.annotation}}</td>
+          <td>{{p?.isDistanceLearning}}</td>
+          <td>{{p?.sectionNumber}}</td>
+          <td>{{p?.curriculumSection}}</td>
+          <td>{{p?.occupationForm}}</td>
+          <td>
+            <button class="btn btn-sm btn-primary" (click)="editValue(p)">Изменить</button>
+            <button class="btn btn-sm btn-danger" (click)="delete(p)">Удалить</button>
+          </td>
+        </ng-template>
+      </tr>
+      </tbody>
+    </table>
+
+    <!--шаблон для редактирования-->
+    <ng-template #edit>
+      <td>
+        <input type="text" [(ngModel)]="value.topicTitle" class="form-control" />
+      </td>
+      <td>
+        <input type="text" [(ngModel)]="value.sectionNumber" class="form-control" />
+      </td>
+      <td>
+        <input type="button" value="Сохранить" (click)="save()" class="btn btn-sm btn-success" />
+        <input type="button" value="Отмена" (click)="cancel()" class="btn btn-sm btn-warning" />
+      </td>
+    </ng-template>
+
+    <!--шаблон для добавления-->
+    <ng-template #create>
+      <div class="form-group">
+        <label>Раздел учебной программы</label>
+        <input type="text" [(ngModel)]="value.topicTitle" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Номер раздела</label>
+        <input type="text" [(ngModel)]="value.sectionNumber" class="form-control" />
+      </div>
+      <div>
+        <input type="button" value="Сохранить" (click)="save()" class="btn btn-success" />
+        <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
+      </div>
+    </ng-template>
+  </div>
+</div>
+

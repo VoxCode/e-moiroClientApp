@@ -13,11 +13,11 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let p of consultationTopics">
-        <ng-template [ngIf]="consultationTopic?.id != p.id" [ngIfElse]="edit">
+      <tr *ngFor="let p of values">
+        <ng-template [ngIf]="value?.id != p.id" [ngIfElse]="edit">
           <td>{{p?.name}}</td>
           <td>
-            <button class="btn btn-sm btn-primary" (click)="editConsultationTopic(p)">Изменить</button>
+            <button class="btn btn-sm btn-primary" (click)="editValue(p)">Изменить</button>
             <button class="btn btn-sm btn-danger" (click)="delete(p)">Удалить</button>
           </td>
         </ng-template>
@@ -28,7 +28,7 @@
     <!--шаблон для редактирования-->
     <ng-template #edit>
       <td>
-        <input type="text" [(ngModel)]="consultationTopic.name" class="form-control" />
+        <input type="text" [(ngModel)]="value.name" class="form-control" />
       </td>
       <td>
         <input type="button" value="Сохранить" (click)="save()" class="btn btn-sm btn-success" />
@@ -40,7 +40,7 @@
     <ng-template #create>
       <div class="form-group">
         <label>Модель</label>
-        <input type="text" [(ngModel)]="consultationTopic.name" class="form-control" />
+        <input type="text" [(ngModel)]="value.name" class="form-control" />
       </div>
       <div>
         <input type="button" value="Сохранить" (click)="save()" class="btn btn-success" />

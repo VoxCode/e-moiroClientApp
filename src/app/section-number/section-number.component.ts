@@ -5,7 +5,8 @@ import { SectionNumber } from '../models/SectionNumber';
 @Component({
   selector: 'app-section-number',
   templateUrl: './section-number.component.html',
-  styleUrls: ['./section-number.component.css']
+  styleUrls: ['./section-number.component.css'],
+  providers: [SectionNumberService]
 })
 export class SectionNumberComponent implements OnInit {
   value: SectionNumber = new SectionNumber();

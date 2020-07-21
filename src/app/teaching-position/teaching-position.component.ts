@@ -5,7 +5,8 @@ import { TeachingPosition } from '../models/TeachingPosition';
 @Component({
   selector: 'app-teaching-position',
   templateUrl: './teaching-position.component.html',
-  styleUrls: ['./teaching-position.component.css']
+  styleUrls: ['./teaching-position.component.css'],
+  providers: [TeachingPositionService]
 })
 export class TeachingPositionComponent implements OnInit {
   value: TeachingPosition = new TeachingPosition();

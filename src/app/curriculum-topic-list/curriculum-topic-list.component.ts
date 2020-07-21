@@ -10,5 +10,4 @@ export class CurriculumTopicListComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

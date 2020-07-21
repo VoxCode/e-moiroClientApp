@@ -5,7 +5,8 @@ import { Teacher } from '../models/Teacher';
 @Component({
   selector: 'app-teacher',
   templateUrl: './teacher.component.html',
-  styleUrls: ['./teacher.component.css']
+  styleUrls: ['./teacher.component.css'],
+  providers: [TeacherService]
 })
 export class TeacherComponent implements OnInit {
   value: Teacher = new Teacher();

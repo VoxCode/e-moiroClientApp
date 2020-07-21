@@ -5,7 +5,8 @@ import { CurriculumTopic } from '../models/CurriculumTopic';
 @Component({
   selector: 'app-curriculum-topic',
   templateUrl: './curriculum-topic.component.html',
-  styleUrls: ['./curriculum-topic.component.css']
+  styleUrls: ['./curriculum-topic.component.css'],
+  providers: [CurriculumTopicService]
 })
 export class CurriculumTopicComponent implements OnInit {
   value: CurriculumTopic = new CurriculumTopic();

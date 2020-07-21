@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class OccupationFormService {
-  public url = environment.apiUrl + 'api/occupationForm';
+  public url = environment.apiUrl + 'api/occupationForms';
   constructor(private http: HttpClient) { }
 
   // tslint:disable-next-line:typedef

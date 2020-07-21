@@ -5,7 +5,8 @@ import { Department } from '../models/Department';
 @Component({
   selector: 'app-department',
   templateUrl: './department.component.html',
-  styleUrls: ['./department.component.css']
+  styleUrls: ['./department.component.css'],
+  providers: [DepartmentService]
 })
 export class DepartmentComponent implements OnInit {
   value: Department = new Department();
