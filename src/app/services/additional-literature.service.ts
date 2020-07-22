@@ -18,7 +18,7 @@ export class AdditionalLiteratureService {
   }
   // tslint:disable-next-line:typedef
   createValue(additionalLiterature: AdditionalLiterature) {
-    return this.http.post(this.url, AdditionalLiterature);
+    return this.http.post(this.url, additionalLiterature);
   }
   // tslint:disable-next-line:typedef
   updateValue(additionalLiterature: AdditionalLiterature) {

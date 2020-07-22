@@ -6,5 +6,5 @@ export class Teacher {
     public name?: string,
     public isCathedral?: boolean,
     public teachingPositionId?: number,
-    public teachingPosition?: TeachingPosition){ }
+    public teachingPosition?: Array <TeachingPosition>){ }
 }
