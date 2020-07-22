@@ -30,7 +30,7 @@ import { TrainingProgramComponent } from './training-program/training-program.co
 import { ConsultationTopicComponent } from './consultation-topic/consultation-topic.component';
 import { TheQuestionComponent } from './the-question/the-question.component';
 import { CurriculumTopicListComponent } from './curriculum-topic-list/curriculum-topic-list.component';
-import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import {InputsModule, MDBBootstrapModule} from 'angular-bootstrap-md';
 
 
 @NgModule({
@@ -64,6 +64,7 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
     HttpClientModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    InputsModule.forRoot(),
     MDBBootstrapModule.forRoot(),
     FormsModule
   ],

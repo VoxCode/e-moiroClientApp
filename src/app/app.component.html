@@ -33,63 +33,73 @@
   </div>
 </nav>
 
-<!--Navbar -->
-<nav class="mb-1 navbar navbar-expand-lg navbar-dark default-color">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
-          aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
+<!--Navbar-->
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark unique-color" [containerInside]="false">
+
+  <!-- Navbar brand -->
+  <mdb-navbar-brand><a class="navbar-brand" href="#">Navbar</a></mdb-navbar-brand>
+
+  <!-- Collapsible content -->
+  <links>
+
+    <!-- Links -->
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home
-          <span class="sr-only">(current)</span>
-        </a>
+        <a class="nav-link waves-light" mdbWavesEffect>Home<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Features</a>
+        <a class="nav-link waves-light" mdbWavesEffect>Features</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
+        <a class="nav-link waves-light" mdbWavesEffect>Pricing</a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false">Dropdown
-        </a>
-        <div class="dropdown-menu dropdown-default" aria-labelledby="navbarDropdownMenuLink-333">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
+
+      <!-- Dropdown -->
+      <li class="nav-item dropdown" dropdown>
+        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+          Basic dropdown<span class="caret"></span></a>
+        <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
+          <a class="dropdown-item waves-light" mdbWavesEffect href="#">Action</a>
+          <a class="dropdown-item waves-light" mdbWavesEffect href="#">Another action</a>
+          <a class="dropdown-item waves-light" mdbWavesEffect href="#">Something else here</a>
+          <div class="divider dropdown-divider"></div>
+          <a class="dropdown-item waves-light" mdbWavesEffect href="#">Separated link</a>
         </div>
       </li>
+
     </ul>
+    <!-- Links -->
+
     <ul class="navbar-nav ml-auto nav-flex-icons">
       <li class="nav-item">
-        <a class="nav-link waves-effect waves-light">
-          <i class="fab fa-twitter"></i>
+        <a class="nav-link">
+          <mdb-icon fab icon="twitter"></mdb-icon>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link waves-effect waves-light">
-          <i class="fab fa-google-plus-g"></i>
+        <a class="nav-link">
+          <mdb-icon fab icon="google-plus"></mdb-icon>
         </a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-user"></i>
+      <li class="nav-item">
+        <a class="nav-link">
+          <div class="btn-group" mdbDropdown>
+            <mdb-icon fas icon="user" mdbDropdownToggle></mdb-icon>
+            <div class="dropdown-menu dropdown-menu-right dropdown-primary">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a>
+              <div class="divider dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+          </div>
         </a>
-        <div class="dropdown-menu dropdown-menu-right dropdown-default"
-             aria-labelledby="navbarDropdownMenuLink-333">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
       </li>
     </ul>
-  </div>
-</nav>
-<!--/.Navbar -->
+  </links>
+  <!-- Collapsible content -->
+
+</mdb-navbar>
+<!--/.Navbar-->
 
 <router-outlet></router-outlet>
