@@ -5,7 +5,7 @@ import { TrainingProgram } from '../models/TrainingProgram';
 @Component({
   selector: 'app-training-program',
   templateUrl: './training-program.component.html',
-  styleUrls: ['./training-program.component.css'],
+  styleUrls: ['./training-program.component.scss'],
   providers: [TrainingProgramService]
 })
 export class TrainingProgramComponent implements OnInit {

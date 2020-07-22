@@ -1,6 +1,6 @@
 {
-  "name": "e-moiro-client-app",
-  "version": "0.0.0",
+  "name": "mdb-angular-free",
+  "version": "9.3.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

@@ -29,16 +29,9 @@ import { TeachingPositionComponent } from './teaching-position/teaching-position
 import { TrainingProgramComponent } from './training-program/training-program.component';
 import { ConsultationTopicComponent } from './consultation-topic/consultation-topic.component';
 import { TheQuestionComponent } from './the-question/the-question.component';
-
-import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
 import { CurriculumTopicListComponent } from './curriculum-topic-list/curriculum-topic-list.component';
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatSelectModule} from "@angular/material/select";
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+
 
 @NgModule({
   declarations: [
@@ -71,15 +64,8 @@ import {MatSelectModule} from "@angular/material/select";
     HttpClientModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    FormsModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatFormFieldModule,
-    MatSelectModule
+    MDBBootstrapModule.forRoot(),
+    FormsModule
   ],
   providers: [
     AuthService,
