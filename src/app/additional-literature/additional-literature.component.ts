@@ -32,10 +32,9 @@ export class AdditionalLiteratureComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   ngOnInit() {
-    for (let i = 1; i <= 25; i++) {
-      this.elements.push({id: i.toString(), first: 'Wpis ' + i, last: 'Last ' + i, handle: 'Handle ' + i});
-      this.loadValue();
-    }
+    this.loadValue();
+
+
 
     this.mdbTable.setDataSource(this.elements);
     this.elements = this.mdbTable.getDataSource();
@@ -54,8 +53,6 @@ export class AdditionalLiteratureComponent implements OnInit {
     this.mdbTable.addRow({
       id: this.elements.length.toString(),
       first: 'Wpis ' + this.elements.length,
-      last: 'Last ' + this.elements.length,
-      handle: 'Handle ' + this.elements.length
     });
     this.emitDataSourceChange();
   }
@@ -120,10 +117,17 @@ export class AdditionalLiteratureComponent implements OnInit {
 
 
 
+
+
   // tslint:disable-next-line:typedef
   loadValue() {
     this.valueService.getValues()
       .subscribe((data: AdditionalLiterature[]) => this.values = data);
+
+
+    for (let i = 1; i <= 22; i++) {
+      this.elements.push({id: i.toString(), first: 'this.values[i].content.toString()', second: ''});
+    }
   }
   // tslint:disable-next-line:typedef
   save() {
