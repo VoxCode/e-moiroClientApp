@@ -5,7 +5,7 @@ import { CurriculumSection } from '../models/CurriculumSection';
 @Component({
   selector: 'app-curriculum-section',
   templateUrl: './curriculum-section.component.html',
-  styleUrls: ['./curriculum-section.component.css'],
+  styleUrls: ['./curriculum-section.component.scss'],
   providers: [CurriculumSectionService]
 })
 export class CurriculumSectionComponent implements OnInit {

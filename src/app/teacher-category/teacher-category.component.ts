@@ -5,7 +5,7 @@ import { TeacherCategory } from '../models/TeacherCategory';
 @Component({
   selector: 'app-teacher-category',
   templateUrl: './teacher-category.component.html',
-  styleUrls: ['./teacher-category.component.css'],
+  styleUrls: ['./teacher-category.component.scss'],
   providers: [TeacherCategoryService]
 })
 export class TeacherCategoryComponent implements OnInit {

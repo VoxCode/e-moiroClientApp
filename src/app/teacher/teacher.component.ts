@@ -7,7 +7,7 @@ import {TeachingPositionService} from '../services/teaching-position.service';
 @Component({
   selector: 'app-teacher',
   templateUrl: './teacher.component.html',
-  styleUrls: ['./teacher.component.css'],
+  styleUrls: ['./teacher.component.scss'],
   providers: [TeacherService, TeachingPositionService]
 })
 export class TeacherComponent implements OnInit {

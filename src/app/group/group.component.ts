@@ -5,7 +5,7 @@ import { Group } from '../models/Group';
 @Component({
   selector: 'app-group',
   templateUrl: './group.component.html',
-  styleUrls: ['./group.component.css'],
+  styleUrls: ['./group.component.scss'],
   providers: [GroupService]
 })
 export class GroupComponent implements OnInit {

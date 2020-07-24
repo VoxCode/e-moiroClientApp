@@ -5,7 +5,7 @@ import { OccupationForm } from '../models/OccupationForm';
 @Component({
   selector: 'app-occupation-form',
   templateUrl: './occupation-form.component.html',
-  styleUrls: ['./occupation-form.component.css'],
+  styleUrls: ['./occupation-form.component.scss'],
   providers: [OccupationFormService]
 })
 export class OccupationFormComponent implements OnInit {

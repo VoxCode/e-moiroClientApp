@@ -5,32 +5,31 @@
     <app-curriculum-topic-list></app-curriculum-topic-list>
   </div>
   <div class="col-sm">
-    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.show()" mdbWavesEffect>Добавить</button>
-
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-6 mx-auto">
           <div class="md-form">
             <input type="text" class="form-control" [(ngModel)]="searchText" (keyup)="searchItems()" id="search-input"
                    mdbInput>
-            <label for="search-input">Search</label>
+            <label for="search-input">Поиск</label>
           </div>
         </div>
-        <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" striped="true" class="z-depth-1">
-          <thead class="sticky-top">
+        <div class="addButton">
+          <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.show()" mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+        </div>
+        <table mdbTable #tableEl="mdbTable" hover="true" class="z-depth-1">
+          <thead>
           <tr>
-            <th *ngFor="let head of headElements; let i = index" [mdbTableSort]="elements" [sortBy]="headElements[i]"
-                scope="col">{{head | titlecase}} <mdb-icon fas icon="sort"></mdb-icon>
-            </th>
+            <th *ngFor="let head of headElements" scope="col"><b>{{head }}</b></th>
           </tr>
           </thead>
           <tbody #row>
-          <tr mdbTableCol *ngFor="let el of elements; let i = index">
-            <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{el.id}}</th>
-            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="red-text">{{el.first}}</td>
+          <tr mdbTableCol *ngFor="let el of values; let i = index">
+            <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{i}}</th>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" >{{el.content}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-              <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal.show()" (click)="editValue(el)" mdbWavesEffect>Изменить</button>
-              <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)" mdbWavesEffect>Удалить</button>
+              <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal.show()" (click)="editValue(el)" mdbWavesEffect> <mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
+              <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)" mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
             </td>
           </tr>
           </tbody>
@@ -61,11 +60,11 @@
       </div>
       <div class="modal-body">
         <label>Содержание</label>
-        <input type="text" [(ngModel)]="value.content" class="form-control" />
+        <textarea type="text" id="form8" [(ngModel)]="value.content" class="md-textarea form-control" mdbInput></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="save()" mdbWavesEffect>Сохранить</button>
-        <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="basicModal.hide()" (click)="cancel()" mdbWavesEffect>Отмена</button>
       </div>
     </div>
   </div>
+</div>

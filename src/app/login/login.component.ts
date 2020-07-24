@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     console.log(this.loginForm);
     this.authService.login(this.loginForm.value).subscribe(data => {
       this.authService.saveToken(data.token);
-      this.router.navigate(['home']);
+      this.router.navigate(['curriculumTopic']);
     });
   }
 
