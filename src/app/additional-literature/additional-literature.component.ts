@@ -1,7 +1,7 @@
 import {Component, OnInit, ElementRef, HostListener, AfterViewInit, ViewChild, ChangeDetectorRef} from '@angular/core';
 import { AdditionalLiteratureService } from '../services/additional-literature.service';
 import { AdditionalLiterature } from '../models/AdditionalLiterature';
-import {MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
+import {MDBModalRef, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-additional-literature',
@@ -9,7 +9,7 @@ import {MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-
   styleUrls: ['./additional-literature.component.scss'],
   providers: [AdditionalLiteratureService]
 })
-export class AdditionalLiteratureComponent implements OnInit {
+export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
   value: AdditionalLiterature = new AdditionalLiterature();
   values: AdditionalLiterature[];
 
@@ -18,10 +18,11 @@ export class AdditionalLiteratureComponent implements OnInit {
   @ViewChild('row', { static: true }) row: ElementRef;
 
   elements: any = [];
-  headElements = ['id', 'Содержание', 'Команда'];
+  headElements = ['Номер', 'id', 'Содержание', 'Команда'];
   searchText = '';
   previous: string;
   maxVisibleItems = 8;
+  modalRef: MDBModalRef;
 
   constructor(private valueService: AdditionalLiteratureService, private cdRef: ChangeDetectorRef) { }
 
@@ -37,7 +38,8 @@ export class AdditionalLiteratureComponent implements OnInit {
 
   // tslint:disable-next-line:typedef use-lifecycle-interface
   ngAfterViewInit() {
-    this.mdbTablePagination.setMaxVisibleItemsNumberTo(this.maxVisibleItems);
+    this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
+
     this.mdbTablePagination.calculateFirstItemIndex();
     this.mdbTablePagination.calculateLastItemIndex();
     this.cdRef.detectChanges();
@@ -53,7 +55,7 @@ export class AdditionalLiteratureComponent implements OnInit {
     }
 
     if (this.searchText) {
-      this.values = this.mdbTable.searchLocalDataBy(this.searchText);
+      this.elements = this.mdbTable.searchLocalDataBy(this.searchText);
       this.mdbTable.setDataSource(prev);
     }
 
@@ -71,20 +73,30 @@ export class AdditionalLiteratureComponent implements OnInit {
     this.valueService.getValues()
       .subscribe((data: AdditionalLiterature[]) => {
         this.values = data;
-        this.mdbTable.setDataSource(this.values);
-        this.values = this.mdbTable.getDataSource();
+        for (let i = 1; i <= this.values.length; i++) {
+          this.elements.push({id: i.toString(), first: this.values[i - 1].id, last: this.values[i - 1].content});
+        }
+        this.mdbTable.setDataSource(this.elements);
+        this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
+        this.elements = this.mdbTable.getDataSource();
         this.previous = this.mdbTable.getDataSource();
-        this.cdRef.detectChanges();
       });
   }
+
   // tslint:disable-next-line:typedef
   save() {
     if (this.value.id == null) {
       this.valueService.createValue(this.value)
         .subscribe((data: AdditionalLiterature) => this.values.push(data));
+      this.loadValue();
     } else {
       this.valueService.updateValue(this.value)
-        .subscribe();
+        .subscribe(data => {
+          const elementIndex = this.elements.findIndex((elem: any) => this.value === elem);
+          this.elements[elementIndex] = this.value;
+          this.loadValue();
+        } );
+
     }
     this.cancel();
   }
@@ -95,14 +107,33 @@ export class AdditionalLiteratureComponent implements OnInit {
   // tslint:disable-next-line:typedef
   cancel() {
     this.value = new AdditionalLiterature();
+    this.loadValue();
   }
   // tslint:disable-next-line:typedef
-  delete(p: AdditionalLiterature) {
-    this.valueService.deleteValue(p.id)
-      .subscribe();
+  delete(p: any) {
+    this.value.id = p.first;
+    this.value.content = p.last;
+    this.valueService.deleteValue(this.value.id)
+      .subscribe(data => {
+        this.removeRow(p);
+      });
+
   }
   // tslint:disable-next-line:typedef
   add() {
     this.cancel();
   }
+
+  // tslint:disable-next-line:typedef
+  removeRow(el: any) {
+    const elementIndex = this.elements.findIndex((elem: any) => el === elem);
+    this.mdbTable.removeRow(elementIndex);
+    // tslint:disable-next-line:no-shadowed-variable
+    this.mdbTable.getDataSource().forEach((el: any, index: any) => {
+      el.id = (index + 1).toString();
+    });
+    this.mdbTable.setDataSource(this.elements);
+  }
 }
+
+

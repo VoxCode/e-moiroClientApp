@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import { MainLiteratureService } from '../services/main-literature.service';
 import { MainLiterature } from '../models/MainLiterature';
 import {MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
@@ -9,7 +9,7 @@ import {MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-
   styleUrls: ['./main-literature.component.scss'],
   providers: [MainLiteratureService]
 })
-export class MainLiteratureComponent implements OnInit {
+export class MainLiteratureComponent implements OnInit, AfterViewInit {
   value: MainLiterature = new MainLiterature();
   values: MainLiterature[];
 
