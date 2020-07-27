@@ -1,7 +1,8 @@
-import {ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import { DepartmentService } from '../services/department.service';
 import { Department } from '../models/Department';
-import {MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
+import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
+import {DepartmentEditComponent} from './department-edit.component';
 
 @Component({
   selector: 'app-department',
@@ -9,7 +10,7 @@ import {MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-
   styleUrls: ['./department.component.scss'],
   providers: [DepartmentService]
 })
-export class DepartmentComponent implements OnInit {
+export class DepartmentComponent implements OnInit, AfterViewInit {
   value: Department = new Department();
   values: Department[];
 
@@ -18,12 +19,15 @@ export class DepartmentComponent implements OnInit {
   @ViewChild('row', { static: true }) row: ElementRef;
 
   elements: any = [];
-  headElements = ['id', 'Содержание', 'Команда'];
+  headElements = ['Номер', 'id', 'Содержание', 'Команда'];
   searchText = '';
   previous: string;
-  maxVisibleItems = 8;
+  modalRef: MDBModalRef;
 
-  constructor(private valueService: DepartmentService, private cdRef: ChangeDetectorRef) { }
+  constructor(
+    private valueService: DepartmentService,
+    private cdRef: ChangeDetectorRef,
+    private modalService: MDBModalService) { }
 
   // tslint:disable-next-line:typedef
   @HostListener('input') oninput() {
@@ -37,7 +41,8 @@ export class DepartmentComponent implements OnInit {
 
   // tslint:disable-next-line:typedef use-lifecycle-interface
   ngAfterViewInit() {
-    this.mdbTablePagination.setMaxVisibleItemsNumberTo(this.maxVisibleItems);
+    this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
+
     this.mdbTablePagination.calculateFirstItemIndex();
     this.mdbTablePagination.calculateLastItemIndex();
     this.cdRef.detectChanges();
@@ -53,7 +58,7 @@ export class DepartmentComponent implements OnInit {
     }
 
     if (this.searchText) {
-      this.values = this.mdbTable.searchLocalDataBy(this.searchText);
+      this.elements = this.mdbTable.searchLocalDataBy(this.searchText);
       this.mdbTable.setDataSource(prev);
     }
 
@@ -71,21 +76,40 @@ export class DepartmentComponent implements OnInit {
     this.valueService.getValues()
       .subscribe((data: Department[]) => {
         this.values = data;
-        this.mdbTable.setDataSource(this.values);
-        this.values = this.mdbTable.getDataSource();
+        for (let i = 1; i <= this.values.length; i++) {
+          this.elements.push({id: i.toString(), first: this.values[i - 1].id, last: this.values[i - 1].name});
+        }
+        this.mdbTable.setDataSource(this.elements);
+        this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
+        this.elements = this.mdbTable.getDataSource();
         this.previous = this.mdbTable.getDataSource();
-        this.cdRef.detectChanges();
       });
   }
+
   // tslint:disable-next-line:typedef
-  save() {
-    if (this.value.id == null) {
-      this.valueService.createValue(this.value)
-        .subscribe((data: Department) => this.values.push(data));
-    } else {
-      this.valueService.updateValue(this.value)
-        .subscribe();
-    }
+  crate(){
+    this.valueService.createValue(this.value)
+      .subscribe((data: Department) => {
+        // this.values.push(data);
+        this.value = data;
+        const index = this.elements.length + 1;
+        this.mdbTable.addRow({
+          id: index.toString(),
+          first: this.value.id,
+          last: this.value.name
+        });
+        this.mdbTable.setDataSource(this.elements);
+        this.cancel();
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  save(el: any) {
+    this.cancel();
+    this.value.id = el.first;
+    this.value.name = el.last;
+    this.valueService.updateValue(this.value)
+      .subscribe();
     this.cancel();
   }
   // tslint:disable-next-line:typedef
@@ -97,12 +121,46 @@ export class DepartmentComponent implements OnInit {
     this.value = new Department();
   }
   // tslint:disable-next-line:typedef
-  delete(p: Department) {
-    this.valueService.deleteValue(p.id)
-      .subscribe();
+  delete(p: any) {
+    this.value.id = p.first;
+    this.value.name = p.last;
+    this.valueService.deleteValue(this.value.id)
+      .subscribe(data => {
+        this.removeRow(p);
+      });
   }
   // tslint:disable-next-line:typedef
   add() {
     this.cancel();
   }
+
+  // tslint:disable-next-line:typedef
+  removeRow(el: any) {
+    const elementIndex = this.elements.findIndex((elem: any) => el === elem);
+    this.mdbTable.removeRow(elementIndex);
+    // tslint:disable-next-line:no-shadowed-variable
+    this.mdbTable.getDataSource().forEach((el: any, index: any) => {
+      el.id = (index + 1).toString();
+    });
+    this.mdbTable.setDataSource(this.elements);
+    this.cancel();
+  }
+
+  // tslint:disable-next-line:typedef
+  editRow(el: any) {
+    const elementIndex = this.elements.findIndex((elem: any) => el === elem);
+    const modalOptions = {
+      data: {
+        editableRow: el
+      }
+    };
+    this.modalRef = this.modalService.show(DepartmentEditComponent, modalOptions);
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      this.elements[elementIndex] = newElement;
+      this.save(newElement);
+    });
+    this.mdbTable.setDataSource(this.elements);
+  }
 }
+
+

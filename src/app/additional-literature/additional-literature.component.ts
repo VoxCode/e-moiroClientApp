@@ -87,19 +87,29 @@ export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
   }
 
   // tslint:disable-next-line:typedef
+  crate(){
+    this.valueService.createValue(this.value)
+      .subscribe((data: AdditionalLiterature) => {
+        // this.values.push(data);
+        this.value = data;
+        const index = this.elements.length + 1;
+        this.mdbTable.addRow({
+          id: index.toString(),
+          first: this.value.id,
+          last: this.value.content
+        });
+        this.mdbTable.setDataSource(this.elements);
+        this.cancel();
+      });
+  }
+
+  // tslint:disable-next-line:typedef
   save(el: any) {
+    this.cancel();
     this.value.id = el.first;
     this.value.content = el.last;
-    if (this.value.id == null) {
-      this.valueService.createValue(this.value)
-        .subscribe((data: AdditionalLiterature) => this.values.push(data));
-      // this.loadValue();
-    } else {
-      this.valueService.updateValue(this.value)
-        .subscribe(data => {
-          this.loadValue();
-        } );
-    }
+    this.valueService.updateValue(this.value)
+      .subscribe();
     this.cancel();
   }
   // tslint:disable-next-line:typedef
@@ -133,6 +143,7 @@ export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
       el.id = (index + 1).toString();
     });
     this.mdbTable.setDataSource(this.elements);
+    this.cancel();
   }
 
   // tslint:disable-next-line:typedef

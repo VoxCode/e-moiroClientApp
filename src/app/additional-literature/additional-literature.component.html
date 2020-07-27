@@ -67,7 +67,7 @@
         <textarea type="text" [(ngModel)]="this.value.content" class="md-textarea form-control" mdbInput></textarea>
       </div>
       <div class="modal-footer">
-        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" mdbWavesEffect>Сохранить</button>
+        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="crate()"  mdbWavesEffect>Сохранить</button>
       </div>
     </div>
   </div>

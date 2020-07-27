@@ -1,4 +1,5 @@
-<h1>Категории(Кафедры)</h1>
+<h1>Дополнительная литература</h1>
+
 <div class="row">
   <div class="col-sm-2">
     <app-curriculum-topic-list></app-curriculum-topic-list>
@@ -16,18 +17,23 @@
         <div class="addButton">
           <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.show()" mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
         </div>
-        <table mdbTable #tableEl="mdbTable" hover="true" class="z-depth-1">
-          <thead>
+        <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" class="z-depth-1">
+          <thead class="sticky-top">
           <tr>
-            <th *ngFor="let head of headElements" scope="col"><b>{{head }}</b></th>
+            <th *ngFor="let head of headElements; let i = index" [mdbTableSort]="elements"
+                [sortBy]="headElements[i]"
+                scope="col">{{head | titlecase}}
+              <mdb-icon fas icon="sort"></mdb-icon>
+            </th>
           </tr>
           </thead>
           <tbody #row>
-          <tr mdbTableCol *ngFor="let el of values; let i = index">
-            <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{i}}</th>
-            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" >{{el.name}}</td>
+          <tr mdbTableCol *ngFor="let el of elements; let i = index">
+            <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{el.id}}</th>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" >{{el.first}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" >{{el.last}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-              <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal.show()" (click)="editValue(el)" mdbWavesEffect> <mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
+              <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)" mdbWavesEffect> <mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
               <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)" mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
             </td>
           </tr>
@@ -46,7 +52,6 @@
   </div>
 </div>
 
-
 <!--шаблон для добавления-->
 <div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-fluid" role="document">
@@ -59,12 +64,11 @@
       </div>
       <div class="modal-body">
         <label>Содержание</label>
-        <textarea type="text" id="form8" [(ngModel)]="value.name" class="md-textarea form-control" mdbInput></textarea>
+        <textarea type="text" [(ngModel)]="this.value.name" class="md-textarea form-control" mdbInput></textarea>
       </div>
       <div class="modal-footer">
-        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="save()" mdbWavesEffect>Сохранить</button>
+        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="crate()"  mdbWavesEffect>Сохранить</button>
       </div>
     </div>
   </div>
 </div>
-

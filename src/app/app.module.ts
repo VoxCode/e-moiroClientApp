@@ -32,6 +32,13 @@ import { TheQuestionComponent } from './the-question/the-question.component';
 import { CurriculumTopicListComponent } from './curriculum-topic-list/curriculum-topic-list.component';
 import {InputsModule, MDBBootstrapModule} from 'angular-bootstrap-md';
 import {AdditionalLiteratureEditComponent} from './additional-literature/additional-literature-edit.component';
+import {MainLiteratureEditComponent} from './main-literature/main-literature-edit.component';
+import {ConsultationTopicEditComponent} from './consultation-topic/consultation-topic-edit.component';
+import {DepartmentEditComponent} from './department/department-edit.component';
+import {FormOfEducationEditComponent} from './form-of-education/form-of-education-edit.component';
+import {TeachingPositionEditComponent} from './teaching-position/teaching-position-edit.component';
+import {SectionNumberEditComponent} from './section-number/section-number-edit.component';
+import {TheQuestionEditComponent} from './the-question/the-question-edit.component';
 
 
 @NgModule({
@@ -46,17 +53,24 @@ import {AdditionalLiteratureEditComponent} from './additional-literature/additio
     CurriculumSectionComponent,
     CurriculumTopicComponent,
     DepartmentComponent,
+    DepartmentEditComponent,
     FormOfEducationComponent,
+    FormOfEducationEditComponent,
     GroupComponent,
     MainLiteratureComponent,
+    MainLiteratureEditComponent,
     OccupationFormComponent,
     SectionNumberComponent,
+    SectionNumberEditComponent,
     TeacherComponent,
     TeacherCategoryComponent,
     TeachingPositionComponent,
+    TeachingPositionEditComponent,
     TrainingProgramComponent,
     ConsultationTopicComponent,
+    ConsultationTopicEditComponent,
     TheQuestionComponent,
+    TheQuestionEditComponent,
     CurriculumTopicListComponent
   ],
   imports: [
