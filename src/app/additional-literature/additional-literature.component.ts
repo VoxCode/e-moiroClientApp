@@ -54,7 +54,7 @@ export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
 
     if (!this.searchText) {
       this.mdbTable.setDataSource(this.previous);
-      this.values = this.mdbTable.getDataSource();
+      this.elements = this.mdbTable.getDataSource();
     }
 
     if (this.searchText) {
@@ -76,6 +76,10 @@ export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
     this.valueService.getValues()
       .subscribe((data: AdditionalLiterature[]) => {
         this.values = data;
+        // tslint:disable-next-line:only-arrow-functions typedef
+        this.values.sort(function(a, b) {
+          return a.id - b.id;
+        });
         for (let i = 1; i <= this.values.length; i++) {
           this.elements.push({id: i.toString(), first: this.values[i - 1].id, last: this.values[i - 1].content});
         }

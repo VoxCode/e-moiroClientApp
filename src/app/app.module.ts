@@ -39,6 +39,7 @@ import {FormOfEducationEditComponent} from './form-of-education/form-of-educatio
 import {TeachingPositionEditComponent} from './teaching-position/teaching-position-edit.component';
 import {SectionNumberEditComponent} from './section-number/section-number-edit.component';
 import {TheQuestionEditComponent} from './the-question/the-question-edit.component';
+import {TeacherEditComponent} from './teacher/teacher-edit.component';
 
 
 @NgModule({
@@ -63,6 +64,7 @@ import {TheQuestionEditComponent} from './the-question/the-question-edit.compone
     SectionNumberComponent,
     SectionNumberEditComponent,
     TeacherComponent,
+    TeacherEditComponent,
     TeacherCategoryComponent,
     TeachingPositionComponent,
     TeachingPositionEditComponent,

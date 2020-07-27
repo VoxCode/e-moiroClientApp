@@ -56,7 +56,7 @@ export class ConsultationTopicComponent implements OnInit, AfterViewInit {
 
     if (!this.searchText) {
       this.mdbTable.setDataSource(this.previous);
-      this.values = this.mdbTable.getDataSource();
+      this.elements = this.mdbTable.getDataSource();
     }
 
     if (this.searchText) {
