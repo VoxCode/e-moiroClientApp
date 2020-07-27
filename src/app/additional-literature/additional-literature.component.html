@@ -33,7 +33,7 @@
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" >{{el.first}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" >{{el.last}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-              <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal.show()" (click)="editValue(el)" mdbWavesEffect> <mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
+              <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)" mdbWavesEffect> <mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
               <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)" mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
             </td>
           </tr>
@@ -52,7 +52,6 @@
   </div>
 </div>
 
-
 <!--шаблон для добавления-->
 <div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-fluid" role="document">
@@ -65,10 +64,10 @@
       </div>
       <div class="modal-body">
         <label>Содержание</label>
-        <textarea type="text" id="form8" [(ngModel)]="value.content" class="md-textarea form-control" mdbInput></textarea>
+        <textarea type="text" [(ngModel)]="this.value.content" class="md-textarea form-control" mdbInput></textarea>
       </div>
       <div class="modal-footer">
-        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="save()" mdbWavesEffect>Сохранить</button>
+        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" mdbWavesEffect>Сохранить</button>
       </div>
     </div>
   </div>

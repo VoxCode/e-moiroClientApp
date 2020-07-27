@@ -31,6 +31,7 @@ import { ConsultationTopicComponent } from './consultation-topic/consultation-to
 import { TheQuestionComponent } from './the-question/the-question.component';
 import { CurriculumTopicListComponent } from './curriculum-topic-list/curriculum-topic-list.component';
 import {InputsModule, MDBBootstrapModule} from 'angular-bootstrap-md';
+import {AdditionalLiteratureEditComponent} from './additional-literature/additional-literature-edit.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import {InputsModule, MDBBootstrapModule} from 'angular-bootstrap-md';
     ProductsComponent,
     HomeComponent,
     AdditionalLiteratureComponent,
+    AdditionalLiteratureEditComponent,
     CurriculumSectionComponent,
     CurriculumTopicComponent,
     DepartmentComponent,

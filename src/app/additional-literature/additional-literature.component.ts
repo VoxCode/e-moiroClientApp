@@ -1,7 +1,8 @@
 import {Component, OnInit, ElementRef, HostListener, AfterViewInit, ViewChild, ChangeDetectorRef} from '@angular/core';
 import { AdditionalLiteratureService } from '../services/additional-literature.service';
 import { AdditionalLiterature } from '../models/AdditionalLiterature';
-import {MDBModalRef, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
+import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
+import {AdditionalLiteratureEditComponent} from './additional-literature-edit.component';
 
 @Component({
   selector: 'app-additional-literature',
@@ -21,10 +22,12 @@ export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
   headElements = ['Номер', 'id', 'Содержание', 'Команда'];
   searchText = '';
   previous: string;
-  maxVisibleItems = 8;
   modalRef: MDBModalRef;
 
-  constructor(private valueService: AdditionalLiteratureService, private cdRef: ChangeDetectorRef) { }
+  constructor(
+    private valueService: AdditionalLiteratureService,
+    private cdRef: ChangeDetectorRef,
+    private modalService: MDBModalService) { }
 
   // tslint:disable-next-line:typedef
   @HostListener('input') oninput() {
@@ -84,19 +87,18 @@ export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
   }
 
   // tslint:disable-next-line:typedef
-  save() {
+  save(el: any) {
+    this.value.id = el.first;
+    this.value.content = el.last;
     if (this.value.id == null) {
       this.valueService.createValue(this.value)
         .subscribe((data: AdditionalLiterature) => this.values.push(data));
-      this.loadValue();
+      // this.loadValue();
     } else {
       this.valueService.updateValue(this.value)
         .subscribe(data => {
-          const elementIndex = this.elements.findIndex((elem: any) => this.value === elem);
-          this.elements[elementIndex] = this.value;
           this.loadValue();
         } );
-
     }
     this.cancel();
   }
@@ -107,7 +109,6 @@ export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   cancel() {
     this.value = new AdditionalLiterature();
-    this.loadValue();
   }
   // tslint:disable-next-line:typedef
   delete(p: any) {
@@ -117,7 +118,6 @@ export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
       .subscribe(data => {
         this.removeRow(p);
       });
-
   }
   // tslint:disable-next-line:typedef
   add() {
@@ -131,6 +131,22 @@ export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
     // tslint:disable-next-line:no-shadowed-variable
     this.mdbTable.getDataSource().forEach((el: any, index: any) => {
       el.id = (index + 1).toString();
+    });
+    this.mdbTable.setDataSource(this.elements);
+  }
+
+  // tslint:disable-next-line:typedef
+  editRow(el: any) {
+    const elementIndex = this.elements.findIndex((elem: any) => el === elem);
+    const modalOptions = {
+      data: {
+        editableRow: el
+      }
+    };
+    this.modalRef = this.modalService.show(AdditionalLiteratureEditComponent, modalOptions);
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      this.elements[elementIndex] = newElement;
+      this.save(newElement);
     });
     this.mdbTable.setDataSource(this.elements);
   }
