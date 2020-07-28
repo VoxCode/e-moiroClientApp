@@ -6,7 +6,6 @@ import {TeachingPositionService} from '../services/teaching-position.service';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {TeacherEditComponent} from './teacher-edit.component';
 
-
 @Component({
   selector: 'app-teacher',
   templateUrl: './teacher.component.html',

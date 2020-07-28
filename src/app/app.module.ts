@@ -40,6 +40,7 @@ import {TeachingPositionEditComponent} from './teaching-position/teaching-positi
 import {SectionNumberEditComponent} from './section-number/section-number-edit.component';
 import {TheQuestionEditComponent} from './the-question/the-question-edit.component';
 import {TeacherEditComponent} from './teacher/teacher-edit.component';
+import {CurriculumSectionEditComponent} from './curriculum-section/curriculum-section-edit.component';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import {TeacherEditComponent} from './teacher/teacher-edit.component';
     AdditionalLiteratureComponent,
     AdditionalLiteratureEditComponent,
     CurriculumSectionComponent,
+    CurriculumSectionEditComponent,
     CurriculumTopicComponent,
     DepartmentComponent,
     DepartmentEditComponent,
