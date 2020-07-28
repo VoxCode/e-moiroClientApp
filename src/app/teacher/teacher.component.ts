@@ -83,12 +83,17 @@ export class TeacherComponent implements OnInit, AfterViewInit {
     this.valueService.getValues()
       .subscribe((data: Teacher[]) => {
         this.values = data;
+        // tslint:disable-next-line:only-arrow-functions
+        this.values.sort(function(a, b) {
+          return a.id - b.id;
+        });
         for (let i = 1; i <= this.values.length; i++) {
           this.elements.push({
             id: i.toString(),
             first: this.values[i - 1].id,
             second: this.values[i - 1].teachingPositionId,
             third: this.values[i - 1].isCathedral,
+            fourth: this.values[i - 1].teachingPositionName,
             last: this.values[i - 1].name});
         }
         this.mdbTable.setDataSource(this.elements);
@@ -103,14 +108,15 @@ export class TeacherComponent implements OnInit, AfterViewInit {
     this.value.teachingPositionId = this.teachingPosition.id;
     this.valueService.createValue(this.value)
       .subscribe((data: Teacher) => {
-        // this.values.push(data);
         this.value = data;
         const index = this.elements.length + 1;
+        this.value.teachingPositionName = this.teachingPositions.find(p => p.id === +this.value.teachingPositionId).name;
         this.mdbTable.addRow({
           id: index.toString(),
           first: this.value.id,
           second: this.value.teachingPositionId,
           third: this.value.isCathedral,
+          fourth: this.value.teachingPositionName,
           last: this.value.name
         });
         this.mdbTable.setDataSource(this.elements);
@@ -184,7 +190,7 @@ export class TeacherComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   loadTeachingPosition() {
     this.teachingPositionService.getValues()
-      .subscribe((data: Teacher[]) => {
+      .subscribe((data: TeachingPosition[]) => {
         this.teachingPositions = data;
       });
   }
