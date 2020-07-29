@@ -1,4 +1,4 @@
-import { NgModule, Component } from '@angular/core';
+import { NgModule} from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -20,6 +20,7 @@ import {TheQuestionComponent} from './the-question/the-question.component';
 import {TrainingProgramComponent} from './training-program/training-program.component';
 import {MainLiteratureComponent} from './main-literature/main-literature.component';
 import {FormOfEducationComponent} from './form-of-education/form-of-education.component';
+import {CurriculumTopicAddFormComponent} from './curriculum-topic-add-form/curriculum-topic-add-form.component';
 
 const routes: Routes = [
   { path: 'products', component: ProductsComponent},
@@ -40,6 +41,7 @@ const routes: Routes = [
   { path: 'teachingPosition', component: TeachingPositionComponent, canActivate: [AuthGuardService]},
   { path: 'theQuestion', component: TheQuestionComponent, canActivate: [AuthGuardService]},
   { path: 'trainingProgram', component: TrainingProgramComponent, canActivate: [AuthGuardService]},
+  { path: 'curriculumTopicAddForm', component: CurriculumTopicAddFormComponent, canActivate: [AuthGuardService]},
   { path: 'register', component: RegisterComponent}
 ];
 

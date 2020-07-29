@@ -41,6 +41,7 @@ import {SectionNumberEditComponent} from './section-number/section-number-edit.c
 import {TheQuestionEditComponent} from './the-question/the-question-edit.component';
 import {TeacherEditComponent} from './teacher/teacher-edit.component';
 import {CurriculumSectionEditComponent} from './curriculum-section/curriculum-section-edit.component';
+import { CurriculumTopicAddFormComponent } from './curriculum-topic-add-form/curriculum-topic-add-form.component';
 
 
 @NgModule({
@@ -75,7 +76,8 @@ import {CurriculumSectionEditComponent} from './curriculum-section/curriculum-se
     ConsultationTopicEditComponent,
     TheQuestionComponent,
     TheQuestionEditComponent,
-    CurriculumTopicListComponent
+    CurriculumTopicListComponent,
+    CurriculumTopicAddFormComponent
   ],
   imports: [
     BrowserModule,
