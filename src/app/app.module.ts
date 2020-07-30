@@ -42,6 +42,7 @@ import {TheQuestionEditComponent} from './the-question/the-question-edit.compone
 import {TeacherEditComponent} from './teacher/teacher-edit.component';
 import {CurriculumSectionEditComponent} from './curriculum-section/curriculum-section-edit.component';
 import { CurriculumTopicAddFormComponent } from './curriculum-topic-add-form/curriculum-topic-add-form.component';
+import {TeacherCategoryEditComponent} from './teacher-category/teaching-position-edit.component';
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import { CurriculumTopicAddFormComponent } from './curriculum-topic-add-form/cur
     TeacherComponent,
     TeacherEditComponent,
     TeacherCategoryComponent,
+    TeacherCategoryEditComponent,
     TeachingPositionComponent,
     TeachingPositionEditComponent,
     TrainingProgramComponent,

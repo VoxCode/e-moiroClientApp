@@ -82,7 +82,7 @@ export class TeacherComponent implements OnInit, AfterViewInit {
     this.valueService.getValues()
       .subscribe((data: Teacher[]) => {
         this.values = data;
-        // tslint:disable-next-line:only-arrow-functions
+        // tslint:disable-next-line:only-arrow-functions typedef
         this.values.sort(function(a, b) {
           return a.id - b.id;
         });
