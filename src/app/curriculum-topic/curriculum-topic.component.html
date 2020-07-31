@@ -1,71 +1,95 @@
-<h1>Программы учебных занятий</h1>
+<h1>Преподаватели</h1>
+
 <div class="row">
   <div class="col-sm-2">
     <app-curriculum-topic-list></app-curriculum-topic-list>
   </div>
   <div class="col-sm">
-    <input type="button" value="Добавить" class="btn btn-default" (click)="add()" />
-    <table *ngIf="tableMode; else create" class="table table-striped">
-      <thead>
-      <tr>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td>4</td>
-        <td>5</td>
-        <td>6</td>
-        <td>7</td>
-        <td></td>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let p of values">
-        <ng-template [ngIf]="value?.id != p.id" [ngIfElse]="edit">
-          <td>{{p?.topicTitle}}</td>
-          <td>{{p?.classHours}}</td>
-          <td>{{p?.annotation}}</td>
-          <td>{{p?.isDistanceLearning}}</td>
-          <td>{{p?.sectionNumber}}</td>
-          <td>{{p?.curriculumSection}}</td>
-          <td>{{p?.occupationForm}}</td>
-          <td>
-            <button class="btn btn-sm btn-primary" (click)="editValue(p)">Изменить</button>
-            <button class="btn btn-sm btn-danger" (click)="delete(p)">Удалить</button>
-          </td>
-        </ng-template>
-      </tr>
-      </tbody>
-    </table>
-
-    <!--шаблон для редактирования-->
-    <ng-template #edit>
-      <td>
-        <input type="text" [(ngModel)]="value.topicTitle" class="form-control" />
-      </td>
-      <td>
-        <input type="text" [(ngModel)]="value.sectionNumber" class="form-control" />
-      </td>
-      <td>
-        <input type="button" value="Сохранить" (click)="save()" class="btn btn-sm btn-success" />
-        <input type="button" value="Отмена" (click)="cancel()" class="btn btn-sm btn-warning" />
-      </td>
-    </ng-template>
-
-    <!--шаблон для добавления-->
-    <ng-template #create>
-      <div class="form-group">
-        <label>Раздел учебной программы</label>
-        <input type="text" [(ngModel)]="value.topicTitle" class="form-control" />
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="md-form">
+            <input type="text" class="form-control" [(ngModel)]="searchText" (keyup)="searchItems()" id="search-input"
+                   mdbInput>
+            <label for="search-input">Поиск</label>
+          </div>
+        </div>
+        <div class="addButton">
+          <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.show()"
+                  mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+        </div>
+        <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" class="z-depth-1">
+          <thead class="sticky-top">
+          <tr>
+            <th *ngFor="let head of headElements; let i = index" [mdbTableSort]="elements"
+                [sortBy]="headElements[i]"
+                scope="col">{{head | titlecase}}
+              <mdb-icon fas icon="sort"></mdb-icon>
+            </th>
+          </tr>
+          </thead>
+          <tbody #row>
+          <tr mdbTableCol *ngFor="let el of elements; let i = index">
+            <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{el.id}}</th>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.first}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.fourth}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              <mdb-checkbox [disabled]="true" [(ngModel)]="el.third" [default]="true"></mdb-checkbox></td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.last}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
+                      mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
+              <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)"
+                      mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+            </td>
+          </tr>
+          </tbody>
+          <tfoot class="grey lighten-5 w-100">
+          <tr>
+            <td colspan="6">
+              <mdb-table-pagination [tableEl]="tableEl" paginationAlign="" [searchDataSource]="elements"></mdb-table-pagination>
+            </td>
+          </tr>
+          </tfoot>
+        </table>
       </div>
-      <div class="form-group">
-        <label>Номер раздела</label>
-        <input type="text" [(ngModel)]="value.sectionNumber" class="form-control" />
-      </div>
-      <div>
-        <input type="button" value="Сохранить" (click)="save()" class="btn btn-success" />
-        <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
-      </div>
-    </ng-template>
+    </div>
   </div>
 </div>
 
+<!--шаблон для добавления-->
+<div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-fluid" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()" (click)="cancel()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">Учебные программы</h4>
+      </div>
+      <div class="modal-body">
+        <label>Тема</label>
+        <input type="text" [(ngModel)]="this.value.topicTitle" class="md-textarea form-control" mdbInput>
+        <br>
+        <label>Количество часов</label>
+        <input type="number" [(ngModel)]="this.value.classHours" class="md-textarea form-control" mdbInput>
+        <br>
+        <label>Аннотация</label>
+        <textarea type="text" [(ngModel)]="this.value.annotation" class="md-textarea form-control" mdbInput></textarea>
+        <br>
+        <label>Форма обучения</label>
+        <input type="number" [(ngModel)]="this.value.occupationFormId" class="md-textarea form-control" mdbInput>
+        <br>
+        <label>Раздел учебной программы</label>
+        <input type="number" [(ngModel)]="this.value.curriculumSectionId" class="md-textarea form-control" mdbInput>
+        <br>
+        <mdb-checkbox [(ngModel)]="this.value.isDistanceLearning" [default]="true">Дистанционное обучение</mdb-checkbox>
+      </div>
+      <div class="modal-footer">
+        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="crate()"
+                mdbWavesEffect>Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>

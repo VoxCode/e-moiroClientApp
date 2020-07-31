@@ -4,9 +4,8 @@
 
 export const environment = {
   production: false,
-  // apiUrl: 'https://localhost:44358/'
-  apiUrl: 'http://api.e.moiro.by/'
-  // commit by viorone
+  apiUrl: 'https://localhost:44358/'
+  // apiUrl: 'http://api.e.moiro.by/'
 };
 
 /*

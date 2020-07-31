@@ -43,6 +43,8 @@ import {TeacherEditComponent} from './teacher/teacher-edit.component';
 import {CurriculumSectionEditComponent} from './curriculum-section/curriculum-section-edit.component';
 import { CurriculumTopicAddFormComponent } from './curriculum-topic-add-form/curriculum-topic-add-form.component';
 import {TeacherCategoryEditComponent} from './teacher-category/teaching-position-edit.component';
+import {CurriculumTopicEditComponent} from './curriculum-topic/curriculum-topic-edit.component';
+import {OccupationFormEditComponent} from './occupation-form/occupation-form-edit.component';
 
 
 @NgModule({
@@ -57,6 +59,7 @@ import {TeacherCategoryEditComponent} from './teacher-category/teaching-position
     CurriculumSectionComponent,
     CurriculumSectionEditComponent,
     CurriculumTopicComponent,
+    CurriculumTopicEditComponent,
     DepartmentComponent,
     DepartmentEditComponent,
     FormOfEducationComponent,
@@ -65,6 +68,7 @@ import {TeacherCategoryEditComponent} from './teacher-category/teaching-position
     MainLiteratureComponent,
     MainLiteratureEditComponent,
     OccupationFormComponent,
+    OccupationFormEditComponent,
     SectionNumberComponent,
     SectionNumberEditComponent,
     TeacherComponent,
