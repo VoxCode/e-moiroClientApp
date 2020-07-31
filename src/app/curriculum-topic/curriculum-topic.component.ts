@@ -3,33 +3,41 @@ import { CurriculumTopicService } from '../services/curriculum-topic.service';
 import { CurriculumTopic } from '../models/CurriculumTopic';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {CurriculumTopicEditComponent} from './curriculum-topic-edit.component';
+import {OccupationForm} from '../models/OccupationForm';
+import {OccupationFormService} from '../services/occupation-form.service';
+import {CurriculumSection} from '../models/CurriculumSection';
+import {CurriculumSectionService} from '../services/curriculum-section.service';
 
 @Component({
   selector: 'app-curriculum-topic',
   templateUrl: './curriculum-topic.component.html',
   styleUrls: ['./curriculum-topic.component.scss'],
-  providers: [CurriculumTopicService]
+  providers: [CurriculumTopicService, OccupationFormService, CurriculumSectionService]
 })
+
 export class CurriculumTopicComponent implements OnInit, AfterViewInit {
   value: CurriculumTopic = new CurriculumTopic();
   values: CurriculumTopic[];
-  // teachingPositions: TeachingPosition[];
-  // teachingPosition: TeachingPosition = new TeachingPosition();
-
+  occupationForms: OccupationForm[];
+  occupationForm: OccupationForm = new OccupationForm();
+  curriculumSections: CurriculumSection[];
+  curriculumSection: CurriculumSection = new CurriculumSection();
 
   @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
   @ViewChild('row', { static: true }) row: ElementRef;
 
   elements: any = [];
-  headElements = ['Номер', 'id', 'Должность', 'Кафедрал', 'Имя', 'Команда'];
+  headElements = ['Номер', 'id', 'Тема', 'Количество часов', 'Аннотация', 'Форма обучения',
+    'Раздел учебной программы', 'Дистанционное обучение', 'Команда'];
   searchText = '';
   previous: string;
   modalRef: MDBModalRef;
 
   constructor(
     private valueService: CurriculumTopicService,
-    // private teachingPositionService: TeachingPositionService,
+    private occupationFormService: OccupationFormService,
+    private curriculumSectionService: CurriculumSectionService,
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService) { }
 
@@ -41,7 +49,8 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   ngOnInit() {
     this.loadValue();
-    // this.loadTeachingPosition();
+    this.loadOccupationForm();
+    this.loadCurriculumSection();
   }
 
   // tslint:disable-next-line:typedef use-lifecycle-interface
@@ -94,6 +103,8 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
             fourth: this.values[i - 1].classHours,
             fifth: this.values[i - 1].curriculumSectionId,
             sixth: this.values[i - 1].occupationFormId,
+            seventh: this.values[i - 1].curriculumSectionName,
+            eighth: this.values[i - 1].occupationFormName,
             last: this.values[i - 1].isDistanceLearning});
         }
         this.mdbTable.setDataSource(this.elements);
@@ -105,12 +116,14 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
 
   // tslint:disable-next-line:typedef
   crate(){
-    // this.value.teachingPositionId = this.teachingPosition.id;
+    this.value.occupationFormId = this.occupationForm.id;
+    this.value.curriculumSectionId = this.curriculumSection.id;
     this.valueService.createValue(this.value)
       .subscribe((data: CurriculumTopic) => {
         this.value = data;
         const index = this.elements.length + 1;
-        // this.value.teachingPositionName = this.teachingPositions.find(p => p.id === +this.value.teachingPositionId).name;
+        this.value.curriculumSectionName = this.curriculumSections.find(p => p.id === +this.value.curriculumSectionName).name;
+        this.value.occupationFormName = this.occupationForms.find(p => p.id === +this.value.occupationFormName).shortName;
         this.mdbTable.addRow({
           id: index.toString(),
           first: this.value.id,
@@ -127,12 +140,15 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
   }
 
   // tslint:disable-next-line:typedef
-  save(el: any) {
+  save(p: any) {
     this.cancel();
-    this.value.id = el.first;
-    // this.value.teachingPositionId = el.second;
-    // this.value.isCathedral = el.third;
-    // this.value.name = el.last;
+    this.value.id = p.first;
+    this.value.topicTitle = p.second;
+    this.value.annotation = p.third;
+    this.value.classHours = p.fourth;
+    this.value.curriculumSectionId = p.fifth;
+    this.value.occupationFormId = p.sixth;
+    this.value.isDistanceLearning = p.last;
     this.valueService.updateValue(this.value)
       .subscribe();
     this.cancel();
@@ -148,9 +164,12 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   delete(p: any) {
     this.value.id = p.first;
-    // this.value.teachingPositionId = p.second;
-    // this.value.isCathedral = p.third;
-    // this.value.name = p.last;
+    this.value.topicTitle = p.second;
+    this.value.annotation = p.third;
+    this.value.classHours = p.fourth;
+    this.value.curriculumSectionId = p.fifth;
+    this.value.occupationFormId = p.sixth;
+    this.value.isDistanceLearning = p.last;
     this.valueService.deleteValue(this.value.id)
       .subscribe(data => {
         this.removeRow(p);
@@ -187,5 +206,21 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
       this.save(newElement);
     });
     this.mdbTable.setDataSource(this.elements);
+  }
+
+  // tslint:disable-next-line:typedef
+  loadOccupationForm() {
+    this.occupationFormService.getValues()
+      .subscribe((data: OccupationForm[]) => {
+        this.occupationForms = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadCurriculumSection() {
+    this.curriculumSectionService.getValues()
+      .subscribe((data: CurriculumSection[]) => {
+        this.curriculumSections = data;
+      });
   }
 }

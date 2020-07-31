@@ -5,10 +5,9 @@ export class CurriculumTopic {
     public classHours?: number,
     public annotation?: string,
     public isDistanceLearning?: boolean,
-   // public sectionNumber?: string,
     public curriculumSectionId?: number,
-   // public curriculumSection?: string,
+    public curriculumSectionName?: string,
     public occupationFormId?: number,
-   // public occupationForm?: string
+    public occupationFormName?: string
   ){ }
 }

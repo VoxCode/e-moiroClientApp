@@ -17,17 +17,42 @@
         <label for="first">First</label>
         <mdb-error *ngIf="first.invalid && (first.dirty || first.touched)">Input is required</mdb-error>
       </div>
-      <div class="md-form">
-        <p>Содержимое</p>
-        <textarea id="last" type="text" class="form-control" formControlName="last" mdbInput mdbValidate
-                  [validateSuccess]="false"></textarea>
 
+      <div class="md-form">
+        <p>Тема</p>
+        <input id="second" type="text" class="form-control" formControlName="second" mdbInput mdbValidate
+                  [validateSuccess]="false">
         <mdb-error *ngIf="last.invalid && (last.dirty || last.touched)">Input is required</mdb-error>
       </div>
 
+      <div class="md-form">
+        <p>Количество часов</p>
+        <input id="last" type="text" class="form-control" formControlName="last" mdbInput mdbValidate
+               [validateSuccess]="false">
+        <mdb-error *ngIf="last.invalid && (last.dirty || last.touched)">Input is required</mdb-error>
+      </div>
+
+      <div class="md-form">
+        <p>Аннотация</p>
+        <textarea id="third" type="text" class="form-control" formControlName="third" mdbInput mdbValidate
+                  [validateSuccess]="false"></textarea>
+        <mdb-error *ngIf="last.invalid && (last.dirty || last.touched)">Input is required</mdb-error>
+      </div>
+
+      <label>Форма обучения</label>
+      <select class="browser-default custom-select" id="fifth" formControlName="fifth">
+        <option *ngFor="let el of occupationForms" [ngValue]="el.id">{{el.fullName}}</option>
+      </select>
+      <br><br>
+
+      <label>Раздел учебной программы</label>
+      <select class="browser-default custom-select" id="sixth" formControlName="sixth">
+        <option *ngFor="let el of curriculumSections" [ngValue]="el.id">{{el.name}}</option>
+      </select>
+      <br><br>
 
       <div>
-        <mdb-checkbox [default]="true" formControlName="third">Кафедрал</mdb-checkbox>
+        <mdb-checkbox [default]="true" formControlName="third">Дистанционное обучение</mdb-checkbox>
       </div>
 
     </form>
