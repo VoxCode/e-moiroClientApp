@@ -116,14 +116,12 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
 
   // tslint:disable-next-line:typedef
   crate(){
-    this.value.occupationFormId = this.occupationForm.id;
-    this.value.curriculumSectionId = this.curriculumSection.id;
     this.valueService.createValue(this.value)
       .subscribe((data: CurriculumTopic) => {
         this.value = data;
         const index = this.elements.length + 1;
-        this.value.curriculumSectionName = this.curriculumSections.find(p => p.id === +this.value.curriculumSectionName).name;
-        this.value.occupationFormName = this.occupationForms.find(p => p.id === +this.value.occupationFormName).shortName;
+        this.value.curriculumSectionName = this.curriculumSections.find(p => p.id === +this.value.curriculumSectionId).name;
+        this.value.occupationFormName = this.occupationForms.find(p => p.id === +this.value.occupationFormId).shortName;
         this.mdbTable.addRow({
           id: index.toString(),
           first: this.value.id,
@@ -132,6 +130,8 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
           fourth: this.value.classHours,
           fifth: this.value.curriculumSectionId,
           sixth: this.value.occupationFormId,
+          seventh: this.value.curriculumSectionName,
+          eighth: this.value.occupationFormName,
           last: this.value.isDistanceLearning
         });
         this.mdbTable.setDataSource(this.elements);

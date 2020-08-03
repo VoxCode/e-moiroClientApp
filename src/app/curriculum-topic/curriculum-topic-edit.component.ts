@@ -64,6 +64,7 @@ export class CurriculumTopicEditComponent {
     this.editableRow = this.form.getRawValue();
     this.editableRow.seventh = this.curriculumSections.find(p => p.id === +this.editableRow.fifth).name;
     this.editableRow.eighth = this.occupationForms.find(p => p.id === +this.editableRow.sixth).shortName;
+    console.log(this.editableRow);
     this.saveButtonClicked.next(this.editableRow);
     this.modalRef.hide();
   }

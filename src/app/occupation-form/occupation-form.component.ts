@@ -169,5 +169,3 @@ export class OccupationFormComponent implements OnInit, AfterViewInit {
     this.mdbTable.setDataSource(this.elements);
   }
 }
-
-

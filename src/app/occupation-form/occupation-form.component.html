@@ -31,8 +31,8 @@
           <tr mdbTableCol *ngFor="let el of elements; let i = index">
             <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{el.id}}</th>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" >{{el.first}}</td>
-            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" >{{el.second}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" >{{el.last}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" >{{el.second}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
               <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)" mdbWavesEffect> <mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
               <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)" mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
@@ -49,7 +49,6 @@
         </table>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -64,15 +63,15 @@
         <h4 class="modal-title w-100" id="myModalLabel">Форма занятия</h4>
       </div>
       <div class="modal-body">
-        <label>Краткое название</label>
-        <input type="text" [(ngModel)]="this.value.shortName" class="md-textarea form-control" mdbInput>
-      </div>
-      <div class="modal-body">
         <label>Полное название</label>
         <input type="text" [(ngModel)]="this.value.fullName" class="md-textarea form-control" mdbInput>
       </div>
+      <div class="modal-body">
+        <label>Краткое название</label>
+        <input type="text" [(ngModel)]="this.value.shortName" class="md-textarea form-control" mdbInput>
+      </div>
       <div class="modal-footer">
-        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="crate()"  mdbWavesEffect>Сохранить</button>
+        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="crate()" mdbWavesEffect>Сохранить</button>
       </div>
     </div>
   </div>

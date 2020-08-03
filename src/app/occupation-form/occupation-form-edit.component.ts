@@ -14,7 +14,7 @@ export class OccupationFormEditComponent {
 
   public form: FormGroup = new FormGroup({
     id: new FormControl({value: '', disabled: true}),
-    first: new FormControl('', Validators.required),
+    first: new FormControl({value: '', disabled: true}),
     second: new FormControl('', Validators.required),
     last: new FormControl('', Validators.required)
   });
@@ -25,7 +25,7 @@ export class OccupationFormEditComponent {
   ngOnInit() {
     this.form.controls.id.patchValue(this.editableRow.id);
     this.form.controls.first.patchValue(this.editableRow.first);
-    this.form.controls.second.patchValue(this.editableRow.first);
+    this.form.controls.second.patchValue(this.editableRow.second);
     this.form.controls.last.patchValue(this.editableRow.last);
   }
 
