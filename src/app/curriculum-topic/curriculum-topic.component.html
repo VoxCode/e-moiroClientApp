@@ -1,4 +1,4 @@
-<h1>Преподаватели</h1>
+<h1>Программы учебных занятий</h1>
 
 <div class="row">
   <div class="col-sm-2">
@@ -38,7 +38,7 @@
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.eighth}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.seventh}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-              <mdb-checkbox [disabled]="true" [(ngModel)]="el.last" [default]="true"></mdb-checkbox></td>
+              <mdb-checkbox [disabled]="true" [(ngModel)]="el['last']" [default]="true"></mdb-checkbox></td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
               <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
                       mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>

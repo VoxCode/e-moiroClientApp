@@ -29,7 +29,7 @@
 
       <div class="md-form">
         <p>Количество часов</p>
-        <input id="fourth" type="text" class="form-control" formControlName="fourth" mdbInput mdbValidate
+        <input id="fourth" type="number" class="form-control" formControlName="fourth" mdbInput mdbValidate
                [validateSuccess]="false">
         <mdb-error *ngIf="fourth.invalid && (fourth.dirty || fourth.touched)">Input is required</mdb-error>
       </div>

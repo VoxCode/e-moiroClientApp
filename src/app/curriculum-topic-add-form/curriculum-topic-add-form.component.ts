@@ -10,6 +10,11 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
+  // tslint:disable-next-line:typedef
+  getEdit() {
+    console.log('fdfdfd');
+  }
 }
