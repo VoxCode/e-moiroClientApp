@@ -1,0 +1,34 @@
+.z-depth-1 {
+  margin-right: 25px;
+};
+
+td{
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.addButton{
+  position: relative;
+  float: left;
+}
+
+button{
+  border-radius: 5px;
+}
+
+.delButton{
+  display: inline;
+}
+
+select{
+  display: inline;
+width: 80%;
+}
+
+.col-sm{
+  border: 2px solid lightgrey;
+  margin: 2px;
+  background-color: ghostwhite;
+}

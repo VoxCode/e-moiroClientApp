@@ -1,128 +1,170 @@
 <div class="container-fluid">
-<br>
-<div class="row">
+  <br>
+  <div class="row">
 
-  <div class="col-sm">
-    <b><p>Категория интерактивного модуля</p></b>
+    <div class="col-sm">
+      <h4><b>Категория интерактивного модуля</b></h4>
 
-    <div *ngFor="let address of departments; let i = index" >
-      <select class="browser-default custom-select">
-        <option selected>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
+      <div class="addButton">
+        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+                (click)="getEditDepartment()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+      </div>
       <br><br>
+
+      <div *ngFor="let el of departmentsList; let i = index" >
+        <select class="browser-default custom-select" label="Example label">
+          <option>Выберите категорию</option>
+          <option *ngFor="let p of departments" [ngValue]="p.id">{{p.name}}</option>
+        </select>
+        <div class="delButton">
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeDepartment(el)"
+                mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+        </div>
+        <br><br>
+      </div>
     </div>
 
-    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="getEditDepartment()">Добавить</button>
-  </div>
+    <div class="col-sm">
+      <h4><b>Преподаватели</b></h4>
 
-  <div class="col-sm">
-    <b><p>Преподаватели</p></b>
-
-    <div *ngFor="let address of teachers; let i = index" >
-      <select class="browser-default custom-select">
-        <option selected>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
+      <div class="addButton">
+        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+                (click)="getEditTeacher()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+      </div>
       <br><br>
+
+      <div *ngFor="let el of teachersList; let i = index" >
+        <select class="browser-default custom-select">
+          <option>Выберите преподавателя</option>
+          <option *ngFor="let p of teachers" [ngValue]="p.id">{{p.name}}</option>
+        </select>
+        <div class="delButton">
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTeacher(el)"
+                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+        </div>
+        <br><br>
+      </div>
     </div>
 
-    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="getEditTeacher()">Добавить</button>
-  </div>
+    <div class="col-sm">
+      <h4><b>Категория педагогов, квалификационная категория</b></h4>
 
-  <div class="col-sm">
-    <b><p>Категория педагогов, квалификационная категория</p></b>
-
-    <div *ngFor="let address of teacherCategories; let i = index" >
-      <select class="browser-default custom-select">
-        <option selected>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
+      <div class="addButton">
+        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+                (click)="getEditTeacherCategory()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+      </div>
       <br><br>
+
+      <div *ngFor="let el of teacherCategoriesList; let i = index" >
+        <select class="browser-default custom-select">
+          <option>Выберите категорию педагога</option>
+          <option *ngFor="let p of teacherCategories" [ngValue]="p.id">{{p.name}}</option>
+        </select>
+        <div class="delButton">
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTeacherCategory(el)"
+                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+        </div>
+        <br><br>
+      </div>
     </div>
 
-    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="getEditTeacherCategory()">Добавить</button>
   </div>
 
-</div>
+  <br>
+  <div class="row">
 
-<br>
-<div class="row">
+    <div class="col-sm">
+      <h4><b>Воопросы для зачета</b></h4>
 
-  <div class="col-sm">
-    <b><p>Воопросы для зачета</p></b>
-
-    <div *ngFor="let address of theQuestions; let i = index" >
-      <select class="browser-default custom-select">
-        <option selected>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
+      <div class="addButton">
+        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+                (click)="getEditTheQuestion()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+      </div>
       <br><br>
+
+      <div *ngFor="let el of theQuestionsList; let i = index" >
+        <select class="browser-default custom-select">
+          <option>Выберите вопрос</option>
+          <option *ngFor="let p of theQuestions" [ngValue]="p.id">{{p.content}}</option>
+        </select>
+        <div class="delButton">
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTheQuestion(el)"
+                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+        </div>
+        <br><br>
+      </div>
     </div>
 
-    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="getEditTheQuestion()">Добавить</button>
-  </div>
+    <div class="col-sm">
+      <h4><b>Темы консультаций</b></h4>
 
-  <div class="col-sm">
-    <b><p>Темы консультаций</p></b>
-
-    <div *ngFor="let address of consultationTopics; let i = index" >
-      <select class="browser-default custom-select">
-        <option selected>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
+      <div class="addButton">
+        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+                (click)="getEditConsultationTopic()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+      </div>
       <br><br>
+
+      <div *ngFor="let el of consultationTopicsList; let i = index" >
+        <select class="browser-default custom-select">
+          <option>Выберите тему</option>
+          <option *ngFor="let p of consultationTopics" [ngValue]="p.id">{{p.name}}</option>
+        </select>
+        <div class="delButton">
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeConsultationTopic(el)"
+                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+        </div>
+        <br><br>
+      </div>
     </div>
 
-    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="getEditConsultationTopic()">Добавить</button>
   </div>
 
-</div>
+  <br>
+  <div class="row">
 
-<br>
-<div class="row">
+    <div class="col-sm">
+      <h4><b>Основная литература</b></h4>
 
-  <div class="col-sm">
-    <b><p>Основная литература</p></b>
-
-    <div *ngFor="let address of mainLiteratures; let i = index" >
-      <select class="browser-default custom-select">
-        <option selected>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
+      <div class="addButton">
+        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+                (click)="getEditMainLiterature()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+      </div>
       <br><br>
+
+      <div *ngFor="let el of mainLiteraturesList; let i = index" >
+        <select class="browser-default custom-select">
+          <option>Выберите литературу</option>
+          <option *ngFor="let p of mainLiteratures" [ngValue]="p.id">{{p.content}}</option>
+        </select>
+        <div class="delButton">
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeMainLiterature(el)"
+                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+        </div>
+        <br><br>
+      </div>
     </div>
 
-    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="getEditMainLiterature()">Добавить</button>
-  </div>
+    <div class="col-sm">
+      <h4><b>Дополнительная литература</b></h4>
 
-  <div class="col-sm">
-    <b><p>Дополнительная литература</p></b>
-
-    <div *ngFor="let address of additionalLiteratures; let i = index" >
-      <select class="browser-default custom-select">
-        <option selected>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
+      <div class="addButton">
+        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+                (click)="getEditAdditionalLiterature()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+      </div>
       <br><br>
+
+      <div *ngFor="let el of additionalLiteraturesList; let i = index" >
+        <select class="browser-default custom-select">
+          <option>Выберите литературу</option>
+          <option *ngFor="let p of additionalLiteratures" [ngValue]="p.id">{{p.content}}</option>
+        </select>
+        <div class="delButton">
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeAdditionalLiterature(el)"
+                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+        </div>
+        <br><br>
+      </div>
     </div>
 
-    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="getEditAdditionalLiterature()">Добавить</button>
   </div>
-
-</div>
 </div>
