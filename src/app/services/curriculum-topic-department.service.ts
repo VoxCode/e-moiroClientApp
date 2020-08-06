@@ -3,9 +3,7 @@ import { HttpClient} from '@angular/common/http';
 import { CurriculumTopicDepartment } from '../models/СurriculumTopicDepartment';
 import { environment } from '../../environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CurriculumTopicDepartmentService {
   public url = environment.apiUrl + 'api/curriculumTopicDepartment';
   constructor(private http: HttpClient) { }

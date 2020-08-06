@@ -13,6 +13,14 @@ import {TheQuestionService} from '../services/the-question.service';
 import {ConsultationTopicService} from '../services/consultation-topic.service';
 import {MainLiteratureService} from '../services/main-literature.service';
 import {AdditionalLiteratureService} from '../services/additional-literature.service';
+import {CurriculumTopicAdditionalLiteratureService} from '../services/curriculum-topic-additional-literature.service';
+import {CurriculumTopicDepartmentService} from '../services/curriculum-topic-department.service';
+import {CurriculumTopicMainLiteratureService} from '../services/curriculum-topic-main-literature.service';
+import {CurriculumTopicTeacherService} from '../services/curriculum-topic-teacher.service';
+import {CurriculumTopicTeacherCategoryService} from '../services/curriculum-topic-teacher-category.service';
+import {CurriculumTopicTheQuestionService} from '../services/curriculum-topic-the-question.service';
+import {CurriculmTopicConsultationTopicService} from '../services/curriculm-topic-consultation-topic.service';
+
 
 @Component({
   selector: 'app-curriculum-topic-add-form',
@@ -25,7 +33,14 @@ import {AdditionalLiteratureService} from '../services/additional-literature.ser
     TheQuestionService,
     ConsultationTopicService,
     MainLiteratureService,
-    AdditionalLiteratureService]
+    AdditionalLiteratureService,
+    CurriculumTopicAdditionalLiteratureService,
+    CurriculumTopicDepartmentService,
+    CurriculumTopicMainLiteratureService,
+    CurriculumTopicTeacherService,
+    CurriculumTopicTeacherCategoryService,
+    CurriculumTopicTheQuestionService,
+    CurriculmTopicConsultationTopicService ]
 })
 export class CurriculumTopicAddFormComponent implements OnInit {
   departments: Department[];
@@ -52,6 +67,13 @@ export class CurriculumTopicAddFormComponent implements OnInit {
     private consultationTopicService: ConsultationTopicService,
     private mainLiteratureService: MainLiteratureService,
     private additionalLiteratureService: AdditionalLiteratureService,
+    private curriculumTopicAdditionalLiteratureService: CurriculumTopicAdditionalLiteratureService,
+    private curriculumTopicDepartmentService: CurriculumTopicDepartmentService,
+    private curriculumTopicMainLiteratureService: CurriculumTopicMainLiteratureService,
+    private curriculumTopicTeacherService: CurriculumTopicTeacherService,
+    private curriculumTopicTeacherCategoryService: CurriculumTopicTeacherCategoryService,
+    private curriculumTopicTheQuestionService: CurriculumTopicTheQuestionService,
+    private curriculumTopicConsultationTopicService: CurriculmTopicConsultationTopicService,
   ) {
   }
 
