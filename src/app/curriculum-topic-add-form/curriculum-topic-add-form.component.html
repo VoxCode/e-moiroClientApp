@@ -1,17 +1,128 @@
-<p>curriculum-topic-add-form works!</p>
+<div class="container-fluid">
+<br>
+<div class="row">
 
-<div *ngFor="let address of addresses; let i = index" >
-  <select class="browser-default custom-select" (change)="getEdit()">
-    <option selected>Open this select menu</option>
-    <option value="1">One</option>
-    <option value="2">Two</option>
-    <option value="3">Three</option>
-  </select>
-  <br><br>
+  <div class="col-sm">
+    <b><p>Категория интерактивного модуля</p></b>
+
+    <div *ngFor="let address of departments; let i = index" >
+      <select class="browser-default custom-select">
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+      <br><br>
+    </div>
+
+    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="getEditDepartment()">Добавить</button>
+  </div>
+
+  <div class="col-sm">
+    <b><p>Преподаватели</p></b>
+
+    <div *ngFor="let address of teachers; let i = index" >
+      <select class="browser-default custom-select">
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+      <br><br>
+    </div>
+
+    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="getEditTeacher()">Добавить</button>
+  </div>
+
+  <div class="col-sm">
+    <b><p>Категория педагогов, квалификационная категория</p></b>
+
+    <div *ngFor="let address of teacherCategories; let i = index" >
+      <select class="browser-default custom-select">
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+      <br><br>
+    </div>
+
+    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="getEditTeacherCategory()">Добавить</button>
+  </div>
+
 </div>
 
+<br>
+<div class="row">
 
+  <div class="col-sm">
+    <b><p>Воопросы для зачета</p></b>
 
-  <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="getEdit()">Добавить</button>
+    <div *ngFor="let address of theQuestions; let i = index" >
+      <select class="browser-default custom-select">
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+      <br><br>
+    </div>
 
+    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="getEditTheQuestion()">Добавить</button>
+  </div>
 
+  <div class="col-sm">
+    <b><p>Темы консультаций</p></b>
+
+    <div *ngFor="let address of consultationTopics; let i = index" >
+      <select class="browser-default custom-select">
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+      <br><br>
+    </div>
+
+    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="getEditConsultationTopic()">Добавить</button>
+  </div>
+
+</div>
+
+<br>
+<div class="row">
+
+  <div class="col-sm">
+    <b><p>Основная литература</p></b>
+
+    <div *ngFor="let address of mainLiteratures; let i = index" >
+      <select class="browser-default custom-select">
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+      <br><br>
+    </div>
+
+    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="getEditMainLiterature()">Добавить</button>
+  </div>
+
+  <div class="col-sm">
+    <b><p>Дополнительная литература</p></b>
+
+    <div *ngFor="let address of additionalLiteratures; let i = index" >
+      <select class="browser-default custom-select">
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+      <br><br>
+    </div>
+
+    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="getEditAdditionalLiterature()">Добавить</button>
+  </div>
+
+</div>
+</div>

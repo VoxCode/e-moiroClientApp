@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Department} from '../models/Department';
+import {Teacher} from '../models/Teacher';
+import {TeacherCategory} from '../models/TeacherCategory';
+import {TheQuestion} from '../models/TheQuestion';
+import {ConsultationTopic} from '../models/ConsultationTopic';
+import {MainLiterature} from '../models/MainLiterature';
+import {AdditionalLiterature} from '../models/AdditionalLiterature';
 
 @Component({
   selector: 'app-curriculum-topic-add-form',
@@ -7,32 +13,65 @@ import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./curriculum-topic-add-form.component.scss']
 })
 export class CurriculumTopicAddFormComponent implements OnInit {
-form: FormGroup;
-  public addresses: any[] = [{
-    address: '',
-    street: '',
-    city: '',
-    country: ''
-  }];
+  departments: Department[];
+  teachers: Teacher[];
+  teacherCategories: TeacherCategory[];
+  theQuestions: TheQuestion[];
+  consultationTopics: ConsultationTopic[];
+  mainLiteratures: MainLiterature[];
+  additionalLiteratures: AdditionalLiterature[];
 
+  public departmentsList: any[] = [{}];
+  public teachersList: any[] = [{}];
+  public teacherCategoriesList: any[] = [{}];
+  public theQuestionsList: any[] = [{}];
+  public consultationTopicsList: any[] = [{}];
+  public mainLiteraturesList: any[] = [{}];
+  public additionalLiteraturesList: any[] = [{}];
 
   ngOnInit(): void {
-this.form = new FormGroup( {
-  skills: new FormArray([])
-});
   }
 
   // tslint:disable-next-line:typedef
-  getEdit() {
-    console.log('fdfdfd');
-    const control = new FormControl();
-    (this.form.get('skills') as FormArray).push(control);
+  getEditDepartment() {
+    this.departments.push({});
+  }
 
-    this.addresses.push({
-      address: '',
-      street: '',
-      city: '',
-      country: ''
-    });
+  // tslint:disable-next-line:typedef
+  getEditTeacher() {
+    this.teachers.push({});
+  }
+
+  // tslint:disable-next-line:typedef
+  getEditTeacherCategory() {
+    this.teacherCategories.push({});
+  }
+
+  // tslint:disable-next-line:typedef
+  getEditTheQuestion() {
+    this.theQuestions.push({});
+  }
+
+  // tslint:disable-next-line:typedef
+  getEditConsultationTopic() {
+    this.consultationTopics.push({});
+  }
+
+  // tslint:disable-next-line:typedef
+  getEditMainLiterature() {
+    this.mainLiteratures.push({});
+  }
+
+  // tslint:disable-next-line:typedef
+  getEditAdditionalLiterature() {
+    this.additionalLiteratures.push({});
+  }
+
+  // tslint:disable-next-line:typedef
+  loadTeachingPosition() {
+    this.teachingPositionService.getValues()
+      .subscribe((data: Department[]) => {
+        this.teachingPositions = data;
+      });
   }
 }
