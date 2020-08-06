@@ -17,7 +17,7 @@
           <option *ngFor="let p of departments" [ngValue]="p.id">{{p.name}}</option>
         </select>
         <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeDepartment(el)"
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeDepartment(i)"
                 mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
         </div>
         <br><br>
@@ -39,7 +39,7 @@
           <option *ngFor="let p of teachers" [ngValue]="p.id">{{p.name}}</option>
         </select>
         <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTeacher(el)"
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTeacher(i)"
                   mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
         </div>
         <br><br>
@@ -61,7 +61,7 @@
           <option *ngFor="let p of teacherCategories" [ngValue]="p.id">{{p.name}}</option>
         </select>
         <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTeacherCategory(el)"
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTeacherCategory(i)"
                   mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
         </div>
         <br><br>
@@ -88,7 +88,7 @@
           <option *ngFor="let p of theQuestions" [ngValue]="p.id">{{p.content}}</option>
         </select>
         <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTheQuestion(el)"
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTheQuestion(i)"
                   mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
         </div>
         <br><br>
@@ -110,7 +110,7 @@
           <option *ngFor="let p of consultationTopics" [ngValue]="p.id">{{p.name}}</option>
         </select>
         <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeConsultationTopic(el)"
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeConsultationTopic(i)"
                   mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
         </div>
         <br><br>
@@ -137,7 +137,7 @@
           <option *ngFor="let p of mainLiteratures" [ngValue]="p.id">{{p.content}}</option>
         </select>
         <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeMainLiterature(el)"
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeMainLiterature(i)"
                   mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
         </div>
         <br><br>
@@ -159,7 +159,7 @@
           <option *ngFor="let p of additionalLiteratures" [ngValue]="p.id">{{p.content}}</option>
         </select>
         <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeAdditionalLiterature(el)"
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeAdditionalLiterature(i)"
                   mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
         </div>
         <br><br>
