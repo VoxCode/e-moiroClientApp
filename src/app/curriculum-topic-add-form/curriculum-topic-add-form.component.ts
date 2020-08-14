@@ -243,10 +243,8 @@ export class CurriculumTopicAddFormComponent implements OnInit {
       });
   }
 
-
+  // tslint:disable-next-line:typedef
   changeAdditionalLiterature(p: AdditionalLiterature) {
 
   }
-
-
 }
