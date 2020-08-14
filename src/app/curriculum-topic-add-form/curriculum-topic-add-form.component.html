@@ -156,7 +156,7 @@
       <div *ngFor="let el of additionalLiteraturesList; let i = index" >
         <select class="browser-default custom-select">
           <option>Выберите литературу</option>
-          <option *ngFor="let p of additionalLiteratures" [ngValue]="p.id">{{p.content}}</option>
+          <option (change)="changeAdditionalLiterature(p)" *ngFor="let p of additionalLiteratures" [ngValue]="p.id">{{p.content}}</option>
         </select>
         <div class="delButton">
           <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeAdditionalLiterature(i)"

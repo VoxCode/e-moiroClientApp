@@ -40,6 +40,8 @@
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
               <mdb-checkbox [disabled]="true" [(ngModel)]="el['last']" [default]="true"></mdb-checkbox></td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              <button type="button" mdbBtn color="success" size="sm" class="relative waves-light" [routerLink]="['/curriculumTopicAddForm', el.first]"
+                      mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
               <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
                       mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
               <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)"

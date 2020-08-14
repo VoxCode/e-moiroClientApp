@@ -20,7 +20,9 @@ import {CurriculumTopicTeacherService} from '../services/curriculum-topic-teache
 import {CurriculumTopicTeacherCategoryService} from '../services/curriculum-topic-teacher-category.service';
 import {CurriculumTopicTheQuestionService} from '../services/curriculum-topic-the-question.service';
 import {CurriculmTopicConsultationTopicService} from '../services/curriculm-topic-consultation-topic.service';
-
+import {CurriculumTopicAdditionalLiterature} from '../models/СurriculumTopicAdditionalLiterature';
+import {CurriculumTopicConsultationTopic} from '../models/СurriculumTopicConsultationTopic';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-curriculum-topic-add-form',
@@ -50,6 +52,11 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   consultationTopics: ConsultationTopic[];
   mainLiteratures: MainLiterature[];
   additionalLiteratures: AdditionalLiterature[];
+  curriculumTopicConsultationTopics: CurriculumTopicConsultationTopic[];
+  curriculumTopicAdditionalLiteratures: CurriculumTopicAdditionalLiterature[];
+
+  curriculumTopicConsultationTopic: CurriculumTopicConsultationTopic;
+  curriculumTopicAdditionalLiterature: CurriculumTopicAdditionalLiterature;
 
   public departmentsList: any[] = [{}];
   public teachersList: any[] = [{}];
@@ -58,6 +65,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   public consultationTopicsList: any[] = [{}];
   public mainLiteraturesList: any[] = [{}];
   public additionalLiteraturesList: any[] = [{}];
+  private id: number;
 
   constructor(
     private departmentService: DepartmentService,
@@ -74,6 +82,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
     private curriculumTopicTeacherCategoryService: CurriculumTopicTeacherCategoryService,
     private curriculumTopicTheQuestionService: CurriculumTopicTheQuestionService,
     private curriculumTopicConsultationTopicService: CurriculmTopicConsultationTopicService,
+    private route: ActivatedRoute
   ) {
   }
 
@@ -85,6 +94,10 @@ export class CurriculumTopicAddFormComponent implements OnInit {
     this.loadConsultationTopic();
     this.loadMainLiterature();
     this.loadAdditionalLiterature();
+    this.loadCurriculumTopicAdditionalLiterature();
+
+    this.id = this.route.snapshot.params.id;
+    console.log(this.id);
   }
 
   // tslint:disable-next-line:typedef
@@ -158,7 +171,6 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
 
-
   // tslint:disable-next-line:typedef
   loadDepartment() {
     this.departmentService.getValues()
@@ -170,7 +182,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   loadTeacher() {
     this.teacherService.getValues()
-      .subscribe((data: Department[]) => {
+      .subscribe((data: Teacher[]) => {
         this.teachers = data;
       });
   }
@@ -178,7 +190,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   loadTheQuestion() {
     this.teacherCategoryService.getValues()
-      .subscribe((data: Department[]) => {
+      .subscribe((data: TeacherCategory[]) => {
         this.teacherCategories = data;
       });
   }
@@ -186,7 +198,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   loadTeachingPosition() {
     this.theQuestionService.getValues()
-      .subscribe((data: Department[]) => {
+      .subscribe((data: TheQuestion[]) => {
         this.theQuestions = data;
       });
   }
@@ -194,7 +206,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   loadConsultationTopic() {
     this.consultationTopicService.getValues()
-      .subscribe((data: Department[]) => {
+      .subscribe((data: ConsultationTopic[]) => {
         this.consultationTopics = data;
       });
   }
@@ -202,7 +214,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   loadMainLiterature() {
     this.mainLiteratureService.getValues()
-      .subscribe((data: Department[]) => {
+      .subscribe((data: MainLiterature[]) => {
         this.mainLiteratures = data;
       });
   }
@@ -210,8 +222,31 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   loadAdditionalLiterature() {
     this.additionalLiteratureService.getValues()
-      .subscribe((data: Department[]) => {
+      .subscribe((data: AdditionalLiterature[]) => {
         this.additionalLiteratures = data;
       });
   }
+
+  // tslint:disable-next-line:typedef
+  loadCurriculumTopicAdditionalLiterature() {
+    this.curriculumTopicAdditionalLiteratureService.getValues()
+      .subscribe((data: CurriculumTopicAdditionalLiterature[]) => {
+        this.curriculumTopicAdditionalLiteratures = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  postCurriculumTopicAdditionalLiterature() {
+    this.curriculumTopicAdditionalLiteratureService.createValue(this.curriculumTopicAdditionalLiterature)
+      .subscribe((data: CurriculumTopicAdditionalLiterature) => {
+        this.curriculumTopicAdditionalLiterature = data;
+      });
+  }
+
+
+  changeAdditionalLiterature(p: AdditionalLiterature) {
+
+  }
+
+
 }

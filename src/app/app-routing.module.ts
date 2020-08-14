@@ -41,7 +41,7 @@ const routes: Routes = [
   { path: 'teachingPosition', component: TeachingPositionComponent, canActivate: [AuthGuardService]},
   { path: 'theQuestion', component: TheQuestionComponent, canActivate: [AuthGuardService]},
   { path: 'trainingProgram', component: TrainingProgramComponent, canActivate: [AuthGuardService]},
-  { path: 'curriculumTopicAddForm', component: CurriculumTopicAddFormComponent, canActivate: [AuthGuardService]},
+  { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent, canActivate: [AuthGuardService]},
   { path: 'register', component: RegisterComponent}
 ];
 
