@@ -57,6 +57,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
 
   curriculumTopicConsultationTopic: CurriculumTopicConsultationTopic;
   curriculumTopicAdditionalLiterature: CurriculumTopicAdditionalLiterature;
+  tmp: any;
 
   public departmentsList: any[] = [{}];
   public teachersList: any[] = [{}];
@@ -244,7 +245,11 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  changeAdditionalLiterature(p: AdditionalLiterature) {
-
+  changeAdditionalLiterature($event: Event) {
+    this.curriculumTopicAdditionalLiterature = new CurriculumTopicAdditionalLiterature();
+    this.curriculumTopicAdditionalLiterature.AdditionalLiteratureId = +$event;
+    this.curriculumTopicAdditionalLiterature.CurriculumTopicId = +this.id;
+    console.log(this.curriculumTopicAdditionalLiterature);
+    this.postCurriculumTopicAdditionalLiterature();
   }
 }
