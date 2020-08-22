@@ -308,11 +308,106 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
+  postCurriculumTopicDepartment() {
+    this.curriculumTopicDepartmentService.createValue(this.curriculumTopicDepartment)
+      .subscribe((data: CurriculumTopicDepartment) => {
+        this.curriculumTopicDepartment = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  postCurriculumTopicMainLiterature() {
+    this.curriculumTopicMainLiteratureService.createValue(this.curriculumTopicMainLiterature)
+      .subscribe((data: CurriculumTopicMainLiterature) => {
+        this.curriculumTopicMainLiterature = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  postCurriculumTopicTeacher() {
+    this.curriculumTopicTeacherService.createValue(this.curriculumTopicTeacher)
+      .subscribe((data: CurriculumTopicTeacher) => {
+        this.curriculumTopicTeacher = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  postCurriculumTopicTeacherCategory() {
+    this.curriculumTopicTeacherCategoryService.createValue(this.curriculumTopicTeacherCategory)
+      .subscribe((data: CurriculumTopicTeacherCategory) => {
+        this.curriculumTopicTeacherCategory = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  postCurriculumTopicTheQuestion() {
+    this.curriculumTopicTheQuestionService.createValue(this.curriculumTopicTheQuestion)
+      .subscribe((data: CurriculumTopicTheQuestion) => {
+        this.curriculumTopicTheQuestion = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  postCurriculumTopicConsultationTopic() {
+    this.curriculumTopicConsultationTopicService.createValue(this.curriculumTopicConsultationTopic)
+      .subscribe((data: CurriculumTopicConsultationTopic) => {
+        this.curriculumTopicConsultationTopic = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
   changeAdditionalLiterature($event: Event) {
     this.curriculumTopicAdditionalLiterature = new CurriculumTopicAdditionalLiterature();
     this.curriculumTopicAdditionalLiterature.AdditionalLiteratureId = +$event;
     this.curriculumTopicAdditionalLiterature.CurriculumTopicId = +this.id;
-    console.log(this.curriculumTopicAdditionalLiterature);
     this.postCurriculumTopicAdditionalLiterature();
+  }
+
+  // tslint:disable-next-line:typedef
+  changeCurriculumTopicDepartment($event: Event) {
+    this.curriculumTopicDepartment = new CurriculumTopicDepartment();
+    this.curriculumTopicDepartment.DepartmentId = +$event;
+    this.curriculumTopicDepartment.CurriculumTopicId = +this.id;
+    this.postCurriculumTopicDepartment();
+  }
+
+  // tslint:disable-next-line:typedef
+  changeCurriculumTopicMainLiterature($event: Event) {
+    this.curriculumTopicMainLiterature = new CurriculumTopicMainLiterature();
+    this.curriculumTopicMainLiterature.MainLiteratureId = +$event;
+    this.curriculumTopicMainLiterature.CurriculumTopicId = +this.id;
+    this.postCurriculumTopicMainLiterature();
+  }
+
+  // tslint:disable-next-line:typedef
+  changeCurriculumTopicTeacher($event: Event) {
+    this.curriculumTopicTeacher = new CurriculumTopicTeacher();
+    this.curriculumTopicTeacher.TeacherId = +$event;
+    this.curriculumTopicTeacher.CurriculumTopicId = +this.id;
+    this.postCurriculumTopicTeacher();
+  }
+
+  // tslint:disable-next-line:typedef
+  changeCurriculumTopicTeacherCategory($event: Event) {
+    this.curriculumTopicTeacherCategory = new CurriculumTopicTeacherCategory();
+    this.curriculumTopicTeacherCategory.TeacherCategoryId = +$event;
+    this.curriculumTopicTeacherCategory.CurriculumTopicId = +this.id;
+    this.postCurriculumTopicTeacherCategory();
+  }
+
+  // tslint:disable-next-line:typedef
+  changeCurriculumTopicTheQuestion($event: Event) {
+    this.curriculumTopicTheQuestion = new CurriculumTopicTheQuestion();
+    this.curriculumTopicTheQuestion.TheQuestionId = +$event;
+    this.curriculumTopicTheQuestion.CurriculumTopicId = +this.id;
+    this.postCurriculumTopicTheQuestion();
+  }
+
+  // tslint:disable-next-line:typedef
+  changeCurriculumTopicConsultationTopic($event: Event) {
+    this.curriculumTopicConsultationTopic = new CurriculumTopicConsultationTopic();
+    this.curriculumTopicConsultationTopic.ConsultationTopicId = +$event;
+    this.curriculumTopicConsultationTopic.CurriculumTopicId = +this.id;
+    this.postCurriculumTopicConsultationTopic();
   }
 }
