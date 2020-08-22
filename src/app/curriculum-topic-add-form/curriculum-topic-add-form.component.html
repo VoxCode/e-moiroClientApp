@@ -7,7 +7,7 @@
 
       <div class="addButton">
         <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="getEditDepartment()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+                (click)="addDepartment()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
       </div>
       <br><br>
 
@@ -29,7 +29,7 @@
 
       <div class="addButton">
         <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="getEditTeacher()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+                (click)="addTeacher()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
       </div>
       <br><br>
 
@@ -51,7 +51,7 @@
 
       <div class="addButton">
         <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="getEditTeacherCategory()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+                (click)="addTeacherCategory()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
       </div>
       <br><br>
 
@@ -78,7 +78,7 @@
 
       <div class="addButton">
         <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="getEditTheQuestion()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+                (click)="addTheQuestion()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
       </div>
       <br><br>
 
@@ -100,7 +100,7 @@
 
       <div class="addButton">
         <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="getEditConsultationTopic()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+                (click)="addConsultationTopic()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
       </div>
       <br><br>
 
@@ -127,7 +127,7 @@
 
       <div class="addButton">
         <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="getEditMainLiterature()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+                (click)="addMainLiterature()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
       </div>
       <br><br>
 
@@ -149,14 +149,14 @@
 
       <div class="addButton">
         <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="getEditAdditionalLiterature()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+                (click)="addAdditionalLiterature()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
       </div>
       <br><br>
 
       <div *ngFor="let el of additionalLiteraturesList; let i = index" >
-        <select [ngModel]="tmp" (ngModelChange)="changeAdditionalLiterature($event)" class="browser-default custom-select">
+        <select [ngModel]="tmp" (ngModelChange)="changeAdditionalLiterature($event, el)" class="browser-default custom-select">
           <option>Выберите литературу</option>
-          <option  *ngFor="let p of additionalLiteratures" [ngValue]="p.id">{{p.content}}</option>
+          <option  *ngFor="let p of additionalLiteratures" [ngValue]="p">{{p.content}}</option>
         </select>
         <div class="delButton">
           <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeAdditionalLiterature(i)"
