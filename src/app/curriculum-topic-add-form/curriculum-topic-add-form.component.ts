@@ -22,6 +22,11 @@ import {CurriculumTopicTheQuestionService} from '../services/curriculum-topic-th
 import {CurriculmTopicConsultationTopicService} from '../services/curriculm-topic-consultation-topic.service';
 import {CurriculumTopicAdditionalLiterature} from '../models/СurriculumTopicAdditionalLiterature';
 import {CurriculumTopicConsultationTopic} from '../models/СurriculumTopicConsultationTopic';
+import {CurriculumTopicDepartment} from '../models/СurriculumTopicDepartment';
+import {CurriculumTopicMainLiterature} from '../models/СurriculumTopicMainLiterature';
+import {CurriculumTopicTeacher} from '../models/СurriculumTopicTeacher';
+import {CurriculumTopicTeacherCategory} from '../models/СurriculumTopicTeacherCategory';
+import {CurriculumTopicTheQuestion} from '../models/СurriculumTopicTheQuestion';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -54,9 +59,19 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   additionalLiteratures: AdditionalLiterature[];
   curriculumTopicConsultationTopics: CurriculumTopicConsultationTopic[];
   curriculumTopicAdditionalLiteratures: CurriculumTopicAdditionalLiterature[];
+  curriculumTopicDepartments: CurriculumTopicDepartment[];
+  curriculumTopicMainLiteratures: CurriculumTopicMainLiterature[];
+  curriculumTopicTeachers: CurriculumTopicTeacher[];
+  curriculumTopicTeacherCategories: CurriculumTopicTeacherCategory[];
+  curriculumTopicTheQuestions: CurriculumTopicTheQuestion[];
 
   curriculumTopicConsultationTopic: CurriculumTopicConsultationTopic;
   curriculumTopicAdditionalLiterature: CurriculumTopicAdditionalLiterature;
+  curriculumTopicDepartment: CurriculumTopicDepartment;
+  curriculumTopicMainLiterature: CurriculumTopicMainLiterature;
+  curriculumTopicTeacher: CurriculumTopicTeacher;
+  curriculumTopicTeacherCategory: CurriculumTopicTeacherCategory;
+  curriculumTopicTheQuestion: CurriculumTopicTheQuestion;
   tmp: any;
 
   public departmentsList: any[] = [{}];
@@ -233,6 +248,54 @@ export class CurriculumTopicAddFormComponent implements OnInit {
     this.curriculumTopicAdditionalLiteratureService.getValues()
       .subscribe((data: CurriculumTopicAdditionalLiterature[]) => {
         this.curriculumTopicAdditionalLiteratures = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadCurriculumTopicDepartment() {
+    this.curriculumTopicDepartmentService.getValues()
+      .subscribe((data: CurriculumTopicDepartment[]) => {
+        this.curriculumTopicDepartments = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadCurriculumTopicMainLiterature() {
+    this.curriculumTopicMainLiteratureService.getValues()
+      .subscribe((data: CurriculumTopicMainLiterature[]) => {
+        this.curriculumTopicMainLiteratures = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadCurriculumTopicTeacher() {
+    this.curriculumTopicTeacherService.getValues()
+      .subscribe((data: CurriculumTopicTeacher[]) => {
+        this.curriculumTopicTeachers = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadCurriculumTopicTeacherCategory() {
+    this.curriculumTopicTeacherCategoryService.getValues()
+      .subscribe((data: CurriculumTopicTeacherCategory[]) => {
+        this.curriculumTopicTeacherCategories = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadCurriculumTopicTheQuestion() {
+    this.curriculumTopicTheQuestionService.getValues()
+      .subscribe((data: CurriculumTopicTheQuestion[]) => {
+        this.curriculumTopicTheQuestions = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadCurriculumTopicConsultationTopic() {
+    this.curriculumTopicConsultationTopicService.getValues()
+      .subscribe((data: CurriculumTopicConsultationTopic[]) => {
+        this.curriculumTopicConsultationTopics = data;
       });
   }
 
