@@ -111,21 +111,13 @@ export class CurriculumTopicAddFormComponent implements OnInit {
     this.loadConsultationTopic();
     this.loadMainLiterature();
     this.loadAdditionalLiterature();
-    // this.loadCurriculumTopicAdditionalLiterature();
-    this.loadCurriculumTopicDepartment();
-    this.loadCurriculumTopicMainLiterature();
-    this.loadCurriculumTopicTeacher();
-    this.loadCurriculumTopicTeacherCategory();
-    this.loadCurriculumTopicTheQuestion();
-    this.loadCurriculumTopicConsultationTopic();
-    this.curriculumTopicAdditionalLiterature = new CurriculumTopicAdditionalLiterature();
-    this.curriculumTopicAdditionalLiterature.id = 2;
-    this.curriculumTopicAdditionalLiterature.AdditionalLiteratureId = 3;
-    this.curriculumTopicAdditionalLiterature.CurriculumTopicId = 5;
-    this.additionalLiteraturesList.push(this.curriculumTopicAdditionalLiterature);
-    this.additionalLiteraturesList.push(this.curriculumTopicAdditionalLiterature);
-    this.additionalLiteraturesList.push(this.curriculumTopicAdditionalLiterature);
-    console.log(this.curriculumTopicAdditionalLiterature);
+    this.loadCurriculumTopicAdditionalLiterature();
+    // this.loadCurriculumTopicDepartment();
+    // this.loadCurriculumTopicMainLiterature();
+    // this.loadCurriculumTopicTeacher();
+    // this.loadCurriculumTopicTeacherCategory();
+    // this.loadCurriculumTopicTheQuestion();
+    // this.loadCurriculumTopicConsultationTopic();
   }
 
 // ##########ADD#############
@@ -200,6 +192,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   removeAdditionalLiterature(i: number) {
     this.additionalLiteraturesList.splice(i, 1);
+    this.curriculumTopicAdditionalLiteratureService.deleteValue(0).subscribe();
   }
 
 
@@ -267,9 +260,9 @@ export class CurriculumTopicAddFormComponent implements OnInit {
       .subscribe((data: CurriculumTopicAdditionalLiterature[]) => {
         this.curriculumTopicAdditionalLiteratures = data;
 
-        console.log(this.curriculumTopicAdditionalLiteratures);
         if (this.curriculumTopicAdditionalLiteratures !== null){
-          // this.additionalLiteraturesList = data;
+          this.additionalLiteraturesList = data;
+          console.log(this.additionalLiteraturesList);
         }
       });
   }
