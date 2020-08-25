@@ -154,12 +154,12 @@
       <br><br>
 
       <div *ngFor="let el of additionalLiteraturesList; let i = index" >
-        <select [ngModel]="el" (ngModelChange)="changeAdditionalLiterature($event, el)" class="browser-default custom-select">
+        <select [ngModel]="additionalLiteratures[8]" (ngModelChange)="changeAdditionalLiterature($event, el)" class="browser-default custom-select" >
           <option>Выберите литературу</option>
-          <option *ngFor="let p of additionalLiteratures" [ngValue]="el" >{{p.content}}</option>
+          <option *ngFor="let p of additionalLiteratures" [ngValue]="p.id" >{{p.content}}</option>
         </select>
         <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeAdditionalLiterature(i)"
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeAdditionalLiterature(i, el.id)"
                   mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
         </div>
         <br><br>

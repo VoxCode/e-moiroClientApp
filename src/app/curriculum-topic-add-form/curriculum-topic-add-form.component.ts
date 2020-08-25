@@ -190,9 +190,9 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  removeAdditionalLiterature(i: number) {
+  removeAdditionalLiterature(i: number, el: number) {
     this.additionalLiteraturesList.splice(i, 1);
-    this.curriculumTopicAdditionalLiteratureService.deleteValue(0).subscribe();
+    this.curriculumTopicAdditionalLiteratureService.deleteValue(el).subscribe();
   }
 
 
@@ -377,9 +377,9 @@ export class CurriculumTopicAddFormComponent implements OnInit {
 // ###########CHANGE#############
 
   // tslint:disable-next-line:typedef
-  changeAdditionalLiterature($event: AdditionalLiterature, el: CurriculumTopicAdditionalLiterature) {
+  changeAdditionalLiterature($event: number, el: CurriculumTopicAdditionalLiterature) {
     this.curriculumTopicAdditionalLiterature = new CurriculumTopicAdditionalLiterature();
-    this.curriculumTopicAdditionalLiterature.AdditionalLiteratureId = +$event.id;
+    this.curriculumTopicAdditionalLiterature.AdditionalLiteratureId = $event;
     this.curriculumTopicAdditionalLiterature.CurriculumTopicId = +this.id;
     console.log($event, this.curriculumTopicAdditionalLiterature);
     if (el.id !== undefined){
