@@ -82,7 +82,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   public mainLiteraturesList: any[] = [{}];
   public additionalLiteraturesList: CurriculumTopicAdditionalLiterature[] = [{}];
   private id: number;
-  private tmp: any;
+  private tmp: AdditionalLiterature;
 
   constructor(
     private departmentService: DepartmentService,
@@ -262,7 +262,8 @@ export class CurriculumTopicAddFormComponent implements OnInit {
 
         if (this.curriculumTopicAdditionalLiteratures !== null){
           this.additionalLiteraturesList = data;
-          console.log(this.additionalLiteraturesList);
+
+          console.log(data);
         }
       });
   }
@@ -377,10 +378,10 @@ export class CurriculumTopicAddFormComponent implements OnInit {
 // ###########CHANGE#############
 
   // tslint:disable-next-line:typedef
-  changeAdditionalLiterature($event: number, el: CurriculumTopicAdditionalLiterature) {
+  changeAdditionalLiterature($event: any, el: CurriculumTopicAdditionalLiterature) {
     this.curriculumTopicAdditionalLiterature = new CurriculumTopicAdditionalLiterature();
-    this.curriculumTopicAdditionalLiterature.AdditionalLiteratureId = $event;
-    this.curriculumTopicAdditionalLiterature.CurriculumTopicId = +this.id;
+    this.curriculumTopicAdditionalLiterature.additionalLiteratureId = +$event;
+    this.curriculumTopicAdditionalLiterature.curriculumTopicId = +this.id;
     console.log($event, this.curriculumTopicAdditionalLiterature);
     if (el.id !== undefined){
 
