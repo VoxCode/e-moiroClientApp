@@ -12,12 +12,12 @@
       <br><br>
 
       <div *ngFor="let el of departmentsList; let i = index" >
-        <select class="browser-default custom-select" label="Example label">
+        <select (change)="changeDepartment($event.target.value, el)" class="browser-default custom-select" label="Example label">
           <option>Выберите категорию</option>
-          <option *ngFor="let p of departments" [ngValue]="p.id">{{p.name}}</option>
+          <option *ngFor="let p of departments" [selected]="p.id == el.departmentId" [value]="p.id">{{p.name}}</option>
         </select>
         <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeDepartment(i)"
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeDepartment(i, el.id)"
                 mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
         </div>
         <br><br>
@@ -34,12 +34,12 @@
       <br><br>
 
       <div *ngFor="let el of teachersList; let i = index" >
-        <select class="browser-default custom-select">
+        <select (change)="changeTeacher($event.target.value, el)" class="browser-default custom-select">
           <option>Выберите преподавателя</option>
-          <option *ngFor="let p of teachers" [ngValue]="p.id">{{p.name}}</option>
+          <option *ngFor="let p of teachers" [selected]="p.id == el.teacherId" [value]="p.id">{{p.name}}</option>
         </select>
         <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTeacher(i)"
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTeacher(i, el.id)"
                   mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
         </div>
         <br><br>
@@ -56,12 +56,12 @@
       <br><br>
 
       <div *ngFor="let el of teacherCategoriesList; let i = index" >
-        <select class="browser-default custom-select">
+        <select (change)="changeTeacherCategory($event.target.value, el)" class="browser-default custom-select">
           <option>Выберите категорию педагога</option>
-          <option *ngFor="let p of teacherCategories" [ngValue]="p.id">{{p.name}}</option>
+          <option *ngFor="let p of teacherCategories" [selected]="p.id == el.teacherCategoryId" [value]="p.id">{{p.name}}</option>
         </select>
         <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTeacherCategory(i)"
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTeacherCategory(i, el.id)"
                   mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
         </div>
         <br><br>
@@ -83,12 +83,12 @@
       <br><br>
 
       <div *ngFor="let el of theQuestionsList; let i = index" >
-        <select class="browser-default custom-select">
+        <select (change)="changeTheQuestion($event.target.value, el)" class="browser-default custom-select">
           <option>Выберите вопрос</option>
-          <option *ngFor="let p of theQuestions" [ngValue]="p.id">{{p.content}}</option>
+          <option *ngFor="let p of theQuestions" [selected]="p.id == el.theQuestionId" [value]="p.id">{{p.content}}</option>
         </select>
         <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTheQuestion(i)"
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTheQuestion(i, el.id)"
                   mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
         </div>
         <br><br>
@@ -105,12 +105,12 @@
       <br><br>
 
       <div *ngFor="let el of consultationTopicsList; let i = index" >
-        <select class="browser-default custom-select">
+        <select (change)="changeConsultationTopic($event.target.value, el)" class="browser-default custom-select">
           <option>Выберите тему</option>
-          <option *ngFor="let p of consultationTopics" [ngValue]="p.id">{{p.name}}</option>
+          <option *ngFor="let p of consultationTopics" [selected]="p.id == el.consultationTopicId" [value]="p.id">{{p.name}}</option>
         </select>
         <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeConsultationTopic(i)"
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeConsultationTopic(i, el.id)"
                   mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
         </div>
         <br><br>
@@ -132,12 +132,12 @@
       <br><br>
 
       <div *ngFor="let el of mainLiteraturesList; let i = index" >
-        <select class="browser-default custom-select">
+        <select (change)="changeMainLiterature($event.target.value, el)" class="browser-default custom-select">
           <option>Выберите литературу</option>
-          <option *ngFor="let p of mainLiteratures" [ngValue]="p.id">{{p.content}}</option>
+          <option *ngFor="let p of mainLiteratures" [selected]="p.id == el.mainLiteratureId" [value]="p.id">{{p.content}}</option>
         </select>
         <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeMainLiterature(i)"
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeMainLiterature(i, el.id)"
                   mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
         </div>
         <br><br>
