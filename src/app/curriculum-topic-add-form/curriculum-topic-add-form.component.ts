@@ -112,12 +112,12 @@ export class CurriculumTopicAddFormComponent implements OnInit {
     this.loadMainLiterature();
     this.loadAdditionalLiterature();
     this.loadCurriculumTopicAdditionalLiterature();
-    // this.loadCurriculumTopicDepartment();
-    // this.loadCurriculumTopicMainLiterature();
-    // this.loadCurriculumTopicTeacher();
-    // this.loadCurriculumTopicTeacherCategory();
-    // this.loadCurriculumTopicTheQuestion();
-    // this.loadCurriculumTopicConsultationTopic();
+    this.loadCurriculumTopicDepartment();
+    this.loadCurriculumTopicMainLiterature();
+    this.loadCurriculumTopicTeacher();
+    this.loadCurriculumTopicTeacherCategory();
+    this.loadCurriculumTopicTheQuestion();
+    this.loadCurriculumTopicConsultationTopic();
   }
 
 // ##########ADD#############
@@ -256,63 +256,99 @@ export class CurriculumTopicAddFormComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicAdditionalLiterature() {
-    this.curriculumTopicAdditionalLiteratureService.getValues()
+    this.curriculumTopicAdditionalLiteratureService.getValue(+this.id)
       .subscribe((data: CurriculumTopicAdditionalLiterature[]) => {
-        this.curriculumTopicAdditionalLiteratures = data;
-
-        if (this.curriculumTopicAdditionalLiteratures !== null){
+        if (data.length !== 0){
           this.additionalLiteraturesList = data;
-
-          console.log(data);
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.additionalLiteraturesList.sort(function(a, b) {
+            return a.id - b.id;
+          });
         }
       });
   }
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicDepartment() {
-    this.curriculumTopicDepartmentService.getValues()
+    this.curriculumTopicDepartmentService.getValue(+this.id)
       .subscribe((data: CurriculumTopicDepartment[]) => {
-        this.curriculumTopicDepartments = data;
+        if (data.length !== 0){
+          this.curriculumTopicDepartments = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.curriculumTopicDepartments.sort(function(a, b) {
+            return a.id - b.id;
+          });
+        }
       });
   }
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicMainLiterature() {
-    this.curriculumTopicMainLiteratureService.getValues()
+    this.curriculumTopicMainLiteratureService.getValue(+this.id)
       .subscribe((data: CurriculumTopicMainLiterature[]) => {
-        this.curriculumTopicMainLiteratures = data;
+        if (data.length !== 0){
+          this.curriculumTopicMainLiteratures = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.curriculumTopicMainLiteratures.sort(function(a, b) {
+            return a.id - b.id;
+          });
+        }
       });
   }
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicTeacher() {
-    this.curriculumTopicTeacherService.getValues()
+    this.curriculumTopicTeacherService.getValue(+this.id)
       .subscribe((data: CurriculumTopicTeacher[]) => {
-        this.curriculumTopicTeachers = data;
+        if (data.length !== 0){
+          this.curriculumTopicTeachers = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.curriculumTopicTeachers.sort(function(a, b) {
+            return a.id - b.id;
+          });
+        }
       });
   }
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicTeacherCategory() {
-    this.curriculumTopicTeacherCategoryService.getValues()
+    this.curriculumTopicTeacherCategoryService.getValue(+this.id)
       .subscribe((data: CurriculumTopicTeacherCategory[]) => {
-        this.curriculumTopicTeacherCategories = data;
+        if (data.length !== 0){
+          this.curriculumTopicTeacherCategories = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.curriculumTopicTeacherCategories.sort(function(a, b) {
+            return a.id - b.id;
+          });
+        }
       });
   }
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicTheQuestion() {
-    this.curriculumTopicTheQuestionService.getValues()
+    this.curriculumTopicTheQuestionService.getValue(+this.id)
       .subscribe((data: CurriculumTopicTheQuestion[]) => {
-        this.curriculumTopicTheQuestions = data;
+        if (data.length !== 0){
+          this.curriculumTopicTheQuestions = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.curriculumTopicTheQuestions.sort(function(a, b) {
+            return a.id - b.id;
+          });
+        }
       });
   }
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicConsultationTopic() {
-    this.curriculumTopicConsultationTopicService.getValues()
+    this.curriculumTopicConsultationTopicService.getValue(+this.id)
       .subscribe((data: CurriculumTopicConsultationTopic[]) => {
-        this.curriculumTopicConsultationTopics = data;
+        if (data.length !== 0){
+          this.curriculumTopicConsultationTopics = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.curriculumTopicConsultationTopics.sort(function(a, b) {
+            return a.id - b.id;
+          });
+        }
       });
   }
 
@@ -324,6 +360,9 @@ export class CurriculumTopicAddFormComponent implements OnInit {
     this.curriculumTopicAdditionalLiteratureService.createValue(this.curriculumTopicAdditionalLiterature)
       .subscribe((data: CurriculumTopicAdditionalLiterature) => {
         this.curriculumTopicAdditionalLiterature = data;
+        const tmpObject = this.additionalLiteraturesList.find(a => a.additionalLiteratureId === undefined);
+        const index = this.additionalLiteraturesList.indexOf(tmpObject);
+        this.additionalLiteraturesList[index].id = this.curriculumTopicAdditionalLiterature.id;
       });
   }
 
@@ -375,6 +414,16 @@ export class CurriculumTopicAddFormComponent implements OnInit {
       });
   }
 
+// ##############UPDATE###############
+
+  // tslint:disable-next-line:typedef
+  updateCurriculumTopicAdditionalLiterature() {
+    this.curriculumTopicAdditionalLiteratureService.updateValue(this.curriculumTopicAdditionalLiterature)
+      .subscribe((data: CurriculumTopicAdditionalLiterature) => {
+        this.curriculumTopicAdditionalLiterature = data;
+      });
+  }
+
 // ###########CHANGE#############
 
   // tslint:disable-next-line:typedef
@@ -382,9 +431,11 @@ export class CurriculumTopicAddFormComponent implements OnInit {
     this.curriculumTopicAdditionalLiterature = new CurriculumTopicAdditionalLiterature();
     this.curriculumTopicAdditionalLiterature.additionalLiteratureId = +$event;
     this.curriculumTopicAdditionalLiterature.curriculumTopicId = +this.id;
-    console.log($event, this.curriculumTopicAdditionalLiterature);
-    if (el.id !== undefined){
 
+    if (el.id !== undefined){
+      this.curriculumTopicAdditionalLiterature.id = el.id;
+      this.updateCurriculumTopicAdditionalLiterature();
+      console.log($event, this.curriculumTopicAdditionalLiterature);
     }
     else {
       this.postCurriculumTopicAdditionalLiterature();
