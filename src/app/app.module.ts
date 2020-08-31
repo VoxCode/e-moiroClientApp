@@ -45,6 +45,7 @@ import {CurriculumTopicAddFormComponent} from './curriculum-topic-add-form/curri
 import {TeacherCategoryEditComponent} from './teacher-category/teaching-position-edit.component';
 import {CurriculumTopicEditComponent} from './curriculum-topic/curriculum-topic-edit.component';
 import {OccupationFormEditComponent} from './occupation-form/occupation-form-edit.component';
+import {GroupAddComponent} from './group/group-add.component';
 
 
 @NgModule({
@@ -65,6 +66,7 @@ import {OccupationFormEditComponent} from './occupation-form/occupation-form-edi
     FormOfEducationComponent,
     FormOfEducationEditComponent,
     GroupComponent,
+    GroupAddComponent,
     MainLiteratureComponent,
     MainLiteratureEditComponent,
     OccupationFormComponent,

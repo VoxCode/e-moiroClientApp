@@ -21,6 +21,7 @@ import {TrainingProgramComponent} from './training-program/training-program.comp
 import {MainLiteratureComponent} from './main-literature/main-literature.component';
 import {FormOfEducationComponent} from './form-of-education/form-of-education.component';
 import {CurriculumTopicAddFormComponent} from './curriculum-topic-add-form/curriculum-topic-add-form.component';
+import {GroupAddComponent} from './group/group-add.component';
 
 const routes: Routes = [
   { path: 'products', component: ProductsComponent},
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'department', component: DepartmentComponent, canActivate: [AuthGuardService]},
   { path: 'formOfEducation', component: FormOfEducationComponent, canActivate: [AuthGuardService]},
   { path: 'group', component: GroupComponent, canActivate: [AuthGuardService]},
+  { path: 'groupAdd', component: GroupAddComponent, canActivate: [AuthGuardService]},
   { path: 'mainLiterature', component: MainLiteratureComponent, canActivate: [AuthGuardService]},
   { path: 'occupationForm', component: OccupationFormComponent, canActivate: [AuthGuardService]},
   { path: 'sectionNumber', component: SectionNumberComponent, canActivate: [AuthGuardService]},
