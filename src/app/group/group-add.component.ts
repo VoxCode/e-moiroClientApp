@@ -30,8 +30,8 @@ export class GroupAddComponent implements OnInit {
     sixth: new FormControl(''),
     seventh: new FormControl(''),
     eight: new FormControl(''),
-    ninth: new FormControl(''),
-    tenth: new FormControl('')
+    ninth: new FormControl('0'),
+    tenth: new FormControl('0')
   });
 
   constructor(private valueService: GroupService, private formOfEducationService: FormOfEducationService) { }
