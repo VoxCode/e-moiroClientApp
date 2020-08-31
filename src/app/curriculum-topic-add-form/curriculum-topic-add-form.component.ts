@@ -159,31 +159,31 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   removeTeacher(i: number, el: number) {
     this.teachersList.splice(i, 1);
-    this.curriculumTopicAdditionalLiteratureService.deleteValue(el).subscribe();
+    this.curriculumTopicTeacherService.deleteValue(el).subscribe();
   }
 
   // tslint:disable-next-line:typedef
   removeTeacherCategory(i: number, el: number) {
     this.teacherCategoriesList.splice(i, 1);
-    this.curriculumTopicAdditionalLiteratureService.deleteValue(el).subscribe();
+    this.curriculumTopicTeacherCategoryService.deleteValue(el).subscribe();
   }
 
   // tslint:disable-next-line:typedef
   removeTheQuestion(i: number, el: number) {
     this.theQuestionsList.splice(i, 1);
-    this.curriculumTopicAdditionalLiteratureService.deleteValue(el).subscribe();
+    this.curriculumTopicTheQuestionService.deleteValue(el).subscribe();
   }
 
   // tslint:disable-next-line:typedef
   removeConsultationTopic(i: number, el: number) {
     this.consultationTopicsList.splice(i, 1);
-    this.curriculumTopicAdditionalLiteratureService.deleteValue(el).subscribe();
+    this.curriculumTopicConsultationTopicService.deleteValue(el).subscribe();
   }
 
   // tslint:disable-next-line:typedef
   removeMainLiterature(i: number, el: number) {
     this.mainLiteraturesList.splice(i, 1);
-    this.curriculumTopicAdditionalLiteratureService.deleteValue(el).subscribe();
+    this.curriculumTopicMainLiteratureService.deleteValue(el).subscribe();
   }
 
   // tslint:disable-next-line:typedef
