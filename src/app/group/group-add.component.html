@@ -1,4 +1,5 @@
 <div class="container-fluid">
+  <h1>Создать новую группу</h1>
     <br>
   <form [formGroup]="form">
 <div class="modal-body">
@@ -10,10 +11,8 @@
       </div>
 
       <div class="col-sm-2">
-        <h4><b>Учебный год</b></h4>
-        <select class="browser-default custom-select" id="third" formControlName="third">
-          <option>uu</option>
-        </select>
+        <h4><b>Календарный год</b></h4>
+        <input type="date" class="form-control grey-text" id="third" formControlName="third">
       </div>
 
       <div class="col-sm">
@@ -23,8 +22,9 @@
 
       <div class="col-sm">
         <h4><b>Форма получения образования</b></h4>
-        <select class="browser-default custom-select" id="fifth" formControlName="fifth">
-          <option >hh</option>
+        <select class="browser-default custom-select" id="fifth" formControlName="fifth" [value]="0">
+          <option value="0">Выберите форму получения образования</option>
+          <option *ngFor="let el of formOfEducations" [ngValue]="el.id" >{{el.name}}</option>
         </select>
       </div>
     </div>
@@ -34,7 +34,7 @@
 
       <div class="col-sm">
         <h4><b>Дата начала занятий</b></h4>
-          <input id="id" type="date" class="form-control grey-text" id="sixth" formControlName="sixth">
+          <input type="date" class="form-control grey-text" id="sixth" formControlName="sixth">
       </div>
 
       <div class="col-sm">
@@ -79,3 +79,4 @@
     </div>
   </form>
 </div>
+
