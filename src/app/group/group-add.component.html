@@ -1,6 +1,10 @@
 <div class="container-fluid">
   <h1>Создать новую группу</h1>
-    <br>
+  <div class="backButton">
+    <button routerLink="/group" type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>
+      <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon></button>
+  </div>
+    <br><br>
   <form [formGroup]="form">
 <div class="modal-body">
   <div class="row">
@@ -12,14 +16,13 @@
 
       <div class="col-sm">
         <h4><b>Календарный год</b></h4>
-        <input type="date" class="form-control grey-text" id="third" formControlName="third">
+        <input type="date" class="form-control" id="third" formControlName="third">
       </div>
 
       <div class="col-sm">
         <h4><b>Тема повышения квалификации</b></h4>
-          <input type="text" class="form-control grey-text" id="fourth" formControlName="fourth">
+          <input type="text" class="form-control" id="fourth" formControlName="fourth">
       </div>
-
     </div>
   <br>
 
@@ -35,15 +38,13 @@
 
       <div class="col-sm">
         <h4><b>Дата начала занятий</b></h4>
-          <input type="date" class="form-control grey-text" id="sixth" formControlName="sixth">
+          <input type="date" class="form-control" id="sixth" formControlName="sixth">
       </div>
 
       <div class="col-sm">
         <h4><b>Дата окончания занятий</b></h4>
-          <input type="date" class="form-control grey-text" id="seventh" formControlName="seventh">
+          <input type="date" class="form-control" id="seventh" formControlName="seventh">
       </div>
-
-
     </div>
     <br>
 
@@ -51,14 +52,14 @@
 
       <div class="col-sm">
         <h4><b>Количество часов</b></h4>
-        <input type="number" class="form-control grey-text" id="eight" formControlName="eight">
+        <input type="number" class="form-control" id="eight" formControlName="eight">
       </div>
 
       <div class="col-sm">
         <h4><b>Квалификационная категория</b></h4>
         <select class="browser-default custom-select" id="ninth" formControlName="ninth" [value]="0">
           <option value="0">Выберите квалификационную категорию</option>
-          <option>hh</option>
+          <option *ngFor="let el of teacherCategories" [ngValue]="el.id">{{el.name}}</option>
         </select>
       </div>
 
@@ -66,17 +67,17 @@
         <h4><b>Кафедра</b></h4>
         <select class="browser-default custom-select" id="tenth" formControlName="tenth" [value]="0">
           <option value="0">Выберите кафедру</option>
-          <option >hh</option>
+          <option *ngFor="let el of departments" [ngValue]="el.id">{{el.name}}</option>
         </select>
       </div>
     </div>
     <br>
+
 </div>
     <div class="modal-footer">
       <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
-              [disabled]="form.invalid" >Сохранить
+              [disabled]="form.invalid" (click)="saveValue()" >Сохранить
       </button>
     </div>
   </form>
 </div>
-
