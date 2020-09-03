@@ -22,10 +22,12 @@ import {MainLiteratureComponent} from './main-literature/main-literature.compone
 import {FormOfEducationComponent} from './form-of-education/form-of-education.component';
 import {CurriculumTopicAddFormComponent} from './curriculum-topic-add-form/curriculum-topic-add-form.component';
 import {GroupAddComponent} from './group/group-add.component';
+import {DocxGeneratorComponent} from './docx-generator/docx-generator.component';
 
 const routes: Routes = [
   { path: 'products', component: ProductsComponent},
   { path: 'home', component:  HomeComponent, canActivate: [AuthGuardService]},
+  { path: 'docxGenerator', component:  DocxGeneratorComponent, canActivate: [AuthGuardService]},
   { path: 'login', component: LoginComponent},
   { path: 'additionalLiterature', component: AdditionalLiteratureComponent, canActivate: [AuthGuardService]},
   { path: 'consultationTopic', component: ConsultationTopicComponent, canActivate: [AuthGuardService]},
