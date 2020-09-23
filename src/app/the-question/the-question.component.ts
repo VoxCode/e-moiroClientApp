@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import { TheQuestionService } from '../services/the-question.service';
-import { TheQuestion } from '../models/TheQuestion';
+import { TestWork } from '../models/TestWork';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {TheQuestionEditComponent} from './the-question-edit.component';
 
@@ -11,8 +11,8 @@ import {TheQuestionEditComponent} from './the-question-edit.component';
   providers: [TheQuestionService]
 })
 export class TheQuestionComponent implements OnInit, AfterViewInit {
-  value: TheQuestion = new TheQuestion();
-  values: TheQuestion[];
+  value: TestWork = new TestWork();
+  values: TestWork[];
 
   @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
@@ -74,7 +74,7 @@ export class TheQuestionComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   loadValue() {
     this.valueService.getValues()
-      .subscribe((data: TheQuestion[]) => {
+      .subscribe((data: TestWork[]) => {
         this.values = data;
         for (let i = 1; i <= this.values.length; i++) {
           this.elements.push({id: i.toString(), first: this.values[i - 1].id, last: this.values[i - 1].content});
@@ -89,7 +89,7 @@ export class TheQuestionComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   crate(){
     this.valueService.createValue(this.value)
-      .subscribe((data: TheQuestion) => {
+      .subscribe((data: TestWork) => {
         // this.values.push(data);
         this.value = data;
         const index = this.elements.length + 1;
@@ -113,12 +113,12 @@ export class TheQuestionComponent implements OnInit, AfterViewInit {
     this.cancel();
   }
   // tslint:disable-next-line:typedef
-  editValue(p: TheQuestion) {
+  editValue(p: TestWork) {
     this.value = p;
   }
   // tslint:disable-next-line:typedef
   cancel() {
-    this.value = new TheQuestion();
+    this.value = new TestWork();
   }
   // tslint:disable-next-line:typedef
   delete(p: any) {

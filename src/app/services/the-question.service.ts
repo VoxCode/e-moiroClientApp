@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
-import { TheQuestion } from '../models/TheQuestion';
+import { TestWork } from '../models/TestWork';
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -17,11 +17,11 @@ export class TheQuestionService {
     return this.http.get(this.url + '/' + id);
   }
   // tslint:disable-next-line:typedef
-  createValue(theQuestion: TheQuestion) {
+  createValue(theQuestion: TestWork) {
     return this.http.post(this.url, theQuestion);
   }
   // tslint:disable-next-line:typedef
-  updateValue(theQuestion: TheQuestion) {
+  updateValue(theQuestion: TestWork) {
     return this.http.put(this.url, theQuestion);
   }
   // tslint:disable-next-line:typedef

@@ -3,10 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuardService } from './services/auth-guard.service';
-import {ProductsComponent} from './products/products.component';
-import {HomeComponent} from './home/home.component';
 import {AdditionalLiteratureComponent} from './additional-literature/additional-literature.component';
-import {ConsultationTopicComponent} from './consultation-topic/consultation-topic.component';
+import {RegulationComponent} from './regulation/regulation.component';
 import {CurriculumSectionComponent} from './curriculum-section/curriculum-section.component';
 import {CurriculumTopicComponent} from './curriculum-topic/curriculum-topic.component';
 import {DepartmentComponent} from './department/department.component';
@@ -25,12 +23,10 @@ import {GroupAddComponent} from './group/group-add.component';
 import {DocxGeneratorComponent} from './docx-generator/docx-generator.component';
 
 const routes: Routes = [
-  { path: 'products', component: ProductsComponent},
-  { path: 'home', component:  HomeComponent, canActivate: [AuthGuardService]},
   { path: 'docxGenerator', component:  DocxGeneratorComponent, canActivate: [AuthGuardService]},
   { path: 'login', component: LoginComponent},
   { path: 'additionalLiterature', component: AdditionalLiteratureComponent, canActivate: [AuthGuardService]},
-  { path: 'consultationTopic', component: ConsultationTopicComponent, canActivate: [AuthGuardService]},
+  { path: 'regulation', component: RegulationComponent, canActivate: [AuthGuardService]},
   { path: 'curriculumSection', component: CurriculumSectionComponent, canActivate: [AuthGuardService]},
   { path: 'curriculumTopic', component: CurriculumTopicComponent, canActivate: [AuthGuardService]},
   { path: 'department', component: DepartmentComponent, canActivate: [AuthGuardService]},

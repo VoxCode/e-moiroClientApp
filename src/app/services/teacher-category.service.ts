@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
-import { TeacherCategory } from '../models/TeacherCategory';
+import { StudentCategory } from '../models/StudentCategory';
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -17,11 +17,11 @@ export class TeacherCategoryService {
     return this.http.get(this.url + '/' + id);
   }
   // tslint:disable-next-line:typedef
-  createValue(teacherCategory: TeacherCategory) {
+  createValue(teacherCategory: StudentCategory) {
     return this.http.post(this.url, teacherCategory);
   }
   // tslint:disable-next-line:typedef
-  updateValue(teacherCategory: TeacherCategory) {
+  updateValue(teacherCategory: StudentCategory) {
     return this.http.put(this.url, teacherCategory);
   }
   // tslint:disable-next-line:typedef

@@ -6,7 +6,7 @@ import {FormOfEducation} from '../models/FormOfEducation';
 import {FormOfEducationService} from '../services/form-of-education.service';
 import {Department} from '../models/Department';
 import {DepartmentService} from '../services/department.service';
-import {TeacherCategory} from '../models/TeacherCategory';
+import {StudentCategory} from '../models/StudentCategory';
 import {TeacherCategoryService} from '../services/teacher-category.service';
 import {Router} from '@angular/router';
 
@@ -25,8 +25,8 @@ export class GroupAddComponent implements OnInit {
   values: Group[];
   department: Department;
   departments: Department[];
-  teacherCategory: TeacherCategory;
-  teacherCategories: TeacherCategory[];
+  teacherCategory: StudentCategory;
+  teacherCategories: StudentCategory[];
   formOfEducation: FormOfEducation;
   formOfEducations: FormOfEducation[];
 
@@ -77,7 +77,7 @@ export class GroupAddComponent implements OnInit {
   // tslint:disable-next-line:typedef
   loadTeacherCategory() {
     this.teacherCategoryService.getValues()
-      .subscribe((data: TeacherCategory[]) => {
+      .subscribe((data: StudentCategory[]) => {
         this.teacherCategories = data;
       });
   }

@@ -2,8 +2,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {ProductsComponent} from './products/products.component';
-import {HomeComponent} from './home/home.component';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -27,13 +25,13 @@ import {TeacherComponent} from './teacher/teacher.component';
 import {TeacherCategoryComponent} from './teacher-category/teacher-category.component';
 import {TeachingPositionComponent} from './teaching-position/teaching-position.component';
 import {TrainingProgramComponent} from './training-program/training-program.component';
-import {ConsultationTopicComponent} from './consultation-topic/consultation-topic.component';
+import {RegulationComponent} from './regulation/regulation.component';
 import {TheQuestionComponent} from './the-question/the-question.component';
 import {CurriculumTopicListComponent} from './curriculum-topic-list/curriculum-topic-list.component';
 import {InputsModule, MDBBootstrapModule} from 'angular-bootstrap-md';
 import {AdditionalLiteratureEditComponent} from './additional-literature/additional-literature-edit.component';
 import {MainLiteratureEditComponent} from './main-literature/main-literature-edit.component';
-import {ConsultationTopicEditComponent} from './consultation-topic/consultation-topic-edit.component';
+import {RegulationEditComponent} from './regulation/regulation-edit.component';
 import {DepartmentEditComponent} from './department/department-edit.component';
 import {FormOfEducationEditComponent} from './form-of-education/form-of-education-edit.component';
 import {TeachingPositionEditComponent} from './teaching-position/teaching-position-edit.component';
@@ -54,8 +52,6 @@ import { DocxGeneratorComponent } from './docx-generator/docx-generator.componen
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    ProductsComponent,
-    HomeComponent,
     AdditionalLiteratureComponent,
     AdditionalLiteratureEditComponent,
     CurriculumSectionComponent,
@@ -81,8 +77,8 @@ import { DocxGeneratorComponent } from './docx-generator/docx-generator.componen
     TeachingPositionComponent,
     TeachingPositionEditComponent,
     TrainingProgramComponent,
-    ConsultationTopicComponent,
-    ConsultationTopicEditComponent,
+    RegulationComponent,
+    RegulationEditComponent,
     TheQuestionComponent,
     TheQuestionEditComponent,
     CurriculumTopicListComponent,

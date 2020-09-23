@@ -1,20 +1,20 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
-import { ConsultationTopicService } from '../services/consultation-topic.service';
-import { ConsultationTopic } from '../models/ConsultationTopic';
+import { RegulationService } from '../services/regulation.service';
+import { Regulation } from '../models/Regulation';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
-import {ConsultationTopicEditComponent} from './consultation-topic-edit.component';
+import {RegulationEditComponent} from './regulation-edit.component';
 
 
 
 @Component({
   selector: 'app-consultation-topic',
-  templateUrl: './consultation-topic.component.html',
-  styleUrls: ['./consultation-topic.component.scss'],
-  providers: [ConsultationTopicService]
+  templateUrl: './regulation.component.html',
+  styleUrls: ['./regulation.component.scss'],
+  providers: [RegulationService]
 })
-export class ConsultationTopicComponent implements OnInit, AfterViewInit {
-  value: ConsultationTopic = new ConsultationTopic();
-  values: ConsultationTopic[];
+export class RegulationComponent implements OnInit, AfterViewInit {
+  value: Regulation = new Regulation();
+  values: Regulation[];
 
   @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
@@ -27,7 +27,7 @@ export class ConsultationTopicComponent implements OnInit, AfterViewInit {
   modalRef: MDBModalRef;
 
   constructor(
-    private valueService: ConsultationTopicService,
+    private valueService: RegulationService,
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService) { }
 
@@ -76,10 +76,10 @@ export class ConsultationTopicComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   loadValue() {
     this.valueService.getValues()
-      .subscribe((data: ConsultationTopic[]) => {
+      .subscribe((data: Regulation[]) => {
         this.values = data;
         for (let i = 1; i <= this.values.length; i++) {
-          this.elements.push({id: i.toString(), first: this.values[i - 1].id, last: this.values[i - 1].name});
+          this.elements.push({id: i.toString(), first: this.values[i - 1].id, last: this.values[i - 1].content});
         }
         this.mdbTable.setDataSource(this.elements);
         this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
@@ -91,14 +91,14 @@ export class ConsultationTopicComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   crate(){
     this.valueService.createValue(this.value)
-      .subscribe((data: ConsultationTopic) => {
+      .subscribe((data: Regulation) => {
         // this.values.push(data);
         this.value = data;
         const index = this.elements.length + 1;
         this.mdbTable.addRow({
           id: index.toString(),
           first: this.value.id,
-          last: this.value.name
+          last: this.value.content
         });
         this.mdbTable.setDataSource(this.elements);
         this.cancel();
@@ -109,23 +109,23 @@ export class ConsultationTopicComponent implements OnInit, AfterViewInit {
   save(el: any) {
     this.cancel();
     this.value.id = el.first;
-    this.value.name = el.last;
+    this.value.content = el.last;
     this.valueService.updateValue(this.value)
       .subscribe();
     this.cancel();
   }
   // tslint:disable-next-line:typedef
-  editValue(p: ConsultationTopic) {
+  editValue(p: Regulation) {
     this.value = p;
   }
   // tslint:disable-next-line:typedef
   cancel() {
-    this.value = new ConsultationTopic();
+    this.value = new Regulation();
   }
   // tslint:disable-next-line:typedef
   delete(p: any) {
     this.value.id = p.first;
-    this.value.name = p.last;
+    this.value.content = p.last;
     this.valueService.deleteValue(this.value.id)
       .subscribe(data => {
         this.removeRow(p);
@@ -156,7 +156,7 @@ export class ConsultationTopicComponent implements OnInit, AfterViewInit {
         editableRow: el
       }
     };
-    this.modalRef = this.modalService.show(ConsultationTopicEditComponent, modalOptions);
+    this.modalRef = this.modalService.show(RegulationEditComponent, modalOptions);
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       this.elements[elementIndex] = newElement;
       this.save(newElement);

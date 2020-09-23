@@ -1,32 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import {Department} from '../models/Department';
 import {Teacher} from '../models/Teacher';
-import {TeacherCategory} from '../models/TeacherCategory';
-import {TheQuestion} from '../models/TheQuestion';
-import {ConsultationTopic} from '../models/ConsultationTopic';
+import {StudentCategory} from '../models/StudentCategory';
+import {TestWork} from '../models/TestWork';
+import {Regulation} from '../models/Regulation';
 import {MainLiterature} from '../models/MainLiterature';
 import {AdditionalLiterature} from '../models/AdditionalLiterature';
 import {DepartmentService} from '../services/department.service';
 import {TeacherService} from '../services/teacher.service';
 import {TeacherCategoryService} from '../services/teacher-category.service';
 import {TheQuestionService} from '../services/the-question.service';
-import {ConsultationTopicService} from '../services/consultation-topic.service';
+import {RegulationService} from '../services/regulation.service';
 import {MainLiteratureService} from '../services/main-literature.service';
 import {AdditionalLiteratureService} from '../services/additional-literature.service';
 import {CurriculumTopicAdditionalLiteratureService} from '../services/curriculum-topic-additional-literature.service';
 import {CurriculumTopicDepartmentService} from '../services/curriculum-topic-department.service';
 import {CurriculumTopicMainLiteratureService} from '../services/curriculum-topic-main-literature.service';
-import {CurriculumTopicTeacherService} from '../services/curriculum-topic-teacher.service';
+import {CurriculumTopicRegulationService} from '../services/curriculum-topic-regulation.service';
 import {CurriculumTopicTeacherCategoryService} from '../services/curriculum-topic-teacher-category.service';
-import {CurriculumTopicTheQuestionService} from '../services/curriculum-topic-the-question.service';
+import {CurriculumTopicTestWorkService} from '../services/curriculum-topic-test-work.service';
 import {CurriculmTopicConsultationTopicService} from '../services/curriculm-topic-consultation-topic.service';
 import {CurriculumTopicAdditionalLiterature} from '../models/СurriculumTopicAdditionalLiterature';
-import {CurriculumTopicConsultationTopic} from '../models/СurriculumTopicConsultationTopic';
+import {CurriculumTopicConsultationTopic} from '../models/CurriculumTopicFinalExamination';
 import {CurriculumTopicDepartment} from '../models/СurriculumTopicDepartment';
 import {CurriculumTopicMainLiterature} from '../models/СurriculumTopicMainLiterature';
-import {CurriculumTopicTeacher} from '../models/СurriculumTopicTeacher';
-import {CurriculumTopicTeacherCategory} from '../models/СurriculumTopicTeacherCategory';
-import {CurriculumTopicTheQuestion} from '../models/СurriculumTopicTheQuestion';
+import {CurriculumTopicTeacher} from '../models/СurriculumTopicRegulation';
+import {CurriculumTopicTeacherCategory} from '../models/CurriculumTopicStudentCategory';
+import {CurriculumTopicTheQuestion} from '../models/CurriculumTopicTestWork';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -38,23 +38,23 @@ import { ActivatedRoute } from '@angular/router';
     TeacherService,
     TeacherCategoryService,
     TheQuestionService,
-    ConsultationTopicService,
+    RegulationService,
     MainLiteratureService,
     AdditionalLiteratureService,
     CurriculumTopicAdditionalLiteratureService,
     CurriculumTopicDepartmentService,
     CurriculumTopicMainLiteratureService,
-    CurriculumTopicTeacherService,
+    CurriculumTopicRegulationService,
     CurriculumTopicTeacherCategoryService,
-    CurriculumTopicTheQuestionService,
+    CurriculumTopicTestWorkService,
     CurriculmTopicConsultationTopicService ]
 })
 export class CurriculumTopicAddFormComponent implements OnInit {
   departments: Department[];
   teachers: Teacher[];
-  teacherCategories: TeacherCategory[];
-  theQuestions: TheQuestion[];
-  consultationTopics: ConsultationTopic[];
+  teacherCategories: StudentCategory[];
+  theQuestions: TestWork[];
+  consultationTopics: Regulation[];
   mainLiteratures: MainLiterature[];
   additionalLiteratures: AdditionalLiterature[];
 
@@ -80,15 +80,15 @@ export class CurriculumTopicAddFormComponent implements OnInit {
     private teacherService: TeacherService,
     private teacherCategoryService: TeacherCategoryService,
     private theQuestionService: TheQuestionService,
-    private consultationTopicService: ConsultationTopicService,
+    private consultationTopicService: RegulationService,
     private mainLiteratureService: MainLiteratureService,
     private additionalLiteratureService: AdditionalLiteratureService,
     private curriculumTopicAdditionalLiteratureService: CurriculumTopicAdditionalLiteratureService,
     private curriculumTopicDepartmentService: CurriculumTopicDepartmentService,
     private curriculumTopicMainLiteratureService: CurriculumTopicMainLiteratureService,
-    private curriculumTopicTeacherService: CurriculumTopicTeacherService,
+    private curriculumTopicTeacherService: CurriculumTopicRegulationService,
     private curriculumTopicTeacherCategoryService: CurriculumTopicTeacherCategoryService,
-    private curriculumTopicTheQuestionService: CurriculumTopicTheQuestionService,
+    private curriculumTopicTheQuestionService: CurriculumTopicTestWorkService,
     private curriculumTopicConsultationTopicService: CurriculmTopicConsultationTopicService,
     private route: ActivatedRoute
   ) { }
@@ -214,7 +214,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   loadTheQuestion() {
     this.teacherCategoryService.getValues()
-      .subscribe((data: TeacherCategory[]) => {
+      .subscribe((data: StudentCategory[]) => {
         this.teacherCategories = data;
       });
   }
@@ -222,7 +222,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   loadTeachingPosition() {
     this.theQuestionService.getValues()
-      .subscribe((data: TheQuestion[]) => {
+      .subscribe((data: TestWork[]) => {
         this.theQuestions = data;
       });
   }
@@ -230,7 +230,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   loadConsultationTopic() {
     this.consultationTopicService.getValues()
-      .subscribe((data: ConsultationTopic[]) => {
+      .subscribe((data: Regulation[]) => {
         this.consultationTopics = data;
       });
   }

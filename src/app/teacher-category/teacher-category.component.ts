@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import { TeacherCategoryService } from '../services/teacher-category.service';
-import { TeacherCategory } from '../models/TeacherCategory';
+import { StudentCategory } from '../models/StudentCategory';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {TeacherCategoryEditComponent} from './teaching-position-edit.component';
 
@@ -12,8 +12,8 @@ import {TeacherCategoryEditComponent} from './teaching-position-edit.component';
   providers: [TeacherCategoryService]
 })
 export class TeacherCategoryComponent implements OnInit, AfterViewInit {
-  value: TeacherCategory = new TeacherCategory();
-  values: TeacherCategory[];
+  value: StudentCategory = new StudentCategory();
+  values: StudentCategory[];
 
   @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
@@ -75,7 +75,7 @@ export class TeacherCategoryComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   loadValue() {
     this.valueService.getValues()
-      .subscribe((data: TeacherCategory[]) => {
+      .subscribe((data: StudentCategory[]) => {
         this.values = data;
         for (let i = 1; i <= this.values.length; i++) {
           this.elements.push({id: i.toString(), first: this.values[i - 1].id, last: this.values[i - 1].name});
@@ -90,7 +90,7 @@ export class TeacherCategoryComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   crate(){
     this.valueService.createValue(this.value)
-      .subscribe((data: TeacherCategory) => {
+      .subscribe((data: StudentCategory) => {
         // this.values.push(data);
         this.value = data;
         const index = this.elements.length + 1;
@@ -114,12 +114,12 @@ export class TeacherCategoryComponent implements OnInit, AfterViewInit {
     this.cancel();
   }
   // tslint:disable-next-line:typedef
-  editValue(p: TeacherCategory) {
+  editValue(p: StudentCategory) {
     this.value = p;
   }
   // tslint:disable-next-line:typedef
   cancel() {
-    this.value = new TeacherCategory();
+    this.value = new StudentCategory();
   }
   // tslint:disable-next-line:typedef
   delete(p: any) {
