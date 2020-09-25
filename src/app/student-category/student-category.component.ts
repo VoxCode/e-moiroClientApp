@@ -1,18 +1,19 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
-import { TheQuestionService } from '../services/the-question.service';
-import { TestWork } from '../models/TestWork';
+import { StudentCategoryService } from '../services/student-category.service';
+import { StudentCategory } from '../models/StudentCategory';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
-import {TheQuestionEditComponent} from './the-question-edit.component';
+import {StudentCategoryEditComponent} from './student-category-edit.component';
+
 
 @Component({
-  selector: 'app-the-question',
-  templateUrl: './the-question.component.html',
-  styleUrls: ['./the-question.component.scss'],
-  providers: [TheQuestionService]
+  selector: 'app-teacher-category',
+  templateUrl: './student-category.component.html',
+  styleUrls: ['./student-category.component.scss'],
+  providers: [StudentCategoryService]
 })
-export class TheQuestionComponent implements OnInit, AfterViewInit {
-  value: TestWork = new TestWork();
-  values: TestWork[];
+export class StudentCategoryComponent implements OnInit, AfterViewInit {
+  value: StudentCategory = new StudentCategory();
+  values: StudentCategory[];
 
   @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
@@ -25,7 +26,7 @@ export class TheQuestionComponent implements OnInit, AfterViewInit {
   modalRef: MDBModalRef;
 
   constructor(
-    private valueService: TheQuestionService,
+    private valueService: StudentCategoryService,
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService) { }
 
@@ -74,10 +75,10 @@ export class TheQuestionComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   loadValue() {
     this.valueService.getValues()
-      .subscribe((data: TestWork[]) => {
+      .subscribe((data: StudentCategory[]) => {
         this.values = data;
         for (let i = 1; i <= this.values.length; i++) {
-          this.elements.push({id: i.toString(), first: this.values[i - 1].id, last: this.values[i - 1].content});
+          this.elements.push({id: i.toString(), first: this.values[i - 1].id, last: this.values[i - 1].name});
         }
         this.mdbTable.setDataSource(this.elements);
         this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
@@ -89,14 +90,14 @@ export class TheQuestionComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   crate(){
     this.valueService.createValue(this.value)
-      .subscribe((data: TestWork) => {
+      .subscribe((data: StudentCategory) => {
         // this.values.push(data);
         this.value = data;
         const index = this.elements.length + 1;
         this.mdbTable.addRow({
           id: index.toString(),
           first: this.value.id,
-          last: this.value.content
+          last: this.value.name
         });
         this.mdbTable.setDataSource(this.elements);
         this.cancel();
@@ -107,23 +108,23 @@ export class TheQuestionComponent implements OnInit, AfterViewInit {
   save(el: any) {
     this.cancel();
     this.value.id = el.first;
-    this.value.content = el.last;
+    this.value.name = el.last;
     this.valueService.updateValue(this.value)
       .subscribe();
     this.cancel();
   }
   // tslint:disable-next-line:typedef
-  editValue(p: TestWork) {
+  editValue(p: StudentCategory) {
     this.value = p;
   }
   // tslint:disable-next-line:typedef
   cancel() {
-    this.value = new TestWork();
+    this.value = new StudentCategory();
   }
   // tslint:disable-next-line:typedef
   delete(p: any) {
     this.value.id = p.first;
-    this.value.content = p.last;
+    this.value.name = p.last;
     this.valueService.deleteValue(this.value.id)
       .subscribe(data => {
         this.removeRow(p);
@@ -154,7 +155,7 @@ export class TheQuestionComponent implements OnInit, AfterViewInit {
         editableRow: el
       }
     };
-    this.modalRef = this.modalService.show(TheQuestionEditComponent, modalOptions);
+    this.modalRef = this.modalService.show(StudentCategoryEditComponent, modalOptions);
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       this.elements[elementIndex] = newElement;
       this.save(newElement);

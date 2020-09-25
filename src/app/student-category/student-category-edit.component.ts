@@ -5,9 +5,9 @@ import {MDBModalRef} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-modal-edit',
-  templateUrl: './the-question-edit.component.html'
+  templateUrl: './student-category-edit.component.html'
 })
-export class TheQuestionEditComponent {
+export class StudentCategoryEditComponent {
 
   public editableRow: { id: string, first: string, last: string, handle: string };
   public saveButtonClicked: Subject<any> = new Subject<any>();
@@ -20,7 +20,7 @@ export class TheQuestionEditComponent {
 
   constructor(public modalRef: MDBModalRef) { }
 
-  // tslint:disable-next-line:typedef
+  // tslint:disable-next-line:typedef use-lifecycle-interface
   ngOnInit() {
     this.form.controls.id.patchValue(this.editableRow.id);
     this.form.controls.first.patchValue(this.editableRow.first);

@@ -8,7 +8,7 @@ import {MainLiterature} from '../models/MainLiterature';
 import {AdditionalLiterature} from '../models/AdditionalLiterature';
 import {DepartmentService} from '../services/department.service';
 import {TeacherService} from '../services/teacher.service';
-import {TeacherCategoryService} from '../services/teacher-category.service';
+import {TeacherCategoryService} from '../services/student-category.service';
 import {TheQuestionService} from '../services/the-question.service';
 import {RegulationService} from '../services/regulation.service';
 import {MainLiteratureService} from '../services/main-literature.service';
@@ -17,7 +17,7 @@ import {CurriculumTopicAdditionalLiteratureService} from '../services/curriculum
 import {CurriculumTopicDepartmentService} from '../services/curriculum-topic-department.service';
 import {CurriculumTopicMainLiteratureService} from '../services/curriculum-topic-main-literature.service';
 import {CurriculumTopicRegulationService} from '../services/curriculum-topic-regulation.service';
-import {CurriculumTopicTeacherCategoryService} from '../services/curriculum-topic-teacher-category.service';
+import {CurriculumTopicTeacherCategoryService} from '../services/curriculum-topic-student-category.service';
 import {CurriculumTopicTestWorkService} from '../services/curriculum-topic-test-work.service';
 import {CurriculmTopicConsultationTopicService} from '../services/curriculm-topic-consultation-topic.service';
 import {CurriculumTopicAdditionalLiterature} from '../models/СurriculumTopicAdditionalLiterature';

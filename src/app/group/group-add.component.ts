@@ -7,7 +7,7 @@ import {FormOfEducationService} from '../services/form-of-education.service';
 import {Department} from '../models/Department';
 import {DepartmentService} from '../services/department.service';
 import {StudentCategory} from '../models/StudentCategory';
-import {TeacherCategoryService} from '../services/teacher-category.service';
+import {TeacherCategoryService} from '../services/student-category.service';
 import {Router} from '@angular/router';
 
 @Component({

@@ -12,7 +12,7 @@ import {GroupComponent} from './group/group.component';
 import {OccupationFormComponent} from './occupation-form/occupation-form.component';
 import {SectionNumberComponent} from './section-number/section-number.component';
 import {TeacherComponent} from './teacher/teacher.component';
-import {TeacherCategoryComponent} from './teacher-category/teacher-category.component';
+import {StudentCategoryComponent} from './student-category/student-category.component';
 import {TeachingPositionComponent} from './teaching-position/teaching-position.component';
 import {TheQuestionComponent} from './the-question/the-question.component';
 import {TrainingProgramComponent} from './training-program/training-program.component';
@@ -37,7 +37,7 @@ const routes: Routes = [
   { path: 'occupationForm', component: OccupationFormComponent, canActivate: [AuthGuardService]},
   { path: 'sectionNumber', component: SectionNumberComponent, canActivate: [AuthGuardService]},
   { path: 'teacher', component: TeacherComponent, canActivate: [AuthGuardService]},
-  { path: 'teacherCategory', component: TeacherCategoryComponent, canActivate: [AuthGuardService]},
+  { path: 'teacherCategory', component: StudentCategoryComponent, canActivate: [AuthGuardService]},
   { path: 'teachingPosition', component: TeachingPositionComponent, canActivate: [AuthGuardService]},
   { path: 'theQuestion', component: TheQuestionComponent, canActivate: [AuthGuardService]},
   { path: 'trainingProgram', component: TrainingProgramComponent, canActivate: [AuthGuardService]},

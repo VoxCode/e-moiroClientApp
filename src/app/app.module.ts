@@ -22,7 +22,7 @@ import {MainLiteratureComponent} from './main-literature/main-literature.compone
 import {OccupationFormComponent} from './occupation-form/occupation-form.component';
 import {SectionNumberComponent} from './section-number/section-number.component';
 import {TeacherComponent} from './teacher/teacher.component';
-import {TeacherCategoryComponent} from './teacher-category/teacher-category.component';
+import {StudentCategoryComponent} from './student-category/student-category.component';
 import {TeachingPositionComponent} from './teaching-position/teaching-position.component';
 import {TrainingProgramComponent} from './training-program/training-program.component';
 import {RegulationComponent} from './regulation/regulation.component';
@@ -40,13 +40,14 @@ import {TheQuestionEditComponent} from './the-question/the-question-edit.compone
 import {TeacherEditComponent} from './teacher/teacher-edit.component';
 import {CurriculumSectionEditComponent} from './curriculum-section/curriculum-section-edit.component';
 import {CurriculumTopicAddFormComponent} from './curriculum-topic-add-form/curriculum-topic-add-form.component';
-import {TeacherCategoryEditComponent} from './teacher-category/teaching-position-edit.component';
+import {StudentCategoryEditComponent} from './student-category/student-category-edit.component';
 import {CurriculumTopicEditComponent} from './curriculum-topic/curriculum-topic-edit.component';
 import {OccupationFormEditComponent} from './occupation-form/occupation-form-edit.component';
 import {GroupAddComponent} from './group/group-add.component';
 import { DocxGeneratorComponent } from './docx-generator/docx-generator.component';
 import { CertificationTypeComponent } from './certification-type/certification-type.component';
 import { FinalExaminationComponent } from './final-examination/final-examination.component';
+import { TestWorkComponent } from './test-work/test-work.component';
 
 
 @NgModule({
@@ -74,8 +75,8 @@ import { FinalExaminationComponent } from './final-examination/final-examination
     SectionNumberEditComponent,
     TeacherComponent,
     TeacherEditComponent,
-    TeacherCategoryComponent,
-    TeacherCategoryEditComponent,
+    StudentCategoryComponent,
+    StudentCategoryEditComponent,
     TeachingPositionComponent,
     TeachingPositionEditComponent,
     TrainingProgramComponent,
@@ -87,7 +88,8 @@ import { FinalExaminationComponent } from './final-examination/final-examination
     CurriculumTopicAddFormComponent,
     DocxGeneratorComponent,
     CertificationTypeComponent,
-    FinalExaminationComponent
+    FinalExaminationComponent,
+    TestWorkComponent
   ],
   imports: [
     BrowserModule,
