@@ -45,6 +45,8 @@ import {CurriculumTopicEditComponent} from './curriculum-topic/curriculum-topic-
 import {OccupationFormEditComponent} from './occupation-form/occupation-form-edit.component';
 import {GroupAddComponent} from './group/group-add.component';
 import { DocxGeneratorComponent } from './docx-generator/docx-generator.component';
+import { CertificationTypeComponent } from './certification-type/certification-type.component';
+import { FinalExaminationComponent } from './final-examination/final-examination.component';
 
 
 @NgModule({
@@ -83,7 +85,9 @@ import { DocxGeneratorComponent } from './docx-generator/docx-generator.componen
     TheQuestionEditComponent,
     CurriculumTopicListComponent,
     CurriculumTopicAddFormComponent,
-    DocxGeneratorComponent
+    DocxGeneratorComponent,
+    CertificationTypeComponent,
+    FinalExaminationComponent
   ],
   imports: [
     BrowserModule,

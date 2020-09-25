@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
-import { StudentCategory } from '../models/StudentCategory';
+import { CurriculumTopicFinalExamination } from '../models/CurriculumTopicFinalExamination';
 import { environment } from '../../environments/environment';
 
 @Injectable()
-export class TeacherCategoryService {
-  public url = environment.apiUrl + 'api/teacherCategories';
+export class CurriculumTopicFinalExaminationService {
+  public url = environment.apiUrl + 'api/CurriculumTopicFinalExaminations';
   constructor(private http: HttpClient) { }
 
   // tslint:disable-next-line:typedef
@@ -17,12 +17,12 @@ export class TeacherCategoryService {
     return this.http.get(this.url + '/' + id);
   }
   // tslint:disable-next-line:typedef
-  createValue(teacherCategory: StudentCategory) {
-    return this.http.post(this.url, teacherCategory);
+  createValue(curriculumTopicFinalExamination: CurriculumTopicFinalExamination) {
+    return this.http.post(this.url, curriculumTopicFinalExamination);
   }
   // tslint:disable-next-line:typedef
-  updateValue(teacherCategory: StudentCategory) {
-    return this.http.put(this.url, teacherCategory);
+  updateValue(curriculumTopicFinalExamination: CurriculumTopicFinalExamination) {
+    return this.http.put(this.url, curriculumTopicFinalExamination);
   }
   // tslint:disable-next-line:typedef
   deleteValue(id: number) {

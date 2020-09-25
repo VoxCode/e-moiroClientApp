@@ -17,12 +17,12 @@ export class RegulationService {
     return this.http.get(this.url + '/' + id);
   }
   // tslint:disable-next-line:typedef
-  createValue(consultationTopic: Regulation) {
-    return this.http.post(this.url, consultationTopic);
+  createValue(regulation: Regulation) {
+    return this.http.post(this.url, regulation);
   }
   // tslint:disable-next-line:typedef
-  updateValue(consultationTopic: Regulation) {
-    return this.http.put(this.url, consultationTopic);
+  updateValue(regulation: Regulation) {
+    return this.http.put(this.url, regulation);
   }
   // tslint:disable-next-line:typedef
   deleteValue(id: number) {
