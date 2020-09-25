@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { TrainingProgramService } from '../services/training-program.service';
 import { TrainingProgram } from '../models/TrainingProgram';
+import {TrainingProgramTestWorkService} from '../services/training-program-test-work.service';
 
 @Component({
   selector: 'app-training-program',
   templateUrl: './training-program.component.html',
   styleUrls: ['./training-program.component.scss'],
-  providers: [TrainingProgramService]
+  providers: [TrainingProgramService, TrainingProgramTestWorkService]
 })
 export class TrainingProgramComponent implements OnInit {
   value: TrainingProgram = new TrainingProgram();

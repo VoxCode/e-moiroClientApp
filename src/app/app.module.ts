@@ -26,7 +26,6 @@ import {StudentCategoryComponent} from './student-category/student-category.comp
 import {TeachingPositionComponent} from './teaching-position/teaching-position.component';
 import {TrainingProgramComponent} from './training-program/training-program.component';
 import {RegulationComponent} from './regulation/regulation.component';
-import {TheQuestionComponent} from './the-question/the-question.component';
 import {CurriculumTopicListComponent} from './curriculum-topic-list/curriculum-topic-list.component';
 import {InputsModule, MDBBootstrapModule} from 'angular-bootstrap-md';
 import {AdditionalLiteratureEditComponent} from './additional-literature/additional-literature-edit.component';
@@ -36,7 +35,6 @@ import {DepartmentEditComponent} from './department/department-edit.component';
 import {FormOfEducationEditComponent} from './form-of-education/form-of-education-edit.component';
 import {TeachingPositionEditComponent} from './teaching-position/teaching-position-edit.component';
 import {SectionNumberEditComponent} from './section-number/section-number-edit.component';
-import {TheQuestionEditComponent} from './the-question/the-question-edit.component';
 import {TeacherEditComponent} from './teacher/teacher-edit.component';
 import {CurriculumSectionEditComponent} from './curriculum-section/curriculum-section-edit.component';
 import {CurriculumTopicAddFormComponent} from './curriculum-topic-add-form/curriculum-topic-add-form.component';
@@ -82,8 +80,6 @@ import { TestWorkComponent } from './test-work/test-work.component';
     TrainingProgramComponent,
     RegulationComponent,
     RegulationEditComponent,
-    TheQuestionComponent,
-    TheQuestionEditComponent,
     CurriculumTopicListComponent,
     CurriculumTopicAddFormComponent,
     DocxGeneratorComponent,

@@ -8,8 +8,7 @@ import {MainLiterature} from '../models/MainLiterature';
 import {AdditionalLiterature} from '../models/AdditionalLiterature';
 import {DepartmentService} from '../services/department.service';
 import {TeacherService} from '../services/teacher.service';
-import {TeacherCategoryService} from '../services/student-category.service';
-import {TheQuestionService} from '../services/the-question.service';
+import {StudentCategoryService} from '../services/student-category.service';
 import {RegulationService} from '../services/regulation.service';
 import {MainLiteratureService} from '../services/main-literature.service';
 import {AdditionalLiteratureService} from '../services/additional-literature.service';
@@ -17,16 +16,13 @@ import {CurriculumTopicAdditionalLiteratureService} from '../services/curriculum
 import {CurriculumTopicDepartmentService} from '../services/curriculum-topic-department.service';
 import {CurriculumTopicMainLiteratureService} from '../services/curriculum-topic-main-literature.service';
 import {CurriculumTopicRegulationService} from '../services/curriculum-topic-regulation.service';
-import {CurriculumTopicTeacherCategoryService} from '../services/curriculum-topic-student-category.service';
+import {CurriculumTopicStudentCategoryService} from '../services/curriculum-topic-student-category.service';
 import {CurriculumTopicTestWorkService} from '../services/curriculum-topic-test-work.service';
-import {CurriculmTopicConsultationTopicService} from '../services/curriculm-topic-consultation-topic.service';
 import {CurriculumTopicAdditionalLiterature} from '../models/СurriculumTopicAdditionalLiterature';
-import {CurriculumTopicConsultationTopic} from '../models/CurriculumTopicFinalExamination';
+import {CurriculumTopicFinalExamination} from '../models/CurriculumTopicFinalExamination';
 import {CurriculumTopicDepartment} from '../models/СurriculumTopicDepartment';
 import {CurriculumTopicMainLiterature} from '../models/СurriculumTopicMainLiterature';
-import {CurriculumTopicTeacher} from '../models/СurriculumTopicRegulation';
-import {CurriculumTopicTeacherCategory} from '../models/CurriculumTopicStudentCategory';
-import {CurriculumTopicTheQuestion} from '../models/CurriculumTopicTestWork';
+import {CurriculumTopicStudentCategory} from '../models/CurriculumTopicStudentCategory';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -36,8 +32,7 @@ import { ActivatedRoute } from '@angular/router';
   providers: [
     DepartmentService,
     TeacherService,
-    TeacherCategoryService,
-    TheQuestionService,
+    StudentCategoryService,
     RegulationService,
     MainLiteratureService,
     AdditionalLiteratureService,
@@ -45,9 +40,8 @@ import { ActivatedRoute } from '@angular/router';
     CurriculumTopicDepartmentService,
     CurriculumTopicMainLiteratureService,
     CurriculumTopicRegulationService,
-    CurriculumTopicTeacherCategoryService,
-    CurriculumTopicTestWorkService,
-    CurriculmTopicConsultationTopicService ]
+    CurriculumTopicStudentCategoryService,
+    CurriculumTopicTestWorkService]
 })
 export class CurriculumTopicAddFormComponent implements OnInit {
   departments: Department[];
@@ -58,19 +52,11 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   mainLiteratures: MainLiterature[];
   additionalLiteratures: AdditionalLiterature[];
 
-  curriculumTopicConsultationTopic: CurriculumTopicConsultationTopic;
   curriculumTopicAdditionalLiterature: CurriculumTopicAdditionalLiterature;
   curriculumTopicDepartment: CurriculumTopicDepartment;
   curriculumTopicMainLiterature: CurriculumTopicMainLiterature;
-  curriculumTopicTeacher: CurriculumTopicTeacher;
-  curriculumTopicTeacherCategory: CurriculumTopicTeacherCategory;
-  curriculumTopicTheQuestion: CurriculumTopicTheQuestion;
 
   public departmentsList: CurriculumTopicDepartment[] = [{}];
-  public teachersList: CurriculumTopicTeacher[] = [{}];
-  public teacherCategoriesList: CurriculumTopicTeacherCategory[] = [{}];
-  public theQuestionsList: CurriculumTopicTheQuestion[] = [{}];
-  public consultationTopicsList: CurriculumTopicConsultationTopic[] = [{}];
   public mainLiteraturesList: CurriculumTopicMainLiterature[] = [{}];
   public additionalLiteraturesList: CurriculumTopicAdditionalLiterature[] = [{}];
   private id: number;
@@ -78,8 +64,6 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   constructor(
     private departmentService: DepartmentService,
     private teacherService: TeacherService,
-    private teacherCategoryService: TeacherCategoryService,
-    private theQuestionService: TheQuestionService,
     private consultationTopicService: RegulationService,
     private mainLiteratureService: MainLiteratureService,
     private additionalLiteratureService: AdditionalLiteratureService,
@@ -87,9 +71,8 @@ export class CurriculumTopicAddFormComponent implements OnInit {
     private curriculumTopicDepartmentService: CurriculumTopicDepartmentService,
     private curriculumTopicMainLiteratureService: CurriculumTopicMainLiteratureService,
     private curriculumTopicTeacherService: CurriculumTopicRegulationService,
-    private curriculumTopicTeacherCategoryService: CurriculumTopicTeacherCategoryService,
+    private curriculumTopicTeacherCategoryService: CurriculumTopicStudentCategoryService,
     private curriculumTopicTheQuestionService: CurriculumTopicTestWorkService,
-    private curriculumTopicConsultationTopicService: CurriculmTopicConsultationTopicService,
     private route: ActivatedRoute
   ) { }
 
@@ -120,22 +103,22 @@ export class CurriculumTopicAddFormComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   addTeacher() {
-    this.teachersList.push({});
+    // this.teachersList.push({});
   }
 
   // tslint:disable-next-line:typedef
   addTeacherCategory() {
-    this.teacherCategoriesList.push({});
+    // this.teacherCategoriesList.push({});
   }
 
   // tslint:disable-next-line:typedef
   addTheQuestion() {
-    this.theQuestionsList.push({});
+    // this.theQuestionsList.push({});
   }
 
   // tslint:disable-next-line:typedef
   addConsultationTopic() {
-    this.consultationTopicsList.push({});
+    // this.consultationTopicsList.push({});
   }
 
   // tslint:disable-next-line:typedef
@@ -158,26 +141,26 @@ export class CurriculumTopicAddFormComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   removeTeacher(i: number, el: number) {
-    this.teachersList.splice(i, 1);
+    // this.teachersList.splice(i, 1);
     this.curriculumTopicTeacherService.deleteValue(el).subscribe();
   }
 
   // tslint:disable-next-line:typedef
   removeTeacherCategory(i: number, el: number) {
-    this.teacherCategoriesList.splice(i, 1);
+    // this.teacherCategoriesList.splice(i, 1);
     this.curriculumTopicTeacherCategoryService.deleteValue(el).subscribe();
   }
 
   // tslint:disable-next-line:typedef
   removeTheQuestion(i: number, el: number) {
-    this.theQuestionsList.splice(i, 1);
+    // this.theQuestionsList.splice(i, 1);
     this.curriculumTopicTheQuestionService.deleteValue(el).subscribe();
   }
 
   // tslint:disable-next-line:typedef
   removeConsultationTopic(i: number, el: number) {
-    this.consultationTopicsList.splice(i, 1);
-    this.curriculumTopicConsultationTopicService.deleteValue(el).subscribe();
+    // this.consultationTopicsList.splice(i, 1);
+    // this.curriculumTopicConsultationTopicService.deleteValue(el).subscribe();
   }
 
   // tslint:disable-next-line:typedef
@@ -213,7 +196,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   loadTheQuestion() {
-    this.teacherCategoryService.getValues()
+    this.studentCategoryService.getValues()
       .subscribe((data: StudentCategory[]) => {
         this.teacherCategories = data;
       });

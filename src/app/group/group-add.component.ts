@@ -7,7 +7,7 @@ import {FormOfEducationService} from '../services/form-of-education.service';
 import {Department} from '../models/Department';
 import {DepartmentService} from '../services/department.service';
 import {StudentCategory} from '../models/StudentCategory';
-import {TeacherCategoryService} from '../services/student-category.service';
+import {StudentCategoryService} from '../services/student-category.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -17,7 +17,7 @@ import {Router} from '@angular/router';
   providers: [
     GroupService,
     DepartmentService,
-    TeacherCategoryService,
+    StudentCategoryService,
     FormOfEducationService ]
 })
 export class GroupAddComponent implements OnInit {
@@ -39,16 +39,14 @@ export class GroupAddComponent implements OnInit {
     fifth: new FormControl('0', Validators.min(1)),
     sixth: new FormControl('', Validators.required),
     seventh: new FormControl('', Validators.required),
-    eight: new FormControl('', Validators.required),
-    ninth: new FormControl('0', Validators.min(1)),
-    tenth: new FormControl('0', Validators.min(1))
+    eight: new FormControl('', Validators.required)
   });
 
   constructor(
     public router: Router,
     private valueService: GroupService,
     private departmentService: DepartmentService,
-    private teacherCategoryService: TeacherCategoryService,
+    private teacherCategoryService: StudentCategoryService,
     private formOfEducationService: FormOfEducationService) { }
 
   // tslint:disable-next-line:typedef
@@ -90,9 +88,7 @@ export class GroupAddComponent implements OnInit {
     this.value.formOfEducationId = +this.form.get('fifth').value;
     this.value.classStartDate = this.form.get('sixth').value;
     this.value.classEndDate = this.form.get('seventh').value;
-    this.value.numberOfHours = +this.form.get('eight').value;
-    this.value.teacherCategoryId = +this.form.get('ninth').value;
-    this.value.departmentId = +this.form.get('tenth').value;
+    this.value.trainingProgramId = +this.form.get('eight').value;
 
     this.valueService.createValue(this.value)
       .subscribe((data: Group) => {
