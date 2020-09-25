@@ -1,13 +1,23 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import {Department} from '../models/Department';
-import {Teacher} from '../models/Teacher';
 import {StudentCategory} from '../models/StudentCategory';
 import {TestWork} from '../models/TestWork';
 import {Regulation} from '../models/Regulation';
 import {MainLiterature} from '../models/MainLiterature';
 import {AdditionalLiterature} from '../models/AdditionalLiterature';
+import {FinalExamination} from '../models/FinalExamination';
+import {CurriculumTopicAdditionalLiterature} from '../models/СurriculumTopicAdditionalLiterature';
+import {CurriculumTopicFinalExamination} from '../models/CurriculumTopicFinalExamination';
+import {CurriculumTopicDepartment} from '../models/СurriculumTopicDepartment';
+import {CurriculumTopicMainLiterature} from '../models/СurriculumTopicMainLiterature';
+import {CurriculumTopicStudentCategory} from '../models/CurriculumTopicStudentCategory';
+import {CurriculumTopicRegulation} from '../models/СurriculumTopicRegulation';
+import {CurriculumTopicTestWork} from '../models/CurriculumTopicTestWork';
 import {DepartmentService} from '../services/department.service';
 import {TeacherService} from '../services/teacher.service';
+import {TestWorkService} from '../services/test-work.service';
+import {FinalExaminationService} from '../services/final-examination.service';
 import {StudentCategoryService} from '../services/student-category.service';
 import {RegulationService} from '../services/regulation.service';
 import {MainLiteratureService} from '../services/main-literature.service';
@@ -18,61 +28,71 @@ import {CurriculumTopicMainLiteratureService} from '../services/curriculum-topic
 import {CurriculumTopicRegulationService} from '../services/curriculum-topic-regulation.service';
 import {CurriculumTopicStudentCategoryService} from '../services/curriculum-topic-student-category.service';
 import {CurriculumTopicTestWorkService} from '../services/curriculum-topic-test-work.service';
-import {CurriculumTopicAdditionalLiterature} from '../models/СurriculumTopicAdditionalLiterature';
-import {CurriculumTopicFinalExamination} from '../models/CurriculumTopicFinalExamination';
-import {CurriculumTopicDepartment} from '../models/СurriculumTopicDepartment';
-import {CurriculumTopicMainLiterature} from '../models/СurriculumTopicMainLiterature';
-import {CurriculumTopicStudentCategory} from '../models/CurriculumTopicStudentCategory';
-import { ActivatedRoute } from '@angular/router';
+import {CurriculumTopicFinalExaminationService} from "../services/curriculum-topic-final-examination.service";
 
 @Component({
   selector: 'app-curriculum-topic-add-form',
   templateUrl: './curriculum-topic-add-form.component.html',
   styleUrls: ['./curriculum-topic-add-form.component.scss'],
   providers: [
-    DepartmentService,
-    TeacherService,
-    StudentCategoryService,
-    RegulationService,
-    MainLiteratureService,
     AdditionalLiteratureService,
+    DepartmentService,
+    FinalExaminationService,
+    MainLiteratureService,
+    RegulationService,
+    StudentCategoryService,
+    TestWorkService,
     CurriculumTopicAdditionalLiteratureService,
     CurriculumTopicDepartmentService,
+    CurriculumTopicFinalExamination,
     CurriculumTopicMainLiteratureService,
     CurriculumTopicRegulationService,
     CurriculumTopicStudentCategoryService,
     CurriculumTopicTestWorkService]
 })
 export class CurriculumTopicAddFormComponent implements OnInit {
-  departments: Department[];
-  teachers: Teacher[];
-  teacherCategories: StudentCategory[];
-  theQuestions: TestWork[];
-  consultationTopics: Regulation[];
-  mainLiteratures: MainLiterature[];
   additionalLiteratures: AdditionalLiterature[];
+  departments: Department[];
+  finalExamination: FinalExamination[];
+  mainLiteratures: MainLiterature[];
+  regulation: Regulation[];
+  studentCategories: StudentCategory[];
+  testWorks: TestWork[];
 
   curriculumTopicAdditionalLiterature: CurriculumTopicAdditionalLiterature;
   curriculumTopicDepartment: CurriculumTopicDepartment;
+  curriculumTopicFinalExamination: CurriculumTopicFinalExamination;
   curriculumTopicMainLiterature: CurriculumTopicMainLiterature;
+  curriculumTopicRegulation: CurriculumTopicRegulation;
+  curriculumTopicStudentCategory: CurriculumTopicStudentCategory;
+  curriculumTopicTestWork: CurriculumTopicTestWork;
 
-  public departmentsList: CurriculumTopicDepartment[] = [{}];
-  public mainLiteraturesList: CurriculumTopicMainLiterature[] = [{}];
   public additionalLiteraturesList: CurriculumTopicAdditionalLiterature[] = [{}];
+  public departmentsList: CurriculumTopicDepartment[] = [{}];
+  public finalExaminationsList: CurriculumTopicFinalExamination[] = [{}];
+  public mainLiteraturesList: CurriculumTopicMainLiterature[] = [{}];
+  public regulationsList: CurriculumTopicRegulation[] = [{}];
+  public studentCategoriesList: CurriculumTopicStudentCategory[] = [{}];
+  public testWorksList: CurriculumTopicTestWork[] = [{}];
+
   private id: number;
 
   constructor(
-    private departmentService: DepartmentService,
-    private teacherService: TeacherService,
-    private consultationTopicService: RegulationService,
-    private mainLiteratureService: MainLiteratureService,
     private additionalLiteratureService: AdditionalLiteratureService,
+    private departmentService: DepartmentService,
+    private finalExaminationService: FinalExaminationService,
+    private mainLiteratureService: MainLiteratureService,
+    private regulationService: RegulationService,
+    private studentCategoryService: StudentCategoryService,
+    private testWorkService: TestWorkService,
+
     private curriculumTopicAdditionalLiteratureService: CurriculumTopicAdditionalLiteratureService,
     private curriculumTopicDepartmentService: CurriculumTopicDepartmentService,
+    private curriculumTopicFinalExaminationService: CurriculumTopicFinalExaminationService,
     private curriculumTopicMainLiteratureService: CurriculumTopicMainLiteratureService,
-    private curriculumTopicTeacherService: CurriculumTopicRegulationService,
-    private curriculumTopicTeacherCategoryService: CurriculumTopicStudentCategoryService,
-    private curriculumTopicTheQuestionService: CurriculumTopicTestWorkService,
+    private curriculumTopicRegulationService: CurriculumTopicRegulationService,
+    private curriculumTopicStudentCategoryService: CurriculumTopicStudentCategoryService,
+    private curriculumTopicTestWorkService: CurriculumTopicTestWorkService,
     private route: ActivatedRoute
   ) { }
 
@@ -107,7 +127,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  addTeacherCategory() {
+  addStudentCategory() {
     // this.teacherCategoriesList.push({});
   }
 
