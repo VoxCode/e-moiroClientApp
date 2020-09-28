@@ -130,7 +130,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   addFinalExamination() {
-    // this.finalExaminationsList.push({});
+    this.finalExaminationsList.push({});
   }
 
   // tslint:disable-next-line:typedef
@@ -140,17 +140,17 @@ export class CurriculumTopicAddFormComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   addRegulation() {
-    // this.regulationsList.push({});
+    this.regulationsList.push({});
   }
 
   // tslint:disable-next-line:typedef
   addStudentCategory() {
-    // this.studentCategoriesList.push({});
+    this.studentCategoriesList.push({});
   }
 
   // tslint:disable-next-line:typedef
   addTestWork() {
-    // this.testWorksList.push({});
+    this.testWorksList.push({});
   }
 
 

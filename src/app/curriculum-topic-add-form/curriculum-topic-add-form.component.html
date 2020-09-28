@@ -31,7 +31,14 @@
 
     <div class="col-sm">
       <h4><b>Итоговая атестация</b></h4>
-
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button mdbBtn type="button" size="sm" color="default" class="waves-light" mdbWavesEffect>Выпускная работа</button>
+        <button mdbBtn type="button" size="sm" color="default" class="waves-light" mdbWavesEffect>Зачет</button>
+        <button mdbBtn type="button" size="sm" color="default" class="waves-light" mdbWavesEffect>Экзамен</button>
+        <button mdbBtn type="button" size="sm" color="default" class="waves-light" mdbWavesEffect>Собеседование(в форме зачета)</button>
+        <button mdbBtn type="button" size="sm" color="default" class="waves-light" mdbWavesEffect>Собеседование(в форме деловой игры)</button>
+      </div>
+      <br>
       <div class="addButton">
         <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
                 (click)="addFinalExamination()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
@@ -111,7 +118,7 @@
 
       <div *ngFor="let el of testWorksList; let i = index" >
         <select (change)="changeTestWork($event.target.value, el)" class="browser-default custom-select">
-          <option>Выберите тему</option>
+          <option>Выберите вопрос</option>
           <option *ngFor="let p of testWorks" [selected]="p.id == el.testWorkId" [value]="p.id">{{p.content}}</option>
         </select>
         <div class="delButton">
