@@ -5,9 +5,9 @@ import {MDBModalRef} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-modal-edit',
-  templateUrl: './additional-literature-edit.component.html'
+  templateUrl: './test-work-edit.component.html'
 })
-export class AdditionalLiteratureEditComponent {
+export class TestWorkEditComponent {
 
   public editableRow: { id: string, first: string, last: string, handle: string };
   public saveButtonClicked: Subject<any> = new Subject<any>();

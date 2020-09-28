@@ -15,7 +15,6 @@ import {CurriculumTopicStudentCategory} from '../models/CurriculumTopicStudentCa
 import {CurriculumTopicRegulation} from '../models/СurriculumTopicRegulation';
 import {CurriculumTopicTestWork} from '../models/CurriculumTopicTestWork';
 import {DepartmentService} from '../services/department.service';
-import {TeacherService} from '../services/teacher.service';
 import {TestWorkService} from '../services/test-work.service';
 import {FinalExaminationService} from '../services/final-examination.service';
 import {StudentCategoryService} from '../services/student-category.service';
@@ -28,7 +27,7 @@ import {CurriculumTopicMainLiteratureService} from '../services/curriculum-topic
 import {CurriculumTopicRegulationService} from '../services/curriculum-topic-regulation.service';
 import {CurriculumTopicStudentCategoryService} from '../services/curriculum-topic-student-category.service';
 import {CurriculumTopicTestWorkService} from '../services/curriculum-topic-test-work.service';
-import {CurriculumTopicFinalExaminationService} from "../services/curriculum-topic-final-examination.service";
+import {CurriculumTopicFinalExaminationService} from '../services/curriculum-topic-final-examination.service';
 
 @Component({
   selector: 'app-curriculum-topic-add-form',
@@ -44,18 +43,19 @@ import {CurriculumTopicFinalExaminationService} from "../services/curriculum-top
     TestWorkService,
     CurriculumTopicAdditionalLiteratureService,
     CurriculumTopicDepartmentService,
-    CurriculumTopicFinalExamination,
+    CurriculumTopicFinalExaminationService,
     CurriculumTopicMainLiteratureService,
     CurriculumTopicRegulationService,
     CurriculumTopicStudentCategoryService,
     CurriculumTopicTestWorkService]
 })
+
 export class CurriculumTopicAddFormComponent implements OnInit {
   additionalLiteratures: AdditionalLiterature[];
   departments: Department[];
-  finalExamination: FinalExamination[];
+  finalExaminations: FinalExamination[];
   mainLiteratures: MainLiterature[];
-  regulation: Regulation[];
+  regulations: Regulation[];
   studentCategories: StudentCategory[];
   testWorks: TestWork[];
 
@@ -98,23 +98,30 @@ export class CurriculumTopicAddFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
-    this.loadDepartment();
-    this.loadTeacher();
-    this.loadTheQuestion();
-    this.loadTeachingPosition();
-    this.loadConsultationTopic();
-    this.loadMainLiterature();
     this.loadAdditionalLiterature();
+    this.loadDepartment();
+    this.loadFinalExamination();
+    this.loadMainLiterature();
+    this.loadRegulation();
+    this.loadStudentCategory();
+    this.loadTestWork();
+
     this.loadCurriculumTopicAdditionalLiterature();
     this.loadCurriculumTopicDepartment();
+    this.loadCurriculumTopicFinalExamination();
     this.loadCurriculumTopicMainLiterature();
-    this.loadCurriculumTopicTeacher();
-    this.loadCurriculumTopicTeacherCategory();
-    this.loadCurriculumTopicTheQuestion();
-    this.loadCurriculumTopicConsultationTopic();
+    this.loadCurriculumTopicRegulation();
+    this.loadCurriculumTopicStudentCategory();
+    this.loadCurriculumTopicTestWork();
   }
 
+
 // ##########ADD#############
+
+  // tslint:disable-next-line:typedef
+  addAdditionalLiterature() {
+    this.additionalLiteraturesList.push({});
+  }
 
   // tslint:disable-next-line:typedef
   addDepartment() {
@@ -122,23 +129,8 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  addTeacher() {
-    // this.teachersList.push({});
-  }
-
-  // tslint:disable-next-line:typedef
-  addStudentCategory() {
-    // this.teacherCategoriesList.push({});
-  }
-
-  // tslint:disable-next-line:typedef
-  addTheQuestion() {
-    // this.theQuestionsList.push({});
-  }
-
-  // tslint:disable-next-line:typedef
-  addConsultationTopic() {
-    // this.consultationTopicsList.push({});
+  addFinalExamination() {
+    // this.finalExaminationsList.push({});
   }
 
   // tslint:disable-next-line:typedef
@@ -147,11 +139,28 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  addAdditionalLiterature() {
-    this.additionalLiteraturesList.push({});
+  addRegulation() {
+    // this.regulationsList.push({});
   }
 
+  // tslint:disable-next-line:typedef
+  addStudentCategory() {
+    // this.studentCategoriesList.push({});
+  }
+
+  // tslint:disable-next-line:typedef
+  addTestWork() {
+    // this.testWorksList.push({});
+  }
+
+
 // ###########REMOVE##############
+
+  // tslint:disable-next-line:typedef
+  removeAdditionalLiterature(i: number, el: number) {
+    this.additionalLiteraturesList.splice(i, 1);
+    this.curriculumTopicAdditionalLiteratureService.deleteValue(el).subscribe();
+  }
 
   // tslint:disable-next-line:typedef
   removeDepartment(i: number, el: number) {
@@ -160,27 +169,9 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  removeTeacher(i: number, el: number) {
-    // this.teachersList.splice(i, 1);
-    this.curriculumTopicTeacherService.deleteValue(el).subscribe();
-  }
-
-  // tslint:disable-next-line:typedef
-  removeTeacherCategory(i: number, el: number) {
-    // this.teacherCategoriesList.splice(i, 1);
-    this.curriculumTopicTeacherCategoryService.deleteValue(el).subscribe();
-  }
-
-  // tslint:disable-next-line:typedef
-  removeTheQuestion(i: number, el: number) {
-    // this.theQuestionsList.splice(i, 1);
-    this.curriculumTopicTheQuestionService.deleteValue(el).subscribe();
-  }
-
-  // tslint:disable-next-line:typedef
-  removeConsultationTopic(i: number, el: number) {
-    // this.consultationTopicsList.splice(i, 1);
-    // this.curriculumTopicConsultationTopicService.deleteValue(el).subscribe();
+  removeFinalExamination(i: number, el: number) {
+    this.finalExaminationsList.splice(i, 1);
+    this.curriculumTopicFinalExaminationService.deleteValue(el).subscribe();
   }
 
   // tslint:disable-next-line:typedef
@@ -190,13 +181,33 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  removeAdditionalLiterature(i: number, el: number) {
-    this.additionalLiteraturesList.splice(i, 1);
-    this.curriculumTopicAdditionalLiteratureService.deleteValue(el).subscribe();
+  removeRegulation(i: number, el: number) {
+    this.regulationsList.splice(i, 1);
+    this.curriculumTopicRegulationService.deleteValue(el).subscribe();
+  }
+
+  // tslint:disable-next-line:typedef
+  removeStudentCategory(i: number, el: number) {
+    this.studentCategoriesList.splice(i, 1);
+    this.curriculumTopicStudentCategoryService.deleteValue(el).subscribe();
+  }
+
+  // tslint:disable-next-line:typedef
+  removeTestWork(i: number, el: number) {
+    this.testWorksList.splice(i, 1);
+    this.curriculumTopicTestWorkService.deleteValue(el).subscribe();
   }
 
 
 // #######################LOAD###########################
+
+  // tslint:disable-next-line:typedef
+  loadAdditionalLiterature() {
+    this.additionalLiteratureService.getValues()
+      .subscribe((data: AdditionalLiterature[]) => {
+        this.additionalLiteratures = data;
+      });
+  }
 
   // tslint:disable-next-line:typedef
   loadDepartment() {
@@ -207,34 +218,10 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  loadTeacher() {
-    this.teacherService.getValues()
-      .subscribe((data: Teacher[]) => {
-        this.teachers = data;
-      });
-  }
-
-  // tslint:disable-next-line:typedef
-  loadTheQuestion() {
-    this.studentCategoryService.getValues()
-      .subscribe((data: StudentCategory[]) => {
-        this.teacherCategories = data;
-      });
-  }
-
-  // tslint:disable-next-line:typedef
-  loadTeachingPosition() {
-    this.theQuestionService.getValues()
-      .subscribe((data: TestWork[]) => {
-        this.theQuestions = data;
-      });
-  }
-
-  // tslint:disable-next-line:typedef
-  loadConsultationTopic() {
-    this.consultationTopicService.getValues()
-      .subscribe((data: Regulation[]) => {
-        this.consultationTopics = data;
+  loadFinalExamination() {
+    this.finalExaminationService.getValues()
+      .subscribe((data: FinalExamination[]) => {
+        this.finalExaminations = data;
       });
   }
 
@@ -247,10 +234,26 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  loadAdditionalLiterature() {
-    this.additionalLiteratureService.getValues()
-      .subscribe((data: AdditionalLiterature[]) => {
-        this.additionalLiteratures = data;
+  loadRegulation() {
+    this.regulationService.getValues()
+      .subscribe((data: Regulation[]) => {
+        this.regulations = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadStudentCategory() {
+    this.studentCategoryService.getValues()
+      .subscribe((data: StudentCategory[]) => {
+        this.studentCategories = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadTestWork() {
+    this.testWorkService.getValues()
+      .subscribe((data: TestWork[]) => {
+        this.testWorks = data;
       });
   }
 
@@ -283,6 +286,20 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
+  loadCurriculumTopicFinalExamination() {
+    this.curriculumTopicFinalExaminationService.getValue(+this.id)
+      .subscribe((data: CurriculumTopicFinalExamination[]) => {
+        if (data.length !== 0){
+          this.finalExaminationsList = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.finalExaminationsList.sort(function(a, b) {
+            return a.id - b.id;
+          });
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
   loadCurriculumTopicMainLiterature() {
     this.curriculumTopicMainLiteratureService.getValue(+this.id)
       .subscribe((data: CurriculumTopicMainLiterature[]) => {
@@ -297,13 +314,13 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  loadCurriculumTopicTeacher() {
-    this.curriculumTopicTeacherService.getValue(+this.id)
-      .subscribe((data: CurriculumTopicTeacher[]) => {
+  loadCurriculumTopicRegulation() {
+    this.curriculumTopicRegulationService.getValue(+this.id)
+      .subscribe((data: Regulation[]) => {
         if (data.length !== 0){
-          this.teachersList = data;
+          this.regulationsList = data;
           // tslint:disable-next-line:only-arrow-functions typedef
-          this.teachersList.sort(function(a, b) {
+          this.regulationsList.sort(function(a, b) {
             return a.id - b.id;
           });
         }
@@ -311,13 +328,13 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  loadCurriculumTopicTeacherCategory() {
-    this.curriculumTopicTeacherCategoryService.getValue(+this.id)
-      .subscribe((data: CurriculumTopicTeacherCategory[]) => {
+  loadCurriculumTopicStudentCategory() {
+    this.curriculumTopicStudentCategoryService.getValue(+this.id)
+      .subscribe((data: CurriculumTopicStudentCategory[]) => {
         if (data.length !== 0){
-          this.teacherCategoriesList = data;
+          this.studentCategoriesList = data;
           // tslint:disable-next-line:only-arrow-functions typedef
-          this.teacherCategoriesList.sort(function(a, b) {
+          this.studentCategoriesList.sort(function(a, b) {
             return a.id - b.id;
           });
         }
@@ -325,27 +342,13 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  loadCurriculumTopicTheQuestion() {
-    this.curriculumTopicTheQuestionService.getValue(+this.id)
-      .subscribe((data: CurriculumTopicTheQuestion[]) => {
+  loadCurriculumTopicTestWork() {
+    this.curriculumTopicTestWorkService.getValue(+this.id)
+      .subscribe((data: CurriculumTopicTestWork[]) => {
         if (data.length !== 0){
-          this.theQuestionsList = data;
+          this.testWorksList = data;
           // tslint:disable-next-line:only-arrow-functions typedef
-          this.theQuestionsList.sort(function(a, b) {
-            return a.id - b.id;
-          });
-        }
-      });
-  }
-
-  // tslint:disable-next-line:typedef
-  loadCurriculumTopicConsultationTopic() {
-    this.curriculumTopicConsultationTopicService.getValue(+this.id)
-      .subscribe((data: CurriculumTopicConsultationTopic[]) => {
-        if (data.length !== 0){
-          this.consultationTopicsList = data;
-          // tslint:disable-next-line:only-arrow-functions typedef
-          this.consultationTopicsList.sort(function(a, b) {
+          this.testWorksList.sort(function(a, b) {
             return a.id - b.id;
           });
         }
@@ -378,6 +381,17 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
+  postCurriculumTopicFinalExamination() {
+    this.curriculumTopicFinalExaminationService.createValue(this.curriculumTopicFinalExamination)
+      .subscribe((data: CurriculumTopicFinalExamination) => {
+        this.curriculumTopicFinalExamination = data;
+        const tmpObject = this.finalExaminationsList.find(a => a.finalExaminationId === undefined);
+        const index = this.finalExaminationsList.indexOf(tmpObject);
+        this.finalExaminationsList[index].id = this.curriculumTopicFinalExamination.id;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
   postCurriculumTopicMainLiterature() {
     this.curriculumTopicMainLiteratureService.createValue(this.curriculumTopicMainLiterature)
       .subscribe((data: CurriculumTopicMainLiterature) => {
@@ -389,46 +403,35 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  postCurriculumTopicTeacher() {
-    this.curriculumTopicTeacherService.createValue(this.curriculumTopicTeacher)
-      .subscribe((data: CurriculumTopicTeacher) => {
-        this.curriculumTopicTeacher = data;
-        const tmpObject = this.teachersList.find(a => a.teacherId === undefined);
-        const index = this.teachersList.indexOf(tmpObject);
-        this.teachersList[index].id = this.curriculumTopicTeacher.id;
+  postCurriculumTopicRegulation() {
+    this.curriculumTopicRegulationService.createValue(this.curriculumTopicRegulation)
+      .subscribe((data: CurriculumTopicRegulation) => {
+        this.curriculumTopicRegulation = data;
+        const tmpObject = this.regulationsList.find(a => a.regulationId === undefined);
+        const index = this.regulationsList.indexOf(tmpObject);
+        this.regulationsList[index].id = this.curriculumTopicRegulation.id;
       });
   }
 
   // tslint:disable-next-line:typedef
-  postCurriculumTopicTeacherCategory() {
-    this.curriculumTopicTeacherCategoryService.createValue(this.curriculumTopicTeacherCategory)
-      .subscribe((data: CurriculumTopicTeacherCategory) => {
-        this.curriculumTopicTeacherCategory = data;
-        const tmpObject = this.teacherCategoriesList.find(a => a.teacherCategoryId === undefined);
-        const index = this.teacherCategoriesList.indexOf(tmpObject);
-        this.teacherCategoriesList[index].id = this.curriculumTopicTeacherCategory.id;
+  postCurriculumTopicStudentCategory() {
+    this.curriculumTopicStudentCategoryService.createValue(this.curriculumTopicStudentCategory)
+      .subscribe((data: CurriculumTopicStudentCategory) => {
+        this.curriculumTopicStudentCategory = data;
+        const tmpObject = this.studentCategoriesList.find(a => a.studentCategoryId === undefined);
+        const index = this.studentCategoriesList.indexOf(tmpObject);
+        this.studentCategoriesList[index].id = this.curriculumTopicStudentCategory.id;
       });
   }
 
   // tslint:disable-next-line:typedef
-  postCurriculumTopicTheQuestion() {
-    this.curriculumTopicTheQuestionService.createValue(this.curriculumTopicTheQuestion)
-      .subscribe((data: CurriculumTopicTheQuestion) => {
-        this.curriculumTopicTheQuestion = data;
-        const tmpObject = this.theQuestionsList.find(a => a.theQuestionId === undefined);
-        const index = this.theQuestionsList.indexOf(tmpObject);
-        this.theQuestionsList[index].id = this.curriculumTopicTheQuestion.id;
-      });
-  }
-
-  // tslint:disable-next-line:typedef
-  postCurriculumTopicConsultationTopic() {
-    this.curriculumTopicConsultationTopicService.createValue(this.curriculumTopicConsultationTopic)
-      .subscribe((data: CurriculumTopicConsultationTopic) => {
-        this.curriculumTopicConsultationTopic = data;
-        const tmpObject = this.consultationTopicsList.find(a => a.consultationTopicId === undefined);
-        const index = this.consultationTopicsList.indexOf(tmpObject);
-        this.consultationTopicsList[index].id = this.curriculumTopicConsultationTopic.id;
+  postCurriculumTopicTestWork() {
+    this.curriculumTopicTestWorkService.createValue(this.curriculumTopicTestWork)
+      .subscribe((data: CurriculumTopicTestWork) => {
+        this.curriculumTopicTestWork = data;
+        const tmpObject = this.testWorksList.find(a => a.testWorkId === undefined);
+        const index = this.testWorksList.indexOf(tmpObject);
+        this.testWorksList[index].id = this.curriculumTopicTestWork.id;
       });
   }
 
@@ -452,6 +455,14 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
+  updateCurriculumTopicFinalExamination() {
+    this.curriculumTopicFinalExaminationService.updateValue(this.curriculumTopicFinalExamination)
+      .subscribe((data: CurriculumTopicFinalExamination) => {
+        this.curriculumTopicFinalExamination = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
   updateCurriculumTopicMainLiterature() {
     this.curriculumTopicMainLiteratureService.updateValue(this.curriculumTopicMainLiterature)
       .subscribe((data: CurriculumTopicMainLiterature) => {
@@ -460,36 +471,29 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  updateCurriculumTopicTeacher() {
-    this.curriculumTopicTeacherService.updateValue(this.curriculumTopicTeacher)
-      .subscribe((data: CurriculumTopicTeacher) => {
-        this.curriculumTopicTeacher = data;
+  updateCurriculumTopicRegulation() {
+    this.curriculumTopicRegulationService.updateValue(this.curriculumTopicRegulation)
+      .subscribe((data: CurriculumTopicRegulation) => {
+        this.curriculumTopicRegulation = data;
       });
   }
 
   // tslint:disable-next-line:typedef
-  updateCurriculumTopicTeacherCategory() {
-    this.curriculumTopicTeacherCategoryService.updateValue(this.curriculumTopicTeacherCategory)
-      .subscribe((data: CurriculumTopicTeacherCategory) => {
-        this.curriculumTopicTeacherCategory = data;
+  updateCurriculumTopicStudentCategory() {
+    this.curriculumTopicStudentCategoryService.updateValue(this.curriculumTopicStudentCategory)
+      .subscribe((data: CurriculumTopicStudentCategory) => {
+        this.curriculumTopicStudentCategory = data;
       });
   }
 
   // tslint:disable-next-line:typedef
-  updateCurriculumTopicTheQuestion() {
-    this.curriculumTopicTheQuestionService.updateValue(this.curriculumTopicTheQuestion)
-      .subscribe((data: CurriculumTopicTheQuestion) => {
-        this.curriculumTopicTheQuestion = data;
+  updateCurriculumTopicTestWork() {
+    this.curriculumTopicTestWorkService.updateValue(this.curriculumTopicTestWork)
+      .subscribe((data: CurriculumTopicTestWork) => {
+        this.curriculumTopicTestWork = data;
       });
   }
 
-  // tslint:disable-next-line:typedef
-  updateCurriculumTopicConsultationTopic() {
-    this.curriculumTopicConsultationTopicService.updateValue(this.curriculumTopicConsultationTopic)
-      .subscribe((data: CurriculumTopicConsultationTopic) => {
-        this.curriculumTopicConsultationTopic = data;
-      });
-  }
 
 // ###########CHANGE#############
 
@@ -523,6 +527,21 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
+  changeFinalExamination($event: any, el: CurriculumTopicFinalExamination) {
+    this.curriculumTopicFinalExamination = new CurriculumTopicFinalExamination();
+    this.curriculumTopicFinalExamination.finalExaminationId = +$event;
+    this.curriculumTopicFinalExamination.curriculumTopicId = +this.id;
+
+    if (el.id !== undefined){
+      this.curriculumTopicFinalExamination.id = el.id;
+      this.updateCurriculumTopicFinalExamination();
+    }
+    else {
+      this.postCurriculumTopicFinalExamination();
+    }
+  }
+
+  // tslint:disable-next-line:typedef
   changeMainLiterature($event: any, el: CurriculumTopicMainLiterature) {
     this.curriculumTopicMainLiterature = new CurriculumTopicMainLiterature();
     this.curriculumTopicMainLiterature.mainLiteratureId = +$event;
@@ -538,62 +557,47 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  changeTeacher($event: any, el: CurriculumTopicTeacher) {
-    this.curriculumTopicTeacher = new CurriculumTopicTeacher();
-    this.curriculumTopicTeacher.teacherId = +$event;
-    this.curriculumTopicTeacher.curriculumTopicId = +this.id;
+  changeRegulation($event: any, el: CurriculumTopicRegulation) {
+    this.curriculumTopicRegulation = new CurriculumTopicRegulation();
+    this.curriculumTopicRegulation.regulationId = +$event;
+    this.curriculumTopicRegulation.curriculumTopicId = +this.id;
 
     if (el.id !== undefined){
-      this.curriculumTopicTeacher.id = el.id;
-      this.updateCurriculumTopicTeacher();
+      this.curriculumTopicRegulation.id = el.id;
+      this.updateCurriculumTopicRegulation();
     }
     else {
-      this.postCurriculumTopicTeacher();
+      this.postCurriculumTopicRegulation();
     }
   }
 
   // tslint:disable-next-line:typedef
-  changeTeacherCategory($event: any, el: CurriculumTopicTeacherCategory) {
-    this.curriculumTopicTeacherCategory = new CurriculumTopicTeacherCategory();
-    this.curriculumTopicTeacherCategory.teacherCategoryId = +$event;
-    this.curriculumTopicTeacherCategory.curriculumTopicId = +this.id;
+  changeStudentCategory($event: any, el: CurriculumTopicStudentCategory) {
+    this.curriculumTopicStudentCategory = new CurriculumTopicStudentCategory();
+    this.curriculumTopicStudentCategory.studentCategoryId = +$event;
+    this.curriculumTopicStudentCategory.curriculumTopicId = +this.id;
 
     if (el.id !== undefined){
-      this.curriculumTopicTeacherCategory.id = el.id;
-      this.updateCurriculumTopicTeacherCategory();
+      this.curriculumTopicStudentCategory.id = el.id;
+      this.updateCurriculumTopicStudentCategory();
     }
     else {
-      this.postCurriculumTopicTeacherCategory();
+      this.postCurriculumTopicStudentCategory();
     }
   }
 
   // tslint:disable-next-line:typedef
-  changeTheQuestion($event: any, el: CurriculumTopicTheQuestion) {
-    this.curriculumTopicTheQuestion = new CurriculumTopicTheQuestion();
-    this.curriculumTopicTheQuestion.theQuestionId = +$event;
-    this.curriculumTopicTheQuestion.curriculumTopicId = +this.id;
+  changeTestWork($event: any, el: CurriculumTopicTestWork) {
+    this.curriculumTopicTestWork = new CurriculumTopicTestWork();
+    this.curriculumTopicTestWork.testWorkId = +$event;
+    this.curriculumTopicTestWork.curriculumTopicId = +this.id;
 
     if (el.id !== undefined){
-      this.curriculumTopicTheQuestion.id = el.id;
-      this.updateCurriculumTopicTheQuestion();
+      this.curriculumTopicTestWork.id = el.id;
+      this.updateCurriculumTopicTestWork();
     }
     else {
-      this.postCurriculumTopicTheQuestion();
-    }
-  }
-
-  // tslint:disable-next-line:typedef
-  changeConsultationTopic($event: any, el: CurriculumTopicConsultationTopic) {
-    this.curriculumTopicConsultationTopic = new CurriculumTopicConsultationTopic();
-    this.curriculumTopicConsultationTopic.consultationTopicId = +$event;
-    this.curriculumTopicConsultationTopic.curriculumTopicId = +this.id;
-
-    if (el.id !== undefined){
-      this.curriculumTopicConsultationTopic.id = el.id;
-      this.updateCurriculumTopicConsultationTopic();
-    }
-    else {
-      this.postCurriculumTopicConsultationTopic();
+      this.postCurriculumTopicTestWork();
     }
   }
 }

@@ -36,7 +36,7 @@ const routes: Routes = [
   { path: 'occupationForm', component: OccupationFormComponent, canActivate: [AuthGuardService]},
   { path: 'sectionNumber', component: SectionNumberComponent, canActivate: [AuthGuardService]},
   { path: 'teacher', component: TeacherComponent, canActivate: [AuthGuardService]},
-  { path: 'teacherCategory', component: StudentCategoryComponent, canActivate: [AuthGuardService]},
+  { path: 'studentCategory', component: StudentCategoryComponent, canActivate: [AuthGuardService]},
   { path: 'teachingPosition', component: TeachingPositionComponent, canActivate: [AuthGuardService]},
   { path: 'trainingProgram', component: TrainingProgramComponent, canActivate: [AuthGuardService]},
   { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent, canActivate: [AuthGuardService]},

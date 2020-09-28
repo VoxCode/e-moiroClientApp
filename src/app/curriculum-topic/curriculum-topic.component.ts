@@ -3,41 +3,30 @@ import { CurriculumTopicService } from '../services/curriculum-topic.service';
 import { CurriculumTopic } from '../models/CurriculumTopic';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {CurriculumTopicEditComponent} from './curriculum-topic-edit.component';
-import {OccupationForm} from '../models/OccupationForm';
-import {OccupationFormService} from '../services/occupation-form.service';
-import {CurriculumSection} from '../models/CurriculumSection';
-import {CurriculumSectionService} from '../services/curriculum-section.service';
 
 @Component({
   selector: 'app-curriculum-topic',
   templateUrl: './curriculum-topic.component.html',
   styleUrls: ['./curriculum-topic.component.scss'],
-  providers: [CurriculumTopicService, OccupationFormService, CurriculumSectionService]
+  providers: [CurriculumTopicService]
 })
 
 export class CurriculumTopicComponent implements OnInit, AfterViewInit {
   value: CurriculumTopic = new CurriculumTopic();
   values: CurriculumTopic[];
-  occupationForms: OccupationForm[];
-  occupationForm: OccupationForm = new OccupationForm();
-  curriculumSections: CurriculumSection[];
-  curriculumSection: CurriculumSection = new CurriculumSection();
 
   @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
   @ViewChild('row', { static: true }) row: ElementRef;
 
   elements: any = [];
-  headElements = ['Номер', 'id', 'Тема', 'Количество часов', 'Аннотация', 'Форма обучения',
-    'Раздел учебной программы', 'Дистанционное обучение', 'Команда'];
+  headElements = ['Номер', 'id', 'Тема', 'Аннотация', 'Команда'];
   searchText = '';
   previous: string;
   modalRef: MDBModalRef;
 
   constructor(
     private valueService: CurriculumTopicService,
-    private occupationFormService: OccupationFormService,
-    private curriculumSectionService: CurriculumSectionService,
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService) { }
 
@@ -49,8 +38,6 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   ngOnInit() {
     this.loadValue();
-    this.loadOccupationForm();
-    this.loadCurriculumSection();
   }
 
   // tslint:disable-next-line:typedef use-lifecycle-interface
@@ -99,13 +86,7 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
             id: i.toString(),
             first: this.values[i - 1].id,
             second: this.values[i - 1].topicTitle,
-            third: this.values[i - 1].annotation,
-            fourth: this.values[i - 1].classHours,
-            fifth: this.values[i - 1].curriculumSectionId,
-            sixth: this.values[i - 1].occupationFormId,
-            seventh: this.values[i - 1].curriculumSectionName,
-            eighth: this.values[i - 1].occupationFormName,
-            last: this.values[i - 1].isDistanceLearning});
+            last: this.values[i - 1].annotation});
         }
         this.mdbTable.setDataSource(this.elements);
         this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
@@ -120,19 +101,13 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
       .subscribe((data: CurriculumTopic) => {
         this.value = data;
         const index = this.elements.length + 1;
-        this.value.curriculumSectionName = this.curriculumSections.find(p => p.id === +this.value.curriculumSectionId).name;
-        this.value.occupationFormName = this.occupationForms.find(p => p.id === +this.value.occupationFormId).shortName;
+       // this.value.curriculumSectionName = this.curriculumSections.find(p => p.id === +this.value.curriculumSectionId).name;
+       // this.value.occupationFormName = this.occupationForms.find(p => p.id === +this.value.occupationFormId).shortName;
         this.mdbTable.addRow({
           id: index.toString(),
           first: this.value.id,
           second: this.value.topicTitle,
-          third: this.value.annotation,
-          fourth: this.value.classHours,
-          fifth: this.value.curriculumSectionId,
-          sixth: this.value.occupationFormId,
-          seventh: this.value.curriculumSectionName,
-          eighth: this.value.occupationFormName,
-          last: this.value.isDistanceLearning
+          last: this.value.annotation
         });
         this.mdbTable.setDataSource(this.elements);
         this.cancel();
@@ -144,11 +119,7 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
     this.cancel();
     this.value.id = p.first;
     this.value.topicTitle = p.second;
-    this.value.annotation = p.third;
-    this.value.classHours = p.fourth;
-    this.value.curriculumSectionId = p.fifth;
-    this.value.occupationFormId = p.sixth;
-    this.value.isDistanceLearning = p.last;
+    this.value.annotation = p.last;
     this.valueService.updateValue(this.value)
       .subscribe();
     this.cancel();
@@ -165,11 +136,7 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
   delete(p: any) {
     this.value.id = p.first;
     this.value.topicTitle = p.second;
-    this.value.annotation = p.third;
-    this.value.classHours = p.fourth;
-    this.value.curriculumSectionId = p.fifth;
-    this.value.occupationFormId = p.sixth;
-    this.value.isDistanceLearning = p.last;
+    this.value.annotation = p.last;
     this.valueService.deleteValue(this.value.id)
       .subscribe(data => {
         this.removeRow(p);
@@ -206,21 +173,5 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
       this.save(newElement);
     });
     this.mdbTable.setDataSource(this.elements);
-  }
-
-  // tslint:disable-next-line:typedef
-  loadOccupationForm() {
-    this.occupationFormService.getValues()
-      .subscribe((data: OccupationForm[]) => {
-        this.occupationForms = data;
-      });
-  }
-
-  // tslint:disable-next-line:typedef
-  loadCurriculumSection() {
-    this.curriculumSectionService.getValues()
-      .subscribe((data: CurriculumSection[]) => {
-        this.curriculumSections = data;
-      });
   }
 }

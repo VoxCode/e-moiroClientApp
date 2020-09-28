@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
-import { СurriculumTopicRegulation } from '../models/СurriculumTopicRegulation';
+import { CurriculumTopicRegulation } from '../models/СurriculumTopicRegulation';
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -17,11 +17,11 @@ export class CurriculumTopicRegulationService {
     return this.http.get(this.url + '/' + id);
   }
   // tslint:disable-next-line:typedef
-  createValue(curriculumTopicRegulation: СurriculumTopicRegulation) {
+  createValue(curriculumTopicRegulation: CurriculumTopicRegulation) {
     return this.http.post(this.url, curriculumTopicRegulation);
   }
   // tslint:disable-next-line:typedef
-  updateValue(curriculumTopicRegulation: СurriculumTopicRegulation) {
+  updateValue(curriculumTopicRegulation: CurriculumTopicRegulation) {
     return this.http.put(this.url, curriculumTopicRegulation);
   }
   // tslint:disable-next-line:typedef
