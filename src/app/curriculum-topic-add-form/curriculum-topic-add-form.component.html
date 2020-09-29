@@ -32,13 +32,13 @@
     <div class="col-sm">
       <h4><b>Итоговая атестация</b></h4>
       <div class="btn-group" role="group" aria-label="Basic example">
-        <button mdbBtn type="button" size="sm" color="default" class="waves-light" mdbWavesEffect>Выпускная работа</button>
-        <button mdbBtn type="button" size="sm" color="default" class="waves-light" mdbWavesEffect>Зачет</button>
-        <button mdbBtn type="button" size="sm" color="default" class="waves-light" mdbWavesEffect>Экзамен</button>
-        <button mdbBtn type="button" size="sm" color="default" class="waves-light" mdbWavesEffect>Собеседование(в форме зачета)</button>
-        <button mdbBtn type="button" size="sm" color="default" class="waves-light" mdbWavesEffect>Собеседование(в форме деловой игры)</button>
+        <button mdbBtn type="button" size="sm" color="primary" class="waves-light" (click)="finalExaminationFirst(1)" mdbWavesEffect>Выпуск.раб.</button>
+        <button mdbBtn type="button" size="sm" color="primary" class="waves-light" (click)="finalExaminationSecond(2)" mdbWavesEffect>Зач.</button>
+        <button mdbBtn type="button" size="sm" color="primary" class="waves-light" (click)="finalExaminationThird(3)" mdbWavesEffect>Экз.</button>
+        <button mdbBtn type="button" size="sm" color="primary" class="waves-light" (click)="finalExaminationFourth(4)" mdbWavesEffect>Соб.(зач.)</button>
+        <button mdbBtn type="button" size="sm" color="primary" class="waves-light" (click)="finalExaminationFifth(5)" mdbWavesEffect>Соб.(дел.игр.)</button>
       </div>
-      <br>
+      <br><br>
       <div class="addButton">
         <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
                 (click)="addFinalExamination()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>

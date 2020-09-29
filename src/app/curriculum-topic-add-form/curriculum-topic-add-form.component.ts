@@ -287,16 +287,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicFinalExamination() {
-    this.curriculumTopicFinalExaminationService.getValue(+this.id)
-      .subscribe((data: CurriculumTopicFinalExamination[]) => {
-        if (data.length !== 0){
-          this.finalExaminationsList = data;
-          // tslint:disable-next-line:only-arrow-functions typedef
-          this.finalExaminationsList.sort(function(a, b) {
-            return a.id - b.id;
-          });
-        }
-      });
+    this.finalExaminationFirst(1);
   }
 
   // tslint:disable-next-line:typedef
@@ -599,5 +590,75 @@ export class CurriculumTopicAddFormComponent implements OnInit {
     else {
       this.postCurriculumTopicTestWork();
     }
+  }
+
+  // tslint:disable-next-line:typedef
+  finalExaminationFirst(certificationTypeIndex: number) {
+    this.curriculumTopicFinalExaminationService.getValue(+this.id, certificationTypeIndex)
+      .subscribe((data: CurriculumTopicFinalExamination[]) => {
+        if (data.length !== 0){
+          this.finalExaminationsList = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.finalExaminationsList.sort(function(a, b) {
+            return a.id - b.id;
+          });
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  finalExaminationSecond(certificationTypeIndex: number) {
+    this.curriculumTopicFinalExaminationService.getValue(+this.id, certificationTypeIndex)
+      .subscribe((data: CurriculumTopicFinalExamination[]) => {
+        if (data.length !== 0){
+          this.finalExaminationsList = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.finalExaminationsList.sort(function(a, b) {
+            return a.id - b.id;
+          });
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  finalExaminationThird(certificationTypeIndex: number) {
+    this.curriculumTopicFinalExaminationService.getValue(+this.id, certificationTypeIndex)
+      .subscribe((data: CurriculumTopicFinalExamination[]) => {
+        if (data.length !== 0){
+          this.finalExaminationsList = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.finalExaminationsList.sort(function(a, b) {
+            return a.id - b.id;
+          });
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  finalExaminationFourth(certificationTypeIndex: number) {
+    this.curriculumTopicFinalExaminationService.getValue(+this.id, certificationTypeIndex)
+      .subscribe((data: CurriculumTopicFinalExamination[]) => {
+        if (data.length !== 0){
+          this.finalExaminationsList = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.finalExaminationsList.sort(function(a, b) {
+            return a.id - b.id;
+          });
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  finalExaminationFifth(certificationTypeIndex: number) {
+    this.curriculumTopicFinalExaminationService.getValue(+this.id, certificationTypeIndex)
+      .subscribe((data: CurriculumTopicFinalExamination[]) => {
+        if (data.length !== 0){
+          this.finalExaminationsList = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.finalExaminationsList.sort(function(a, b) {
+            return a.id - b.id;
+          });
+        }
+      });
   }
 }

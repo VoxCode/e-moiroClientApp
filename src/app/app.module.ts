@@ -49,6 +49,7 @@ import { TestWorkComponent } from './test-work/test-work.component';
 import {TestWorkEditComponent} from './test-work/test-work-edit.component';
 import { TrainingProgramAddFormComponent } from './training-program-add-form/training-program-add-form.component';
 import {FinalExaminationEditComponent} from './final-examination/final-examination-edit.component';
+import {CertificationTypeEditComponent} from './certification-type/certification-type-edit.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import {FinalExaminationEditComponent} from './final-examination/final-examinati
     CurriculumTopicAddFormComponent,
     DocxGeneratorComponent,
     CertificationTypeComponent,
+    CertificationTypeEditComponent,
     FinalExaminationEditComponent,
     FinalExaminationComponent,
     TestWorkComponent,

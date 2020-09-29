@@ -21,6 +21,7 @@ import {CurriculumTopicAddFormComponent} from './curriculum-topic-add-form/curri
 import {GroupAddComponent} from './group/group-add.component';
 import {DocxGeneratorComponent} from './docx-generator/docx-generator.component';
 import {TestWorkComponent} from './test-work/test-work.component';
+import {CertificationTypeComponent} from './certification-type/certification-type.component';
 
 const routes: Routes = [
   { path: 'docxGenerator', component:  DocxGeneratorComponent, canActivate: [AuthGuardService]},
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'regulation', component: RegulationComponent, canActivate: [AuthGuardService]},
   { path: 'curriculumSection', component: CurriculumSectionComponent, canActivate: [AuthGuardService]},
   { path: 'curriculumTopic', component: CurriculumTopicComponent, canActivate: [AuthGuardService]},
+  { path: 'certificationType', component: CertificationTypeComponent, canActivate: [AuthGuardService]},
   { path: 'department', component: DepartmentComponent, canActivate: [AuthGuardService]},
   { path: 'formOfEducation', component: FormOfEducationComponent, canActivate: [AuthGuardService]},
   { path: 'group', component: GroupComponent, canActivate: [AuthGuardService]},

@@ -13,8 +13,8 @@ export class CurriculumTopicFinalExaminationService {
     return this.http.get(this.url);
   }
   // tslint:disable-next-line:typedef
-  getValue(id: number) {
-    return this.http.get(this.url + '/' + id);
+  getValue(id: number, certificationTypeIndex: number) {
+    return this.http.get(this.url + '/' + certificationTypeIndex + '/' + id);
   }
   // tslint:disable-next-line:typedef
   createValue(curriculumTopicFinalExamination: CurriculumTopicFinalExamination) {
