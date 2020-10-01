@@ -100,7 +100,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
     this.id = this.route.snapshot.params.id;
     this.loadAdditionalLiterature();
     this.loadDepartment();
-    this.loadFinalExamination();
+    this.loadFinalExamination(1);
     this.loadMainLiterature();
     this.loadRegulation();
     this.loadStudentCategory();
@@ -218,8 +218,8 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  loadFinalExamination() {
-    this.finalExaminationService.getValues()
+  loadFinalExamination(certificationTypeIndex: number) {
+    this.finalExaminationService.getValue(certificationTypeIndex)
       .subscribe((data: FinalExamination[]) => {
         this.finalExaminations = data;
       });
@@ -595,6 +595,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   finalExaminationFirst(certificationTypeIndex: number) {
     this.cleanFinalExamination();
+    this.loadFinalExamination(1);
     this.curriculumTopicFinalExaminationService.getValue(+this.id, certificationTypeIndex)
       .subscribe((data: CurriculumTopicFinalExamination[]) => {
         if (data.length !== 0){
@@ -610,6 +611,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   finalExaminationSecond(certificationTypeIndex: number) {
     this.cleanFinalExamination();
+    this.loadFinalExamination(2);
     this.curriculumTopicFinalExaminationService.getValue(+this.id, certificationTypeIndex)
       .subscribe((data: CurriculumTopicFinalExamination[]) => {
         if (data.length !== 0){
@@ -625,6 +627,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   finalExaminationThird(certificationTypeIndex: number) {
     this.cleanFinalExamination();
+    this.loadFinalExamination(3);
     this.curriculumTopicFinalExaminationService.getValue(+this.id, certificationTypeIndex)
       .subscribe((data: CurriculumTopicFinalExamination[]) => {
         if (data.length !== 0){
@@ -640,6 +643,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   finalExaminationFourth(certificationTypeIndex: number) {
     this.cleanFinalExamination();
+    this.loadFinalExamination(4);
     this.curriculumTopicFinalExaminationService.getValue(+this.id, certificationTypeIndex)
       .subscribe((data: CurriculumTopicFinalExamination[]) => {
         if (data.length !== 0){
@@ -655,6 +659,7 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   finalExaminationFifth(certificationTypeIndex: number) {
     this.cleanFinalExamination();
+    this.loadFinalExamination(5);
     this.curriculumTopicFinalExaminationService.getValue(+this.id, certificationTypeIndex)
       .subscribe((data: CurriculumTopicFinalExamination[]) => {
         if (data.length !== 0){
@@ -670,5 +675,6 @@ export class CurriculumTopicAddFormComponent implements OnInit {
   // tslint:disable-next-line:typedef
   cleanFinalExamination() {
     this.finalExaminationsList = [{}];
+    this.finalExaminations = [{}];
   }
 }

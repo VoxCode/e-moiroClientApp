@@ -4,10 +4,13 @@ export class TrainingProgram {
     public name?: string,
     public numberOfHours?: number,
     public isDistanceLearning?: boolean,
-    public isIndependentWork?: boolean,
+    public isControlWork?: boolean,
     public isTestWork?: boolean,
-    public IndependentWork?: string,
+    public controlWork?: string,
     public departmentId?: number,
+    public departmentName?: string,
     public studentCategoryId?: number,
-    public certificationTypeId?: number){ }
+    public studentCategoryName?: string,
+    public certificationTypeId?: number,
+    public certificationTypeName?: string){ }
 }
