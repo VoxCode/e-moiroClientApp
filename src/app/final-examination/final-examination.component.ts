@@ -4,7 +4,7 @@ import {FinalExaminationService} from '../services/final-examination.service';
 import {CertificationTypeService} from '../services/certification-type.service';
 import {FinalExamination} from '../models/FinalExamination';
 import {CertificationType} from '../models/CertificationType';
-import {FinalExaminationEditComponent} from "./final-examination-edit.component";
+import {FinalExaminationEditComponent} from './final-examination-edit.component';
 
 @Component({
   selector: 'app-final-examination',
