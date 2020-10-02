@@ -34,7 +34,7 @@
       </div>
 
       <div>
-        <mdb-checkbox [default]="true" [(ngModel)]="this.isDistanceLearning" formControlName="fourth">Дистанционное обучение</mdb-checkbox>
+        <mdb-checkbox [default]="true" (change)="changeIsDistanceLearning($event.checked)" formControlName="fourth">Дистанционное обучение</mdb-checkbox>
       </div>
 
       <div>

@@ -8,7 +8,7 @@ import {CertificationTypeService} from '../services/certification-type.service';
 import {Department} from '../models/Department';
 import {StudentCategory} from '../models/StudentCategory';
 import {CertificationType} from '../models/CertificationType';
-import {TrainingProgramEditComponent} from "./training-program-edit.component";
+import {TrainingProgramEditComponent} from './training-program-edit.component';
 
 
 @Component({

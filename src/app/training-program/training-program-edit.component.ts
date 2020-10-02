@@ -22,7 +22,7 @@ export class TrainingProgramEditComponent {
   departments: Department[];
   studentCategories: StudentCategory[];
   certificationTypes: CertificationType[];
-  isDistanceLearning: boolean;
+  isDistanceLearning: any;
   public editableRow: {
     id: string,
     first: string,
@@ -33,8 +33,11 @@ export class TrainingProgramEditComponent {
     sixth: string,
     seventh: string,
     eight: string,
+    ninth: string,
     tenth: string,
+    eleventh: string,
     twelfth: string,
+    last: string,
     handle: string };
   public saveButtonClicked: Subject<any> = new Subject<any>();
 
@@ -63,7 +66,8 @@ export class TrainingProgramEditComponent {
     this.loadDepartment();
     this.loadStudentCategory();
     this.loadCertificationType();
-    this.isDistanceLearning = false;
+    this.isDistanceLearning = this.editableRow.fourth;
+    console.log(this.isDistanceLearning);
     this.form.controls.id.patchValue(this.editableRow.id);
     this.form.controls.first.patchValue(this.editableRow.first);
     this.form.controls.second.patchValue(this.editableRow.second);
@@ -80,9 +84,9 @@ export class TrainingProgramEditComponent {
   // tslint:disable-next-line:typedef
   editRow() {
     this.editableRow = this.form.getRawValue();
-    this.editableRow.eight = this.departments.find(p => p.id === +this.editableRow.eight).name;
-    this.editableRow.tenth = this.studentCategories.find(p => p.id === +this.editableRow.tenth).name;
-    this.editableRow.twelfth = this.certificationTypes.find(p => p.id === +this.editableRow.twelfth).name;
+    this.editableRow.ninth = this.departments.find(p => p.id === +this.editableRow.eight).name;
+    this.editableRow.eleventh = this.studentCategories.find(p => p.id === +this.editableRow.tenth).name;
+    this.editableRow.last = this.certificationTypes.find(p => p.id === +this.editableRow.twelfth).name;
     this.saveButtonClicked.next(this.editableRow);
     this.modalRef.hide();
   }
@@ -130,5 +134,16 @@ export class TrainingProgramEditComponent {
       .subscribe((data: CertificationType[]) => {
         this.certificationTypes = data;
       });
+  }
+
+  // tslint:disable-next-line:typedef
+  changeIsDistanceLearning(el: boolean) {
+    if (el) {
+      this.isDistanceLearning = true;
+    }
+    else {
+      this.isDistanceLearning = false;
+    }
+
   }
 }
