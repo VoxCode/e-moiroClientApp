@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {MDBModalRef} from 'angular-bootstrap-md';
 import {DepartmentService} from '../services/department.service';
@@ -22,6 +22,7 @@ export class TrainingProgramEditComponent {
   departments: Department[];
   studentCategories: StudentCategory[];
   certificationTypes: CertificationType[];
+  isDistanceLearning: boolean;
   public editableRow: {
     id: string,
     first: string,
@@ -62,6 +63,7 @@ export class TrainingProgramEditComponent {
     this.loadDepartment();
     this.loadStudentCategory();
     this.loadCertificationType();
+    this.isDistanceLearning = false;
     this.form.controls.id.patchValue(this.editableRow.id);
     this.form.controls.first.patchValue(this.editableRow.first);
     this.form.controls.second.patchValue(this.editableRow.second);
@@ -78,9 +80,9 @@ export class TrainingProgramEditComponent {
   // tslint:disable-next-line:typedef
   editRow() {
     this.editableRow = this.form.getRawValue();
-    this.editableRow.fourth = this.departments.find(p => p.id === +this.editableRow.eight).name;
-    this.editableRow.fourth = this.studentCategories.find(p => p.id === +this.editableRow.tenth).name;
-    this.editableRow.fourth = this.certificationTypes.find(p => p.id === +this.editableRow.twelfth).name;
+    this.editableRow.eight = this.departments.find(p => p.id === +this.editableRow.eight).name;
+    this.editableRow.tenth = this.studentCategories.find(p => p.id === +this.editableRow.tenth).name;
+    this.editableRow.twelfth = this.certificationTypes.find(p => p.id === +this.editableRow.twelfth).name;
     this.saveButtonClicked.next(this.editableRow);
     this.modalRef.hide();
   }

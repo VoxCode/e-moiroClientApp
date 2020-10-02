@@ -34,24 +34,25 @@
       </div>
 
       <div>
-        <mdb-checkbox [default]="true" formControlName="fourth">Кафедрал</mdb-checkbox>
+        <mdb-checkbox [default]="true" [(ngModel)]="this.isDistanceLearning" formControlName="fourth">Дистанционное обучение</mdb-checkbox>
       </div>
 
       <div>
-        <mdb-checkbox [default]="true" formControlName="fifth">Кафедрал</mdb-checkbox>
+        <mdb-checkbox *ngIf="this.isDistanceLearning == true" [default]="true" formControlName="fifth">Контрольная работа</mdb-checkbox>
       </div>
 
       <div>
-        <mdb-checkbox [default]="true" formControlName="sixth">Кафедрал</mdb-checkbox>
+        <mdb-checkbox *ngIf="this.isDistanceLearning == true" [default]="true" formControlName="sixth">Самостоятельная работа</mdb-checkbox>
       </div>
 
-      <div class="md-form">
+      <div *ngIf="this.isDistanceLearning == true" class="md-form">
         <p>Содержание контрольной работы</p>
-        <input id="seventh" type="number" class="form-control" formControlName="seventh" mdbInput mdbValidate
-               [validateSuccess]="false">
+        <textarea id="seventh" type="text" class="form-control" formControlName="seventh" mdbInput mdbValidate
+                  [validateSuccess]="false"></textarea>
 
         <mdb-error *ngIf="seventh.invalid && (seventh.dirty || seventh.touched)">Input is required</mdb-error>
       </div>
+      <br><br>
 
       <label>Кафедра</label>
       <select class="browser-default custom-select" id="eight" formControlName="eight">

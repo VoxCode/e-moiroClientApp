@@ -50,7 +50,7 @@ import { TrainingProgramAddFormComponent } from './training-program-add-form/tra
 import {FinalExaminationEditComponent} from './final-examination/final-examination-edit.component';
 import {CertificationTypeEditComponent} from './certification-type/certification-type-edit.component';
 import {TrainingProgramEditComponent} from './training-program/training-program-edit.component';
-import {RegulationComponent} from "./regulation/regulation.component";
+import {RegulationComponent} from './regulation/regulation.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +82,7 @@ import {RegulationComponent} from "./regulation/regulation.component";
     TeachingPositionComponent,
     TeachingPositionEditComponent,
     TrainingProgramComponent,
-    TrainingProgramEditComponent
+    TrainingProgramEditComponent,
     RegulationComponent,
     RegulationEditComponent,
     CurriculumTopicListComponent,
