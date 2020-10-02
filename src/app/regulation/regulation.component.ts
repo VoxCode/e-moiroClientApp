@@ -7,7 +7,7 @@ import {RegulationEditComponent} from './regulation-edit.component';
 
 
 @Component({
-  selector: 'app-consultation-topic',
+  selector: 'app-regulation',
   templateUrl: './regulation.component.html',
   styleUrls: ['./regulation.component.scss'],
   providers: [RegulationService]

@@ -25,7 +25,6 @@ import {TeacherComponent} from './teacher/teacher.component';
 import {StudentCategoryComponent} from './student-category/student-category.component';
 import {TeachingPositionComponent} from './teaching-position/teaching-position.component';
 import {TrainingProgramComponent} from './training-program/training-program.component';
-import {RegulationComponent} from './regulation/regulation.component';
 import {CurriculumTopicListComponent} from './curriculum-topic-list/curriculum-topic-list.component';
 import {InputsModule, MDBBootstrapModule} from 'angular-bootstrap-md';
 import {AdditionalLiteratureEditComponent} from './additional-literature/additional-literature-edit.component';
@@ -50,6 +49,8 @@ import {TestWorkEditComponent} from './test-work/test-work-edit.component';
 import { TrainingProgramAddFormComponent } from './training-program-add-form/training-program-add-form.component';
 import {FinalExaminationEditComponent} from './final-examination/final-examination-edit.component';
 import {CertificationTypeEditComponent} from './certification-type/certification-type-edit.component';
+import {TrainingProgramEditComponent} from './training-program/training-program-edit.component';
+import {RegulationComponent} from "./regulation/regulation.component";
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import {CertificationTypeEditComponent} from './certification-type/certification
     TeachingPositionComponent,
     TeachingPositionEditComponent,
     TrainingProgramComponent,
+    TrainingProgramEditComponent
     RegulationComponent,
     RegulationEditComponent,
     CurriculumTopicListComponent,

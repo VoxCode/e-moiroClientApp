@@ -8,6 +8,7 @@ import {CertificationTypeService} from '../services/certification-type.service';
 import {Department} from '../models/Department';
 import {StudentCategory} from '../models/StudentCategory';
 import {CertificationType} from '../models/CertificationType';
+import {TrainingProgramEditComponent} from "./training-program-edit.component";
 
 
 @Component({
@@ -36,8 +37,8 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   @ViewChild('row', { static: true }) row: ElementRef;
 
   elements: any = [];
-  headElements = ['Номер', 'id', 'Название', 'Кафедра', 'Категория обучающихся', 'Кафедра', 'Тип аттестации',
-    'Дистанционное обучение', 'Самостоятельная работа', 'Контрольная работа', 'Содержание контрольной работы', 'Команда'];
+  headElements = ['Номер', 'id', 'Название', 'Количество часов', 'Дистанционное обучение', 'Кафедра',
+    'Категория обучающихся', 'Тип аттестации', 'Команда'];
   searchText = '';
   previous: string;
   modalRef: MDBModalRef;
@@ -228,7 +229,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
         editableRow: el
       }
     };
-    // this.modalRef = this.modalService.show(TeacherEditComponent, modalOptions);
+    this.modalRef = this.modalService.show(TrainingProgramEditComponent, modalOptions);
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       this.elements[elementIndex] = newElement;
       this.save(newElement);

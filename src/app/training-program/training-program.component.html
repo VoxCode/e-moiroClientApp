@@ -32,9 +32,12 @@
           <tr mdbTableCol *ngFor="let el of elements; let i = index">
             <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{el.id}}</th>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.first}}</td>
-            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.fourth}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.second}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.third}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-              <mdb-checkbox [disabled]="true" [(ngModel)]="el.third" [default]="true"></mdb-checkbox></td>
+              <mdb-checkbox [disabled]="true" [(ngModel)]="el.fourth" [default]="true"></mdb-checkbox></td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.ninth}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.eleventh}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.last}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
               <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
@@ -46,7 +49,7 @@
           </tbody>
           <tfoot class="grey lighten-5 w-100">
           <tr>
-            <td colspan="6">
+            <td colspan="9">
               <mdb-table-pagination [tableEl]="tableEl" paginationAlign="" [searchDataSource]="elements"></mdb-table-pagination>
             </td>
           </tr>
@@ -66,18 +69,37 @@
         <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()" (click)="cancel()">
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel">Дополнительная литература</h4>
+        <h4 class="modal-title w-100" id="myModalLabel">Учебная программа</h4>
       </div>
       <div class="modal-body">
-        <label>Имя</label>
+        <label>Название</label>
         <input type="text" [(ngModel)]="this.value.name" class="md-textarea form-control" mdbInput>
         <br>
-        <label>Должность</label>
-        <select [(ngModel)]="teachingPosition" class="browser-default custom-select">
-          <option *ngFor="let el of teachingPositions" [ngValue]="el">{{el.name}}</option>
+        <label>Количество часов</label>
+        <input type="number" [(ngModel)]="this.value.numberOfHours" class="md-textarea form-control" mdbInput>
+        <br>
+        <mdb-checkbox [(ngModel)]="this.value.isDistanceLearning" [default]="true">Дистанционное обучение</mdb-checkbox>
+        <mdb-checkbox *ngIf="this.value.isDistanceLearning == true" [(ngModel)]="this.value.isControlWork" [default]="true">Контрольная работа</mdb-checkbox>
+        <mdb-checkbox *ngIf="this.value.isDistanceLearning == true" [(ngModel)]="this.value.isTestWork" [default]="true">Самостоятельная работа</mdb-checkbox>
+        <br>
+        <label *ngIf="this.value.isDistanceLearning == true">Содержание контрольной работы</label>
+        <textarea *ngIf="this.value.isDistanceLearning == true" type="text" [(ngModel)]="this.value.controlWork" class="md-textarea form-control" mdbInput></textarea>
+        <br>
+        <label>Кафедра</label>
+        <select [(ngModel)]="department" class="browser-default custom-select">
+          <option *ngFor="let el of departments" [ngValue]="el">{{el.name}}</option>
         </select>
         <br><br>
-        <mdb-checkbox [(ngModel)]="this.value.isCathedral" [default]="true">Кафедрал</mdb-checkbox>
+        <label>Категория учащихся</label>
+        <select [(ngModel)]="studentCategory" class="browser-default custom-select">
+          <option *ngFor="let el of studentCategories" [ngValue]="el">{{el.name}}</option>
+        </select>
+        <br><br>
+        <label>Тип аттестации</label>
+        <select [(ngModel)]="certificationType" class="browser-default custom-select">
+          <option *ngFor="let el of certificationTypes" [ngValue]="el">{{el.name}}</option>
+        </select>
+        <br><br>
       </div>
       <div class="modal-footer">
         <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="crate()"
