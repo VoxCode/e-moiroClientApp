@@ -7,19 +7,6 @@
   </div>
   <div class="modal-body">
     <form [formGroup]="form">
-
-      <div class="md-form">
-        <input id="id" type="text" class="form-control grey-text" formControlName="id" mdbInput>
-        <label for="id">ID</label>
-      </div>
-
-      <div class="md-form">
-        <input id="first" type="text" class="form-control grey-text" formControlName="first" mdbInput mdbValidate
-               [validateSuccess]="false">
-        <label for="first">First</label>
-        <mdb-error *ngIf="first.invalid && (first.dirty || first.touched)">Input is required</mdb-error>
-      </div>
-
       <div class="md-form">
         <p>Тема</p>
         <input id="second" type="text" class="form-control" formControlName="second" mdbInput mdbValidate

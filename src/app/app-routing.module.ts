@@ -23,6 +23,7 @@ import {DocxGeneratorComponent} from './docx-generator/docx-generator.component'
 import {TestWorkComponent} from './test-work/test-work.component';
 import {CertificationTypeComponent} from './certification-type/certification-type.component';
 import {FinalExaminationComponent} from "./final-examination/final-examination.component";
+import {TrainingProgramAddFormComponent} from "./training-program-add-form/training-program-add-form.component";
 
 const routes: Routes = [
   { path: 'docxGenerator', component:  DocxGeneratorComponent, canActivate: [AuthGuardService]},
@@ -43,6 +44,7 @@ const routes: Routes = [
   { path: 'studentCategory', component: StudentCategoryComponent, canActivate: [AuthGuardService]},
   { path: 'teachingPosition', component: TeachingPositionComponent, canActivate: [AuthGuardService]},
   { path: 'trainingProgram', component: TrainingProgramComponent, canActivate: [AuthGuardService]},
+  { path: 'trainingProgramAddForm', component: TrainingProgramAddFormComponent, canActivate: [AuthGuardService]},
   { path: 'testWork', component: TestWorkComponent, canActivate: [AuthGuardService]},
   { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent, canActivate: [AuthGuardService]},
   { path: 'finalExamination', component: FinalExaminationComponent, canActivate: [AuthGuardService]},
