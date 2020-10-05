@@ -13,8 +13,8 @@ export class CurriculumTopicService {
     return this.http.get(this.url);
   }
   // tslint:disable-next-line:typedef
-  getValue(id: number) {
-    return this.http.get(this.url + '/' + id);
+  getValue(studentCategoryId: number, departmentId: number) {
+    return this.http.get(this.url + '/' + studentCategoryId + '/' + departmentId);
   }
   // tslint:disable-next-line:typedef
   createValue(curriculumTopic: CurriculumTopic) {

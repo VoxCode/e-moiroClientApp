@@ -1,33 +1,35 @@
 import {Component, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import {CurriculumTopicAdditionalLiterature} from '../models/СurriculumTopicAdditionalLiterature';
-import {CurriculumTopicAdditionalLiteratureService} from '../services/curriculum-topic-additional-literature.service';
+import {CurriculumTopic} from '../models/CurriculumTopic';
+import {CurriculumTopicService} from '../services/curriculum-topic.service';
+import {ActivatedRoute} from '@angular/router';
+import {TrainingProgramService} from '../services/training-program.service';
+import {TrainingProgram} from '../models/TrainingProgram';
 
 @Component({
   selector: 'app-training-program-add-form',
   templateUrl: './training-program-add-form.component.html',
   styleUrls: ['./training-program-add-form.component.scss'],
-  providers: [CurriculumTopicAdditionalLiteratureService]
+  providers: [CurriculumTopicService, TrainingProgramService]
 })
 
 export class TrainingProgramAddFormComponent implements OnInit{
-
-  curriculumTopicAdditionalLiterature: CurriculumTopicAdditionalLiterature;
-  public additionalLiteraturesList: CurriculumTopicAdditionalLiterature[] = [{}];
-  todo: CurriculumTopicAdditionalLiterature[];
-
-  // todo = [];
-
-  done = [
-  ];
+  id: number;
+  trainingProgram: TrainingProgram;
+  curriculumTopicList: CurriculumTopic[] = [{}];
+  todo = [];
+  done = [];
 
   constructor(
-    private curriculumTopicAdditionalLiteratureService: CurriculumTopicAdditionalLiteratureService
+    private curriculumTopicService: CurriculumTopicService,
+    private trainingProgramService: TrainingProgramService,
+    private route: ActivatedRoute
   ) { }
 
   // tslint:disable-next-line:typedef
   ngOnInit() {
-    this.loadCurriculumTopicAdditionalLiterature();
+    this.id = this.route.snapshot.params.id;
+    this.loadTrainingProgram();
   }
 
   // tslint:disable-next-line:typedef
@@ -43,18 +45,28 @@ export class TrainingProgramAddFormComponent implements OnInit{
   }
 
   // tslint:disable-next-line:typedef
-  loadCurriculumTopicAdditionalLiterature() {
-    this.curriculumTopicAdditionalLiteratureService.getValues()
-      .subscribe((data: CurriculumTopicAdditionalLiterature[]) => {
+  loadTrainingProgram() {
+    this.trainingProgramService.getValue(this.id)
+      .subscribe((data: TrainingProgram) => {
+        if (data !== undefined){
+          this.trainingProgram = data;
+          this.loadCurriculumTopic();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadCurriculumTopic() {
+    this.curriculumTopicService.getValue(this.trainingProgram.studentCategoryId, this.trainingProgram.departmentId)
+      .subscribe((data: CurriculumTopic[]) => {
         if (data.length !== 0){
-          this.additionalLiteraturesList = data;
-          this.todo = this.additionalLiteraturesList;
+          this.curriculumTopicList = data;
+          this.todo = this.curriculumTopicList;
           // tslint:disable-next-line:only-arrow-functions typedef
-          this.additionalLiteraturesList.sort(function(a, b) {
+          this.curriculumTopicList.sort(function(a, b) {
             return a.id - b.id;
           });
         }
       });
   }
 }
-
