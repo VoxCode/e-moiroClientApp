@@ -90,8 +90,10 @@ export class TrainingProgramAddFormComponent implements OnInit{
 
           this.done = this.curriculumTopicTrainingProgramList;
 
-          this.curriculumTopicTrainingProgramList.forEach((object, index) => {
-            const tmp = this.curriculumTopicList.find(c => c.id === this.curriculumTopicTrainingProgramList[index].curriculumTopicId);
+          this.curriculumTopicTrainingProgramList
+            .forEach((object, index) => {
+            const tmp = this.curriculumTopicList.
+            find(c => c.id === this.curriculumTopicTrainingProgramList[index].curriculumTopicId);
             if (tmp !== undefined) {
               this.curriculumTopicList.splice( this.curriculumTopicList.indexOf(tmp), 1);
               this.curriculumTopicTmpList.push({});
