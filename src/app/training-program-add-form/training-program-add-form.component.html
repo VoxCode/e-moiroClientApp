@@ -1,27 +1,30 @@
-<div class="example-container">
-  <h2>To do</h2>
+<div class="container"><br>
+  <div class="example-container">
+    <h2>Предложено</h2>
 
-  <div
-    cdkDropList
-    #todoList="cdkDropList"
-    [cdkDropListData]="todo"
-    [cdkDropListConnectedTo]="[doneList]"
-    class="example-list"
-    (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item.topicTitle}}</div>
+    <div
+      cdkDropList
+      #todoList="cdkDropList"
+      [cdkDropListData]="todo"
+      [cdkDropListConnectedTo]="[doneList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item.topicTitle}}</div>
+    </div>
   </div>
-</div>
 
-<div class="example-container">
-  <h2>Done</h2>
+  <div class="example-container">
+    <h2>Выбрано</h2>
 
-  <div
-    cdkDropList
-    #doneList="cdkDropList"
-    [cdkDropListData]="done"
-    [cdkDropListConnectedTo]="[todoList]"
-    class="example-list"
-    (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let item of done" cdkDrag>{{item.topicTitle}}</div>
+    <div
+      cdkDropList
+      #doneList="cdkDropList"
+      [cdkDropListData]="done"
+      [cdkDropListConnectedTo]="[todoList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let item of done" cdkDrag>{{item.topicTitle}}</div>
+    </div>
   </div>
+  <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="crate()" mdbWavesEffect>Далее</button>
 </div>
