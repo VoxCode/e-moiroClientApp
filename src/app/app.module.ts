@@ -51,7 +51,7 @@ import {FinalExaminationEditComponent} from './final-examination/final-examinati
 import {CertificationTypeEditComponent} from './certification-type/certification-type-edit.component';
 import {TrainingProgramEditComponent} from './training-program/training-program-edit.component';
 import {RegulationComponent} from './regulation/regulation.component';
-import {DragDropModule} from "@angular/cdk/drag-drop";
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [

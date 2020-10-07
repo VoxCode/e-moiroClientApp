@@ -7,6 +7,9 @@ import {TrainingProgramService} from '../services/training-program.service';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
+import {CurriculumSectionService} from '../services/curriculum-section.service';
+import {OccupationFormService} from '../services/occupation-form.service';
+import {OccupationForm} from '../models/OccupationForm';
 
 @Component({
   selector: 'app-training-program-add-form',
@@ -15,7 +18,9 @@ import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTraining
   providers: [
     CurriculumTopicService,
     TrainingProgramService,
-    CurriculumTopicTrainingProgramService
+    CurriculumTopicTrainingProgramService,
+    OccupationFormService,
+    CurriculumSectionService
   ]
 })
 
@@ -23,16 +28,25 @@ export class TrainingProgramAddFormComponent implements OnInit{
   id: number;
   trainingProgram: TrainingProgram;
   curriculumTopic: CurriculumTopic;
-  curriculumTopicList: CurriculumTopic[] = [{}];
-  curriculumTopicTmpList: CurriculumTopic[];
-  curriculumTopicTrainingProgramList: CurriculumTopicTrainingProgram[] = [{}];
+  curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram = {
+    isVariable: false,
+    classHours: 0,
+    occupationFormId: 0
+  };
+  occupationForms: OccupationForm[];
+  curriculumTopicList: CurriculumTopic[] = [];
+  curriculumTopicTmpList: CurriculumTopic[] = [];
+  curriculumTopicTrainingProgramList: CurriculumTopicTrainingProgram[] = [];
   todo = [];
   done = [];
+  done2 = [];
 
   constructor(
     private curriculumTopicService: CurriculumTopicService,
     private trainingProgramService: TrainingProgramService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
+    private curriculumSectionService: CurriculumSectionService,
+    private occupationFormService: OccupationFormService,
     private route: ActivatedRoute
   ) { }
 
@@ -62,6 +76,17 @@ export class TrainingProgramAddFormComponent implements OnInit{
           this.trainingProgram = data;
           this.loadCurriculumTopic();
           this.loadCurriculumTopicTrainingProgram();
+          this.loadOccupationForm();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadOccupationForm() {
+    this.occupationFormService.getValues()
+      .subscribe((data: OccupationForm[]) => {
+        if (data.length !== 0){
+          this.occupationForms = data;
         }
       });
   }
@@ -72,7 +97,17 @@ export class TrainingProgramAddFormComponent implements OnInit{
       .subscribe((data: CurriculumTopic[]) => {
         if (data.length !== 0){
           this.curriculumTopicList = data;
-          this.todo = this.curriculumTopicList;
+
+          this.curriculumTopicList.forEach((object, index) => {
+            this.todo.push({
+              first: this.curriculumTopicList[index].id,
+              second: this.curriculumTopicList[index].topicTitle,
+              third: this.curriculumTopicTrainingProgram.isVariable,
+              fourth: this.curriculumTopicTrainingProgram.classHours,
+              fifth: this.curriculumTopicTrainingProgram.occupationFormId
+            });
+          });
+          console.log(this.todo);
           // tslint:disable-next-line:only-arrow-functions typedef
           this.curriculumTopicList.sort(function(a, b) {
             return a.id - b.id;
@@ -110,20 +145,20 @@ export class TrainingProgramAddFormComponent implements OnInit{
 
   // tslint:disable-next-line:typedef
   crate(){
-    this.done.forEach((object, index) => {
-      // this.curriculumTopicTrainingProgramList.push({ curriculumTopicId: this.done[index].});
+    this.done2.forEach((object, index) => {
+      this.curriculumTopicTrainingProgramList.push({ curriculumTopicId: this.done2[index].id, isVariable: this.done2[index].isVariable });
     });
 
-    this.curriculumTopicTmpList = this.done;
-    this.curriculumTopicTrainingProgramList = this.done;
+    this.curriculumTopicTmpList = this.done2;
+    // this.curriculumTopicTrainingProgramList
+    console.log(this.done2);
 
-    console.log(this.curriculumTopicTrainingProgramList);
+   // console.log(this.curriculumTopicTrainingProgramList);
 
     this.curriculumTopicTrainingProgramList.forEach((object, index) => {
-      this.curriculumTopicTrainingProgramService.createValue(this.curriculumTopicTrainingProgramList[index])
-        .subscribe((data: CurriculumTopicTrainingProgram) => {
-
-        });
+      // this.curriculumTopicTrainingProgramService.createValue(this.curriculumTopicTrainingProgramList[index])
+        // .subscribe((data: CurriculumTopicTrainingProgram) => {
+       // });
     });
   }
 }
