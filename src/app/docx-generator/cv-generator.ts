@@ -1,4 +1,16 @@
-import {AlignmentType, Document, HeadingLevel, Paragraph, TabStopPosition, TabStopType, TextRun} from 'docx';
+import {
+  AlignmentType,
+  BorderStyle,
+  Document,
+  HeadingLevel,
+  Paragraph,
+  Table,
+  TableCell,
+  TableRow,
+  TabStopPosition,
+  TabStopType,
+  TextRun
+} from 'docx';
 
 
 const PHONE_NUMBER = '07534563401';
@@ -21,7 +33,9 @@ export class DocumentCreator {
       },
       children: [
         this.titleMOIRO(),
-        this.approveDocument(RECTOR, YEAR),
+     //   this.approveDocument(RECTOR, YEAR),
+        new Paragraph(''),
+        this.tableApprove2('2020'),
         this.createContactInfo(PHONE_NUMBER, PROFILE_URL, EMAIL),
         this.createHeading('Education'),
         ...educations
@@ -151,6 +165,103 @@ export class DocumentCreator {
           text: '\t_____________ ' + 'sjkgnjkdfbgb',
           size: 30,
         }).break()
+      ],
+    });
+  }
+  public tableApprove2(year: string): Table {
+    return new Table({
+      alignment: AlignmentType.RIGHT,
+      borders: {
+        insideHorizontal:
+          {
+            style: BorderStyle.NONE,
+            size: 0,
+            color: '0000000',
+          },
+        top: {
+          style: BorderStyle.NONE,
+          size: 1,
+          color: '000000',
+        },
+        bottom: {
+          style: BorderStyle.NONE,
+          size: 0,
+          color: 'white',
+        },
+        left: {
+          style: BorderStyle.NONE,
+          size: 0,
+          color: '000000'
+        },
+        right: {
+          style: BorderStyle.NONE,
+          size: 0,
+          color: '000000'
+        },
+      },
+      rows: [
+        new TableRow({
+          cantSplit: true,
+          children: [
+            new TableCell({
+              children: [new Paragraph({
+                children: [
+                  new TextRun({
+                    text: 'утверждаю',
+                    size : 30,
+                    allCaps: true,
+                  }),
+                ]
+              })]
+            }),
+          ],
+        }),
+
+        new TableRow({
+          cantSplit: true,
+          children: [
+            new TableCell({
+              children: [new Paragraph({
+                children: [
+                  new TextRun({
+                    text : 'Ректор института',
+                    size: 30,
+                  }),
+                ]
+              })]
+            }),
+          ],
+        }),
+
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph({
+                children: [
+                  new TextRun({
+                    text : '_____________ ' + 'Кондратьева И.П.',
+                    size: 30,
+                  }),
+                ]
+              })]
+            }),
+          ],
+        }),
+
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph({
+                children: [
+                  new TextRun({
+                    text : '_____________ ' + year,
+                    size: 30,
+                  }),
+                ]
+              })]
+            }),
+          ],
+        }),
       ],
     });
   }
