@@ -23,7 +23,13 @@
       [cdkDropListConnectedTo]="[todoList, done2List]"
       class="example-list"
       (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of done" cdkDrag>{{item.second}}</div>
+      <div class="example-box" *ngFor="let item of done" cdkDrag>{{item.second}}
+        <mdb-checkbox [(ngModel)]="item.third" [default]="true">Вариативная</mdb-checkbox>
+        <label>Количество часов</label><input [(ngModel)]="item.fourth" type="number" class="md-textarea form-control" mdbInput>
+        <label>Форма занятия</label>
+        <select [(ngModel)]="item.fifth" class="browser-default custom-select">
+          <option *ngFor="let el of occupationForms" [ngValue]="el.id">{{el.fullName}}</option>
+        </select></div>
     </div>
   </div>
 

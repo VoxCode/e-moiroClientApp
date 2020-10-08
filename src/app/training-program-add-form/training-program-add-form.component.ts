@@ -10,6 +10,7 @@ import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTraining
 import {CurriculumSectionService} from '../services/curriculum-section.service';
 import {OccupationFormService} from '../services/occupation-form.service';
 import {OccupationForm} from '../models/OccupationForm';
+import {CurriculumSection} from '../models/CurriculumSection';
 
 @Component({
   selector: 'app-training-program-add-form',
@@ -20,7 +21,7 @@ import {OccupationForm} from '../models/OccupationForm';
     TrainingProgramService,
     CurriculumTopicTrainingProgramService,
     OccupationFormService,
-    CurriculumSectionService
+    CurriculumSectionService,
   ]
 })
 
@@ -33,7 +34,8 @@ export class TrainingProgramAddFormComponent implements OnInit{
     classHours: 0,
     occupationFormId: 0
   };
-  occupationForms: OccupationForm[];
+  occupationForms: OccupationForm[] = [];
+  curriculumSections: CurriculumSection[] = [];
   curriculumTopicList: CurriculumTopic[] = [];
   curriculumTopicTmpList: CurriculumTopic[] = [];
   curriculumTopicTrainingProgramList: CurriculumTopicTrainingProgram[] = [];
@@ -82,11 +84,24 @@ export class TrainingProgramAddFormComponent implements OnInit{
   }
 
   // tslint:disable-next-line:typedef
+  loadCurriculumSection(){
+    this.curriculumSectionService.getValue(this.id)
+      .subscribe((data: CurriculumSection[]) => {
+        if (data !== undefined){
+          this.curriculumSections = data;
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
   loadOccupationForm() {
     this.occupationFormService.getValues()
       .subscribe((data: OccupationForm[]) => {
         if (data.length !== 0){
-          this.occupationForms = data;
+          this.occupationForms.push({id: 0, fullName: 'Выберите тип занятия'});
+          data.forEach((object) => {
+            this.occupationForms.push(object);
+          });
         }
       });
   }
