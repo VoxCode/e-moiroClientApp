@@ -1,35 +1,40 @@
 <div class="container"><br>
+  <div cdkDropListGroup>
   <div class="example-container">
     <h2>Предложено</h2>
 
     <div
       cdkDropList
-      #todoList="cdkDropList"
       [cdkDropListData]="todo"
-      [cdkDropListConnectedTo]="[doneList, done2List]"
       class="example-list"
       (cdkDropListDropped)="drop($event)">
       <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item.second}}</div>
     </div>
   </div>
 
+    <div class="example-container">
+      <h2>Предложено</h2>
+
+<div [innerHTML]="str"></div>
+    </div>
+
   <div class="example-container">
     <h2>Раздел 1</h2>
 
     <div
       cdkDropList
-      #doneList="cdkDropList"
       [cdkDropListData]="done"
-      [cdkDropListConnectedTo]="[todoList, done2List]"
       class="example-list"
       (cdkDropListDropped)="drop($event)">
       <div class="example-box" *ngFor="let item of done" cdkDrag>{{item.second}}
         <mdb-checkbox [(ngModel)]="item.third" [default]="true">Вариативная</mdb-checkbox>
-        <label>Количество часов</label><input [(ngModel)]="item.fourth" type="number" class="md-textarea form-control" mdbInput>
+        <label>Количество часов</label>
+        <input [(ngModel)]="item.fourth" type="number" class="md-textarea form-control" mdbInput>
         <label>Форма занятия</label>
         <select [(ngModel)]="item.fifth" class="browser-default custom-select">
           <option *ngFor="let el of occupationForms" [ngValue]="el.id">{{el.fullName}}</option>
-        </select></div>
+        </select>
+      </div>
     </div>
   </div>
 
@@ -38,19 +43,20 @@
 
     <div
       cdkDropList
-      #done2List="cdkDropList"
       [cdkDropListData]="done2"
-      [cdkDropListConnectedTo]="[todoList, doneList]"
       class="example-list"
       (cdkDropListDropped)="drop($event)">
       <div class="example-box" *ngFor="let item of done2" cdkDrag>{{item.second}}
         <mdb-checkbox [(ngModel)]="item.third" [default]="true">Вариативная</mdb-checkbox>
-        <label>Количество часов</label><input [(ngModel)]="item.fourth" type="number" class="md-textarea form-control" mdbInput>
+        <label>Количество часов</label>
+        <input [(ngModel)]="item.fourth" type="number" class="md-textarea form-control" mdbInput>
         <label>Форма занятия</label>
         <select [(ngModel)]="item.fifth" class="browser-default custom-select">
           <option *ngFor="let el of occupationForms" [ngValue]="el.id">{{el.fullName}}</option>
-        </select></div>
+        </select>
+      </div>
     </div>
+  </div>
   </div>
   <br><br><button type="button" mdbBtn color="primary" class="relative waves-light" (click)="crate()" mdbWavesEffect>Далее</button>
 </div>
