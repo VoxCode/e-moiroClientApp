@@ -42,7 +42,6 @@ export class TrainingProgramAddFormComponent implements OnInit{
   todo = [];
   done = [];
   done2 = [];
-  str: any;
 
   constructor(
     private curriculumTopicService: CurriculumTopicService,
@@ -131,12 +130,6 @@ export class TrainingProgramAddFormComponent implements OnInit{
             return a.id - b.id;
           });
         }
-        this.str = '<div\n' +
-          '      cdkDropList\n' +
-          '      [cdkDropListData]="todo"\n' +
-          '      class="example-list"\n' +
-          '      (cdkDropListDropped)="drop($event)">\n' +
-          '      <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item.second}}</div>';
       });
   }
 

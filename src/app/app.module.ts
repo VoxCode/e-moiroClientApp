@@ -52,6 +52,7 @@ import {CertificationTypeEditComponent} from './certification-type/certification
 import {TrainingProgramEditComponent} from './training-program/training-program-edit.component';
 import {RegulationComponent} from './regulation/regulation.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {CurriculumSectionChild} from './training-program-add-form/curriculum-section-child';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     FinalExaminationComponent,
     TestWorkComponent,
     TestWorkEditComponent,
-    TrainingProgramAddFormComponent
+    TrainingProgramAddFormComponent,
+    CurriculumSectionChild
   ],
     imports: [
         BrowserModule,

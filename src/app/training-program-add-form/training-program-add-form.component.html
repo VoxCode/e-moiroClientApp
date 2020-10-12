@@ -3,6 +3,7 @@
   <div class="example-container">
     <h2>Предложено</h2>
 
+
     <div
       cdkDropList
       [cdkDropListData]="todo"
@@ -11,12 +12,6 @@
       <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item.second}}</div>
     </div>
   </div>
-
-    <div class="example-container">
-      <h2>Предложено</h2>
-
-<div [innerHTML]="str"></div>
-    </div>
 
   <div class="example-container">
     <h2>Раздел 1</h2>
@@ -57,6 +52,9 @@
       </div>
     </div>
   </div>
+
+    <app-curriculum-section-child></app-curriculum-section-child>
+
   </div>
   <br><br><button type="button" mdbBtn color="primary" class="relative waves-light" (click)="crate()" mdbWavesEffect>Далее</button>
 </div>
