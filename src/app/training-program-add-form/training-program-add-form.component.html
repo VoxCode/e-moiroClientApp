@@ -1,4 +1,6 @@
 <div class="container"><br>
+  <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="addCurriculumSection()" mdbWavesEffect>
+    <mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
   <div cdkDropListGroup>
   <div class="example-container">
     <h2>Предложено</h2>
@@ -15,10 +17,10 @@
 
 
 
-    <app-curriculum-section-child [name]="name" [done]="done" ></app-curriculum-section-child>
-    <app-curriculum-section-child [name]="name2" [done]="done2"></app-curriculum-section-child>
-    <app-curriculum-section-child [name]="name3" [done]="done3"></app-curriculum-section-child>
+    <app-curriculum-section-child *ngFor="let item of curriculumSectionContentList" [name]="item.name" [done]="item.done" ></app-curriculum-section-child>
+
 
   </div>
   <br><br><button type="button" mdbBtn color="primary" class="relative waves-light" (click)="crate()" mdbWavesEffect>Далее</button>
 </div>
+

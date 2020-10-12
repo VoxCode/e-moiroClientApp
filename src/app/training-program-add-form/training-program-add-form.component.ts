@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {CurriculumTopic} from '../models/CurriculumTopic';
 import {CurriculumTopicService} from '../services/curriculum-topic.service';
 import {ActivatedRoute} from '@angular/router';
@@ -9,9 +9,7 @@ import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topi
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
 import {CurriculumSectionService} from '../services/curriculum-section.service';
 import {OccupationFormService} from '../services/occupation-form.service';
-import {OccupationForm} from '../models/OccupationForm';
 import {CurriculumSection} from '../models/CurriculumSection';
-import {CurriculumSectionChild} from './curriculum-section-child';
 
 @Component({
   selector: 'app-training-program-add-form',
@@ -36,18 +34,17 @@ export class TrainingProgramAddFormComponent implements OnInit{
     classHours: 0,
     occupationFormId: 0
   };
-  occupationForms: OccupationForm[] = [];
+
   curriculumSections: CurriculumSection[] = [];
   curriculumTopicList: CurriculumTopic[] = [];
   curriculumTopicTmpList: CurriculumTopic[] = [];
   curriculumTopicTrainingProgramList: CurriculumTopicTrainingProgram[] = [];
+  curriculumSectionContentList = [];
   todo = [];
   done = [];
-  done2 = [];
-  done3 = [];
   name: string;
-  name2: string;
-  name3: string;
+  i = 1;
+
 
   constructor(
     private curriculumTopicService: CurriculumTopicService,
@@ -62,13 +59,6 @@ export class TrainingProgramAddFormComponent implements OnInit{
   ngOnInit() {
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
-    this.name = 'Раздел хз';
-    this.name2 = 'Ilya mega brain';
-    this.name3 = 'magic';
-
-
-
-
   }
 
   // tslint:disable-next-line:typedef
@@ -132,7 +122,7 @@ export class TrainingProgramAddFormComponent implements OnInit{
       });
   }
 
-/*  // tslint:disable-next-line:typedef
+  // tslint:disable-next-line:typedef
   loadCurriculumTopicTrainingProgram() {
     this.curriculumTopicTrainingProgramService.getValue(this.id)
       .subscribe((data: CurriculumTopicTrainingProgram[]) => {
@@ -157,19 +147,22 @@ export class TrainingProgramAddFormComponent implements OnInit{
           });
         }
       });
-  }*/
+  }
 
   // tslint:disable-next-line:typedef
   crate(){
-    this.done2.forEach((object, index) => {
-      this.curriculumTopicTrainingProgramList.push({ curriculumTopicId: this.done2[index].id, isVariable: this.done2[index].isVariable });
+    this.curriculumSectionContentList[0].done.forEach((object, index) => {
+      // tslint:disable-next-line:max-line-length
+      // this.curriculumTopicTrainingProgramList.push({ curriculumTopicId: this.done2[index].id, isVariable: this.done2[index].isVariable });
     });
 
-    this.curriculumTopicTmpList = this.done2;
+    this.curriculumTopicTmpList = this.curriculumSectionContentList[0].done;
     // this.curriculumTopicTrainingProgramList
     // console.log(this.done);
 
-    console.log(this.done[0].second + '======' + this.done2[0].fifth + '======' + this.done3[0].fifth);
+    console.log(this.curriculumSectionContentList[0].done[0].second +
+      '======' + this.curriculumSectionContentList[0].done[0].fifth
+      + '======' + this.curriculumSectionContentList[0].done[0].fifth);
    // console.log(this.curriculumTopicTrainingProgramList);
 
     this.curriculumTopicTrainingProgramList.forEach((object, index) => {
@@ -177,6 +170,14 @@ export class TrainingProgramAddFormComponent implements OnInit{
         // .subscribe((data: CurriculumTopicTrainingProgram) => {
        // });
     });
+  }
+
+  // tslint:disable-next-line:typedef
+  addCurriculumSection() {
+    this.curriculumSectionContentList.push({
+      done: [], name: 'Раздел ' + this.i
+    });
+    this.i++;
   }
 }
 
