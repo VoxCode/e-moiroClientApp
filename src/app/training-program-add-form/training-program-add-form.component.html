@@ -13,47 +13,11 @@
     </div>
   </div>
 
-  <div class="example-container">
-    <h2>Раздел 1</h2>
 
-    <div
-      cdkDropList
-      [cdkDropListData]="done"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of done" cdkDrag>{{item.second}}
-        <mdb-checkbox [(ngModel)]="item.third" [default]="true">Вариативная</mdb-checkbox>
-        <label>Количество часов</label>
-        <input [(ngModel)]="item.fourth" type="number" class="md-textarea form-control" mdbInput>
-        <label>Форма занятия</label>
-        <select [(ngModel)]="item.fifth" class="browser-default custom-select">
-          <option *ngFor="let el of occupationForms" [ngValue]="el.id">{{el.fullName}}</option>
-        </select>
-      </div>
-    </div>
-  </div>
 
-  <div class="example-container">
-    <h2>Раздел 2</h2>
-
-    <div
-      cdkDropList
-      [cdkDropListData]="done2"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of done2" cdkDrag>{{item.second}}
-        <mdb-checkbox [(ngModel)]="item.third" [default]="true">Вариативная</mdb-checkbox>
-        <label>Количество часов</label>
-        <input [(ngModel)]="item.fourth" type="number" class="md-textarea form-control" mdbInput>
-        <label>Форма занятия</label>
-        <select [(ngModel)]="item.fifth" class="browser-default custom-select">
-          <option *ngFor="let el of occupationForms" [ngValue]="el.id">{{el.fullName}}</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-    <app-curriculum-section-child></app-curriculum-section-child>
+    <app-curriculum-section-child [name]="name" [done]="done" ></app-curriculum-section-child>
+    <app-curriculum-section-child [name]="name2" [done]="done2"></app-curriculum-section-child>
+    <app-curriculum-section-child [name]="name3" [done]="done3"></app-curriculum-section-child>
 
   </div>
   <br><br><button type="button" mdbBtn color="primary" class="relative waves-light" (click)="crate()" mdbWavesEffect>Далее</button>
