@@ -179,5 +179,11 @@ export class TrainingProgramAddFormComponent implements OnInit{
     });
     this.i++;
   }
+
+  // tslint:disable-next-line:typedef
+  delete(item: any) {
+    const index = this.curriculumSectionContentList.indexOf(item);
+    this.curriculumSectionContentList.splice(index, 1);
+  }
 }
 
