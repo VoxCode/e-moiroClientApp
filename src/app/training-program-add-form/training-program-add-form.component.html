@@ -1,30 +1,29 @@
 <div class="container"><br>
+  <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="addCurriculumSection()" mdbWavesEffect>
+    <mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+  <div cdkDropListGroup>
   <div class="example-container">
     <h2>Предложено</h2>
 
+
     <div
       cdkDropList
-      #todoList="cdkDropList"
       [cdkDropListData]="todo"
-      [cdkDropListConnectedTo]="[doneList]"
       class="example-list"
       (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item.topicTitle}}</div>
+      <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item.second}}</div>
     </div>
   </div>
 
-  <div class="example-container">
-    <h2>Выбрано</h2>
 
-    <div
-      cdkDropList
-      #doneList="cdkDropList"
-      [cdkDropListData]="done"
-      [cdkDropListConnectedTo]="[todoList]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of done" cdkDrag>{{item.topicTitle}}</div>
+    <div *ngFor="let item of curriculumSectionContentList"><app-curriculum-section-child
+                                       [name]="item.name" [done]="item.done"></app-curriculum-section-child>
+      <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
+              (click)="delete(item)" mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
     </div>
+
   </div>
+  <br><br>
   <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="crate()" mdbWavesEffect>Далее</button>
 </div>
+

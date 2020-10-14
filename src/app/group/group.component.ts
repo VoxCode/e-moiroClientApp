@@ -23,6 +23,7 @@ export class GroupComponent implements OnInit {
   loadValue() {
     this.valueService.getValues()
       .subscribe((data: Group[]) => this.values = data);
+    return this.values;
   }
 
 }

@@ -47,7 +47,7 @@
 
       <div *ngFor="let el of finalExaminationsList; let i = index" >
         <select (change)="changeFinalExamination($event.target.value, el)" class="browser-default custom-select">
-          <option>Выберите преподавателя</option>
+          <option>Выберите вопрос</option>
           <option *ngFor="let p of finalExaminations" [selected]="p.id == el.finalExaminationId" [value]="p.id">{{p.content}}</option>
         </select>
         <div class="delButton">
