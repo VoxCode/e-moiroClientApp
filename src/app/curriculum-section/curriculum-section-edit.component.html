@@ -15,10 +15,6 @@
         <mdb-error *ngIf="last.invalid && (last.dirty || last.touched)">Input is required</mdb-error>
       </div>
 
-      <label>Раздел</label>
-      <select class="browser-default custom-select" id="second" formControlName="second">
-        <option *ngFor="let el of sectionNumbers" [ngValue]="el.id">{{el.name}}</option>
-      </select>
     </form>
   </div>
   <div class="modal-footer">

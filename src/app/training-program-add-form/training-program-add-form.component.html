@@ -1,6 +1,4 @@
 <div class="container"><br>
-  <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="addCurriculumSection()" mdbWavesEffect>
-    <mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
   <div cdkDropListGroup>
   <div class="example-container">
     <h2>Предложено</h2>
@@ -14,13 +12,14 @@
       <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item.second}}</div>
     </div>
   </div>
+    <button type="button" mdbBtn color="primary" class="relative waves-light" size="sm"
+            (click)="addCurriculumSection()" mdbWavesEffect>
+      <mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+    <button *ngIf="curriculumSectionContentList.length > 0" type="button" mdbBtn color="danger" size="sm"
+            class="relative waves-light" (click)="delete()" mdbWavesEffect>Очистить</button>
 
-
-    <div *ngFor="let item of curriculumSectionContentList"><app-curriculum-section-child
-                                       [name]="item.name" [done]="item.done"></app-curriculum-section-child>
-      <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
-              (click)="delete(item)" mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
-    </div>
+    <app-curriculum-section-child *ngFor="let item of curriculumSectionContentList"
+                                       [name]="item.name" [done]="item.done" [id]="id"></app-curriculum-section-child>
 
   </div>
   <br><br>

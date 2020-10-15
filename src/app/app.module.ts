@@ -20,7 +20,6 @@ import {FormOfEducationComponent} from './form-of-education/form-of-education.co
 import {GroupComponent} from './group/group.component';
 import {MainLiteratureComponent} from './main-literature/main-literature.component';
 import {OccupationFormComponent} from './occupation-form/occupation-form.component';
-import {SectionNumberComponent} from './section-number/section-number.component';
 import {TeacherComponent} from './teacher/teacher.component';
 import {StudentCategoryComponent} from './student-category/student-category.component';
 import {TeachingPositionComponent} from './teaching-position/teaching-position.component';
@@ -33,7 +32,6 @@ import {RegulationEditComponent} from './regulation/regulation-edit.component';
 import {DepartmentEditComponent} from './department/department-edit.component';
 import {FormOfEducationEditComponent} from './form-of-education/form-of-education-edit.component';
 import {TeachingPositionEditComponent} from './teaching-position/teaching-position-edit.component';
-import {SectionNumberEditComponent} from './section-number/section-number-edit.component';
 import {TeacherEditComponent} from './teacher/teacher-edit.component';
 import {CurriculumSectionEditComponent} from './curriculum-section/curriculum-section-edit.component';
 import {CurriculumTopicAddFormComponent} from './curriculum-topic-add-form/curriculum-topic-add-form.component';
@@ -75,8 +73,6 @@ import {CurriculumSectionChild} from './training-program-add-form/curriculum-sec
     MainLiteratureEditComponent,
     OccupationFormComponent,
     OccupationFormEditComponent,
-    SectionNumberComponent,
-    SectionNumberEditComponent,
     TeacherComponent,
     TeacherEditComponent,
     StudentCategoryComponent,

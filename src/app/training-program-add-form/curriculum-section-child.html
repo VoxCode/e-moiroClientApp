@@ -1,6 +1,9 @@
 <ng-content></ng-content>
 <div class="example-container">
   <h2>{{name}}</h2>
+  <select class="browser-default custom-select">
+    <option *ngFor="let el of curriculumSections" [ngValue]="el.id">{{el.name}}</option>
+  </select>
 
   <div
     cdkDropList

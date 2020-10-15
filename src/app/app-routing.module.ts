@@ -10,7 +10,6 @@ import {CurriculumTopicComponent} from './curriculum-topic/curriculum-topic.comp
 import {DepartmentComponent} from './department/department.component';
 import {GroupComponent} from './group/group.component';
 import {OccupationFormComponent} from './occupation-form/occupation-form.component';
-import {SectionNumberComponent} from './section-number/section-number.component';
 import {TeacherComponent} from './teacher/teacher.component';
 import {StudentCategoryComponent} from './student-category/student-category.component';
 import {TeachingPositionComponent} from './teaching-position/teaching-position.component';
@@ -39,7 +38,6 @@ const routes: Routes = [
   { path: 'groupAdd', component: GroupAddComponent, canActivate: [AuthGuardService]},
   { path: 'mainLiterature', component: MainLiteratureComponent, canActivate: [AuthGuardService]},
   { path: 'occupationForm', component: OccupationFormComponent, canActivate: [AuthGuardService]},
-  { path: 'sectionNumber', component: SectionNumberComponent, canActivate: [AuthGuardService]},
   { path: 'teacher', component: TeacherComponent, canActivate: [AuthGuardService]},
   { path: 'studentCategory', component: StudentCategoryComponent, canActivate: [AuthGuardService]},
   { path: 'teachingPosition', component: TeachingPositionComponent, canActivate: [AuthGuardService]},

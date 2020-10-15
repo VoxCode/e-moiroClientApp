@@ -56,3 +56,13 @@
 input {
   max-width: 80px;
 }
+
+select {
+  word-wrap: break-word;
+}
+
+option{
+  word-wrap: break-word;
+  height: 40px;
+
+}
