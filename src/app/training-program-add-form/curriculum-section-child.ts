@@ -8,6 +8,7 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 import {OccupationForm} from '../models/OccupationForm';
 import {CurriculumSection} from '../models/CurriculumSection';
 
+
 @Component({
   selector: 'app-curriculum-section-child',
   templateUrl: './curriculum-section-child.html',
@@ -21,8 +22,6 @@ import {CurriculumSection} from '../models/CurriculumSection';
   ]
 })
 
-
-
 // tslint:disable-next-line:component-class-suffix
 export class CurriculumSectionChild {
   @Input() done: any[];
@@ -30,6 +29,8 @@ export class CurriculumSectionChild {
   @Input() id: number;
   occupationForms: OccupationForm[] = [];
   curriculumSections: CurriculumSection[] = [];
+  selectedCompany;
+  addSection: boolean;
 
   constructor(
     private curriculumTopicService: CurriculumTopicService,
@@ -41,6 +42,7 @@ export class CurriculumSectionChild {
 
   // tslint:disable-next-line:typedef use-lifecycle-interface
   ngOnInit() {
+    this.addSection = false;
     this.loadOccupationForm();
     this.loadCurriculumSection();
   }
@@ -83,5 +85,10 @@ export class CurriculumSectionChild {
   // tslint:disable-next-line:typedef
   @Input() print() {
     console.log(this.done);
+  }
+
+  // tslint:disable-next-line:typedef
+  addCurriculumSection() {
+    this.addSection = true;
   }
 }

@@ -1,10 +1,15 @@
 <ng-content></ng-content>
 <div class="example-container">
   <h2>{{name}}</h2>
-  <select class="browser-default custom-select">
-    <option *ngFor="let el of curriculumSections" [ngValue]="el.id">{{el.name}}</option>
-  </select>
-
+  <h3>{{selectedCompany}}</h3>
+  <ng-select [items]="curriculumSections"
+             bindValue="name"
+             bindLabel="name"
+             [addTag]="true"
+             [(ngModel)]="selectedCompany">
+  </ng-select>
+  <button type="button" mdbBtn color="success" size="sm"
+          class="relative waves-light" (click)="addCurriculumSection()" mdbWavesEffect>Создать</button>
   <div
     cdkDropList
     [cdkDropListData]="done"
@@ -19,5 +24,8 @@
        <option *ngFor="let el of occupationForms" [ngValue]="el.id">{{el.fullName}}</option>
       </select>
     </div>
+  </div>
+  <div class="addWindow" *ngIf="addSection == true">
+  <app-curriculum-section ></app-curriculum-section>
   </div>
 </div>
