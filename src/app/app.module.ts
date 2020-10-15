@@ -20,7 +20,6 @@ import {FormOfEducationComponent} from './form-of-education/form-of-education.co
 import {GroupComponent} from './group/group.component';
 import {MainLiteratureComponent} from './main-literature/main-literature.component';
 import {OccupationFormComponent} from './occupation-form/occupation-form.component';
-import {SectionNumberComponent} from './section-number/section-number.component';
 import {TeacherComponent} from './teacher/teacher.component';
 import {StudentCategoryComponent} from './student-category/student-category.component';
 import {TeachingPositionComponent} from './teaching-position/teaching-position.component';
@@ -33,7 +32,6 @@ import {RegulationEditComponent} from './regulation/regulation-edit.component';
 import {DepartmentEditComponent} from './department/department-edit.component';
 import {FormOfEducationEditComponent} from './form-of-education/form-of-education-edit.component';
 import {TeachingPositionEditComponent} from './teaching-position/teaching-position-edit.component';
-import {SectionNumberEditComponent} from './section-number/section-number-edit.component';
 import {TeacherEditComponent} from './teacher/teacher-edit.component';
 import {CurriculumSectionEditComponent} from './curriculum-section/curriculum-section-edit.component';
 import {CurriculumTopicAddFormComponent} from './curriculum-topic-add-form/curriculum-topic-add-form.component';
@@ -41,18 +39,20 @@ import {StudentCategoryEditComponent} from './student-category/student-category-
 import {CurriculumTopicEditComponent} from './curriculum-topic/curriculum-topic-edit.component';
 import {OccupationFormEditComponent} from './occupation-form/occupation-form-edit.component';
 import {GroupAddComponent} from './group/group-add.component';
-import { DocxGeneratorComponent } from './docx-generator/docx-generator.component';
-import { CertificationTypeComponent } from './certification-type/certification-type.component';
-import { FinalExaminationComponent } from './final-examination/final-examination.component';
-import { TestWorkComponent } from './test-work/test-work.component';
+import {DocxGeneratorComponent} from './docx-generator/docx-generator.component';
+import {CertificationTypeComponent} from './certification-type/certification-type.component';
+import {FinalExaminationComponent} from './final-examination/final-examination.component';
+import {TestWorkComponent} from './test-work/test-work.component';
 import {TestWorkEditComponent} from './test-work/test-work-edit.component';
-import { TrainingProgramAddFormComponent } from './training-program-add-form/training-program-add-form.component';
+import {TrainingProgramAddFormComponent} from './training-program-add-form/training-program-add-form.component';
 import {FinalExaminationEditComponent} from './final-examination/final-examination-edit.component';
 import {CertificationTypeEditComponent} from './certification-type/certification-type-edit.component';
 import {TrainingProgramEditComponent} from './training-program/training-program-edit.component';
 import {RegulationComponent} from './regulation/regulation.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {CurriculumSectionChild} from './training-program-add-form/curriculum-section-child';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 
 @NgModule({
   declarations: [
@@ -75,8 +75,6 @@ import {CurriculumSectionChild} from './training-program-add-form/curriculum-sec
     MainLiteratureEditComponent,
     OccupationFormComponent,
     OccupationFormEditComponent,
-    SectionNumberComponent,
-    SectionNumberEditComponent,
     TeacherComponent,
     TeacherEditComponent,
     StudentCategoryComponent,
@@ -109,6 +107,8 @@ import {CurriculumSectionChild} from './training-program-add-form/curriculum-sec
         InputsModule.forRoot(),
         MDBBootstrapModule.forRoot(),
         FormsModule,
+        NgSelectModule,
+        NgOptionHighlightModule,
         DragDropModule
     ],
   providers: [

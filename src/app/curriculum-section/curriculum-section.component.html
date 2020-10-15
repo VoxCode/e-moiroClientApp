@@ -1,9 +1,7 @@
 <h1>Раздел учебной программы</h1>
 
 <div class="row">
-  <div class="col-sm-2">
-    <app-curriculum-topic-list></app-curriculum-topic-list>
-  </div>
+
   <div class="col-sm">
     <div class="container-fluid">
       <div class="row">
@@ -32,7 +30,6 @@
           <tr mdbTableCol *ngFor="let el of elements; let i = index">
             <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{el.id}}</th>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.first}}</td>
-            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.third}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.last}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
               <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
@@ -61,7 +58,7 @@
   <div class="modal-dialog modal-fluid" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()" (click)="cancel()">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide(); cancel()">
           <span aria-hidden="true">×</span>
         </button>
         <h4 class="modal-title w-100" id="myModalLabel">Раздел учебной программы</h4>
@@ -70,13 +67,9 @@
         <label>Название</label>
         <input type="text" [(ngModel)]="this.value.name" class="md-textarea form-control" mdbInput>
         <br>
-        <label>Раздел</label>
-        <select [(ngModel)]="sectionNumber" class="browser-default custom-select">
-          <option *ngFor="let el of sectionNumbers" [ngValue]="el">{{el.name}}</option>
-        </select>
       </div>
       <div class="modal-footer">
-        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="crate()"
+        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide(); crate()"
                 mdbWavesEffect>Сохранить</button>
       </div>
     </div>

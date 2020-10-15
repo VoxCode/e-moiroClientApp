@@ -3,34 +3,29 @@ import { CurriculumSectionService } from '../services/curriculum-section.service
 import { CurriculumSection } from '../models/CurriculumSection';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {CurriculumSectionEditComponent} from './curriculum-section-edit.component';
-import {SectionNumber} from '../models/SectionNumber';
-import {SectionNumberService} from '../services/section-number.service';
 
 @Component({
   selector: 'app-curriculum-section',
   templateUrl: './curriculum-section.component.html',
   styleUrls: ['./curriculum-section.component.scss'],
-  providers: [CurriculumSectionService, SectionNumberService]
+  providers: [CurriculumSectionService]
 })
 export class CurriculumSectionComponent implements OnInit, AfterViewInit {
   value: CurriculumSection = new CurriculumSection();
   values: CurriculumSection[];
-  sectionNumbers: SectionNumber[];
-  sectionNumber: SectionNumber = new SectionNumber();
 
   @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
   @ViewChild('row', { static: true }) row: ElementRef;
 
   elements: any = [];
-  headElements = ['Номер', 'id', 'Раздел', 'Название', 'Команда'];
+  headElements = ['Номер', 'id', 'Название', 'Команда'];
   searchText = '';
   previous: string;
   modalRef: MDBModalRef;
 
   constructor(
     private valueService: CurriculumSectionService,
-    private sectionNumberService: SectionNumberService,
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService) { }
 
@@ -42,7 +37,6 @@ export class CurriculumSectionComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   ngOnInit() {
     this.loadValue();
-    this.loadSectionNumber();
   }
 
   // tslint:disable-next-line:typedef use-lifecycle-interface
@@ -90,8 +84,6 @@ export class CurriculumSectionComponent implements OnInit, AfterViewInit {
           this.elements.push({
             id: i.toString(),
             first: this.values[i - 1].id,
-            second: this.values[i - 1].sectionNumberId,
-            third: this.values[i - 1].sectionNumberName,
             last: this.values[i - 1].name});
         }
         this.mdbTable.setDataSource(this.elements);
@@ -103,17 +95,13 @@ export class CurriculumSectionComponent implements OnInit, AfterViewInit {
 
   // tslint:disable-next-line:typedef
   crate(){
-    this.value.sectionNumberId = this.sectionNumber.id;
     this.valueService.createValue(this.value)
       .subscribe((data: CurriculumSection) => {
         this.value = data;
         const index = this.elements.length + 1;
-        this.value.sectionNumberName = this.sectionNumbers.find(p => p.id === +this.value.sectionNumberId).name;
         this.mdbTable.addRow({
           id: index.toString(),
           first: this.value.id,
-          second: this.value.sectionNumberId,
-          third: this.value.sectionNumberName,
           last: this.value.name
         });
         this.mdbTable.setDataSource(this.elements);
@@ -125,7 +113,6 @@ export class CurriculumSectionComponent implements OnInit, AfterViewInit {
   save(el: any) {
     this.cancel();
     this.value.id = el.first;
-    this.value.sectionNumberId = el.second;
     this.value.name = el.last;
     this.valueService.updateValue(this.value)
       .subscribe();
@@ -142,7 +129,6 @@ export class CurriculumSectionComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   delete(p: any) {
     this.value.id = p.first;
-    this.value.sectionNumberId = p.second;
     this.value.name = p.last;
     this.valueService.deleteValue(this.value.id)
       .subscribe(data => {
@@ -180,14 +166,6 @@ export class CurriculumSectionComponent implements OnInit, AfterViewInit {
       this.save(newElement);
     });
     this.mdbTable.setDataSource(this.elements);
-  }
-
-  // tslint:disable-next-line:typedef
-  loadSectionNumber() {
-    this.sectionNumberService.getValues()
-      .subscribe((data: SectionNumber[]) => {
-        this.sectionNumbers = data;
-      });
   }
 }
 

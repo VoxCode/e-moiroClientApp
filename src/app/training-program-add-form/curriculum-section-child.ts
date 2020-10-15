@@ -1,12 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {CurriculumTopicService} from '../services/curriculum-topic.service';
 import {TrainingProgramService} from '../services/training-program.service';
 import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
 import {OccupationFormService} from '../services/occupation-form.service';
 import {CurriculumSectionService} from '../services/curriculum-section.service';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import {OccupationForm} from "../models/OccupationForm";
-import {ActivatedRoute} from "@angular/router";
+import {OccupationForm} from '../models/OccupationForm';
+import {CurriculumSection} from '../models/CurriculumSection';
+
 
 @Component({
   selector: 'app-curriculum-section-child',
@@ -21,26 +22,29 @@ import {ActivatedRoute} from "@angular/router";
   ]
 })
 
-
-
 // tslint:disable-next-line:component-class-suffix
 export class CurriculumSectionChild {
   @Input() done: any[];
   @Input() name: string;
+  @Input() id: number;
   occupationForms: OccupationForm[] = [];
+  curriculumSections: CurriculumSection[] = [];
+  selectedCompany;
+  addSection: boolean;
 
   constructor(
     private curriculumTopicService: CurriculumTopicService,
     private trainingProgramService: TrainingProgramService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private curriculumSectionService: CurriculumSectionService,
-    private occupationFormService: OccupationFormService,
-    private route: ActivatedRoute
+    private occupationFormService: OccupationFormService
   ) { }
 
   // tslint:disable-next-line:typedef use-lifecycle-interface
   ngOnInit() {
+    this.addSection = false;
     this.loadOccupationForm();
+    this.loadCurriculumSection();
   }
 
   // tslint:disable-next-line:typedef
@@ -52,6 +56,16 @@ export class CurriculumSectionChild {
           data.forEach((object) => {
             this.occupationForms.push(object);
           });
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadCurriculumSection(){
+    this.curriculumSectionService.getValues()
+      .subscribe((data: CurriculumSection[]) => {
+        if (data !== undefined){
+          this.curriculumSections = data;
         }
       });
   }
@@ -71,5 +85,10 @@ export class CurriculumSectionChild {
   // tslint:disable-next-line:typedef
   @Input() print() {
     console.log(this.done);
+  }
+
+  // tslint:disable-next-line:typedef
+  addCurriculumSection() {
+    this.addSection = true;
   }
 }

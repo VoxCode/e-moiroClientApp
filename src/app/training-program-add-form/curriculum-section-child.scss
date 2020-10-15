@@ -56,3 +56,19 @@
 input {
   max-width: 80px;
 }
+
+ng-option {
+  word-wrap: break-word;
+}
+
+.addWindow {
+  position: absolute;
+  top: 100px;
+  left: 500px;
+  margin: 0 auto;
+  border: black solid 1px;
+  opacity: 0.95;
+  background-color: aliceblue;
+  overflow-y: scroll;
+}
+

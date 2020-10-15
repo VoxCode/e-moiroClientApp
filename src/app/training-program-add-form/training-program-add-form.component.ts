@@ -20,7 +20,7 @@ import {CurriculumSection} from '../models/CurriculumSection';
     TrainingProgramService,
     CurriculumTopicTrainingProgramService,
     OccupationFormService,
-    CurriculumSectionService,
+    CurriculumSectionService
   ]
 })
 
@@ -96,14 +96,13 @@ export class TrainingProgramAddFormComponent implements OnInit{
       });
   }
 
-
-
   // tslint:disable-next-line:typedef
   loadCurriculumTopic() {
     this.curriculumTopicService.getValue(this.trainingProgram.studentCategoryId, this.trainingProgram.departmentId)
       .subscribe((data: CurriculumTopic[]) => {
         if (data.length !== 0){
           this.curriculumTopicList = data;
+          this.todo = [];
 
           this.curriculumTopicList.forEach((object, index) => {
             this.todo.push({
@@ -162,7 +161,7 @@ export class TrainingProgramAddFormComponent implements OnInit{
 
     console.log(this.curriculumSectionContentList[0].done[0].second +
       '======' + this.curriculumSectionContentList[0].done[0].fifth
-      + '======' + this.curriculumSectionContentList[0].done[0].fifth);
+      + '======' + this.curriculumSectionContentList[0].done[0].third);
    // console.log(this.curriculumTopicTrainingProgramList);
 
     this.curriculumTopicTrainingProgramList.forEach((object, index) => {
@@ -181,9 +180,9 @@ export class TrainingProgramAddFormComponent implements OnInit{
   }
 
   // tslint:disable-next-line:typedef
-  delete(item: any) {
-    const index = this.curriculumSectionContentList.indexOf(item);
-    this.curriculumSectionContentList.splice(index, 1);
+  delete() {
+    this.curriculumSectionContentList = [];
+    this.loadCurriculumTopic();
+    this.i = 1;
   }
 }
-
