@@ -43,7 +43,6 @@ export class TrainingProgramAddFormComponent implements OnInit{
   todo = [];
   done = [];
   name: string;
-  i = 1;
 
 
   constructor(
@@ -79,7 +78,6 @@ export class TrainingProgramAddFormComponent implements OnInit{
       .subscribe((data: TrainingProgram) => {
         if (data !== undefined){
           this.trainingProgram = data;
-          this.loadCurriculumTopic();
           // this.loadCurriculumTopicTrainingProgram();
 
         }
@@ -172,17 +170,18 @@ export class TrainingProgramAddFormComponent implements OnInit{
   }
 
   // tslint:disable-next-line:typedef
-  addCurriculumSection() {
-    this.curriculumSectionContentList.push({
-      done: [], name: 'Раздел ' + this.i
-    });
-    this.i++;
+  addCurriculumSection(event: number) {
+    this.curriculumSectionContentList = [];
+    this.loadCurriculumTopic();
+    for (let i = 1; i <= event; i++){
+      this.curriculumSectionContentList.push({
+        done: [], name: 'Раздел ' + i
+      });
+    }
   }
 
   // tslint:disable-next-line:typedef
-  delete() {
-    this.curriculumSectionContentList = [];
-    this.loadCurriculumTopic();
-    this.i = 1;
+  save() {
+
   }
 }

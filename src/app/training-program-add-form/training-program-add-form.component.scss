@@ -1,9 +1,16 @@
 .example-container {
-  width: 800px;
+  min-width: 200px;
   max-width: 100%;
   margin: 0 25px 25px 0;
   display: inline-block;
   vertical-align: top;
+  border: black solid 1px;
+  border-radius: 5px;
+  position: relative;
+  top: 20px;
+  padding: 10px;
+  background-color: ghostwhite;
+
 }
 
 .example-list {
@@ -59,4 +66,14 @@ input {
 
 button{
   border-radius: 5px;
+}
+
+.tabMenu {
+  height: 50px;
+  padding: 3px;
+  top: 0px;
+  width: 100%;
+  border: black solid 1px;
+  border-radius: 5px;
+  background-color: ghostwhite;
 }

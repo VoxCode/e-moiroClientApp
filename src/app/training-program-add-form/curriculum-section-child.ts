@@ -7,6 +7,7 @@ import {CurriculumSectionService} from '../services/curriculum-section.service';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {OccupationForm} from '../models/OccupationForm';
 import {CurriculumSection} from '../models/CurriculumSection';
+import {TrainingProgramCurriculumSectionService} from '../services/training-program-curriculum-section.service';
 
 
 @Component({
@@ -16,6 +17,7 @@ import {CurriculumSection} from '../models/CurriculumSection';
   providers: [
     CurriculumTopicService,
     TrainingProgramService,
+    TrainingProgramCurriculumSectionService,
     CurriculumTopicTrainingProgramService,
     OccupationFormService,
     CurriculumSectionService,
@@ -29,12 +31,13 @@ export class CurriculumSectionChild {
   @Input() id: number;
   occupationForms: OccupationForm[] = [];
   curriculumSections: CurriculumSection[] = [];
-  selectedCompany;
+  curriculumSection: CurriculumSection;
   addSection: boolean;
 
   constructor(
     private curriculumTopicService: CurriculumTopicService,
     private trainingProgramService: TrainingProgramService,
+    private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private curriculumSectionService: CurriculumSectionService,
     private occupationFormService: OccupationFormService
@@ -71,6 +74,14 @@ export class CurriculumSectionChild {
   }
 
   // tslint:disable-next-line:typedef
+  crateCurriculumSection(){
+    this.trainingProgramCurriculumSectionService.createValue(this.curriculumSection)
+      .subscribe((data: CurriculumSection) => {
+        console.log('Save was successful');
+      });
+}
+
+  // tslint:disable-next-line:typedef
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -89,6 +100,6 @@ export class CurriculumSectionChild {
 
   // tslint:disable-next-line:typedef
   addCurriculumSection() {
-    this.addSection = true;
+    // this.addSection = true;
   }
 }
