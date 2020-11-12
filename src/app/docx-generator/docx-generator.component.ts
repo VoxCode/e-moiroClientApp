@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Packer } from 'docx';
-import { experiences, education, skills, achievements } from './cv-data';
+import { experiences, education, skills, achievements, empty } from './cv-data';
 import { DocumentCreator } from './cv-generator';
 import { saveAs } from 'file-saver';
 
@@ -17,7 +17,8 @@ export class DocxGeneratorComponent {
       experiences,
       education,
       skills,
-      achievements
+      achievements,
+      empty,
     ]);
 
     Packer.toBlob(doc).then(blob => {

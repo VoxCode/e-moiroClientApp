@@ -114,3 +114,8 @@ export const achievements = [
     name: 'Oracle Certified Expert',
   },
 ];
+export const empty = [
+  {
+    name : 'Empty',
+  },
+];

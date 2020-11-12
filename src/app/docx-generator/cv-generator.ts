@@ -2,7 +2,7 @@ import {
   AlignmentType,
   BorderStyle,
   Document,
-  HeadingLevel,
+  HeadingLevel, PageBreak,
   Paragraph,
   Table,
   TableCell,
@@ -11,7 +11,7 @@ import {
   TabStopType,
   TextRun
 } from 'docx';
-
+import {IIndentAttributesProperties} from "docx/build/file/paragraph/formatting/indent";
 
 const PHONE_NUMBER = '07534563401';
 const PROFILE_URL = 'https://www.linkedin.com/in/dolan1';
@@ -21,9 +21,25 @@ const YEAR = '2020';
 
 export class DocumentCreator {
   // tslint:disable-next-line: typedef
-  public create([experiences, educations, skills, achivements]): Document {
+  private lector: number;
+  public create([experiences, educations, skills, achievements, internalParameter ]): Document {
     const document = new Document({
+      creator: 'MOIRO',
+      title: 'Document of MOIRO',
+      styles: {
+        paragraphStyles: [ {
+          id: 'default',
+          name: 'My Standard style',
+          basedOn: 'Normal',
+          next: 'Normal',
+          quickFormat: true,
+          run: {
+            size: 28,
+          },
+        }],
+      },
     });
+
     document.addSection({
       margins: {
         top: 1133,
@@ -32,19 +48,140 @@ export class DocumentCreator {
         left: 1699,
       },
       children: [
+        //#region "First page"
         this.titleMOIRO(),
         this.emptyParagraph(),
         this.tableApproveDocument('2020'),
-        this.emptyParagraph(),
-        this.emptyParagraph(),
-        this.emptyParagraph(), // переписать обязательно!
-        this.emptyParagraph(),
-        this.emptyParagraph(),
-        this.emptyParagraph(),
+        ...internalParameter
+          .map((nothing) => {
+            const arr: Paragraph[] = [];
+            for (let i = 0; i < 14; i++)
+            {
+              arr.push(this.emptyParagraph());
+            }
+            return arr;
+          })
+          .reduce((prev, curr) => prev.concat(curr), []),
         this.MainNameDocument('Программа реализация педагогическо-психологической деятельности иженеров психологов в условиях повышшеного дискомфорта'),
-        this.emptySpase(10),
+        ...internalParameter
+          .map((nothing) => {
+            const arr: Paragraph[] = [];
+            for (let i = 0; i < 15; i++)
+            {
+              arr.push(this.emptyParagraph());
+            }
+            return arr;
+          })
+          .reduce((prev, curr) => prev.concat(curr), []),
         this.yearBoth(2020),
-        this.createHeading('Education'),
+        this.pageBreak(),
+        //#endregion First page
+        //#region "Second page"
+        ...internalParameter
+          .map((nothing) => {
+            const arr: Paragraph[] = [];
+            this.lector = 3; // logic of lectors
+            if (this.lector >= 2) {
+              arr.push(this.someText('Разработчики учебной программы:'));
+              for (let i = 0; i < this.lector; i++) {
+                arr.push(
+                  this.someText('Rector name' + i.toString() + ', ' + 'Доцент, три пяди во лбу и вообще мастер своего дела (наврное)')
+                );
+              }
+            }
+            else
+            {
+              arr.push(this.someText( 'Разработчики учебной программы'));
+              arr.push(this.someText( 'Rector name, ' + 'Доцент, три пяди во лбу и вообще мастер своего дела (наврное)'));
+            }
+            arr.push(this.emptyParagraph());
+            let coun: number;
+            coun = 2;
+            if (coun >= 2 ) // рецензенты
+            {
+              arr.push(this.someText('Рецензенты:'));
+              for (let i = 0; i < this.lector; i++) {
+                arr.push(this.someText('Рецензент name' + i.toString() + ', ' + 'Доцент, три пяди во лбу и вообще мастер своего дела (наврное)'));
+              }
+            }
+            else
+            {
+              arr.push(this.someText( 'Рецензент:'));
+              arr.push(this.someText( 'Рецензент name, ' + 'Доцент, три пяди во лбу и вообще мастер своего дела (наврное)'));
+            }
+            for (let i = 0; i < 20; i++)
+            {
+              arr.push(this.emptyParagraph());
+            }
+            arr.push( this.someText('Рекомендовано к утверждению:'));
+            arr.push(this.someText('кафедра частных методик общего среднего образования\n' +
+              'государственного учреждения образования\n' +
+              '«Минский областной институт развития образования»\n' +
+              'протокол заседания от ____________ 2020 № ______\n'));
+            arr.push(this.emptyParagraph());
+            arr.push(this.someText('научно-методический совет\n' +
+              'государственного учреждения образования \n' +
+              '«Минский областной институт развития образования»\n' +
+              'протокол заседания от ____________ 2020 № ______\n'));
+            arr.push(this.pageBreak());
+            return arr;
+          })
+          .reduce((prev, curr) => prev.concat(curr), []),
+        //#endregion
+        //#region "Third page"
+        ...internalParameter
+          .map((nothing) => {
+            const arr: Paragraph[] = [];
+            arr.push(this.titleText('введение'));
+            arr.push(this.emptyParagraph());
+            arr.push(this.someText('Актуальность.', 720,  true));
+            arr.push(this.someText('some text'));
+            arr.push(this.someText('Цель.', 720, true));
+            arr.push(this.someText('some text'));
+            arr.push(this.someText('Задачи.', 720, true));
+            arr.push(this.someText('some text'));
+            arr.push(this.someText('Основные требования к результатам учебной деятельности слушателей.', 720, true));
+            arr.push(this.someText('some text', ));
+            arr.push(this.someText('Виды учебных занятий.', 720, true));
+            arr.push(this.someText('some text like lections', ));
+            arr.push(this.someText('Методы повышения квалификации..', 720, true));
+            arr.push(this.someText('some text ', ));
+            arr.push(this.someText('Средства повышения квалификации', 720, true));
+            arr.push(this.someText('some text like lections', ));
+            arr.push(this.someText('Форма итоговой аттестации.', 720, true));
+            arr.push(this.someText('some text like lections', ));
+            return arr;
+          })
+          .reduce((prev, curr) => prev.concat(curr), []),
+        //#endregion  ThirdPage
+        //#region FortinPage
+        ...internalParameter
+          .map((nothing) => {
+            const arr: Paragraph[] = [];
+            arr.push(this.emptyParagraph());
+            arr.push(this.titleText('содержание'));
+            for (let i = 1; i < 5; i++) // loop for a parts (PERFERED OBJECT THEN INT)
+            {
+              arr.push(this.emptyParagraph());
+              arr.push(this.titleText(i.toString() + '. Название раздела.'));
+              arr.push(this.emptyParagraph());
+              arr.push(this.someTextCenter('Инвариантная часть.', 0,  true));
+              for (let input = 1; input < 7; input++)
+              {
+                arr.push(this.someText(i.toString() + '.' + input.toString() + ' Тема и задачи инвариативные'));
+              }
+              arr.push(this.emptyParagraph());
+              arr.push(this.someTextCenter('Вариативная часть.', 0,  true));
+              for (let input = 1; input < 3; input++)
+              {
+                arr.push(this.someText(i.toString() + '.' + input.toString() + ' Тема и задачи вариативные'));
+              }
+            }
+            return arr;
+          })
+          .reduce((prev, curr) => prev.concat(curr), []),
+        //#endregion
+        /* this.createHeading('Education'),
         ...educations
           .map((education) => {
             const arr: Paragraph[] = [];
@@ -87,23 +224,68 @@ export class DocumentCreator {
         this.createSubHeading('Skills'),
         this.createSkillList(skills),
         this.createSubHeading('Achievements'),
-        ...this.createAchivementsList(achivements),
+        ...this.createAchivementsList(achievements),
         this.createSubHeading('Interests'),
         this.createInterests('Programming, Technology, Music Production, Web Design, 3D Modelling, Dancing.'),
-        this.createHeading('References'),
-
-        this.tableApproveDocument('2020'),
+        this.createHeading('References'),*/
       ],
     });
     return document;
   }
-  public emptyParagraph(): Paragraph{
-    return new Paragraph({});
-  }
+
   // ==============================================
   // -------- this code write by Gybarev ----------
   // ==============================================
-  public titleMOIRO(): Paragraph {
+
+  public emptyParagraph(): Paragraph{
+    return new Paragraph({
+      style: 'default',
+    });
+  }
+  public pageBreak(): Paragraph{
+    return new Paragraph({
+      children: [new PageBreak()],
+    });
+  }
+
+  public someText(txt: string, indent?: number, bld?: boolean, caps?: boolean ): Paragraph{
+    return new Paragraph({
+      style: 'default',
+      alignment: AlignmentType.JUSTIFIED,
+      indent: {
+        left: 0,
+        firstLine: indent,
+      },
+      children: [
+        new TextRun({
+          text: txt,
+          allCaps: caps,
+          bold: bld,
+        })
+      ]
+    });
+  }
+  public someTextCenter(txt: string, indent?: number, bld?: boolean, caps?: boolean ): Paragraph{
+    return new Paragraph({
+      style: 'default',
+      alignment: AlignmentType.CENTER,
+      indent: {
+        left: 0,
+        firstLine: indent,
+      },
+      children: [
+        new TextRun({
+          text: txt,
+          allCaps: caps,
+          bold: bld,
+        })
+      ]
+    });
+  }
+
+  // first list
+  public titleMOIRO(): Paragraph
+  {
     return new Paragraph({
       alignment: AlignmentType.CENTER,
       children: [
@@ -117,7 +299,8 @@ export class DocumentCreator {
     });
   }
 
-  public tableApproveDocument(year: string): Table {
+  public tableApproveDocument(year: string): Table
+  {
     return new Table({
       alignment: AlignmentType.RIGHT,
       borders: {
@@ -230,17 +413,38 @@ export class DocumentCreator {
     });
   }
 
-  public yearBoth(year: number): Paragraph[]{
-   return new Paragraph[year]({
-     text: year.toString(),
+  public yearBoth(year: number): Paragraph
+  {
+   return new Paragraph({
+     alignment: AlignmentType.CENTER,
+     children: [
+       new TextRun({
+         text: 'Минск, ' + year.toString(),
+         size : 30,
+       })
+     ]
    });
   }
-  public emptySpase(count: number): Paragraph[]{
-    return new Paragraph[count]({});
+
+  // another list
+  public titleText(title: string): Paragraph
+  {
+    return new Paragraph({
+      alignment: AlignmentType.CENTER,
+      children: [
+        new TextRun({
+          text: title,
+          size : 28,
+          bold : true,
+          allCaps: true,
+        }),
+      ],
+    });
   }
   // ===============================================
   // ----- this code generated by owner module -----
   // ===============================================
+
   public createContactInfo(phoneNumber: string, profileUrl: string, email: string): Paragraph {
     return new Paragraph({
       alignment: AlignmentType.CENTER,
