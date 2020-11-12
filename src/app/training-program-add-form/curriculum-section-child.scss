@@ -1,9 +1,15 @@
 .example-container {
-  width: 800px;
+  min-width: 600px;
   max-width: 100%;
   margin: 0 25px 25px 0;
   display: inline-block;
   vertical-align: top;
+  border: black solid 1px;
+  border-radius: 5px;
+  position: relative;
+  top: 20px;
+  padding: 10px;
+  background-color: ghostwhite;
 }
 
 .example-list {
@@ -55,6 +61,10 @@
 
 input {
   max-width: 80px;
+}
+
+button{
+  border-radius: 5px;
 }
 
 ng-option {

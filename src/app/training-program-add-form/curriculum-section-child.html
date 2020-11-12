@@ -1,15 +1,14 @@
 <ng-content></ng-content>
 <div class="example-container">
-  <h2>{{name}}</h2>
-  <h3>{{selectedCompany}}</h3>
+  <h4><strong>{{name}}</strong></h4>
+  <h5 *ngIf="curriculumSection != null">{{curriculumSection.name}}</h5>
   <ng-select [items]="curriculumSections"
-             bindValue="name"
+             bindValue=""
              bindLabel="name"
-             [addTag]="true"
-             [(ngModel)]="selectedCompany">
+             [(ngModel)]="curriculumSection">
   </ng-select>
-  <button type="button" mdbBtn color="success" size="sm"
-          class="relative waves-light" (click)="addCurriculumSection()" mdbWavesEffect>Создать</button>
+  <button type="button" mdbBtn color="success" size="sm" class="relative waves-light" (click)="addCurriculumSection()"
+          mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon></button>
   <div
     cdkDropList
     [cdkDropListData]="done"
