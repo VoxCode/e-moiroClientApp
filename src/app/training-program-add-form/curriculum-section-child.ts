@@ -101,6 +101,6 @@ export class CurriculumSectionChild {
 
   // tslint:disable-next-line:typedef
   addCurriculumSection() {
-    this.addSection = true;
+    // this.addSection = true;
   }
 }
