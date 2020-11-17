@@ -29,6 +29,7 @@ export class CurriculumSectionChild {
   @Input() done: any[];
   @Input() name: string;
   @Input() id: number;
+
   occupationForms: OccupationForm[] = [];
   curriculumSections: CurriculumSection[] = [];
   curriculumSection: CurriculumSection;
@@ -94,12 +95,12 @@ export class CurriculumSectionChild {
   }
 
   // tslint:disable-next-line:typedef
-  @Input() print() {
-    console.log(this.done);
+ print() {
+    console.log('sdsdsd');
   }
 
   // tslint:disable-next-line:typedef
   addCurriculumSection() {
-    // this.addSection = true;
+    this.addSection = true;
   }
 }

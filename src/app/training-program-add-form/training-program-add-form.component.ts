@@ -26,6 +26,7 @@ import {CurriculumSection} from '../models/CurriculumSection';
 
 export class TrainingProgramAddFormComponent implements OnInit{
   id: number;
+  value: number;
 
   trainingProgram: TrainingProgram;
   curriculumTopic: CurriculumTopic;
@@ -79,6 +80,7 @@ export class TrainingProgramAddFormComponent implements OnInit{
         if (data !== undefined){
           this.trainingProgram = data;
           // this.loadCurriculumTopicTrainingProgram();
+          this.addCurriculumSection(1);
 
         }
       });
@@ -171,9 +173,18 @@ export class TrainingProgramAddFormComponent implements OnInit{
 
   // tslint:disable-next-line:typedef
   addCurriculumSection(event: number) {
+    if (event > 10) {
+      this.value = 10;
+    }
+    else if (event < 1) {
+      this.value = 1;
+    }
+    else {
+      this.value = event;
+    }
     this.curriculumSectionContentList = [];
     this.loadCurriculumTopic();
-    for (let i = 1; i <= event; i++){
+    for (let i = 1; i <= this.value; i++){
       this.curriculumSectionContentList.push({
         done: [], name: 'Раздел ' + i
       });

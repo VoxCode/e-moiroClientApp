@@ -1,14 +1,13 @@
 <div class="container-fluid"><br>
   <div class="tabMenu">
     <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="save()" mdbWavesEffect>
-      <mdb-icon far icon="save"></mdb-icon></button>
+      <mdb-icon size="lg" far icon="save"></mdb-icon></button>
   </div>
   <div cdkDropListGroup>
     <div class="row">
       <div class="col-sm-3">
         <div class="example-container">
           <h2>Предложено</h2>
-
 
           <div
             cdkDropList
@@ -22,15 +21,16 @@
       </div>
       <div class="col-sm-7">
         <app-curriculum-section-child *ngFor="let item of curriculumSectionContentList"
-                                      [name]="item.name" [done]="item.done" [id]="id"></app-curriculum-section-child>
+                                      [name]="item.name" [done]="item.done" [id]="id" ></app-curriculum-section-child>
       </div>
       <div class="col-sm-2">
         <label>Введите количество разделов</label>
-        <input type="number" class="md-textarea form-control" mdbInput (change)="addCurriculumSection($event.target.value)">
+        <input type="number" [min]="1" [max]="10" [(ngModel)]="value" class="md-textarea form-control" mdbInput
+               (ngModelChange)="addCurriculumSection($event)">
       </div>
     </div>
   </div>
   <br><br>
-  <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="crate()" mdbWavesEffect>Далее</button>
+  <button type="button" mdbBtn color="primary" class="relative waves-light"
+          (click)="crate()" mdbWavesEffect>Далее</button>
 </div>
-
