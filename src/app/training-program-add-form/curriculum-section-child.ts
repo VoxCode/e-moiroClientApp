@@ -9,7 +9,8 @@ import {OccupationForm} from '../models/OccupationForm';
 import {CurriculumSection} from '../models/CurriculumSection';
 import {TrainingProgramCurriculumSectionService} from '../services/training-program-curriculum-section.service';
 import {CommonService} from '../common-service/common-service.component';
-import {Subscription, SubscriptionLike} from "rxjs";
+import {SubscriptionLike} from 'rxjs';
+import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
 
 
 @Component({
@@ -35,8 +36,9 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   occupationForms: OccupationForm[] = [];
   curriculumSections: CurriculumSection[] = [];
   curriculumSection: CurriculumSection;
+  curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram;
   addSection: boolean;
-  subscribtion: SubscriptionLike;
+  subscription: SubscriptionLike;
 
   constructor(
     private curriculumTopicService: CurriculumTopicService,
@@ -51,17 +53,18 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   // tslint:disable-next-line:typedef use-lifecycle-interface
   ngOnInit() {
     this.addSection = false;
+    this.curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
     this.loadOccupationForm();
     this.loadCurriculumSection();
-    this.subscribtion = this.commonService.saveCurriculumSectionChild$.subscribe( idx => {
-      this.print();
+    this.subscription = this.commonService.saveCurriculumSectionChild$.subscribe( idx => {
+      this.crateCurriculumTopicTrainingProgram();
     });
   }
 
   // tslint:disable-next-line:typedef
   ngOnDestroy() {
-    this.subscribtion.unsubscribe();
-    this.subscribtion = null;
+    this.subscription.unsubscribe();
+    this.subscription = null;
   }
 
   // tslint:disable-next-line:typedef
@@ -88,11 +91,24 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   }
 
   // tslint:disable-next-line:typedef
-  crateCurriculumSection(){
-    this.trainingProgramCurriculumSectionService.createValue(this.curriculumSection)
-      .subscribe((data: CurriculumSection) => {
-        console.log('Save was successful');
+  crateCurriculumTopicTrainingProgram(){
+    if (this.curriculumSection !== undefined){
+      this.done.forEach((object, index) => {
+        this.curriculumTopicTrainingProgram.trainingProgramId = object.sixth;
+        this.curriculumTopicTrainingProgram.curriculumTopicId = object.first;
+        this.curriculumTopicTrainingProgram.classHours = object.fourth;
+        this.curriculumTopicTrainingProgram.isVariable = object.third;
+        this.curriculumTopicTrainingProgram.occupationFormId = object.fifth;
+        this.curriculumTopicTrainingProgram.serialNumber = index;
+        this.curriculumTopicTrainingProgram.curriculumSectionId = this.curriculumSection.id;
+        console.log(this.curriculumTopicTrainingProgram);
+
+        // this.curriculumTopicTrainingProgramService.createValue(this.curriculumTopicTrainingProgram)
+        //   .subscribe((data: CurriculumSection) => {
+        //     console.log('Save was successful');
+        //   });
       });
+    }
   }
 
   // tslint:disable-next-line:typedef
@@ -105,11 +121,6 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
         event.previousIndex,
         event.currentIndex);
     }
-  }
-
-  // tslint:disable-next-line:typedef
- print() {
-    console.log(this.done);
   }
 
   // tslint:disable-next-line:typedef

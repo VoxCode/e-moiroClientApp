@@ -6,5 +6,6 @@ export class CurriculumTopicTrainingProgram {
     public serialNumber?: number,
     public curriculumTopicId?: number,
     public trainingProgramId?: number,
+    public  curriculumSectionId?: number,
     public occupationFormId?: number){ }
 }

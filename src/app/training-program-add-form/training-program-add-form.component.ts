@@ -46,7 +46,6 @@ export class TrainingProgramAddFormComponent implements OnInit{
   done = [];
   name: string;
 
-
   constructor(
     private curriculumTopicService: CurriculumTopicService,
     private trainingProgramService: TrainingProgramService,
@@ -112,7 +111,8 @@ export class TrainingProgramAddFormComponent implements OnInit{
               second: this.curriculumTopicList[index].topicTitle,
               third: this.curriculumTopicTrainingProgram.isVariable,
               fourth: this.curriculumTopicTrainingProgram.classHours,
-              fifth: this.curriculumTopicTrainingProgram.occupationFormId
+              fifth: this.curriculumTopicTrainingProgram.occupationFormId,
+              sixth: this.id
             });
           });
           // tslint:disable-next-line:only-arrow-functions typedef
