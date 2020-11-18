@@ -53,6 +53,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {CurriculumSectionChild} from './training-program-add-form/curriculum-section-child';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
+import {CommonService} from './common-service/common-service.component';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,7 @@ import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
     TestWorkComponent,
     TestWorkEditComponent,
     TrainingProgramAddFormComponent,
-    CurriculumSectionChild
+    CurriculumSectionChild,
   ],
     imports: [
         BrowserModule,
@@ -113,6 +114,7 @@ import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
     ],
   providers: [
     AuthService,
+    CommonService,
     AuthGuardService,
     {
       provide: HTTP_INTERCEPTORS,

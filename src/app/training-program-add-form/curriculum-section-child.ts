@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {CurriculumTopicService} from '../services/curriculum-topic.service';
 import {TrainingProgramService} from '../services/training-program.service';
 import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
@@ -8,6 +8,8 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 import {OccupationForm} from '../models/OccupationForm';
 import {CurriculumSection} from '../models/CurriculumSection';
 import {TrainingProgramCurriculumSectionService} from '../services/training-program-curriculum-section.service';
+import {CommonService} from '../common-service/common-service.component';
+import {Subscription, SubscriptionLike} from "rxjs";
 
 
 @Component({
@@ -25,7 +27,7 @@ import {TrainingProgramCurriculumSectionService} from '../services/training-prog
 })
 
 // tslint:disable-next-line:component-class-suffix
-export class CurriculumSectionChild {
+export class CurriculumSectionChild implements OnInit, OnDestroy{
   @Input() done: any[];
   @Input() name: string;
   @Input() id: number;
@@ -34,6 +36,7 @@ export class CurriculumSectionChild {
   curriculumSections: CurriculumSection[] = [];
   curriculumSection: CurriculumSection;
   addSection: boolean;
+  subscribtion: SubscriptionLike;
 
   constructor(
     private curriculumTopicService: CurriculumTopicService,
@@ -41,6 +44,7 @@ export class CurriculumSectionChild {
     private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private curriculumSectionService: CurriculumSectionService,
+    private commonService: CommonService,
     private occupationFormService: OccupationFormService
   ) { }
 
@@ -49,6 +53,15 @@ export class CurriculumSectionChild {
     this.addSection = false;
     this.loadOccupationForm();
     this.loadCurriculumSection();
+    this.subscribtion = this.commonService.saveCurriculumSectionChild$.subscribe( idx => {
+      this.print();
+    });
+  }
+
+  // tslint:disable-next-line:typedef
+  ngOnDestroy() {
+    this.subscribtion.unsubscribe();
+    this.subscribtion = null;
   }
 
   // tslint:disable-next-line:typedef
@@ -80,7 +93,7 @@ export class CurriculumSectionChild {
       .subscribe((data: CurriculumSection) => {
         console.log('Save was successful');
       });
-}
+  }
 
   // tslint:disable-next-line:typedef
   drop(event: CdkDragDrop<string[]>) {
@@ -96,7 +109,7 @@ export class CurriculumSectionChild {
 
   // tslint:disable-next-line:typedef
  print() {
-    console.log('sdsdsd');
+    console.log(this.done);
   }
 
   // tslint:disable-next-line:typedef

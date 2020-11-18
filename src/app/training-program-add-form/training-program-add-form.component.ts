@@ -10,6 +10,7 @@ import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTraining
 import {CurriculumSectionService} from '../services/curriculum-section.service';
 import {OccupationFormService} from '../services/occupation-form.service';
 import {CurriculumSection} from '../models/CurriculumSection';
+import {CommonService} from '../common-service/common-service.component';
 
 @Component({
   selector: 'app-training-program-add-form',
@@ -52,6 +53,7 @@ export class TrainingProgramAddFormComponent implements OnInit{
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private curriculumSectionService: CurriculumSectionService,
     private occupationFormService: OccupationFormService,
+    private commonService: CommonService,
     private route: ActivatedRoute
   ) { }
 
@@ -193,6 +195,7 @@ export class TrainingProgramAddFormComponent implements OnInit{
 
   // tslint:disable-next-line:typedef
   save() {
+    this.commonService.saveCurriculumSectionChild$.next(1);
 
   }
 }
