@@ -1,4 +1,9 @@
-<div class="container-fluid"><br>
+<div class="container-fluid">
+  <div class="backButton">
+    <button routerLink="/trainingProgram" type="button" size="sm" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>
+      <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon></button>
+  </div><br>
+  <h4>Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
   <div class="tabMenu">
     <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="save()" mdbWavesEffect>
       <mdb-icon size="lg" far icon="save"></mdb-icon></button>
@@ -20,13 +25,19 @@
 
       </div>
       <div class="col-sm-7">
-        <app-curriculum-section-child *ngFor="let item of curriculumSectionContentList"
-                                      [name]="item.name" [done]="item.done" [id]="id" ></app-curriculum-section-child>
+        <div *ngFor="let item of curriculumSectionContentList">
+          <app-curriculum-section-child [name]="item.name" [done]="item.done" [id]="id" [index]="item.index">
+          </app-curriculum-section-child>
+          <button type="button" id="deleteBtn" mdbBtn color="danger" size="sm" class="relative waves-light"
+                  (click)="deleteTrainingProgramCurriculumSection(item.name)" mdbWavesEffect>
+            <mdb-icon fas icon="trash-alt" size="sm"></mdb-icon></button>
+        </div>
+
       </div>
       <div class="col-sm-2">
-        <label>Введите количество разделов</label>
-        <input type="number" [min]="1" [max]="10" [(ngModel)]="value" class="md-textarea form-control" mdbInput
-               (ngModelChange)="addCurriculumSection($event)">
+        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+                (click)="addCurriculumSection()" mdbWavesEffect>
+          <mdb-icon fas icon="plus" size="sm"></mdb-icon></button>
       </div>
     </div>
   </div>

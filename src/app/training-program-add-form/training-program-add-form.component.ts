@@ -11,6 +11,8 @@ import {CurriculumSectionService} from '../services/curriculum-section.service';
 import {OccupationFormService} from '../services/occupation-form.service';
 import {CurriculumSection} from '../models/CurriculumSection';
 import {CommonService} from '../common-service/common-service.component';
+import {TrainingProgramCurriculumSectionService} from '../services/training-program-curriculum-section.service';
+import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
 
 @Component({
   selector: 'app-training-program-add-form',
@@ -20,6 +22,7 @@ import {CommonService} from '../common-service/common-service.component';
     CurriculumTopicService,
     TrainingProgramService,
     CurriculumTopicTrainingProgramService,
+    TrainingProgramCurriculumSectionService,
     OccupationFormService,
     CurriculumSectionService
   ]
@@ -31,6 +34,7 @@ export class TrainingProgramAddFormComponent implements OnInit{
 
   trainingProgram: TrainingProgram;
   curriculumTopic: CurriculumTopic;
+  trainingProgramCurriculumSectionIdx: number;
   curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram = {
     isVariable: false,
     classHours: 0,
@@ -41,10 +45,12 @@ export class TrainingProgramAddFormComponent implements OnInit{
   curriculumTopicList: CurriculumTopic[] = [];
   curriculumTopicTmpList: CurriculumTopic[] = [];
   curriculumTopicTrainingProgramList: CurriculumTopicTrainingProgram[] = [];
+  trainingProgramCurriculumSectionList: TrainingProgramCurriculumSection[] = [];
   curriculumSectionContentList = [];
   todo = [];
   done = [];
   name: string;
+  curriculumSectionIdx: number;
 
   constructor(
     private curriculumTopicService: CurriculumTopicService,
@@ -52,12 +58,15 @@ export class TrainingProgramAddFormComponent implements OnInit{
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private curriculumSectionService: CurriculumSectionService,
     private occupationFormService: OccupationFormService,
+    private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
     private commonService: CommonService,
     private route: ActivatedRoute
   ) { }
 
   // tslint:disable-next-line:typedef
   ngOnInit() {
+    this.trainingProgram = new TrainingProgram();
+    this.curriculumSectionIdx = 0;
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
   }
@@ -80,19 +89,26 @@ export class TrainingProgramAddFormComponent implements OnInit{
       .subscribe((data: TrainingProgram) => {
         if (data !== undefined){
           this.trainingProgram = data;
+          this.loadCurriculumTopic();
+          this.loadTrainingProgramCurriculumSection();
           // this.loadCurriculumTopicTrainingProgram();
-          this.addCurriculumSection(1);
 
         }
       });
   }
 
   // tslint:disable-next-line:typedef
-  loadCurriculumSection(){
-    this.curriculumSectionService.getValue(this.id)
-      .subscribe((data: CurriculumSection[]) => {
+  loadTrainingProgramCurriculumSection() {
+    this.trainingProgramCurriculumSectionService.getValue(this.id)
+      .subscribe((data: TrainingProgramCurriculumSection[]) => {
         if (data !== undefined){
-          this.curriculumSections = data;
+          this.trainingProgramCurriculumSectionList = data;
+          console.log(this.trainingProgramCurriculumSectionList);
+
+          this.trainingProgramCurriculumSectionList.forEach( object => {
+            this.trainingProgramCurriculumSectionIdx = object.curriculumSectionId;
+            this.addCurriculumSection();
+          });
         }
       });
   }
@@ -174,28 +190,28 @@ export class TrainingProgramAddFormComponent implements OnInit{
   }
 
   // tslint:disable-next-line:typedef
-  addCurriculumSection(event: number) {
-    if (event > 10) {
-      this.value = 10;
-    }
-    else if (event < 1) {
-      this.value = 1;
-    }
-    else {
-      this.value = event;
-    }
-    this.curriculumSectionContentList = [];
-    this.loadCurriculumTopic();
-    for (let i = 1; i <= this.value; i++){
-      this.curriculumSectionContentList.push({
-        done: [], name: 'Раздел ' + i
-      });
-    }
+  addCurriculumSection() {
+    this.curriculumSectionIdx++;
+    this.curriculumSectionContentList.push({
+      done: [],
+      name: 'Раздел ' + this.curriculumSectionIdx,
+      index: this.trainingProgramCurriculumSectionIdx
+    });
+    this.trainingProgramCurriculumSectionIdx = null;
   }
 
   // tslint:disable-next-line:typedef
   save() {
     this.commonService.saveCurriculumSectionChild$.next(1);
+  }
 
+  // tslint:disable-next-line:typedef
+  deleteTrainingProgramCurriculumSection(data: string) {
+
+    const index = +/\d+/.exec(data);
+    const idx = this.trainingProgramCurriculumSectionList[index - 1].id;
+    this.curriculumSectionContentList.splice(index - 1, 1);
+    this.trainingProgramCurriculumSectionService.deleteValue(idx)
+      .subscribe();
   }
 }

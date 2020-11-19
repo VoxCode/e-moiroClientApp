@@ -1,14 +1,17 @@
 <ng-content></ng-content>
 <div class="example-container">
+  <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+          (click)="crateTrainingProgramCurriculumSection()"
+          mdbWavesEffect><mdb-icon fas icon="save" size="lg"></mdb-icon></button>
   <h4><strong>{{name}}</strong></h4>
   <h5 *ngIf="curriculumSection != null">{{curriculumSection.name}}</h5>
+  <button type="button" mdbBtn color="success" size="sm" class="relative waves-light" (click)="addCurriculumSection()"
+          mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon></button>
   <ng-select [items]="curriculumSections"
              bindValue=""
              bindLabel="name"
              [(ngModel)]="curriculumSection">
   </ng-select>
-  <button type="button" mdbBtn color="success" size="sm" class="relative waves-light" (click)="addCurriculumSection()"
-          mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon></button>
   <div
     cdkDropList
     [cdkDropListData]="done"

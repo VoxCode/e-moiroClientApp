@@ -11,6 +11,7 @@ import {TrainingProgramCurriculumSectionService} from '../services/training-prog
 import {CommonService} from '../common-service/common-service.component';
 import {SubscriptionLike} from 'rxjs';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
+import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
 
 
 @Component({
@@ -32,11 +33,13 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   @Input() done: any[];
   @Input() name: string;
   @Input() id: number;
+  @Input() index: number;
 
   occupationForms: OccupationForm[] = [];
   curriculumSections: CurriculumSection[] = [];
   curriculumSection: CurriculumSection;
   curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram;
+  trainingProgramCurriculumSection: TrainingProgramCurriculumSection;
   addSection: boolean;
   subscription: SubscriptionLike;
 
@@ -86,7 +89,25 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
       .subscribe((data: CurriculumSection[]) => {
         if (data !== undefined){
           this.curriculumSections = data;
+          this.curriculumSection = this.curriculumSections.find(a => a.id === this.index);
         }
+      });
+  }
+
+
+
+  // tslint:disable-next-line:typedef
+  crateTrainingProgramCurriculumSection(){
+    this.trainingProgramCurriculumSection = new TrainingProgramCurriculumSection();
+    this.trainingProgramCurriculumSection.trainingProgramId = +this.id;
+    this.trainingProgramCurriculumSection.curriculumSectionId = this.curriculumSection.id;
+    this.trainingProgramCurriculumSection.sectionNumber = +/\d+/.exec(this.name);
+    console.log(this.trainingProgramCurriculumSection);
+
+    this.trainingProgramCurriculumSectionService.createValue(this.trainingProgramCurriculumSection)
+      .subscribe((data: TrainingProgramCurriculumSection) => {
+        this.trainingProgramCurriculumSection = data;
+        console.log('Save was successful');
       });
   }
 
@@ -101,7 +122,6 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
         this.curriculumTopicTrainingProgram.occupationFormId = object.fifth;
         this.curriculumTopicTrainingProgram.serialNumber = index;
         this.curriculumTopicTrainingProgram.curriculumSectionId = this.curriculumSection.id;
-        console.log(this.curriculumTopicTrainingProgram);
 
         // this.curriculumTopicTrainingProgramService.createValue(this.curriculumTopicTrainingProgram)
         //   .subscribe((data: CurriculumSection) => {
