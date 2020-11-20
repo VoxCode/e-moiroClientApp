@@ -7,5 +7,6 @@ export class CurriculumTopicTrainingProgram {
     public curriculumTopicId?: number,
     public trainingProgramId?: number,
     public  curriculumSectionId?: number,
+    public topicTitle?: string,
     public occupationFormId?: number){ }
 }
