@@ -44,8 +44,8 @@ export class TrainingProgramAddFormComponent implements OnInit{
   curriculumSectionContentList = [];
   todo = [];
   name: string;
-  curriculumSectionIdx: number;
-  trainingProgramCurriculumSectionIdx: number;
+  curriculumSectionNumber: number;
+
 
   constructor(
     private curriculumTopicService: CurriculumTopicService,
@@ -61,7 +61,7 @@ export class TrainingProgramAddFormComponent implements OnInit{
   // tslint:disable-next-line:typedef
   ngOnInit() {
     this.trainingProgram = new TrainingProgram();
-    this.curriculumSectionIdx = 0;
+    this.curriculumSectionNumber = 0;
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
   }
@@ -103,8 +103,7 @@ export class TrainingProgramAddFormComponent implements OnInit{
             return a.sectionNumber - b.sectionNumber;
           });
           this.trainingProgramCurriculumSectionList.forEach( object => {
-            this.trainingProgramCurriculumSectionIdx = object.curriculumSectionId;
-            this.addCurriculumSection();
+            this.addCurriculumSection(object.curriculumSectionId);
           });
         }
       });
@@ -139,14 +138,14 @@ export class TrainingProgramAddFormComponent implements OnInit{
   // ADD
 
   // tslint:disable-next-line:typedef
-  addCurriculumSection() {
-    this.curriculumSectionIdx++;
+  addCurriculumSection(curriculumSectionId: number) {
+    this.curriculumSectionNumber++;
     this.curriculumSectionContentList.push({
       done: [],
-      name: 'Раздел ' + this.curriculumSectionIdx,
-      index: this.trainingProgramCurriculumSectionIdx
+      curriculumSectionNumber: this.curriculumSectionNumber,
+      curriculumSectionId
     });
-    this.trainingProgramCurriculumSectionIdx = null;
+
   }
 
   // SAVE FULL
@@ -159,9 +158,7 @@ export class TrainingProgramAddFormComponent implements OnInit{
   // DELETE
 
   // tslint:disable-next-line:typedef
-  deleteTrainingProgramCurriculumSection(data: string) {
-
-    const index = +/\d+/.exec(data);
+  deleteTrainingProgramCurriculumSection(index: number) {
     const idx = this.trainingProgramCurriculumSectionList[index - 1].id;
     this.curriculumSectionContentList.splice(index - 1, 1);
     this.trainingProgramCurriculumSectionService.deleteValue(idx)

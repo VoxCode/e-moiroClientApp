@@ -31,9 +31,9 @@ import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurricu
 // tslint:disable-next-line:component-class-suffix
 export class CurriculumSectionChild implements OnInit, OnDestroy{
   @Input() done: any[];
-  @Input() name: string;
+  @Input() curriculumSectionNumber: number;
   @Input() id: number;
-  @Input() index: number;
+  @Input() curriculumSectionId: number;
 
   occupationForms: OccupationForm[] = [];
   curriculumSections: CurriculumSection[] = [];
@@ -100,38 +100,39 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   }
 
   // tslint:disable-next-line:typedef
-  loadCurriculumSection(){                             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  loadCurriculumSection(){
     this.curriculumSectionService.getValues()
       .subscribe((data: CurriculumSection[]) => {
-        if (data !== undefined){
+        if (data !== undefined) {
           this.curriculumSections = data;
-          if (this.curriculumSections !== undefined){
-            this.curriculumSection = this.curriculumSections.find(a => a.id === this.index);
+          if (this.curriculumSections !== undefined) {
+            this.curriculumSection = this.curriculumSections.find(a => a.id === this.curriculumSectionId);
           }
-          this.loadCurriculumTopicTrainingProgram();
+          if (this.curriculumSectionId !== 0) {
+            this.loadCurriculumTopicTrainingProgram();
+          }
         }
       });
   }
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicTrainingProgram(){
-    this.curriculumTopicTrainingProgramService.getValueList(this.id, this.curriculumSection.id, +/\d+/.exec(this.name))
-      .subscribe((data: CurriculumTopicTrainingProgram[]) => {
-        if (data !== undefined){
-          this.curriculumTopicTrainingPrograms = data;
-         // console.log(this.curriculumTopicTrainingPrograms);
-          this.curriculumTopicTrainingPrograms.forEach((object, index) => {
-            this.done.push({
-              first: object.id,
-              second: object.topicTitle,
-              third: object.isVariable,
-              fourth: object.classHours,
-              fifth: object.occupationFormId,
-              sixth: object.trainingProgramId
+      this.curriculumTopicTrainingProgramService.getValueList(this.id, this.curriculumSection.id, this.curriculumSectionNumber)
+        .subscribe((data: CurriculumTopicTrainingProgram[]) => {
+          if (data !== undefined){
+            this.curriculumTopicTrainingPrograms = data;
+            this.curriculumTopicTrainingPrograms.forEach((object, index) => {
+              this.done.push({
+                first: object.id,
+                second: object.topicTitle,
+                third: object.isVariable,
+                fourth: object.classHours,
+                fifth: object.occupationFormId,
+                sixth: object.trainingProgramId
+              });
             });
-          });
-        }
-      });
+          }
+        });
   }
 
   // SAVE
@@ -141,7 +142,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
     this.trainingProgramCurriculumSection = new TrainingProgramCurriculumSection();
     this.trainingProgramCurriculumSection.trainingProgramId = +this.id;
     this.trainingProgramCurriculumSection.curriculumSectionId = this.curriculumSection.id;
-    this.trainingProgramCurriculumSection.sectionNumber = +/\d+/.exec(this.name);
+    this.trainingProgramCurriculumSection.sectionNumber = this.curriculumSectionNumber;
     console.log(this.trainingProgramCurriculumSection);
 
     this.trainingProgramCurriculumSectionService.createValue(this.trainingProgramCurriculumSection)
