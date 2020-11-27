@@ -25,6 +25,7 @@
       <select [(ngModel)]="item.fifth" class="browser-default custom-select">
        <option *ngFor="let el of occupationForms" [ngValue]="el.id">{{el.fullName}}</option>
       </select>
+      <button [value]="item.seventh" (click)="deleteCurriculumTopicTrainingProgram($event.target.value)">x</button>
     </div>
   </div>
   <div class="addWindow" *ngIf="addSection == true">

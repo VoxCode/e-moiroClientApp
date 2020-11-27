@@ -123,12 +123,12 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
             this.curriculumTopicTrainingPrograms = data;
             this.curriculumTopicTrainingPrograms.forEach((object, index) => {
               this.done.push({
-                first: object.id,
                 second: object.topicTitle,
                 third: object.isVariable,
                 fourth: object.classHours,
                 fifth: object.occupationFormId,
-                sixth: object.trainingProgramId
+                sixth: object.trainingProgramId,
+                seventh: object.id
               });
             });
           }
@@ -153,7 +153,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   }
 
   // tslint:disable-next-line:typedef
-  saveCurriculumTopicTrainingProgram(){
+  saveCurriculumTopicTrainingProgram(){ // Сохранение списка тем учебных программ
     let i = 0;
     if (this.curriculumSection !== undefined){
       this.done.forEach((object, index) => {
@@ -165,13 +165,26 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
         this.curriculumTopicTrainingProgram.occupationFormId = object.fifth;
         this.curriculumTopicTrainingProgram.serialNumber = i;
         this.curriculumTopicTrainingProgram.curriculumSectionId = this.curriculumSection.id;
+        if (object.seventh === undefined){
+          this.curriculumTopicTrainingProgramService.createValue(this.curriculumTopicTrainingProgram)
+            .subscribe((data: CurriculumTopicTrainingProgram) => {
+              object.seventh = data.id;
+              console.log('Save was successful');
+            });
+        }
+      });
+    }
+  }
 
-        console.log(this.curriculumTopicTrainingProgram);
+  // DELETE
 
-        this.curriculumTopicTrainingProgramService.createValue(this.curriculumTopicTrainingProgram)
-          .subscribe((data: CurriculumSection) => {
-            console.log('Save was successful');
-          });
+  // tslint:disable-next-line:typedef
+  deleteCurriculumTopicTrainingProgram(data: any){
+    if (data !== 'undefined'){
+      const idx = this.done.findIndex(a => a.seventh === +data);
+      this.curriculumTopicTrainingProgramService.deleteValue(+data).subscribe(() => {
+        console.log('Delete was successful ' + data);
+        this.done.splice(idx, 1);
       });
     }
   }
