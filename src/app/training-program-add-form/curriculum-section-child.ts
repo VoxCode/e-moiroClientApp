@@ -121,14 +121,20 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
         .subscribe((data: CurriculumTopicTrainingProgram[]) => {
           if (data !== undefined){
             this.curriculumTopicTrainingPrograms = data;
+            // tslint:disable-next-line:only-arrow-functions typedef
+            this.curriculumTopicTrainingPrograms.sort(function(a, b) {
+              return a.serialNumber - b.serialNumber;
+            });
             this.curriculumTopicTrainingPrograms.forEach((object, index) => {
               this.done.push({
+                first: object.curriculumTopicId,
                 second: object.topicTitle,
                 third: object.isVariable,
                 fourth: object.classHours,
                 fifth: object.occupationFormId,
                 sixth: object.trainingProgramId,
-                seventh: object.id
+                seventh: object.id,
+                eight: object.serialNumber
               });
             });
           }
@@ -165,15 +171,30 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
         this.curriculumTopicTrainingProgram.occupationFormId = object.fifth;
         this.curriculumTopicTrainingProgram.serialNumber = i;
         this.curriculumTopicTrainingProgram.curriculumSectionId = this.curriculumSection.id;
-        if (object.seventh === undefined){
+        this.curriculumTopicTrainingProgram.id = object.seventh;
+        console.log(this.curriculumTopicTrainingProgram);
+        if (this.curriculumTopicTrainingProgram.id === undefined){
           this.curriculumTopicTrainingProgramService.createValue(this.curriculumTopicTrainingProgram)
             .subscribe((data: CurriculumTopicTrainingProgram) => {
               object.seventh = data.id;
               console.log('Save was successful');
             });
         }
+        else {
+          this.updateCurriculumTopicTrainingProgram(this.curriculumTopicTrainingProgram);
+        }
       });
     }
+  }
+
+  // UPDATE
+
+  // tslint:disable-next-line:typedef
+  updateCurriculumTopicTrainingProgram(tmp: CurriculumTopicTrainingProgram){
+    this.curriculumTopicTrainingProgramService.updateValue(tmp)
+      .subscribe((data: CurriculumTopicTrainingProgram) => {
+        console.log('Update was successful ' + data.serialNumber);
+    });
   }
 
   // DELETE
