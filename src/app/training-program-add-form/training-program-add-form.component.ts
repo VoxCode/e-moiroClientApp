@@ -103,7 +103,7 @@ export class TrainingProgramAddFormComponent implements OnInit{
             return a.sectionNumber - b.sectionNumber;
           });
           this.trainingProgramCurriculumSectionList.forEach( object => {
-            this.addCurriculumSection(object.curriculumSectionId);
+            this.addCurriculumSection(object.curriculumSectionId, object.id);
           });
         }
       });
@@ -138,12 +138,13 @@ export class TrainingProgramAddFormComponent implements OnInit{
   // ADD
 
   // tslint:disable-next-line:typedef
-  addCurriculumSection(curriculumSectionId: number) {
+  addCurriculumSection(curriculumSectionId: number, trainingProgramCurriculumSectionId: number) {
     this.curriculumSectionNumber++;
     this.curriculumSectionContentList.push({
       done: [],
       curriculumSectionNumber: this.curriculumSectionNumber,
-      curriculumSectionId
+      curriculumSectionId,
+      trainingProgramCurriculumSectionId
     });
 
   }

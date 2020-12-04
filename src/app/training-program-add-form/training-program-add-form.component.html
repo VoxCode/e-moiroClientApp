@@ -26,7 +26,11 @@
       </div>
       <div class="col-sm-7">
         <div *ngFor="let item of curriculumSectionContentList">
-          <app-curriculum-section-child [curriculumSectionNumber]="item.curriculumSectionNumber" [done]="item.done" [id]="id" [curriculumSectionId]="item.curriculumSectionId">
+          <app-curriculum-section-child [curriculumSectionNumber]="item.curriculumSectionNumber"
+                                        [done]="item.done"
+                                        [id]="id"
+                                        [curriculumSectionId]="item.curriculumSectionId"
+                                        [trainingProgramCurriculumSectionId]="item.trainingProgramCurriculumSectionId">
           </app-curriculum-section-child>
           <button type="button" id="deleteBtn" mdbBtn color="danger" size="sm" class="relative waves-light"
                   (click)="deleteTrainingProgramCurriculumSection(item.curriculumSectionNumber)" mdbWavesEffect>
@@ -36,7 +40,7 @@
       </div>
       <div class="col-sm-2">
         <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="addCurriculumSection(0)" mdbWavesEffect>
+                (click)="addCurriculumSection(0, 0)" mdbWavesEffect>
           <mdb-icon fas icon="plus" size="sm"></mdb-icon></button>
       </div>
     </div>
