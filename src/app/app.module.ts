@@ -54,6 +54,8 @@ import {CurriculumSectionChild} from './training-program-add-form/curriculum-sec
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import {CommonService} from './common-service/common-service.component';
+import {DocumentEditorAllModule, DocumentEditorContainerModule} from '@syncfusion/ej2-angular-documenteditor';
+import {DocumentEdComponent} from './document-ed/document-ed.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +99,7 @@ import {CommonService} from './common-service/common-service.component';
     TestWorkEditComponent,
     TrainingProgramAddFormComponent,
     CurriculumSectionChild,
+    DocumentEdComponent
   ],
     imports: [
         BrowserModule,
@@ -110,6 +113,8 @@ import {CommonService} from './common-service/common-service.component';
         FormsModule,
         NgSelectModule,
         NgOptionHighlightModule,
+        DocumentEditorContainerModule,
+        DocumentEditorAllModule,
         DragDropModule
     ],
   providers: [
