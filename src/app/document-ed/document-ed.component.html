@@ -1,6 +1,8 @@
 <div class="docx">
-  <ejs-documenteditorcontainer #documentEditorContainerComponent (created)="onCreate()" [enableToolbar]=true></ejs-documenteditorcontainer>
+  <ejs-documenteditorcontainer #documentEditorContainerComponent [locale]="culture"
+                               serviceUrl="https://ej2services.syncfusion.com/production/web-services/api/documenteditor/"
+                               (created)="onCreate()" [enableToolbar]=true></ejs-documenteditorcontainer>
 
 </div>
-<button (click)="saveAsDocx()">Save</button>
+<button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="saveAsDocx()" mdbWavesEffect>Скачать документ</button>
 
