@@ -10,8 +10,7 @@ import {
 } from '@syncfusion/ej2-angular-documenteditor';
 
 L10n.load({
-  'ar-AE': {
-
+  ru: {
   tab: {
     closeButtonTitle: 'близко'
   },
@@ -533,7 +532,7 @@ L10n.load({
       CollapseAll: 'Свернуть все'
   },
   colorpicker: {
-    Apply: 'Подать заявление',
+    Apply: 'Выбрать',
       Cancel: 'Отмена',
       ModeSwitcher: 'Переключить режим'
   },
@@ -2493,7 +2492,7 @@ export class DocumentEdComponent implements OnInit {
 
   @ViewChild('documentEditorContainerComponent')
   public container: DocumentEditorContainerComponent;
-  public culture = 'ar-AE';
+  public culture = 'ru';
 
   constructor() { }
 
