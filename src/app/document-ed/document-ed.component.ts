@@ -219,7 +219,9 @@ L10n.load({
       Dimension: 'измерение',
       Standard: 'стандарт',
       blank: '(Пустой)',
-      fieldTooltip: 'Перетащите поля, чтобы создать выражение. И, если вы хотите редактировать существующие рассчитанные поля! Тогда вы можете достичь этого, просто выбрав поле в разделе «Вычисленные участники».',
+      fieldTooltip: 'Перетащите поля, чтобы создать выражение.' +
+        ' И, если вы хотите редактировать существующие рассчитанные поля!' +
+        ' Тогда вы можете достичь этого, просто выбрав поле в разделе «Вычисленные участники».',
       QuarterYear: 'Квартальный год',
       fieldTitle: 'Имя поля',
       drillError: 'Невозможно отобразить необработанные элементы вычисляемых полей.',
@@ -409,7 +411,9 @@ L10n.load({
       Percent: 'Процентов',
       Custom: 'изготовленный на заказ',
       blank: '(Пустой)',
-      fieldTooltip: 'Перетащите поля, чтобы создать выражение. И, если вы хотите редактировать существующие рассчитанные поля! Вы можете достичь этого, просто выбрав поле в разделе «Вычисленные участники».',
+      fieldTooltip: 'Перетащите поля, чтобы создать выражение.' +
+        ' И, если вы хотите редактировать существующие рассчитанные поля!' +
+        ' Вы можете достичь этого, просто выбрав поле в разделе «Вычисленные участники».',
       fieldTitle: 'Имя поля',
       QuarterYear: 'Квартальный год',
       caption: 'Заголовок поля',
@@ -493,7 +497,9 @@ L10n.load({
       'Header-Upload': 'Загрузить файлы',
       Error: 'ошибка',
       'Validation-Empty': 'Имя файла или папки не может быть пустым.',
-      'Validation-Invalid': 'Имя файла или папки {0} содержит недопустимые символы. Пожалуйста, используйте другое имя. Допустимые имена файлов или папок не могут заканчиваться точкой или пробелом и не могут содержать следующие символы: \\ /: *? "<> |',
+      'Validation-Invalid': 'Имя файла или папки {0} содержит недопустимые символы.' +
+        ' Пожалуйста, используйте другое имя.' +
+        ' Допустимые имена файлов или папок не могут заканчиваться точкой или пробелом и не могут содержать следующие символы: \\ /: *? "<> |',
       'Validation-NewFolder-Exists': 'Файл или папка с именем {0} уже существует.',
       'Validation-Rename-Exists': 'Невозможно переименовать {0} в {1}: место назначения уже существует.',
       'Folder-Empty': 'Эта папка пуста',
@@ -933,7 +939,11 @@ L10n.load({
       Bookmark: 'закладка',
       'Page Setup': 'Настройка страницы',
       'No bookmarks found': 'Закладки не найдены',
-      'Number format tooltip information': 'Одноуровневый числовой формат: </br> [PREFIX]% [LEVELNUMBER] [SUFFIX] </br> Например, глава% 1. нумерация будет отображаться как </br> Глава 1. Элемент </br> Глава 2. Элемент </br> ... </br> Глава N. Элемент </br> </br> Формат многоуровневых чисел: </ br > [PREFIX]% [LEVELNUMBER] [SUFFIX] + [PREFIX]% [LEVELNUMBER] [SUFFIX] </br> Например,% 1.% 2. будет отображаться нумерация как </br> 1.1. Пункт </BR> 1.2. Пункт </BR> ... </BR> 1.N. Вещь',
+      'Number format tooltip information': 'Одноуровневый числовой формат: </br>' +
+        ' [PREFIX]% [LEVELNUMBER] [SUFFIX] </br> Например, глава% 1. нумерация будет отображаться как </br>' +
+        ' Глава 1. Элемент </br> Глава 2. Элемент </br> ... </br> Глава N. Элемент </br> </br>' +
+        ' Формат многоуровневых чисел: </ br > [PREFIX]% [LEVELNUMBER] [SUFFIX] + [PREFIX]% [LEVELNUMBER] [SUFFIX] </br>' +
+        ' Например,% 1.% 2. будет отображаться нумерация как </br> 1.1. Пункт </BR> 1.2. Пункт </BR> ... </BR> 1.N. Вещь',
       Format: 'Формат',
       'Create New Style': 'Создать новый стиль',
       'Modify Style': 'Изменить стиль',
@@ -995,7 +1005,8 @@ L10n.load({
       recurrence: 'рекуррентность',
       wrongPattern: 'Шаблон повторения недопустим.',
       seriesChangeAlert: 'Хотите отменить изменения, внесенные в конкретные экземпляры этой серии, и снова сопоставить их со всей серией?',
-      createError: 'Продолжительность события должна быть короче, чем часто. Сократите продолжительность или измените шаблон повторения в редакторе событий повторения.',
+      createError: 'Продолжительность события должна быть короче, чем часто.' +
+        ' Сократите продолжительность или измените шаблон повторения в редакторе событий повторения.',
       sameDayAlert: 'Два события одного и того же события не могут происходить в один и тот же день.',
       editRecurrence: 'Редактировать повторение',
       repeats: 'Повторы',
@@ -1212,7 +1223,8 @@ L10n.load({
       Text: 'Текст',
       NumberFormat: 'Числовой формат',
       MobileFormulaBarPlaceHolder: 'Введите значение или формулу',
-      PasteAlert: 'Вы не можете вставить это здесь, потому что область копирования и область вставки не имеют одинаковый размер. Пожалуйста, попробуйте вставить в другом диапазоне.',
+      PasteAlert: 'Вы не можете вставить это здесь, потому что область копирования и область вставки не имеют одинаковый размер.' +
+        ' Пожалуйста, попробуйте вставить в другом диапазоне.',
       DestroyAlert: 'Вы уверены, что хотите уничтожить текущую книгу без сохранения и создать новую книгу?',
       SheetRenameInvalidAlert: 'Название листа содержит недопустимый символ.',
       SheetRenameEmptyAlert: 'Название листа не может быть пустым.',
@@ -1393,7 +1405,8 @@ L10n.load({
       'Highlight context': 'основной момент',
       'Underline context': 'Подчеркнутый',
       'Strikethrough context': 'Прорваться через',
-      'Server error': 'Веб-сервис не слушает. PDF Viewer зависит от веб-сервиса для всех его возможностей. Пожалуйста, запустите веб-сервис, чтобы продолжить.',
+      'Server error': 'Веб-сервис не слушает. PDF Viewer зависит от веб-сервиса для всех его возможностей.' +
+        ' Пожалуйста, запустите веб-сервис, чтобы продолжить.',
       'Open text': 'открыто',
       'First text': 'Первая страница',
       'Previous text': 'Предыдущая страница',
@@ -1489,7 +1502,8 @@ L10n.load({
       UnGroup: 'Нажмите здесь, чтобы разгруппироваться',
       GroupDisable: 'Группировка отключена для этого столбца',
       FilterbarTitle: 'ячейка фильтра',
-      EmptyDataSourceError: 'Источник данных не должен быть пустым при начальной загрузке, поскольку столбцы генерируются из источника данных в AutoGenerate Column Grid.',
+      EmptyDataSourceError: 'Источник данных не должен быть пустым при начальной загрузке,' +
+        ' поскольку столбцы генерируются из источника данных в AutoGenerate Column Grid.',
       Add: 'добавлять',
       Edit: 'редактировать',
       Cancel: 'Отмена',
@@ -1666,14 +1680,22 @@ L10n.load({
       start: 'Начало',
       finish: 'Конец',
       enterValue: 'Введите значение',
-      taskBeforePredecessor_FS: 'Вы переместили «{0}» для запуска до завершения «{1}», и эти две задачи связаны. В результате ссылки не могут быть выполнены. Выберите одно действие ниже для выполнения',
-      taskAfterPredecessor_FS: 'Вы удалили «{0}» из «{1}», и эти две задачи связаны между собой. В результате ссылки не могут быть выполнены. Выберите одно действие ниже для выполнения',
-      taskBeforePredecessor_SS: 'Вы переместили «{0}» для запуска до запуска «{1}», и эти две задачи связаны. В результате ссылки не могут быть выполнены. Выберите одно действие ниже для выполнения',
-      taskAfterPredecessor_SS: 'Вы переместили «{0}» для запуска после запуска «{1}», и эти две задачи связаны. В результате ссылки не могут быть выполнены. Выберите одно действие ниже для выполнения',
-      taskBeforePredecessor_FF: 'Вы переместили «{0}» до завершения «{1}», и эти две задачи связаны. В результате ссылки не могут быть выполнены. Выберите одно действие ниже для выполнения',
-      taskAfterPredecessor_FF: 'Вы переместили «{0}» для завершения после «{1}» и обе задачи связаны. В результате ссылки не могут быть выполнены. Выберите одно действие ниже для выполнения',
-      taskBeforePredecessor_SF: 'Вы переместили «{0}» из «{1}» в начало, и эти две задачи связаны между собой. В результате ссылки не могут быть выполнены. Выберите одно действие ниже для выполнения',
-      taskAfterPredecessor_SF: 'Вы переместили «{0}» для завершения после запуска «{1}», и эти две задачи связаны. В результате ссылки не могут быть выполнены. Выберите одно действие ниже для выполнения',
+      taskBeforePredecessor_FS: 'Вы переместили «{0}» для запуска до завершения «{1}», и эти две задачи связаны.' +
+        ' В результате ссылки не могут быть выполнены. Выберите одно действие ниже для выполнения',
+      taskAfterPredecessor_FS: 'Вы удалили «{0}» из «{1}», и эти две задачи связаны между собой.' +
+        ' В результате ссылки не могут быть выполнены. Выберите одно действие ниже для выполнения',
+      taskBeforePredecessor_SS: 'Вы переместили «{0}» для запуска до запуска «{1}», и эти две задачи связаны.' +
+        ' В результате ссылки не могут быть выполнены. Выберите одно действие ниже для выполнения',
+      taskAfterPredecessor_SS: 'Вы переместили «{0}» для запуска после запуска «{1}», и эти две задачи связаны.' +
+        ' В результате ссылки не могут быть выполнены. Выберите одно действие ниже для выполнения',
+      taskBeforePredecessor_FF: 'Вы переместили «{0}» до завершения «{1}», и эти две задачи связаны.' +
+        ' В результате ссылки не могут быть выполнены. Выберите одно действие ниже для выполнения',
+      taskAfterPredecessor_FF: 'Вы переместили «{0}» для завершения после «{1}» и обе задачи связаны.' +
+        ' В результате ссылки не могут быть выполнены. Выберите одно действие ниже для выполнения',
+      taskBeforePredecessor_SF: 'Вы переместили «{0}» из «{1}» в начало, и эти две задачи связаны между собой.' +
+        ' В результате ссылки не могут быть выполнены. Выберите одно действие ниже для выполнения',
+      taskAfterPredecessor_SF: 'Вы переместили «{0}» для завершения после запуска «{1}», и эти две задачи связаны.' +
+        ' В результате ссылки не могут быть выполнены. Выберите одно действие ниже для выполнения',
       taskInformation: 'Информация о задании',
       deleteTask: 'Удалить задачу',
       deleteDependency: 'Удалить зависимость',
@@ -2172,7 +2194,13 @@ L10n.load({
       Bookmark: 'закладка',
       'Page Setup': 'Настройка страницы',
       'No bookmarks found': 'Закладки не найдены',
-      'Number format tooltip information': 'Одноуровневый формат чисел: </br> [PREFIX]% [LEVELNUMBER] [SUFFIX] </br> Например, «Глава% 1». будет отображаться нумерация как </br> Глава 1. Элемент </br> Глава 2. Элемент </br>… </br> Глава N. Элемент </br> </br> Формат многоуровневых чисел: </br> [ PREFIX]% [LEVELNUMBER] [SUFFIX] + [PREFIX]% [LEVELNUMBER] [SUFFIX] </br> Например, «% 1.% 2». будет отображаться нумерация как </br> 1.1. Пункт </BR> 1.2. Пункт </BR> ... </BR> 1.N. Вещь',
+      'Number format tooltip information':
+        'Одноуровневый формат чисел: </br> [PREFIX]% [LEVELNUMBER] [SUFFIX] </br> Например,' +
+        ' «Глава% 1». будет отображаться нумерация как </br> Глава 1. Элемент </br> Глава 2. Элемент </br>… </br>' +
+        ' Глава N. Элемент </br> </br> Формат многоуровневых чисел: </br>' +
+        ' [ PREFIX]% [LEVELNUMBER] [SUFFIX] + [PREFIX]% [LEVELNUMBER] [SUFFIX] </br>' +
+        ' Например, «% 1.% 2». будет отображаться нумерация как </br>' +
+        ' 1.1. Пункт </BR> 1.2. Пункт </BR> ... </BR> 1.N. Вещь',
       Format: 'Формат',
       'Create New Style': 'Создать новый стиль',
       'Modify Style': 'Изменить стиль',
@@ -2324,7 +2352,7 @@ L10n.load({
       Footer: 'нижний колонтитул',
       'Page Setup': 'Настройка страницы',
       'Page Number': 'Номер страницы',
-      Break: 'Перемена',
+      Break: 'Разрыв',
       Find: 'найти',
       'Local Clipboard': 'Локальный буфер обмена',
       'Restrict Editing': 'Ограничить редактирование',
@@ -2385,7 +2413,8 @@ L10n.load({
       'Align top': 'Выровнять верх',
       'Align bottom': 'Выровнять дно',
       'Align center': 'Выровнять центр',
-      'Number of heading or outline levels to be shown in table of contents': 'Количество уровней заголовка или структуры, которые должны быть показаны в оглавлении.',
+      'Number of heading or outline levels to be shown in table of contents':
+        'Количество уровней заголовка или структуры, которые должны быть показаны в оглавлении.',
       'Show page numbers': 'Показать номера страниц',
       'Show page numbers in table of contents': 'Показать номера страниц в оглавлении.',
       'Right align page numbers': 'Выровняйте номера страниц по правому краю',
@@ -2438,7 +2467,12 @@ L10n.load({
       'Open the page setup dialog': 'Откройте диалоговое окно настройки страницы.',
       'Add page numbers': 'Добавьте номера страниц.',
       'Find Text': 'Найти текст в документе (Ctrl + F).',
-      'Toggle between the internal clipboard and system clipboard': 'Переключение между внутренним буфером обмена и системным буфером обмена. </br> Доступ к системному буферу обмена через сценарий запрещен из-за политики безопасности браузера. Вместо этого </br> 1. Вы можете включить внутренний буфер обмена для вырезания, копирования и вставки внутри компонента. </br> 2. Вы можете использовать сочетания клавиш (Ctrl + X, Ctrl + C и Ctrl + V), чтобы вырезать , скопируйте и вставьте в системный буфер обмена.',
+      'Toggle between the internal clipboard and system clipboard':
+        'Переключение между внутренним буфером обмена и системным буфером обмена. </br>' +
+        ' Доступ к системному буферу обмена через сценарий запрещен из-за политики безопасности браузера.' +
+        ' Вместо этого </br> 1. Вы можете включить внутренний буфер обмена для вырезания,' +
+        ' копирования и вставки внутри компонента. </br> 2. Вы можете использовать сочетания клавиш' +
+        ' (Ctrl + X, Ctrl + C и Ctrl + V), чтобы вырезать , скопируйте и вставьте в системный буфер обмена.',
       'Current Page Number': 'Номер текущей страницы в документе. Нажмите или нажмите, чтобы перейти на определенную страницу.',
       'Read only': 'Только для чтения',
       Protections: 'Ограждения',
@@ -2451,7 +2485,7 @@ L10n.load({
       'Web layout': 'Веб-макет',
       'Text Form': 'Текстовая форма',
       'Check Box': 'Флажок',
-      DropDown: 'Падать',
+      DropDown: 'Выпадающий список',
       'Update Fields': 'Обновить поля',
       'Update cross reference fields': 'Обновить поля перекрестных ссылок'
   },
@@ -2493,13 +2527,36 @@ export class DocumentEdComponent implements OnInit {
   @ViewChild('documentEditorContainerComponent')
   public container: DocumentEditorContainerComponent;
   public culture = 'ru';
+  public a: any;
 
   constructor() { }
 
   ngOnInit(): void {
-
-
   }
+
+// tslint:disable-next-line:typedef
+on() {
+
+}
+
+
+// Ajax Converter to SFDT
+  public loadFile(file: File): void {
+    const ajax: XMLHttpRequest = new XMLHttpRequest();
+    ajax.open('POST', 'https://localhost:44358/api/WordToSDFT', true);
+    ajax.onreadystatechange = () => {
+      if (ajax.readyState === 4) {
+        if (ajax.status === 200 || ajax.status === 304) {
+          // open SFDT text in document editor
+          this.container.documentEditor.open(ajax.responseText);
+        }
+      }
+    };
+    const formData: FormData = new FormData();
+    formData.append('files', file);
+    ajax.send(formData);
+  }
+
   onCreate(): any {
     const sfdt = `{"sections":[{"sectionFormat":{"pageWidth":612,"pageHeight":792,"leftMargin":72,"rightMargin":72,"topMargin":72,"bottomMargin":72,"differentFirstPage":false,"differentOddAndEvenPages":false,"headerDistance":36,"footerDistance":36,"bidi":false},"blocks":[{"paragraphFormat":{"afterSpacing":30,"styleName":"Heading 1","listFormat":{}},"characterFormat":{},"inlines":[{"characterFormat":{},"text":"Adventure Works Cycles"}]}],"headersFooters":{"header":{"blocks":[{"paragraphFormat":{"listFormat":{}},"characterFormat":{},"inlines":[]}]},"footer":{"blocks":[{"paragraphFormat":{"listFormat":{}},"characterFormat":{},"inlines":[]}]}}}],"characterFormat":{"bold":false,"italic":false,"fontSize":11,"fontFamily":"Calibri","underline":"None","strikethrough":"None","baselineAlignment":"Normal","highlightColor":"NoColor","fontColor":"empty","fontSizeBidi":11,"fontFamilyBidi":"Calibri","allCaps":false},"paragraphFormat":{"leftIndent":0,"rightIndent":0,"firstLineIndent":0,"textAlignment":"Left","beforeSpacing":0,"afterSpacing":0,"lineSpacing":1.0791666507720947,"lineSpacingType":"Multiple","listFormat":{},"bidi":false},"defaultTabWidth":36,"trackChanges":false,"enforcement":false,"hashValue":"","saltValue":"","formatting":false,"protectionType":"NoProtection","dontUseHTMLParagraphAutoSpacing":false,"formFieldShading":true,"styles":[{"name":"Normal","type":"Paragraph","paragraphFormat":{"lineSpacing":1.149999976158142,"lineSpacingType":"Multiple","listFormat":{}},"characterFormat":{"fontFamily":"Calibri"},"next":"Normal"},{"name":"Default Paragraph Font","type":"Character","characterFormat":{}},{"name":"Heading 1 Char","type":"Character","characterFormat":{"fontSize":16,"fontFamily":"Calibri Light","fontColor":"#2F5496"},"basedOn":"Default Paragraph Font"},{"name":"Heading 1","type":"Paragraph","paragraphFormat":{"beforeSpacing":12,"afterSpacing":0,"outlineLevel":"Level1","listFormat":{}},"characterFormat":{"fontSize":16,"fontFamily":"Calibri Light","fontColor":"#2F5496"},"basedOn":"Normal","link":"Heading 1 Char","next":"Normal"},{"name":"Heading 2 Char","type":"Character","characterFormat":{"fontSize":13,"fontFamily":"Calibri Light","fontColor":"#2F5496"},"basedOn":"Default Paragraph Font"},{"name":"Heading 2","type":"Paragraph","paragraphFormat":{"beforeSpacing":2,"afterSpacing":6,"outlineLevel":"Level2","listFormat":{}},"characterFormat":{"fontSize":13,"fontFamily":"Calibri Light","fontColor":"#2F5496"},"basedOn":"Normal","link":"Heading 2 Char","next":"Normal"},{"name":"Heading 3","type":"Paragraph","paragraphFormat":{"leftIndent":0,"rightIndent":0,"firstLineIndent":0,"textAlignment":"Left","beforeSpacing":2,"afterSpacing":0,"lineSpacing":1.0791666507720947,"lineSpacingType":"Multiple","outlineLevel":"Level3","listFormat":{}},"characterFormat":{"fontSize":12,"fontFamily":"Calibri Light","fontColor":"#1F3763"},"basedOn":"Normal","link":"Heading 3 Char","next":"Normal"},{"name":"Heading 3 Char","type":"Character","characterFormat":{"fontSize":12,"fontFamily":"Calibri Light","fontColor":"#1F3763"},"basedOn":"Default Paragraph Font"},{"name":"Heading 4","type":"Paragraph","paragraphFormat":{"leftIndent":0,"rightIndent":0,"firstLineIndent":0,"textAlignment":"Left","beforeSpacing":2,"afterSpacing":0,"lineSpacing":1.0791666507720947,"lineSpacingType":"Multiple","outlineLevel":"Level4","listFormat":{}},"characterFormat":{"italic":true,"fontFamily":"Calibri Light","fontColor":"#2F5496"},"basedOn":"Normal","link":"Heading 4 Char","next":"Normal"},{"name":"Heading 4 Char","type":"Character","characterFormat":{"italic":true,"fontFamily":"Calibri Light","fontColor":"#2F5496"},"basedOn":"Default Paragraph Font"},{"name":"Heading 5","type":"Paragraph","paragraphFormat":{"leftIndent":0,"rightIndent":0,"firstLineIndent":0,"textAlignment":"Left","beforeSpacing":2,"afterSpacing":0,"lineSpacing":1.0791666507720947,"lineSpacingType":"Multiple","outlineLevel":"Level5","listFormat":{}},"characterFormat":{"fontFamily":"Calibri Light","fontColor":"#2F5496"},"basedOn":"Normal","link":"Heading 5 Char","next":"Normal"},{"name":"Heading 5 Char","type":"Character","characterFormat":{"fontFamily":"Calibri Light","fontColor":"#2F5496"},"basedOn":"Default Paragraph Font"},{"name":"Heading 6","type":"Paragraph","paragraphFormat":{"leftIndent":0,"rightIndent":0,"firstLineIndent":0,"textAlignment":"Left","beforeSpacing":2,"afterSpacing":0,"lineSpacing":1.0791666507720947,"lineSpacingType":"Multiple","outlineLevel":"Level6","listFormat":{}},"characterFormat":{"fontFamily":"Calibri Light","fontColor":"#1F3763"},"basedOn":"Normal","link":"Heading 6 Char","next":"Normal"},{"name":"Heading 6 Char","type":"Character","characterFormat":{"fontFamily":"Calibri Light","fontColor":"#1F3763"},"basedOn":"Default Paragraph Font"}],"lists":[],"abstractLists":[],"comments":[],"revisions":[],"customXml":[]}`;
     // open the default document.
