@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { L10n } from '@syncfusion/ej2-base';
+import { environment } from '../../environments/environment';
 import {
   DocumentEditorContainerComponent,
   EditorService,
@@ -2526,6 +2527,7 @@ export class DocumentEdComponent implements OnInit {
 
   @ViewChild('documentEditorContainerComponent')
   public container: DocumentEditorContainerComponent;
+  public path: string;
   public culture = 'ru';
   public a: any;
 
@@ -2539,11 +2541,24 @@ on() {
 
 }
 
+  public onFileOpenClick(): void {
+    document.getElementById('open_sfdt').click();
+  }
+
+  public onFileChange(e: any): void {
+    if (e.target.files[0]) {
+      const file = e.target.files[0];
+      if (file.name.substr(file.name.lastIndexOf('.')) !== '.sfdt') {
+        this.path = environment.apiUrl + 'api/WordToSDFT';
+        this.loadFile(file);
+      }
+    }
+  }
 
 // Ajax Converter to SFDT
   public loadFile(file: File): void {
     const ajax: XMLHttpRequest = new XMLHttpRequest();
-    ajax.open('POST', 'https://localhost:44358/api/WordToSDFT', true);
+    ajax.open('POST', this.path, true);
     ajax.onreadystatechange = () => {
       if (ajax.readyState === 4) {
         if (ajax.status === 200 || ajax.status === 304) {
