@@ -27,4 +27,17 @@ export class DocxGeneratorComponent {
       console.log('Document created successfully');
     });
   }
+
+  // tslint:disable-next-line:typedef
+  public getDocument(): any {
+    const documentCreator = new DocumentCreator();
+    const doc = documentCreator.create([
+      experiences,
+      education,
+      skills,
+      achievements,
+      empty,
+    ]);
+    return doc;
+  }
 }
