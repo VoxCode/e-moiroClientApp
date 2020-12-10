@@ -2554,7 +2554,7 @@ export class DocumentEdComponent implements OnInit {
   }
 
 // Ajax Converter to SFDT
-  public loadFile(file: File): void {
+  public loadFile(file: any): void {
     const ajax: XMLHttpRequest = new XMLHttpRequest();
     ajax.open('POST', this.path, true);
     ajax.onreadystatechange = () => {
@@ -2573,8 +2573,10 @@ export class DocumentEdComponent implements OnInit {
   onCreate(): any {
     const docxGen: DocxGeneratorComponent = new DocxGeneratorComponent();
     const docxTmp = docxGen.getDocument();
-    Packer.toBuffer(docxTmp).then(blob => {
+    Packer.toBlob(docxTmp).then(blob => {
       console.log(blob);
+      console.log(docxTmp);
+      this.loadFile(blob);
     });
 
     // this.container.documentEditor.open(docxTmp);
