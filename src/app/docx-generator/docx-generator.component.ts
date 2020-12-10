@@ -38,6 +38,10 @@ export class DocxGeneratorComponent {
       achievements,
       empty,
     ]);
-    return doc;
+    Packer.toBlob(doc).then(blob => {
+      console.log(blob);
+      saveAs(blob, 'example.docx');
+      console.log('Document created successfully');
+    });
   }
 }
