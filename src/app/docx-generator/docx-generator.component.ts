@@ -31,17 +31,13 @@ export class DocxGeneratorComponent {
   // tslint:disable-next-line:typedef
   public getDocument(): any {
     const documentCreator = new DocumentCreator();
-    const doc = documentCreator.create([
+    const docx = documentCreator.create([
       experiences,
       education,
       skills,
       achievements,
-      empty,
+      empty
     ]);
-    Packer.toBlob(doc).then(blob => {
-      console.log(blob);
-      saveAs(blob, 'example.docx');
-      console.log('Document created successfully');
-    });
+    return docx;
   }
 }

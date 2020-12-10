@@ -8,8 +8,7 @@
 </div>
 <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
         (click)="saveAsDocx()" mdbWavesEffect>Скачать документ</button>
-<button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-        (click)="on()" mdbWavesEffect>Выгрузить</button>
 
-<input id="open_sfdt" #open_sfdt style="position:fixed; left:-100em" type="file" (change)="onFileChange($event)" accept=".dotx,.docx,.docm,.dot,.doc,.rtf,.txt,.xml,.sfdt"/>
-<button ejs-button (click)="onFileOpenClick()" >Import</button>
+<input id="open_sfdt" style="position:fixed; left:-100em" type="file" (change)="onFileChange($event)" accept=".dotx,.docx,.docm,.dot,.doc,.rtf,.txt,.xml,.sfdt"/>
+<button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+        (click)="onFileOpenClick()" mdbWavesEffect>Загрузить документ</button>
