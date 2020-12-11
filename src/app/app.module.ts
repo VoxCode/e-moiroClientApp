@@ -56,6 +56,7 @@ import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import {CommonService} from './common-service/common-service.component';
 import {DocumentEditorAllModule, DocumentEditorContainerModule} from '@syncfusion/ej2-angular-documenteditor';
 import {DocumentEdComponent} from './document-ed/document-ed.component';
+import { TrainingProgramDocxGeneratorComponent } from './training-program-docx-generator/training-program-docx-generator.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +100,8 @@ import {DocumentEdComponent} from './document-ed/document-ed.component';
     TestWorkEditComponent,
     TrainingProgramAddFormComponent,
     CurriculumSectionChild,
-    DocumentEdComponent
+    DocumentEdComponent,
+    TrainingProgramDocxGeneratorComponent
   ],
     imports: [
         BrowserModule,
