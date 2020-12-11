@@ -11,18 +11,11 @@ import {
   TabStopType,
   TextRun
 } from 'docx';
-import {IIndentAttributesProperties} from "docx/build/file/paragraph/formatting/indent";
-
-const PHONE_NUMBER = '07534563401';
-const PROFILE_URL = 'https://www.linkedin.com/in/dolan1';
-const EMAIL = 'docx@docx.com';
-const RECTOR = 'Кондратьева И.П.';
-const YEAR = '2020';
 
 export class DocumentCreator {
   // tslint:disable-next-line: typedef
-  private lector: number;
-  public create([experiences, educations, skills, achievements, internalParameter ]): Document {
+  private teacher: number;
+  public create([model, internalParameter ]): Document {
     const document = new Document({
       creator: 'MOIRO',
       title: 'Document of MOIRO',
@@ -66,7 +59,7 @@ export class DocumentCreator {
         ...internalParameter
           .map((nothing) => {
             const arr: Paragraph[] = [];
-            for (let i = 0; i < 15; i++)
+            for (let i = 0; i < 18; i++)
             {
               arr.push(this.emptyParagraph());
             }
@@ -80,10 +73,10 @@ export class DocumentCreator {
         ...internalParameter
           .map((nothing) => {
             const arr: Paragraph[] = [];
-            this.lector = 3; // logic of lectors
-            if (this.lector >= 2) {
+            this.teacher = 3; // logic of teachers
+            if (this.teacher >= 2) {
               arr.push(this.someText('Разработчики учебной программы:'));
-              for (let i = 0; i < this.lector; i++) {
+              for (let i = 0; i < this.teacher; i++) {
                 arr.push(
                   this.someText('Rector name' + i.toString() + ', ' + 'Доцент, три пяди во лбу и вообще мастер своего дела (наврное)')
                 );
@@ -100,7 +93,7 @@ export class DocumentCreator {
             if (coun >= 2 ) // рецензенты
             {
               arr.push(this.someText('Рецензенты:'));
-              for (let i = 0; i < this.lector; i++) {
+              for (let i = 0; i < this.teacher; i++) {
                 arr.push(this.someText('Рецензент name' + i.toString() + ', ' + 'Доцент, три пяди во лбу и вообще мастер своего дела (наврное)'));
               }
             }
@@ -154,7 +147,7 @@ export class DocumentCreator {
           })
           .reduce((prev, curr) => prev.concat(curr), []),
         //#endregion  ThirdPage
-        //#region FortinPage
+        //#region FourPage
         ...internalParameter
           .map((nothing) => {
             const arr: Paragraph[] = [];
@@ -177,57 +170,96 @@ export class DocumentCreator {
                 arr.push(this.someText(i.toString() + '.' + input.toString() + ' Тема и задачи вариативные'));
               }
             }
+            arr.push(this.pageBreak());
             return arr;
           })
           .reduce((prev, curr) => prev.concat(curr), []),
         //#endregion
-        /* this.createHeading('Education'),
-        ...educations
-          .map((education) => {
+
+        // #region FivePage
+        ...internalParameter
+          .map((nothing) => {
             const arr: Paragraph[] = [];
-            arr.push(
-              this.createInstitutionHeader(education.schoolName, `${education.startDate.year} - ${education.endDate.year}`),
-            );
-            arr.push(this.createRoleText(`${education.fieldOfStudy} - ${education.degree}`));
-
-            const bulletPoints = this.splitParagraphIntoBullets(education.notes);
-            bulletPoints.forEach((bulletPoint) => {
-              arr.push(this.createBullet(bulletPoint));
-            });
-
+            arr.push(this.titleText('содержание самостоятельной работы'));
+            arr.push(this.emptyParagraph());
+            for (let i = 1; i < 5; i++) // loop for a parts (PERFERED OBJECT THEN INT)
+            {
+              for (let input = 1; input < 7; input++)
+              {
+                arr.push(this.someText(i.toString() + '.' + input.toString() + ' Нормативы и прочие обеспечения'));
+                arr.push(this.someText('Задание (сколько то там часов)', 720));
+                arr.push(this.someText('Литература (какие-то страницы)', 720));
+              }
+              arr.push(this.emptyParagraph());
+            }
+            arr.push(this.pageBreak());
             return arr;
           })
           .reduce((prev, curr) => prev.concat(curr), []),
-        this.createHeading('Experience'),
-        ...experiences
-          .map((position) => {
+        // #endregion
+        // #region Содержание контрольно работы
+        ...internalParameter
+          .map((nothing) => {
             const arr: Paragraph[] = [];
-
-            arr.push(
-              this.createInstitutionHeader(
-                position.company.name,
-                this.createPositionDateText(position.startDate, position.endDate, position.isCurrent),
-              ),
-            );
-            arr.push(this.createRoleText(position.title));
-
-            const bulletPoints = this.splitParagraphIntoBullets(position.summary);
-
-            bulletPoints.forEach((bulletPoint) => {
-              arr.push(this.createBullet(bulletPoint));
-            });
-
+            arr.push(this.titleText('содержание контрольной работы'));
+            arr.push(this.emptyParagraph());
+            for (let i = 1; i < 5; i++) // loop for a parts (PERFERED OBJECT THEN INT)
+            {
+              arr.push(this.someText('Контрольная работа №' + i.toString() +  ' Название кр - потом добавлю', 720, true));
+              arr.push(this.emptyParagraph());
+              for (let input = 1; input < 7; input++)
+              {
+                arr.push(this.someText(input.toString() + '. Задания (много много много)', 720));
+                arr.push(this.someText('Литература (какие-то страницы)', 720));
+                arr.push(this.emptyParagraph());
+              }
+            }
+            arr.push(this.pageBreak());
             return arr;
           })
           .reduce((prev, curr) => prev.concat(curr), []),
-        this.createHeading('Skills, Achievements and Interests'),
-        this.createSubHeading('Skills'),
-        this.createSkillList(skills),
-        this.createSubHeading('Achievements'),
-        ...this.createAchivementsList(achievements),
-        this.createSubHeading('Interests'),
-        this.createInterests('Programming, Technology, Music Production, Web Design, 3D Modelling, Dancing.'),
-        this.createHeading('References'),*/
+        // #endregion
+        // #region Материалы итоговой аттестации
+        ...internalParameter
+          .map((nothing) => {
+            const arr: Paragraph[] = [];
+            arr.push(this.titleText('Материалы итоговой аттестации слушателей'));
+            arr.push(this.emptyParagraph());
+            arr.push(this.someTextCenter('Вопросы для проведения зачета', 0 , true));
+            arr.push(this.emptyParagraph());
+            for (let i = 1; i < 21; i++) {
+              arr.push(this.someText(i.toString() + '. Адаптивная образовательная среда в условиях интегрированного обучения и воспитания', 720));
+            }
+            arr.push(this.pageBreak());
+            return arr;
+          })
+          .reduce((prev, curr) => prev.concat(curr), []),
+        // #endregion
+        // #region Материалы итоговой аттестации
+        ...internalParameter
+          .map((nothing) => {
+            const arr: Paragraph[] = [];
+            arr.push(this.titleText('список используемой литературы'));
+            arr.push(this.emptyParagraph());
+            arr.push(this.someText('Основная', 720, true));
+            for (let i = 1; i < 6; i++) {
+              arr.push(this.someText(i.toString() + '. Лиетаратура и её страницы', 720));
+            }
+            arr.push(this.emptyParagraph());
+            arr.push(this.someText('Дополнительная', 720, true));
+            for (let i = 1; i < 4; i++) {
+              arr.push(this.someText(i.toString() + '. Лиетаратура и её страницы', 720));
+            }
+            arr.push(this.emptyParagraph());
+            arr.push(this.someText('Нормативно правовые акты', 720, true));
+            for (let i = 1; i < 10; i++) {
+              arr.push(this.someText(i.toString() + '. Лиетаратура и её страницы', 720));
+            }
+            arr.push(this.pageBreak());
+            return arr;
+          })
+          .reduce((prev, curr) => prev.concat(curr), []),
+        // #endregion
       ],
     });
     return document;
@@ -242,6 +274,7 @@ export class DocumentCreator {
       style: 'default',
     });
   }
+
   public pageBreak(): Paragraph{
     return new Paragraph({
       children: [new PageBreak()],
@@ -444,6 +477,55 @@ export class DocumentCreator {
   // ===============================================
   // ----- this code generated by owner module -----
   // ===============================================
+
+
+  /* this.createHeading('Education'),
+  ...educations
+    .map((education) => {
+      const arr: Paragraph[] = [];
+      arr.push(
+        this.createInstitutionHeader(education.schoolName, `${education.startDate.year} - ${education.endDate.year}`),
+      );
+      arr.push(this.createRoleText(`${education.fieldOfStudy} - ${education.degree}`));
+
+      const bulletPoints = this.splitParagraphIntoBullets(education.notes);
+      bulletPoints.forEach((bulletPoint) => {
+        arr.push(this.createBullet(bulletPoint));
+      });
+
+      return arr;
+    })
+    .reduce((prev, curr) => prev.concat(curr), []),
+  this.createHeading('Experience'),
+  ...experiences
+    .map((position) => {
+      const arr: Paragraph[] = [];
+
+      arr.push(
+        this.createInstitutionHeader(
+          position.company.name,
+          this.createPositionDateText(position.startDate, position.endDate, position.isCurrent),
+        ),
+      );
+      arr.push(this.createRoleText(position.title));
+
+      const bulletPoints = this.splitParagraphIntoBullets(position.summary);
+
+      bulletPoints.forEach((bulletPoint) => {
+        arr.push(this.createBullet(bulletPoint));
+      });
+
+      return arr;
+    })
+    .reduce((prev, curr) => prev.concat(curr), []),
+  this.createHeading('Skills, Achievements and Interests'),
+  this.createSubHeading('Skills'),
+  this.createSkillList(skills),
+  this.createSubHeading('Achievements'),
+  ...this.createAchivementsList(achievements),
+  this.createSubHeading('Interests'),
+  this.createInterests('Programming, Technology, Music Production, Web Design, 3D Modelling, Dancing.'),
+  this.createHeading('References'),*/
 
   public createContactInfo(phoneNumber: string, profileUrl: string, email: string): Paragraph {
     return new Paragraph({

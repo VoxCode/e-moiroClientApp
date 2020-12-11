@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Packer } from 'docx';
-import { experiences, education, skills, achievements, empty } from './cv-data';
+import { model, empty } from './cv-data';
 import { DocumentCreator } from './cv-generator';
 import { saveAs } from 'file-saver';
 
@@ -14,10 +14,7 @@ export class DocxGeneratorComponent {
   public download(): void {
     const documentCreator = new DocumentCreator();
     const doc = documentCreator.create([
-      experiences,
-      education,
-      skills,
-      achievements,
+      model,
       empty,
     ]);
 
@@ -32,10 +29,7 @@ export class DocxGeneratorComponent {
   public getDocument(): any {
     const documentCreator = new DocumentCreator();
     const docx = documentCreator.create([
-      experiences,
-      education,
-      skills,
-      achievements,
+     model,
       empty
     ]);
     return docx;
