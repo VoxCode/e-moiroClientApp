@@ -57,7 +57,6 @@ import {CommonService} from './common-service/common-service.component';
 import {DocumentEditorAllModule, DocumentEditorContainerModule} from '@syncfusion/ej2-angular-documenteditor';
 import {DocumentEdComponent} from './document-ed/document-ed.component';
 import { TrainingProgramDocxGeneratorComponent } from './training-program-docx-generator/training-program-docx-generator.component';
-import { DimaNeveruyshiFomaComponent } from './dima-neveruyshi-foma/dima-neveruyshi-foma.component';
 
 @NgModule({
   declarations: [
@@ -102,8 +101,7 @@ import { DimaNeveruyshiFomaComponent } from './dima-neveruyshi-foma/dima-neveruy
     TrainingProgramAddFormComponent,
     CurriculumSectionChild,
     DocumentEdComponent,
-    TrainingProgramDocxGeneratorComponent,
-    DimaNeveruyshiFomaComponent
+    TrainingProgramDocxGeneratorComponent
   ],
     imports: [
         BrowserModule,

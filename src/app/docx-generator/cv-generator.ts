@@ -11,10 +11,38 @@ import {
   TabStopType,
   TextRun
 } from 'docx';
+import {TrainingProgramService} from '../services/training-program.service';
+import {TrainingProgram} from '../models/TrainingProgram';
+import {empty, model} from './cv-data';
+
 
 export class DocumentCreator {
-  // tslint:disable-next-line: typedef
-  private teacher: number;
+
+  teacher: number;
+  trainingProgram: TrainingProgram;
+
+  constructor(
+    private trainingProgramService: TrainingProgramService
+  ) { }
+
+  // tslint:disable-next-line:typedef
+  public startGenerate() {
+    const docx = this.create([
+      model,
+      empty
+    ]);
+
+    this.trainingProgramService.getValue(2)
+      .subscribe((data: TrainingProgram) => {
+        if (data !== undefined) {
+          this.trainingProgram = data;
+          console.log(this.trainingProgram);
+          return docx;
+        }
+      });
+  }
+
+  // tslint:disable-next-line:no-shadowed-variable
   public create([model, internalParameter ]): Document {
     const document = new Document({
       creator: 'MOIRO',
@@ -33,7 +61,7 @@ export class DocumentCreator {
       },
     });
 
-    document.addSection({
+    document.addSection( {
       margins: {
         top: 1133,
         right: 566,
@@ -228,7 +256,8 @@ export class DocumentCreator {
             arr.push(this.someTextCenter('Вопросы для проведения зачета', 0 , true));
             arr.push(this.emptyParagraph());
             for (let i = 1; i < 21; i++) {
-              arr.push(this.someText(i.toString() + '. Адаптивная образовательная среда в условиях интегрированного обучения и воспитания', 720));
+              arr.push(this.someText(i.toString() +
+                '. Адаптивная образовательная среда в условиях интегрированного обучения и воспитания', 720));
             }
             arr.push(this.pageBreak());
             return arr;

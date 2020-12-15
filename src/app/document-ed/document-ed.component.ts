@@ -11,6 +11,7 @@ import {
 } from '@syncfusion/ej2-angular-documenteditor';
 import {DocxGeneratorComponent} from '../docx-generator/docx-generator.component';
 import {Packer} from 'docx';
+import {TrainingProgramService} from '../services/training-program.service';
 
 L10n.load({
   ru: {
@@ -2523,8 +2524,10 @@ L10n.load({
     EditorService,
     SelectionService,
     SfdtExportService,
+    TrainingProgramService,
     WordExportService]
 })
+
 export class DocumentEdComponent implements OnInit {
 
   @ViewChild('documentEditorContainerComponent')
@@ -2533,7 +2536,7 @@ export class DocumentEdComponent implements OnInit {
   public culture = 'ru';
   public a: any;
 
-  constructor() { }
+  constructor(private trainingProgramService: TrainingProgramService) { }
 
   ngOnInit(): void {
   }
@@ -2569,8 +2572,8 @@ export class DocumentEdComponent implements OnInit {
   }
 
   onCreate(): any {
-    const docxGen: DocxGeneratorComponent = new DocxGeneratorComponent();
-    const docxTmp = docxGen.getDocument();
+    const docxGen: DocxGeneratorComponent = new DocxGeneratorComponent(this.trainingProgramService);
+    const docxTmp = docxGen.startGenerate();
     Packer.toBlob(docxTmp).then(blob => {
       this.loadFile(blob);
     });
