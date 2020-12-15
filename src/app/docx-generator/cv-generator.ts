@@ -14,8 +14,11 @@ import {
 import {TrainingProgramService} from '../services/training-program.service';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {empty, model} from './cv-data';
+import {Observable} from "rxjs";
+import {Injectable} from "@angular/core";
+import {Subject} from "docx/build/file/core-properties/components";
 
-
+@Injectable()
 export class DocumentCreator {
 
   teacher: number;
@@ -26,17 +29,17 @@ export class DocumentCreator {
   ) { }
 
   // tslint:disable-next-line:typedef
-  public startGenerate() {
-    const docx = this.create([
-      model,
-      empty
-    ]);
+  public startGenerate(): Subject<any> {
 
     this.trainingProgramService.getValue(2)
       .subscribe((data: TrainingProgram) => {
+        let docx: any;
         if (data !== undefined) {
           this.trainingProgram = data;
-          console.log(this.trainingProgram);
+          docx = this.create([
+            model,
+            empty
+          ]);
           return docx;
         }
       });
@@ -83,7 +86,7 @@ export class DocumentCreator {
             return arr;
           })
           .reduce((prev, curr) => prev.concat(curr), []),
-        this.MainNameDocument('Программа реализация педагогическо-психологической деятельности иженеров психологов в условиях повышшеного дискомфорта'),
+        this.MainNameDocument(this.trainingProgram.name),
         ...internalParameter
           .map((nothing) => {
             const arr: Paragraph[] = [];

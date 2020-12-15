@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 import { Packer } from 'docx';
 import { model, empty } from './cv-data';
 import { DocumentCreator } from './cv-generator';
 import { saveAs } from 'file-saver';
 import {TrainingProgramService} from '../services/training-program.service';
+import {Observable} from "rxjs";
 
+@Injectable()
 @Component({
   selector: 'app-docx-generator',
   templateUrl: './docx-generator.component.html',
@@ -41,9 +43,13 @@ export class DocxGeneratorComponent {
   }
 
   // tslint:disable-next-line:typedef
-  public startGenerate() {
+  public startGenerate(): any {
+    let docx: any;
     const documentCreator = new DocumentCreator(this.trainingProgramService);
-    const docx = documentCreator.startGenerate();
-    return docx;
+    documentCreator.startGenerate().subscribe((data => {
+      docx = data;
+      return docx;
+    }));
+
   }
 }

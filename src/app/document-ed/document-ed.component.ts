@@ -2536,7 +2536,9 @@ export class DocumentEdComponent implements OnInit {
   public culture = 'ru';
   public a: any;
 
-  constructor(private trainingProgramService: TrainingProgramService) { }
+  constructor(
+    private trainingProgramService: TrainingProgramService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -2572,12 +2574,16 @@ export class DocumentEdComponent implements OnInit {
   }
 
   onCreate(): any {
+    let docxTmp: any;
     const docxGen: DocxGeneratorComponent = new DocxGeneratorComponent(this.trainingProgramService);
-    const docxTmp = docxGen.startGenerate();
-    Packer.toBlob(docxTmp).then(blob => {
-      this.loadFile(blob);
-    });
-    this.path = environment.apiUrl + 'api/WordToSDFT';
+    docxGen.startGenerate().subscribe((data => {
+      docxTmp = data;
+      console.log(docxTmp);
+      Packer.toBlob(docxTmp).then(blob => {
+        this.loadFile(blob);
+      });
+      this.path = environment.apiUrl + 'api/WordToSDFT';
+    }));
 
     // const sfdt = `{"sections":[{"sectionFormat":{"pageWidth":612,"pageHeight":792,"leftMargin":72,"rightMargin":72,
     // "topMargin":72,"bottomMargin":72,"differentFirstPage":false,"differentOddAndEvenPages":false,"headerDistance":36,
