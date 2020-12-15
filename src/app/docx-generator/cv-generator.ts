@@ -11,39 +11,15 @@ import {
   TabStopType,
   TextRun
 } from 'docx';
-import {TrainingProgramService} from '../services/training-program.service';
 import {TrainingProgram} from '../models/TrainingProgram';
-import {empty, model} from './cv-data';
-import {Observable} from "rxjs";
-import {Injectable} from "@angular/core";
-import {Subject} from "docx/build/file/core-properties/components";
 
-@Injectable()
 export class DocumentCreator {
 
   teacher: number;
-  trainingProgram: TrainingProgram;
 
   constructor(
-    private trainingProgramService: TrainingProgramService
+    private trainingProgram: TrainingProgram
   ) { }
-
-  // tslint:disable-next-line:typedef
-  public startGenerate(): Subject<any> {
-
-    this.trainingProgramService.getValue(2)
-      .subscribe((data: TrainingProgram) => {
-        let docx: any;
-        if (data !== undefined) {
-          this.trainingProgram = data;
-          docx = this.create([
-            model,
-            empty
-          ]);
-          return docx;
-        }
-      });
-  }
 
   // tslint:disable-next-line:no-shadowed-variable
   public create([model, internalParameter ]): Document {
