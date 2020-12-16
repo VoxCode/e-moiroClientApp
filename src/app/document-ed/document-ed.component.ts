@@ -9,6 +9,7 @@ import {
   ToolbarService,
   WordExportService
 } from '@syncfusion/ej2-angular-documenteditor';
+import {TrainingProgram} from '../models/TrainingProgram';
 
 L10n.load({
   ru: {
@@ -2527,6 +2528,7 @@ L10n.load({
 export class DocumentEdComponent implements OnInit, OnChanges {
 
   @Input() docx: any[];
+  @Input() trainingProgram: TrainingProgram;
   @ViewChild('documentEditorContainerComponent')
   public container: DocumentEditorContainerComponent;
   public path: string;
@@ -2586,6 +2588,6 @@ export class DocumentEdComponent implements OnInit, OnChanges {
   }
 
   public saveAsDocx(): void {
-    this.container.documentEditor.save('sample', 'Docx');
+    this.container.documentEditor.save(this.trainingProgram.name + '(УП)', 'Docx');
   }
 }

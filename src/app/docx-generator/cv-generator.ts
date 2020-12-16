@@ -149,7 +149,7 @@ export class DocumentCreator {
             arr.push(this.someText('Средства повышения квалификации', 720, true));
             arr.push(this.someText('some text like lections', ));
             arr.push(this.someText('Форма итоговой аттестации.', 720, true));
-            arr.push(this.someText('some text like lections', ));
+            arr.push(this.someText(this.trainingProgram.certificationTypeName, ));
             return arr;
           })
           .reduce((prev, curr) => prev.concat(curr), []),
