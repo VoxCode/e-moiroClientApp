@@ -4,6 +4,7 @@ import { model, empty } from './cv-data';
 import { DocumentCreator } from './cv-generator';
 import {TrainingProgramService} from '../services/training-program.service';
 import {TrainingProgram} from '../models/TrainingProgram';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-docx-generator',
@@ -12,15 +13,18 @@ import {TrainingProgram} from '../models/TrainingProgram';
   providers: [TrainingProgramService]
 })
 export class DocxGeneratorComponent implements OnInit{
+  id: number;
   trainingProgram: TrainingProgram;
   docx: any;
 
   constructor(
-    private trainingProgramService: TrainingProgramService
+    private trainingProgramService: TrainingProgramService,
+    private route: ActivatedRoute
   ) { }
 
   // tslint:disable-next-line:typedef
   ngOnInit() {
+    this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
   }
 
@@ -28,7 +32,7 @@ export class DocxGeneratorComponent implements OnInit{
 
   // tslint:disable-next-line:typedef
   loadTrainingProgram() {
-    this.trainingProgramService.getValue(1)
+    this.trainingProgramService.getValue(this.id)
       .subscribe((data: TrainingProgram) => {
         if (data !== undefined){
           this.trainingProgram = data;

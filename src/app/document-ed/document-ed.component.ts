@@ -2540,7 +2540,6 @@ export class DocumentEdComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (this.docx !== undefined){
       this.onCreate();
-      console.log('dddd');
     }
   }
 

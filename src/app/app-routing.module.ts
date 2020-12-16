@@ -25,7 +25,7 @@ import {FinalExaminationComponent} from './final-examination/final-examination.c
 import {TrainingProgramAddFormComponent} from './training-program-add-form/training-program-add-form.component';
 
 const routes: Routes = [
-  { path: 'docxGenerator', component:  DocxGeneratorComponent, canActivate: [AuthGuardService]},
+  { path: 'docxGenerator/:id', component:  DocxGeneratorComponent, canActivate: [AuthGuardService]},
   { path: 'login', component: LoginComponent},
   { path: 'additionalLiterature', component: AdditionalLiteratureComponent, canActivate: [AuthGuardService]},
   { path: 'regulation', component: RegulationComponent, canActivate: [AuthGuardService]},
