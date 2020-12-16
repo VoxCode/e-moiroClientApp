@@ -3,6 +3,7 @@ export class TrainingProgramCurriculumSection {
     public id?: number,
     public trainingProgramId?: number,
     public curriculumSectionId?: number,
-    public sectionNumber?: number
+    public sectionNumber?: number,
+    public name?: string
     ){ }
 }

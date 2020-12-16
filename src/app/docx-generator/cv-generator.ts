@@ -12,13 +12,16 @@ import {
   TextRun
 } from 'docx';
 import {TrainingProgram} from '../models/TrainingProgram';
+import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
 
 export class DocumentCreator {
 
   teacher: number;
 
   constructor(
-    private trainingProgram: TrainingProgram
+    private trainingProgram: TrainingProgram,
+    private trainingProgramCurriculumSections: TrainingProgramCurriculumSection[],
+    private curriculumTopicsList: any[]
   ) { }
 
   // tslint:disable-next-line:no-shadowed-variable
@@ -150,33 +153,39 @@ export class DocumentCreator {
             arr.push(this.someText('some text like lections', ));
             arr.push(this.someText('Форма итоговой аттестации.', 720, true));
             arr.push(this.someText(this.trainingProgram.certificationTypeName, ));
+            arr.push(this.pageBreak());
             return arr;
           })
           .reduce((prev, curr) => prev.concat(curr), []),
         //#endregion  ThirdPage
+
         //#region FourPage
         ...internalParameter
           .map((nothing) => {
             const arr: Paragraph[] = [];
             arr.push(this.emptyParagraph());
             arr.push(this.titleText('содержание'));
-            for (let i = 1; i < 5; i++) // loop for a parts (PERFERED OBJECT THEN INT)
+            this.trainingProgramCurriculumSections.forEach((object, index) => // loop for a parts (PERFERED OBJECT THEN INT)
             {
               arr.push(this.emptyParagraph());
-              arr.push(this.titleText(i.toString() + '. Название раздела.'));
+              arr.push(this.titleText(index + 1 + '.' + object.name + '.'));
               arr.push(this.emptyParagraph());
               arr.push(this.someTextCenter('Инвариантная часть.', 0,  true));
+              // console.log(this.curriculumTopicsList[0]);
+              // this.curriculumTopicsList[index].curriculumTopicTrainingPrograms.forEach((obj, indx) => {
+              //   arr.push(this.someText(index + 1 + '.' + ' Тема и задачи инвариативные'));
+              // });
               for (let input = 1; input < 7; input++)
               {
-                arr.push(this.someText(i.toString() + '.' + input.toString() + ' Тема и задачи инвариативные'));
+                arr.push(this.someText(index + 1 + '.' + input.toString() + ' Тема и задачи инвариативные'));
               }
               arr.push(this.emptyParagraph());
               arr.push(this.someTextCenter('Вариативная часть.', 0,  true));
               for (let input = 1; input < 3; input++)
               {
-                arr.push(this.someText(i.toString() + '.' + input.toString() + ' Тема и задачи вариативные'));
+                arr.push(this.someText(index + 1 + '.' + input.toString() + ' Тема и задачи вариативные'));
               }
-            }
+            });
             arr.push(this.pageBreak());
             return arr;
           })

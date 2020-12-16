@@ -5,25 +5,40 @@ import { DocumentCreator } from './cv-generator';
 import {TrainingProgramService} from '../services/training-program.service';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {ActivatedRoute} from '@angular/router';
+import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
+import {TrainingProgramCurriculumSectionService} from '../services/training-program-curriculum-section.service';
+import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
+import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
 
 @Component({
   selector: 'app-docx-generator',
   templateUrl: './docx-generator.component.html',
   styleUrls: ['./docx-generator.component.scss'],
-  providers: [TrainingProgramService]
+  providers: [
+    TrainingProgramService,
+    TrainingProgramCurriculumSectionService,
+    CurriculumTopicTrainingProgramService
+  ]
 })
 export class DocxGeneratorComponent implements OnInit{
   id: number;
+  curriculumTopicsList: any[];
   trainingProgram: TrainingProgram;
+  trainingProgramCurriculumSections: TrainingProgramCurriculumSection[];
+  curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
+
   docx: any;
 
   constructor(
     private trainingProgramService: TrainingProgramService,
+    private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
+    private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private route: ActivatedRoute
   ) { }
 
   // tslint:disable-next-line:typedef
   ngOnInit() {
+    this.curriculumTopicsList = [];
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
   }
@@ -36,14 +51,55 @@ export class DocxGeneratorComponent implements OnInit{
       .subscribe((data: TrainingProgram) => {
         if (data !== undefined){
           this.trainingProgram = data;
-          this.getDocument();
+          this.loadTrainingProgramCurriculumSection();
         }
       });
   }
 
   // tslint:disable-next-line:typedef
+  loadTrainingProgramCurriculumSection() {
+    this.trainingProgramCurriculumSectionService.getValue(this.id)
+      .subscribe((data: TrainingProgramCurriculumSection[]) => {
+        if (data !== undefined){
+          this.trainingProgramCurriculumSections = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.trainingProgramCurriculumSections.sort(function(a, b) {
+            return a.sectionNumber - b.sectionNumber;
+          });
+          this.loadCurriculumTopicTrainingProgram();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadCurriculumTopicTrainingProgram(){
+    this.trainingProgramCurriculumSections.forEach((object, index) => {
+      this.curriculumTopicTrainingProgramService.getValueList(
+        this.id,
+        object.curriculumSectionId,
+        object.sectionNumber
+      )
+        .subscribe((data: CurriculumTopicTrainingProgram[]) => {
+          if (data !== undefined){
+            this.curriculumTopicTrainingPrograms = data;
+            // tslint:disable-next-line:only-arrow-functions typedef
+            this.curriculumTopicTrainingPrograms.sort(function(a, b) {
+              return a.serialNumber - b.serialNumber;
+            });
+            this.curriculumTopicsList.push(this.curriculumTopicTrainingPrograms);
+          }
+        });
+    });
+    this.getDocument();
+  }
+
+  // tslint:disable-next-line:typedef
   public getDocument() {
-    const documentCreator = new DocumentCreator(this.trainingProgram);
+    const documentCreator = new DocumentCreator(
+      this.trainingProgram,
+      this.trainingProgramCurriculumSections,
+      this.curriculumTopicsList
+    );
     const docxTmp = documentCreator.create([
       model,
       empty

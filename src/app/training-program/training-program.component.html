@@ -40,14 +40,14 @@
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.eleventh}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.last}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              <button type="button" mdbBtn color="yellow" size="sm" class="relative waves-light" [routerLink]="['/docxGenerator', el.first]"
+                      mdbWavesEffect><mdb-icon fas icon="file-alt" size="lg"></mdb-icon></button>
               <button type="button" mdbBtn color="success" size="sm" class="relative waves-light" [routerLink]="['/trainingProgramAddForm', el.first]"
                       mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
               <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
                       mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
               <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)"
                       mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
-              <button type="button" mdbBtn color="yellow" size="sm" class="relative waves-light" [routerLink]="['/docxGenerator', el.first]"
-                      mdbWavesEffect><mdb-icon fas icon="file-alt" size="lg"></mdb-icon></button>
             </td>
           </tr>
           </tbody>
