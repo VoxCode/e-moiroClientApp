@@ -10,5 +10,7 @@ export class CurriculumTopicTrainingProgram {
     public topicTitle?: string,
     public testWork?: string,
     public annotation?: string,
+    public shortName?: string,
+    public fullName?: string,
     public occupationFormId?: number){ }
 }

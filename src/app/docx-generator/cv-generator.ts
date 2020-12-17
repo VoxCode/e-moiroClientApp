@@ -177,7 +177,8 @@ export class DocumentCreator {
               let i = 1;
               this.curriculumTopicsList[index].forEach(obj => {
                 if (obj.isVariable === false){
-                  arr.push(this.someText((index + 1) + '.' + i + ' ' + obj.topicTitle, 0, true));
+                  arr.push(this.someText((index + 1) + '.' + i + ' ' + obj.topicTitle + ' (' + obj.fullName +
+                    ' ' + obj.classHours + ' часа)', 0, true));
                   arr.push(this.someText(obj.annotation, 720));
                   i++;
                 }
@@ -187,7 +188,8 @@ export class DocumentCreator {
               let j = 1;
               this.curriculumTopicsList[index].forEach(obj => {
                 if (obj.isVariable === true) {
-                  arr.push(this.someText((index + 1) + '.' + j + ' ' + obj.topicTitle, 0, true));
+                  arr.push(this.someText((index + 1) + '.' + j + ' ' + obj.topicTitle + ' (' + obj.fullName +
+                  ' ' + obj.classHours + ' часа)', 0, true));
                   arr.push(this.someText(obj.annotation, 720));
                   j++;
                 }
