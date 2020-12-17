@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import { L10n } from '@syncfusion/ej2-base';
 import { environment } from '../../environments/environment';
 import {
@@ -10,6 +10,7 @@ import {
   WordExportService
 } from '@syncfusion/ej2-angular-documenteditor';
 import {TrainingProgram} from '../models/TrainingProgram';
+import {SubscriptionLike} from 'rxjs';
 
 L10n.load({
   ru: {
@@ -2525,12 +2526,13 @@ L10n.load({
     WordExportService]
 })
 
-export class DocumentEdComponent implements OnInit, OnChanges {
+export class DocumentEdComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() docx: any[];
   @Input() trainingProgram: TrainingProgram;
   @ViewChild('documentEditorContainerComponent')
   public container: DocumentEditorContainerComponent;
+  subscription: SubscriptionLike;
   public path: string;
   public culture = 'ru';
   public a: any;
@@ -2546,6 +2548,12 @@ export class DocumentEdComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+  }
+
+  // tslint:disable-next-line:typedef
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    this.subscription = null;
   }
 
   public onFileOpenClick(): void {

@@ -13,15 +13,16 @@ import {
 } from 'docx';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
+import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
 
 export class DocumentCreator {
 
   teacher: number;
 
   constructor(
+    private curriculumTopicsList: CurriculumTopicTrainingProgram[][],
     private trainingProgram: TrainingProgram,
-    private trainingProgramCurriculumSections: TrainingProgramCurriculumSection[],
-    private curriculumTopicsList: any[]
+    private trainingProgramCurriculumSections: TrainingProgramCurriculumSection[]
   ) { }
 
   // tslint:disable-next-line:no-shadowed-variable
@@ -165,26 +166,31 @@ export class DocumentCreator {
             const arr: Paragraph[] = [];
             arr.push(this.emptyParagraph());
             arr.push(this.titleText('содержание'));
-            this.trainingProgramCurriculumSections.forEach((object, index) => // loop for a parts (PERFERED OBJECT THEN INT)
+            this.trainingProgramCurriculumSections.forEach((object, index) =>
             {
               arr.push(this.emptyParagraph());
               arr.push(this.titleText(index + 1 + '.' + object.name + '.'));
               arr.push(this.emptyParagraph());
               arr.push(this.someTextCenter('Инвариантная часть.', 0,  true));
-              // console.log(this.curriculumTopicsList[0]);
-              // this.curriculumTopicsList[index].curriculumTopicTrainingPrograms.forEach((obj, indx) => {
-              //   arr.push(this.someText(index + 1 + '.' + ' Тема и задачи инвариативные'));
-              // });
-              for (let input = 1; input < 7; input++)
-              {
-                arr.push(this.someText(index + 1 + '.' + input.toString() + ' Тема и задачи инвариативные'));
-              }
+              let i = 1;
+              this.curriculumTopicsList[index].forEach(obj => {
+                if (obj.isVariable === false){
+                  arr.push(this.someText((index + 1) + '.' + i + ' ' + obj.topicTitle, 0, true));
+                  arr.push(this.someText(obj.annotation, 720));
+                  i++;
+                }
+              });
+
               arr.push(this.emptyParagraph());
               arr.push(this.someTextCenter('Вариативная часть.', 0,  true));
-              for (let input = 1; input < 3; input++)
-              {
-                arr.push(this.someText(index + 1 + '.' + input.toString() + ' Тема и задачи вариативные'));
-              }
+              let j = 1;
+              this.curriculumTopicsList[index].forEach((obj, indx) => {
+                if (obj.isVariable === true){
+                  arr.push(this.someText((index + 1) + '.' + j + ' ' + obj.topicTitle, 0, true));
+                  arr.push(this.someText(obj.annotation, 720));
+                  j++;
+                }
+              });
             });
             arr.push(this.pageBreak());
             return arr;
@@ -465,15 +471,15 @@ export class DocumentCreator {
 
   public yearBoth(year: number): Paragraph
   {
-   return new Paragraph({
-     alignment: AlignmentType.CENTER,
-     children: [
-       new TextRun({
-         text: 'Минск, ' + year.toString(),
-         size : 30,
-       })
-     ]
-   });
+    return new Paragraph({
+      alignment: AlignmentType.CENTER,
+      children: [
+        new TextRun({
+          text: 'Минск, ' + year.toString(),
+          size : 30,
+        })
+      ]
+    });
   }
 
   // another list

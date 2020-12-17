@@ -20,13 +20,12 @@ import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topi
     CurriculumTopicTrainingProgramService
   ]
 })
+
 export class DocxGeneratorComponent implements OnInit{
   id: number;
-  curriculumTopicsList: any[];
+  curriculumTopicsList: CurriculumTopicTrainingProgram[][];
   trainingProgram: TrainingProgram;
   trainingProgramCurriculumSections: TrainingProgramCurriculumSection[];
-  curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
-
   docx: any;
 
   constructor(
@@ -81,24 +80,26 @@ export class DocxGeneratorComponent implements OnInit{
       )
         .subscribe((data: CurriculumTopicTrainingProgram[]) => {
           if (data !== undefined){
-            this.curriculumTopicTrainingPrograms = data;
+            const curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = data;
             // tslint:disable-next-line:only-arrow-functions typedef
-            this.curriculumTopicTrainingPrograms.sort(function(a, b) {
+            curriculumTopicTrainingPrograms.sort(function(a, b) {
               return a.serialNumber - b.serialNumber;
             });
-            this.curriculumTopicsList.push(this.curriculumTopicTrainingPrograms);
+            this.curriculumTopicsList.push(curriculumTopicTrainingPrograms);
+            if (index === this.trainingProgramCurriculumSections.length - 1) {
+              this.getDocument();
+            }
           }
         });
     });
-    this.getDocument();
   }
 
   // tslint:disable-next-line:typedef
   public getDocument() {
     const documentCreator = new DocumentCreator(
+      this.curriculumTopicsList,
       this.trainingProgram,
-      this.trainingProgramCurriculumSections,
-      this.curriculumTopicsList
+      this.trainingProgramCurriculumSections
     );
     const docxTmp = documentCreator.create([
       model,
