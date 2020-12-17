@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import { L10n } from '@syncfusion/ej2-base';
 import { environment } from '../../environments/environment';
 import {
@@ -10,7 +10,6 @@ import {
   WordExportService
 } from '@syncfusion/ej2-angular-documenteditor';
 import {TrainingProgram} from '../models/TrainingProgram';
-import {SubscriptionLike} from 'rxjs';
 
 L10n.load({
   ru: {
@@ -2526,13 +2525,12 @@ L10n.load({
     WordExportService]
 })
 
-export class DocumentEdComponent implements OnInit, OnChanges, OnDestroy {
+export class DocumentEdComponent implements OnChanges {
 
   @Input() docx: any[];
   @Input() trainingProgram: TrainingProgram;
   @ViewChild('documentEditorContainerComponent')
   public container: DocumentEditorContainerComponent;
-  subscription: SubscriptionLike;
   public path: string;
   public culture = 'ru';
   public a: any;
@@ -2545,15 +2543,6 @@ export class DocumentEdComponent implements OnInit, OnChanges, OnDestroy {
     if (this.docx !== undefined){
       this.onCreate();
     }
-  }
-
-  ngOnInit(): void {
-  }
-
-  // tslint:disable-next-line:typedef
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-    this.subscription = null;
   }
 
   public onFileOpenClick(): void {
@@ -2578,6 +2567,9 @@ export class DocumentEdComponent implements OnInit, OnChanges, OnDestroy {
       if (ajax.readyState === 4) {
         if (ajax.status === 200 || ajax.status === 304) {
           this.container.documentEditor.open(ajax.responseText);
+        }
+        else {
+          alert('Ошибка соединения с сервером!');
         }
       }
     };

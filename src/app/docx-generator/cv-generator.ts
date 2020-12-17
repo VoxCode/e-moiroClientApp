@@ -80,6 +80,7 @@ export class DocumentCreator {
         this.yearBoth(2020),
         this.pageBreak(),
         //#endregion First page
+
         //#region "Second page"
         ...internalParameter
           .map((nothing) => {
@@ -132,6 +133,7 @@ export class DocumentCreator {
           })
           .reduce((prev, curr) => prev.concat(curr), []),
         //#endregion
+
         //#region "Third page"
         ...internalParameter
           .map((nothing) => {
@@ -180,12 +182,11 @@ export class DocumentCreator {
                   i++;
                 }
               });
-
               arr.push(this.emptyParagraph());
               arr.push(this.someTextCenter('Вариативная часть.', 0,  true));
               let j = 1;
-              this.curriculumTopicsList[index].forEach((obj, indx) => {
-                if (obj.isVariable === true){
+              this.curriculumTopicsList[index].forEach(obj => {
+                if (obj.isVariable === true) {
                   arr.push(this.someText((index + 1) + '.' + j + ' ' + obj.topicTitle, 0, true));
                   arr.push(this.someText(obj.annotation, 720));
                   j++;

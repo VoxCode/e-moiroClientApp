@@ -86,7 +86,7 @@ export class DocxGeneratorComponent implements OnInit{
               return a.serialNumber - b.serialNumber;
             });
             this.curriculumTopicsList.push(curriculumTopicTrainingPrograms);
-            if (index === this.trainingProgramCurriculumSections.length - 1) {
+            if (this.curriculumTopicsList.length === this.trainingProgramCurriculumSections.length) {
               this.getDocument();
             }
           }
