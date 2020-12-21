@@ -4,6 +4,45 @@
       <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon></button>
   </div><br>
   <h4>Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
+
+  <!-- Horizontal Steppers -->
+  <div class="row">
+    <div class="col-md-12">
+
+      <!-- Stepers Wrapper -->
+      <ul class="stepper stepper-horizontal">
+
+        <!-- First Step -->
+        <li class="completed">
+          <a routerLink="/trainingProgram/{{id}}">
+            <span class="circle">1</span>
+            <span class="label">Выбор тем учебной программы</span>
+          </a>
+        </li>
+
+        <!-- Second Step -->
+        <li class="active">
+          <a href="">
+            <span class="circle">2</span>
+            <span class="label">Дополнительно</span>
+          </a>
+        </li>
+
+        <!-- Third Step -->
+        <li class="warning">
+          <a href="#!">
+            <span class="circle"><mdb-icon fas icon="exclamation"></mdb-icon></span>
+            <span class="label">Third step</span>
+          </a>
+        </li>
+
+      </ul>
+      <!-- /.Stepers Wrapper -->
+
+    </div>
+  </div>
+  <!-- /.Horizontal Steppers -->
+
   <div class="tabMenu">
     <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="save()" mdbWavesEffect>
       <mdb-icon size="lg" far icon="save"></mdb-icon></button>

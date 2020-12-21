@@ -57,6 +57,7 @@ import {CommonService} from './common-service/common-service.component';
 import {DocumentEditorAllModule, DocumentEditorContainerModule} from '@syncfusion/ej2-angular-documenteditor';
 import {DocumentEdComponent} from './document-ed/document-ed.component';
 import { TrainingProgramDocxGeneratorComponent } from './training-program-docx-generator/training-program-docx-generator.component';
+import { TrainingProgramAddForm2Component } from './training-program-add-form2/training-program-add-form2.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +102,8 @@ import { TrainingProgramDocxGeneratorComponent } from './training-program-docx-g
     TrainingProgramAddFormComponent,
     CurriculumSectionChild,
     DocumentEdComponent,
-    TrainingProgramDocxGeneratorComponent
+    TrainingProgramDocxGeneratorComponent,
+    TrainingProgramAddForm2Component
   ],
     imports: [
         BrowserModule,
