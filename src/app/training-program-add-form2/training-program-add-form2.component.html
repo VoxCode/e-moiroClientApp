@@ -1,1 +1,97 @@
-<p>training-program-add-form2 works!</p>
+<div class="container-fluid">
+  <div class="backButton">
+    <button routerLink="/trainingProgram" type="button" size="sm" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>
+      <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon></button>
+  </div><br>
+  <h4>Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
+
+  <!-- Horizontal Steppers -->
+  <div class="row">
+    <div class="col-md-12">
+
+      <!-- Stepers Wrapper -->
+      <ul class="stepper stepper-horizontal">
+
+        <!-- First Step -->
+        <li class="completed">
+          <a routerLink="/curriculumTopicAddForm2/{{id}}">
+            <span class="circle">1</span>
+            <span class="label">Выбор тем учебной программы</span>
+          </a>
+        </li>
+
+        <!-- Second Step -->
+        <li class="active">
+          <a href="">
+            <span class="circle">2</span>
+            <span class="label">Дополнительно</span>
+          </a>
+        </li>
+
+        <!-- Third Step -->
+        <li class="warning">
+          <a href="#!">
+            <span class="circle"><mdb-icon fas icon="exclamation"></mdb-icon></span>
+            <span class="label">Third step</span>
+          </a>
+        </li>
+
+      </ul>
+      <!-- /.Stepers Wrapper -->
+
+    </div>
+  </div>
+  <!-- /.Horizontal Steppers -->
+
+  <!--  <div class="tabMenu">-->
+  <!--    <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="save()" mdbWavesEffect>-->
+  <!--      <mdb-icon size="lg" far icon="save"></mdb-icon></button>-->
+  <!--  </div>-->
+  <div cdkDropListGroup>
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="example-container">
+          <h2>Предложено</h2>
+
+          <div
+            cdkDropList
+            #doneList="cdkDropList"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item.second}}</div>
+          </div>
+        </div>
+
+      </div>
+<!--      <div class="col-sm-7">-->
+<!--        <div *ngFor="let item of curriculumSectionContentList">-->
+<!--          <app-curriculum-section-child [curriculumSectionNumber]="item.curriculumSectionNumber"-->
+<!--                                        [done]="item.done"-->
+<!--                                        [id]="id"-->
+<!--                                        [curriculumSectionId]="item.curriculumSectionId"-->
+<!--                                        [trainingProgramCurriculumSectionId]="item.trainingProgramCurriculumSectionId">-->
+<!--          </app-curriculum-section-child>-->
+<!--          <button type="button" id="deleteBtn" mdbBtn color="danger" size="sm" class="relative waves-light"-->
+<!--                  (click)="deleteTrainingProgramCurriculumSection(item.curriculumSectionNumber)" mdbWavesEffect>-->
+<!--            <mdb-icon fas icon="trash-alt" size="sm"></mdb-icon></button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="col-sm-2">-->
+<!--        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"-->
+<!--                (click)="addCurriculumSection(0, 0)" mdbWavesEffect>-->
+<!--          <mdb-icon fas icon="plus" size="sm"></mdb-icon></button>-->
+<!--      </div>-->
+    </div>
+  </div>
+  <br><br>
+
+  <div
+    cdkDropList
+    [cdkDropListData]="done"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
+  </div>
+
+  <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Далее</button>
+</div>
