@@ -46,7 +46,7 @@ const routes: Routes = [
   { path: 'trainingProgramAddForm/:id', component: TrainingProgramAddFormComponent, canActivate: [AuthGuardService]},
   { path: 'testWork', component: TestWorkComponent, canActivate: [AuthGuardService]},
   { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent, canActivate: [AuthGuardService]},
-  { path: 'curriculumTopicAddForm2/:id', component: TrainingProgramAddForm2Component, canActivate: [AuthGuardService]},
+  { path: 'trainingProgramAddForm2/:id', component: TrainingProgramAddForm2Component, canActivate: [AuthGuardService]},
   { path: 'finalExamination', component: FinalExaminationComponent, canActivate: [AuthGuardService]},
   { path: 'register', component: RegisterComponent}
 ];

@@ -1,6 +1,6 @@
 <div class="example-container">
   <h4><strong>Раздел {{curriculumSectionNumber}}</strong></h4>
-  <h5 *ngIf="curriculumSection != null">{{curriculumSection.name}}</h5>
+  <h5 *ngIf="curriculumSection">{{curriculumSection.name}}</h5>
   <button type="button" mdbBtn color="success" size="sm" class="relative waves-light" (click)="addCurriculumSection()"
           mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon></button>
   <ng-select [items]="curriculumSections"
@@ -10,6 +10,7 @@
              [(ngModel)]="curriculumSection">
   </ng-select>
   <div
+    *ngIf="done"
     cdkDropList
     [cdkDropListData]="done"
     class="example-list"

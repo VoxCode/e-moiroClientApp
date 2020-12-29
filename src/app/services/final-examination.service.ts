@@ -17,6 +17,10 @@ export class FinalExaminationService {
     return this.http.get(this.url + '/' + id);
   }
   // tslint:disable-next-line:typedef
+  getFinalExaminations(curriculumTopicId: number, certificationTypeId: number) {
+    return this.http.get(this.url + '/' + curriculumTopicId + '/' + certificationTypeId);
+  }
+  // tslint:disable-next-line:typedef
   createValue(finalExamination: FinalExamination) {
     return this.http.post(this.url, finalExamination);
   }
