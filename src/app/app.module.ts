@@ -58,6 +58,7 @@ import {DocumentEditorAllModule, DocumentEditorContainerModule} from '@syncfusio
 import {DocumentEdComponent} from './document-ed/document-ed.component';
 import { TrainingProgramDocxGeneratorComponent } from './training-program-docx-generator/training-program-docx-generator.component';
 import { TrainingProgramAddForm2Component } from './training-program-add-form2/training-program-add-form2.component';
+import { TrainingProgramStepperComponent } from './training-program-stepper/training-program-stepper.component';
 
 @NgModule({
   declarations: [
@@ -103,7 +104,8 @@ import { TrainingProgramAddForm2Component } from './training-program-add-form2/t
     CurriculumSectionChild,
     DocumentEdComponent,
     TrainingProgramDocxGeneratorComponent,
-    TrainingProgramAddForm2Component
+    TrainingProgramAddForm2Component,
+    TrainingProgramStepperComponent
   ],
     imports: [
         BrowserModule,

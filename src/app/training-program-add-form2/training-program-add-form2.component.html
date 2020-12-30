@@ -4,52 +4,18 @@
       <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon> Выход</button>
   </div><br>
   <h4 *ngIf="trainingProgram">Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
+  <h5 *ngIf="trainingProgram">Тип итоговой аттестации: <strong>{{trainingProgram.certificationTypeName}}</strong></h5>
 
-  <!-- Horizontal Steppers -->
-  <div class="row">
-    <div class="col-md-12">
+  <app-training-program-stepper [id]="id"></app-training-program-stepper>
 
-      <!-- Stepers Wrapper -->
-      <ul class="stepper stepper-horizontal">
-
-        <!-- First Step -->
-        <li class="completed">
-          <a routerLink="/trainingProgramAddForm/{{id}}">
-            <span class="circle">1</span>
-            <span class="label">Темы учебной программы</span>
-          </a>
-        </li>
-
-        <!-- Second Step -->
-        <li class="active">
-          <a routerLink="/trainingProgramAddForm2/{{id}}">
-            <span class="circle">2</span>
-            <span class="label">Вобросы для итоговой аттестации</span>
-          </a>
-        </li>
-
-        <!-- Third Step -->
-        <li class="warning">
-          <a href="#!">
-            <span class="circle"><mdb-icon fas icon="exclamation"></mdb-icon></span>
-            <span class="label">Third step</span>
-          </a>
-        </li>
-
-      </ul>
-      <!-- /.Stepers Wrapper -->
-
+    <div class="tabMenu">
+      <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="save()" mdbWavesEffect>
+        <mdb-icon size="lg" far icon="save"></mdb-icon></button>
     </div>
-  </div>
-  <!-- /.Horizontal Steppers -->
 
-  <!--  <div class="tabMenu">-->
-  <!--    <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="save()" mdbWavesEffect>-->
-  <!--      <mdb-icon size="lg" far icon="save"></mdb-icon></button>-->
-  <!--  </div>-->
   <div cdkDropListGroup>
     <div class="row">
-      <div class="col-sm-3">
+      <div class="col-sm-6">
         <div class="example-container">
           <h2>Предложено</h2>
 
@@ -61,7 +27,8 @@
             <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item.third}}</div>
           </div>
         </div>
-
+      </div>
+      <div class="col-sm-6">
         <div class="example-container">
           <h2>Выбрано</h2>
 

@@ -9,6 +9,8 @@ import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurricu
 import {TrainingProgramCurriculumSectionService} from '../services/training-program-curriculum-section.service';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
 import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
+import {TrainingProgramFinalExamination} from '../models/TrainingProgramFinalExamination';
+import {TrainingProgramFinalExaminationService} from '../services/training-program-final-examination.service';
 
 @Component({
   selector: 'app-docx-generator',
@@ -17,6 +19,7 @@ import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topi
   providers: [
     TrainingProgramService,
     TrainingProgramCurriculumSectionService,
+    TrainingProgramFinalExaminationService,
     CurriculumTopicTrainingProgramService
   ]
 })
@@ -26,11 +29,13 @@ export class DocxGeneratorComponent implements OnInit{
   curriculumTopicsList: CurriculumTopicTrainingProgram[][];
   trainingProgram: TrainingProgram;
   trainingProgramCurriculumSections: TrainingProgramCurriculumSection[];
+  trainingProgramFinalExaminations: TrainingProgramFinalExamination[];
   docx: any;
 
   constructor(
     private trainingProgramService: TrainingProgramService,
     private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
+    private trainingProgramFinalExaminationService: TrainingProgramFinalExaminationService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private route: ActivatedRoute
   ) { }
@@ -87,7 +92,7 @@ export class DocxGeneratorComponent implements OnInit{
             });
             this.curriculumTopicsList.push(curriculumTopicTrainingPrograms);
             if (this.curriculumTopicsList.length === this.trainingProgramCurriculumSections.length) {
-              this.getDocument();
+              this.loadTrainingProgramFinalExamination();
             }
           }
         });
@@ -95,11 +100,27 @@ export class DocxGeneratorComponent implements OnInit{
   }
 
   // tslint:disable-next-line:typedef
+  loadTrainingProgramFinalExamination() {
+    this.trainingProgramFinalExaminationService.getValue(this.id)
+      .subscribe((data: TrainingProgramFinalExamination[]) => {
+        if (data !== undefined){
+          this.trainingProgramFinalExaminations = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.trainingProgramFinalExaminations.sort(function(a, b) {
+            return a.serialNumber - b.serialNumber;
+          });
+          this.getDocument();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
   public getDocument() {
     const documentCreator = new DocumentCreator(
       this.curriculumTopicsList,
       this.trainingProgram,
-      this.trainingProgramCurriculumSections
+      this.trainingProgramCurriculumSections,
+      this.trainingProgramFinalExaminations
     );
     const docxTmp = documentCreator.create([
       model,

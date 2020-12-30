@@ -5,43 +5,7 @@
   </div><br>
   <h4 *ngIf="trainingProgram">Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
 
-  <!-- Horizontal Steppers -->
-  <div class="row">
-    <div class="col-md-12">
-
-      <!-- Stepers Wrapper -->
-      <ul class="stepper stepper-horizontal">
-
-        <!-- First Step -->
-        <li class="completed">
-          <a routerLink="/trainingProgramAddForm/{{id}}">
-            <span class="circle">1</span>
-            <span class="label">Темы учебной программы</span>
-          </a>
-        </li>
-
-        <!-- Second Step -->
-        <li class="active">
-          <a routerLink="/trainingProgramAddForm2/{{id}}">
-            <span class="circle">2</span>
-            <span class="label">Вобросы для итоговой аттестации</span>
-          </a>
-        </li>
-
-        <!-- Third Step -->
-        <li class="warning">
-          <a href="#!">
-            <span class="circle"><mdb-icon fas icon="exclamation"></mdb-icon></span>
-            <span class="label">Third step</span>
-          </a>
-        </li>
-
-      </ul>
-      <!-- /.Stepers Wrapper -->
-
-    </div>
-  </div>
-  <!-- /.Horizontal Steppers -->
+  <app-training-program-stepper [id]="id"></app-training-program-stepper>
 
   <div class="tabMenu">
     <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="save()" mdbWavesEffect>

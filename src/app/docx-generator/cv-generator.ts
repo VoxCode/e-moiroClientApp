@@ -14,6 +14,7 @@ import {
 import {TrainingProgram} from '../models/TrainingProgram';
 import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
+import {TrainingProgramFinalExamination} from '../models/TrainingProgramFinalExamination';
 
 export class DocumentCreator {
 
@@ -22,7 +23,8 @@ export class DocumentCreator {
   constructor(
     private curriculumTopicsList: CurriculumTopicTrainingProgram[][],
     private trainingProgram: TrainingProgram,
-    private trainingProgramCurriculumSections: TrainingProgramCurriculumSection[]
+    private trainingProgramCurriculumSections: TrainingProgramCurriculumSection[],
+    private trainingProgramFinalExaminations: TrainingProgramFinalExamination[]
   ) { }
 
   // tslint:disable-next-line:no-shadowed-variable
@@ -252,9 +254,12 @@ export class DocumentCreator {
             arr.push(this.emptyParagraph());
             arr.push(this.someTextCenter('Вопросы для проведения зачета', 0 , true));
             arr.push(this.emptyParagraph());
+            this.trainingProgramFinalExaminations.forEach((object, i) => {
+              arr.push(this.someText((i + 1) +
+                '. ' + object.content, 720));
+            });
             for (let i = 1; i < 21; i++) {
-              arr.push(this.someText(i.toString() +
-                '. Адаптивная образовательная среда в условиях интегрированного обучения и воспитания', 720));
+
             }
             arr.push(this.pageBreak());
             return arr;

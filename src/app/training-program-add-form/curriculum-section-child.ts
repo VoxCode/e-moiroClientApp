@@ -39,7 +39,6 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   occupationForms: OccupationForm[] = [];
   curriculumSections: CurriculumSection[] = [];
   curriculumSection: CurriculumSection;
-  curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram;
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
   trainingProgramCurriculumSection: TrainingProgramCurriculumSection;
   addSection: boolean;
@@ -59,7 +58,6 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   ngOnInit() {
     this.loadCurriculumSection();
     this.addSection = false;
-    this.curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
     this.loadOccupationForm();
 
     this.subscription = this.commonService.saveCurriculumSectionChild$.subscribe( idx => {
@@ -109,7 +107,6 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
           if (this.curriculumSections !== undefined) {
             this.curriculumSection = this.curriculumSections.find(a => a.id === this.curriculumSectionId);
           }
-          console.log(this.curriculumSectionNumber + ' ' + this.curriculumSectionId + ' ' + this.trainingProgramCurriculumSectionId);
           if (this.curriculumSectionId !== 0 && this.trainingProgramCurriculumSectionId !== 0) {
             this.loadCurriculumTopicTrainingProgram();
           }
@@ -154,7 +151,6 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
       this.trainingProgramCurriculumSection.curriculumSectionId = this.curriculumSection.id;
       this.trainingProgramCurriculumSection.sectionNumber = this.curriculumSectionNumber;
       this.trainingProgramCurriculumSection.id = this.trainingProgramCurriculumSectionId;
-      console.log(this.trainingProgramCurriculumSection.id);
     }
     if (this.trainingProgramCurriculumSection.id === undefined || this.trainingProgramCurriculumSection.id === 0){
       this.trainingProgramCurriculumSectionService.createValue(this.trainingProgramCurriculumSection)
@@ -173,25 +169,27 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
     let i = 0;
     if (this.curriculumSection !== undefined){
       this.done.forEach((object, index) => {
+        let curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
         i = index + 1;
-        this.curriculumTopicTrainingProgram.trainingProgramId = +object.sixth;
-        this.curriculumTopicTrainingProgram.curriculumTopicId = object.first;
-        this.curriculumTopicTrainingProgram.classHours = object.fourth;
-        this.curriculumTopicTrainingProgram.isVariable = object.third;
-        this.curriculumTopicTrainingProgram.occupationFormId = object.fifth;
-        this.curriculumTopicTrainingProgram.serialNumber = i;
-        this.curriculumTopicTrainingProgram.curriculumSectionId = this.curriculumSection.id;
-        this.curriculumTopicTrainingProgram.id = object.seventh;
-        console.log(this.curriculumTopicTrainingProgram);
-        if (this.curriculumTopicTrainingProgram.id === undefined){
-          this.curriculumTopicTrainingProgramService.createValue(this.curriculumTopicTrainingProgram)
+        curriculumTopicTrainingProgram.trainingProgramId = +object.sixth;
+        curriculumTopicTrainingProgram.curriculumTopicId = object.first;
+        curriculumTopicTrainingProgram.classHours = object.fourth;
+        curriculumTopicTrainingProgram.isVariable = object.third;
+        curriculumTopicTrainingProgram.occupationFormId = object.fifth;
+        curriculumTopicTrainingProgram.serialNumber = i;
+        curriculumTopicTrainingProgram.curriculumSectionId = this.curriculumSection.id;
+        curriculumTopicTrainingProgram.id = object.seventh;
+        if (curriculumTopicTrainingProgram.id === undefined){
+          this.curriculumTopicTrainingProgramService.createValue(curriculumTopicTrainingProgram)
             .subscribe((data: CurriculumTopicTrainingProgram) => {
               object.seventh = data.id;
               console.log('Save was successful');
+              curriculumTopicTrainingProgram = null;
             });
         }
         else {
-          this.updateCurriculumTopicTrainingProgram(this.curriculumTopicTrainingProgram);
+          this.updateCurriculumTopicTrainingProgram(curriculumTopicTrainingProgram);
+          curriculumTopicTrainingProgram = null;
         }
       });
     }
