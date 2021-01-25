@@ -17,6 +17,10 @@ export class RegulationService {
     return this.http.get(this.url + '/' + id);
   }
   // tslint:disable-next-line:typedef
+  getRegulations(curriculumTopicId: number, key: number) {
+    return this.http.get(this.url + '/' + curriculumTopicId + '/' + key);
+  }
+  // tslint:disable-next-line:typedef
   createValue(regulation: Regulation) {
     return this.http.post(this.url, regulation);
   }

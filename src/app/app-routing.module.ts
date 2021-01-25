@@ -24,6 +24,9 @@ import {CertificationTypeComponent} from './certification-type/certification-typ
 import {FinalExaminationComponent} from './final-examination/final-examination.component';
 import {TrainingProgramAddFormComponent} from './training-program-add-form/training-program-add-form.component';
 import {TrainingProgramAddForm2Component} from './training-program-add-form2/training-program-add-form2.component';
+import {TrainingProgramAddForm3Component} from './training-program-add-form3/training-program-add-form3.component';
+import {TrainingProgramAddForm4Component} from './training-program-add-form4/training-program-add-form4.component';
+import {TrainingProgramAddForm5Component} from './training-program-add-form5/training-program-add-form5.component';
 
 const routes: Routes = [
   { path: 'docxGenerator/:id', component:  DocxGeneratorComponent, canActivate: [AuthGuardService]},
@@ -47,6 +50,9 @@ const routes: Routes = [
   { path: 'testWork', component: TestWorkComponent, canActivate: [AuthGuardService]},
   { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent, canActivate: [AuthGuardService]},
   { path: 'trainingProgramAddForm2/:id', component: TrainingProgramAddForm2Component, canActivate: [AuthGuardService]},
+  { path: 'trainingProgramAddForm3/:id', component: TrainingProgramAddForm3Component, canActivate: [AuthGuardService]},
+  { path: 'trainingProgramAddForm4/:id', component: TrainingProgramAddForm4Component, canActivate: [AuthGuardService]},
+  { path: 'trainingProgramAddForm5/:id', component: TrainingProgramAddForm5Component, canActivate: [AuthGuardService]},
   { path: 'finalExamination', component: FinalExaminationComponent, canActivate: [AuthGuardService]},
   { path: 'register', component: RegisterComponent}
 ];

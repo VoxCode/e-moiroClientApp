@@ -59,6 +59,9 @@ import {DocumentEdComponent} from './document-ed/document-ed.component';
 import { TrainingProgramDocxGeneratorComponent } from './training-program-docx-generator/training-program-docx-generator.component';
 import { TrainingProgramAddForm2Component } from './training-program-add-form2/training-program-add-form2.component';
 import { TrainingProgramStepperComponent } from './training-program-stepper/training-program-stepper.component';
+import { TrainingProgramAddForm3Component } from './training-program-add-form3/training-program-add-form3.component';
+import { TrainingProgramAddForm4Component } from './training-program-add-form4/training-program-add-form4.component';
+import { TrainingProgramAddForm5Component } from './training-program-add-form5/training-program-add-form5.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +108,10 @@ import { TrainingProgramStepperComponent } from './training-program-stepper/trai
     DocumentEdComponent,
     TrainingProgramDocxGeneratorComponent,
     TrainingProgramAddForm2Component,
-    TrainingProgramStepperComponent
+    TrainingProgramStepperComponent,
+    TrainingProgramAddForm3Component,
+    TrainingProgramAddForm4Component,
+    TrainingProgramAddForm5Component
   ],
     imports: [
         BrowserModule,

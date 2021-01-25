@@ -6,26 +6,42 @@
     <ul class="stepper stepper-horizontal">
 
       <!-- First Step -->
-      <li class="completed">
-        <a routerLink="/trainingProgramAddForm/{{id}}">
+      <li routerLink="/trainingProgramAddForm/{{id}}" routerLinkActive="active">
+        <a>
           <span class="circle">1</span>
           <span class="label">Темы учебной программы</span>
         </a>
       </li>
 
       <!-- Second Step -->
-      <li class="active">
-        <a routerLink="/trainingProgramAddForm2/{{id}}">
+      <li routerLink="/trainingProgramAddForm2/{{id}}" routerLinkActive="active">
+        <a>
           <span class="circle">2</span>
           <span class="label">Вобросы для итоговой аттестации</span>
         </a>
       </li>
 
       <!-- Third Step -->
-      <li class="warning">
-        <a href="#!">
-          <span class="circle"><mdb-icon fas icon="exclamation"></mdb-icon></span>
-          <span class="label">Third step</span>
+      <li routerLink="/trainingProgramAddForm3/{{id}}" routerLinkActive="active">
+        <a>
+          <span class="circle">3</span>
+          <span class="label">Основная литература</span>
+        </a>
+      </li>
+
+      <!-- Fourth Step -->
+      <li routerLink="/trainingProgramAddForm4/{{id}}" routerLinkActive="active">
+        <a>
+          <span class="circle">4</span>
+          <span class="label">Дополнительная литература</span>
+        </a>
+      </li>
+
+      <!-- Fifth Step -->
+      <li routerLink="/trainingProgramAddForm5/{{id}}" routerLinkActive="active">
+        <a>
+          <span class="circle">5</span>
+          <span class="label">Нормативные правовые акты</span>
         </a>
       </li>
 

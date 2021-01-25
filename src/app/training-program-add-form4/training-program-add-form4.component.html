@@ -4,14 +4,13 @@
       <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon> Выход</button>
   </div><br>
   <h4 *ngIf="trainingProgram">Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
-  <h5 *ngIf="trainingProgram">Тип итоговой аттестации: <strong>{{trainingProgram.certificationTypeName}}</strong></h5>
 
   <app-training-program-stepper [id]="id"></app-training-program-stepper>
 
-    <div class="tabMenu">
-      <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="save()" mdbWavesEffect>
-        <mdb-icon size="lg" far icon="save"></mdb-icon></button>
-    </div>
+  <div class="tabMenu">
+    <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="save()" mdbWavesEffect>
+      <mdb-icon size="lg" far icon="save"></mdb-icon></button>
+  </div>
 
   <div cdkDropListGroup>
     <div class="row">
@@ -46,6 +45,6 @@
   <br><br>
 
 
-  <button type="button" routerLink="/trainingProgramAddForm/{{id}}" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Назад</button>
-  <button type="button" routerLink="/trainingProgramAddForm3/{{id}}" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Далее</button>
+  <button type="button" routerLink="/trainingProgramAddForm3/{{id}}" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Назад</button>
+  <button type="button" routerLink="/trainingProgramAddForm5/{{id}}" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Далее</button>
 </div>

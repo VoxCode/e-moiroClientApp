@@ -17,6 +17,10 @@ export class MainLiteratureService {
     return this.http.get(this.url + '/' + id);
   }
   // tslint:disable-next-line:typedef
+  getMainLiterature(curriculumTopicId: number, key: number) {
+    return this.http.get(this.url + '/' + curriculumTopicId + '/' + key);
+  }
+  // tslint:disable-next-line:typedef
   createValue(mainLiterature: MainLiterature) {
     return this.http.post(this.url, mainLiterature);
   }

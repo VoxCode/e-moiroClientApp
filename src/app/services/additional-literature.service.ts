@@ -17,6 +17,10 @@ export class AdditionalLiteratureService {
     return this.http.get(this.url + '/' + id);
   }
   // tslint:disable-next-line:typedef
+  getAdditionalLiterature(curriculumTopicId: number, key: number) {
+    return this.http.get(this.url + '/' + curriculumTopicId + '/' + key);
+  }
+  // tslint:disable-next-line:typedef
   createValue(additionalLiterature: AdditionalLiterature) {
     return this.http.post(this.url, additionalLiterature);
   }

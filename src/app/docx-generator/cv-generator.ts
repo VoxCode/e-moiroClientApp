@@ -282,7 +282,7 @@ export class DocumentCreator {
               arr.push(this.someText(i.toString() + '. Лиетаратура и её страницы', 720));
             }
             arr.push(this.emptyParagraph());
-            arr.push(this.someText('Нормативно правовые акты', 720, true));
+            arr.push(this.someText('Нормативные правовые акты', 720, true));
             for (let i = 1; i < 10; i++) {
               arr.push(this.someText(i.toString() + '. Лиетаратура и её страницы', 720));
             }
