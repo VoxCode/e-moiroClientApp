@@ -15,6 +15,9 @@ import {TrainingProgram} from '../models/TrainingProgram';
 import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
 import {TrainingProgramFinalExamination} from '../models/TrainingProgramFinalExamination';
+import {TrainingProgramMainLiterature} from '../models/TrainingProgramMainLiterature';
+import {TrainingProgramAdditionalLiterature} from '../models/TrainingProgramAdditionalLiterature';
+import {TrainingProgramRegulation} from '../models/TrainingProgramRegulation';
 
 export class DocumentCreator {
 
@@ -24,7 +27,10 @@ export class DocumentCreator {
     private curriculumTopicsList: CurriculumTopicTrainingProgram[][],
     private trainingProgram: TrainingProgram,
     private trainingProgramCurriculumSections: TrainingProgramCurriculumSection[],
-    private trainingProgramFinalExaminations: TrainingProgramFinalExamination[]
+    private trainingProgramFinalExaminations: TrainingProgramFinalExamination[],
+    private trainingProgramMainLiteratures: TrainingProgramMainLiterature[],
+    private trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[],
+    private trainingProgramRegulations: TrainingProgramRegulation[]
   ) { }
 
   // tslint:disable-next-line:no-shadowed-variable
@@ -191,7 +197,7 @@ export class DocumentCreator {
               this.curriculumTopicsList[index].forEach(obj => {
                 if (obj.isVariable === true) {
                   arr.push(this.someText((index + 1) + '.' + j + ' ' + obj.topicTitle + ' (' + obj.fullName +
-                  ' ' + obj.classHours + ' часа)', 0, true));
+                    ' ' + obj.classHours + ' часа)', 0, true));
                   arr.push(this.someText(obj.annotation, 720));
                   j++;
                 }
@@ -206,43 +212,46 @@ export class DocumentCreator {
         // #region FivePage
         ...internalParameter
           .map((nothing) => {
-            const arr: Paragraph[] = [];
-            arr.push(this.titleText('содержание самостоятельной работы'));
-            arr.push(this.emptyParagraph());
-            for (let i = 1; i < 5; i++) // loop for a parts (PERFERED OBJECT THEN INT)
-            {
-              for (let input = 1; input < 7; input++)
-              {
-                arr.push(this.someText(i.toString() + '.' + input.toString() + ' Нормативы и прочие обеспечения'));
-                arr.push(this.someText('Задание (сколько то там часов)', 720));
-                arr.push(this.someText('Литература (какие-то страницы)', 720));
-              }
+            if (this.trainingProgram.isDistanceLearning){
+              const arr: Paragraph[] = [];
+              arr.push(this.titleText('содержание самостоятельной работы'));
               arr.push(this.emptyParagraph());
+              for (let i = 1; i < 5; i++) // loop for a parts (PERFERED OBJECT THEN INT)
+              {
+                for (let input = 1; input < 7; input++)
+                {
+                  arr.push(this.someText(i.toString() + '.' + input.toString() + ' Нормативы и прочие обеспечения'));
+                  arr.push(this.someText('Задание (сколько то там часов)', 720));
+                  arr.push(this.someText('Литература (какие-то страницы)', 720));
+                }
+                arr.push(this.emptyParagraph());
+              }
+              arr.push(this.pageBreak());
+              return arr;
             }
-            arr.push(this.pageBreak());
-            return arr;
           })
           .reduce((prev, curr) => prev.concat(curr), []),
         // #endregion
         // #region Содержание контрольно работы
         ...internalParameter
           .map((nothing) => {
-            const arr: Paragraph[] = [];
-            arr.push(this.titleText('содержание контрольной работы'));
-            arr.push(this.emptyParagraph());
-            for (let i = 1; i < 5; i++) // loop for a parts (PERFERED OBJECT THEN INT)
-            {
-              arr.push(this.someText('Контрольная работа №' + i.toString() +  ' Название кр - потом добавлю', 720, true));
+            if (this.trainingProgram.isDistanceLearning) {
+              const arr: Paragraph[] = [];
+              arr.push(this.titleText('содержание контрольной работы'));
               arr.push(this.emptyParagraph());
-              for (let input = 1; input < 7; input++)
+              for (let i = 1; i < 5; i++) // loop for a parts (PERFERED OBJECT THEN INT)
               {
-                arr.push(this.someText(input.toString() + '. Задания (много много много)', 720));
-                arr.push(this.someText('Литература (какие-то страницы)', 720));
+                arr.push(this.someText('Контрольная работа №' + i.toString() + ' Название кр - потом добавлю', 720, true));
                 arr.push(this.emptyParagraph());
+                for (let input = 1; input < 7; input++) {
+                  arr.push(this.someText(input.toString() + '. Задания (много много много)', 720));
+                  arr.push(this.someText('Литература (какие-то страницы)', 720));
+                  arr.push(this.emptyParagraph());
+                }
               }
+              arr.push(this.pageBreak());
+              return arr;
             }
-            arr.push(this.pageBreak());
-            return arr;
           })
           .reduce((prev, curr) => prev.concat(curr), []),
         // #endregion
@@ -258,9 +267,6 @@ export class DocumentCreator {
               arr.push(this.someText((i + 1) +
                 '. ' + object.content, 720));
             });
-            for (let i = 1; i < 21; i++) {
-
-            }
             arr.push(this.pageBreak());
             return arr;
           })
@@ -273,19 +279,22 @@ export class DocumentCreator {
             arr.push(this.titleText('список используемой литературы'));
             arr.push(this.emptyParagraph());
             arr.push(this.someText('Основная', 720, true));
-            for (let i = 1; i < 6; i++) {
-              arr.push(this.someText(i.toString() + '. Лиетаратура и её страницы', 720));
-            }
+            this.trainingProgramMainLiteratures.forEach((object, i) => {
+              arr.push(this.someText((i + 1) +
+                '. ' + object.content, 720));
+            });
             arr.push(this.emptyParagraph());
             arr.push(this.someText('Дополнительная', 720, true));
-            for (let i = 1; i < 4; i++) {
-              arr.push(this.someText(i.toString() + '. Лиетаратура и её страницы', 720));
-            }
+            this.trainingProgramAdditionalLiteratures.forEach((object, i) => {
+              arr.push(this.someText((i + 1) +
+                '. ' + object.content, 720));
+            });
             arr.push(this.emptyParagraph());
             arr.push(this.someText('Нормативные правовые акты', 720, true));
-            for (let i = 1; i < 10; i++) {
-              arr.push(this.someText(i.toString() + '. Лиетаратура и её страницы', 720));
-            }
+            this.trainingProgramRegulations.forEach((object, i) => {
+              arr.push(this.someText((i + 1) +
+                '. ' + object.content, 720));
+            });
             arr.push(this.pageBreak());
             return arr;
           })

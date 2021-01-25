@@ -9,6 +9,8 @@ import {RegulationService} from '../services/regulation.service';
 import {TrainingProgramRegulationService} from '../services/training-program-regulation.service';
 import {Regulation} from '../models/Regulation';
 import {TrainingProgramRegulation} from '../models/TrainingProgramRegulation';
+import {CurriculumTopicRegulation} from '../models/СurriculumTopicRegulation';
+import {CurriculumTopicRegulationService} from '../services/curriculum-topic-regulation.service';
 
 @Component({
   selector: 'app-training-program-add-form5',
@@ -18,7 +20,8 @@ import {TrainingProgramRegulation} from '../models/TrainingProgramRegulation';
     TrainingProgramService,
     RegulationService,
     TrainingProgramRegulationService,
-    CurriculumTopicService
+    CurriculumTopicService,
+    CurriculumTopicRegulationService
   ]
 })
 export class TrainingProgramAddForm5Component implements OnInit {
@@ -28,11 +31,15 @@ export class TrainingProgramAddForm5Component implements OnInit {
   id: number;
   trainingProgram: TrainingProgram;
   curriculumTopics: CurriculumTopic[];
+  curriculumTopic: CurriculumTopic;
+  regulation: Regulation = new Regulation();
+  curriculumTopicRegulation: CurriculumTopicRegulation = new CurriculumTopicRegulation();
 
   constructor(
     private trainingProgramService: TrainingProgramService,
     private regulationService: RegulationService,
     private trainingProgramRegulationService: TrainingProgramRegulationService,
+    private curriculumTopicRegulationService: CurriculumTopicRegulationService,
     private curriculumTopicService: CurriculumTopicService,
     private route: ActivatedRoute
   ) { }
@@ -162,4 +169,43 @@ export class TrainingProgramAddForm5Component implements OnInit {
       });
   }
 
+  // tslint:disable-next-line:typedef
+  cancel() {
+    this.regulation = new Regulation();
+  }
+
+  // tslint:disable-next-line:typedef
+  addRegulation() {
+    this.crateRegulation();
+  }
+
+  // tslint:disable-next-line:typedef
+  crateRegulation(){
+    this.regulationService.createValue(this.regulation)
+      .subscribe((data: Regulation) => {
+        if (data !== undefined){
+          this.regulation = data;
+          console.log('Success');
+          this.done.push({
+            first: this.regulation.id,
+            third: this.regulation.content
+          });
+          this.curriculumTopicRegulation.regulationId = this.regulation.id;
+          this.curriculumTopicRegulation.curriculumTopicId = this.curriculumTopic.id;
+          this.crateCurriculumTopicRegulation();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  crateCurriculumTopicRegulation(){
+    this.curriculumTopicRegulationService.createValue(this.curriculumTopicRegulation)
+      .subscribe((data: CurriculumTopicRegulation) => {
+        if (data !== undefined){
+          this.curriculumTopicRegulation = data;
+          console.log('Success');
+        }
+        this.cancel();
+      });
+  }
 }

@@ -30,6 +30,8 @@
       <div class="col-sm-6">
         <div class="example-container">
           <h2>Выбрано</h2>
+          <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal.show()"
+                  mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon></button>
 
           <div
             cdkDropList
@@ -46,5 +48,34 @@
 
 
   <button type="button" routerLink="/trainingProgramAddForm4/{{id}}" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Назад</button>
-  <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Далее</button>
+  <button type="button" routerLink="/trainingProgram" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Завершить</button>
+  <button type="button" routerLink="/docxGenerator/{{id}}" mdbBtn color="success" class="relative waves-light" mdbWavesEffect>Сгенерировать документ</button>
+</div>
+
+<!--шаблон для добавления-->
+<div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-fluid" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()" (click)="cancel()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">Нормативные правовые акты</h4>
+      </div>
+      <div class="modal-body">
+        <label>Содержание</label>
+        <textarea type="text" [(ngModel)]="this.regulation.content" class="md-textarea form-control" mdbInput></textarea>
+      </div>
+      <br>
+      <label style="color: red; margin-left: 15px;">Связь с темой учебной программы</label>
+      <select style="margin-left: 15px;" [(ngModel)]="curriculumTopic" class="browser-default custom-select">
+        <option *ngFor="let el of curriculumTopics" [ngValue]="el">{{el.topicTitle}}</option>
+      </select>
+      <div class="modal-footer">
+        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="addRegulation()"
+                mdbWavesEffect>Сохранить</button>
+      </div>
+    </div>
+  </div>
 </div>

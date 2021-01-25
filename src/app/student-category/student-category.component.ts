@@ -151,6 +151,14 @@ export class StudentCategoryComponent implements OnInit, AfterViewInit {
   editRow(el: any) {
     const elementIndex = this.elements.findIndex((elem: any) => el === elem);
     const modalOptions = {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+      show: false,
+      ignoreBackdropClick: true,
+      class: 'modal-fluid',
+      containerClass: '',
+      animated: true,
       data: {
         editableRow: el
       }

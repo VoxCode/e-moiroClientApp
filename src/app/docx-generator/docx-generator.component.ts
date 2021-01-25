@@ -11,6 +11,12 @@ import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTraining
 import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
 import {TrainingProgramFinalExamination} from '../models/TrainingProgramFinalExamination';
 import {TrainingProgramFinalExaminationService} from '../services/training-program-final-examination.service';
+import {TrainingProgramMainLiteratureService} from '../services/training-program-main-literature.service';
+import {TrainingProgramAdditionalLiteratureService} from '../services/training-program-additional-literature.service';
+import {TrainingProgramRegulationService} from '../services/training-program-regulation.service';
+import {TrainingProgramMainLiterature} from '../models/TrainingProgramMainLiterature';
+import {TrainingProgramAdditionalLiterature} from '../models/TrainingProgramAdditionalLiterature';
+import {TrainingProgramRegulation} from '../models/TrainingProgramRegulation';
 
 @Component({
   selector: 'app-docx-generator',
@@ -20,6 +26,9 @@ import {TrainingProgramFinalExaminationService} from '../services/training-progr
     TrainingProgramService,
     TrainingProgramCurriculumSectionService,
     TrainingProgramFinalExaminationService,
+    TrainingProgramMainLiteratureService,
+    TrainingProgramAdditionalLiteratureService,
+    TrainingProgramRegulationService,
     CurriculumTopicTrainingProgramService
   ]
 })
@@ -30,12 +39,18 @@ export class DocxGeneratorComponent implements OnInit{
   trainingProgram: TrainingProgram;
   trainingProgramCurriculumSections: TrainingProgramCurriculumSection[];
   trainingProgramFinalExaminations: TrainingProgramFinalExamination[];
+  trainingProgramMainLiteratures: TrainingProgramMainLiterature[];
+  trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[];
+  trainingProgramRegulations: TrainingProgramRegulation[];
   docx: any;
 
   constructor(
     private trainingProgramService: TrainingProgramService,
     private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
     private trainingProgramFinalExaminationService: TrainingProgramFinalExaminationService,
+    private trainingProgramMainLiteratureService: TrainingProgramMainLiteratureService,
+    private trainingProgramAdditionalLiteratureService: TrainingProgramAdditionalLiteratureService,
+    private trainingProgramRegulationService: TrainingProgramRegulationService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private route: ActivatedRoute
   ) { }
@@ -77,7 +92,7 @@ export class DocxGeneratorComponent implements OnInit{
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicTrainingProgram(){
-    this.trainingProgramCurriculumSections.forEach((object, index) => {
+    this.trainingProgramCurriculumSections.forEach(object => {
       this.curriculumTopicTrainingProgramService.getValueList(
         this.id,
         object.curriculumSectionId,
@@ -109,6 +124,51 @@ export class DocxGeneratorComponent implements OnInit{
           this.trainingProgramFinalExaminations.sort(function(a, b) {
             return a.serialNumber - b.serialNumber;
           });
+          this.loadTrainingProgramMainLiterature();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadTrainingProgramMainLiterature() {
+    this.trainingProgramMainLiteratureService.getValue(this.id)
+      .subscribe((data: TrainingProgramMainLiterature[]) => {
+        if (data !== undefined){
+          this.trainingProgramMainLiteratures = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.trainingProgramMainLiteratures.sort(function(a, b) {
+            return a.serialNumber - b.serialNumber;
+          });
+          this.loadTrainingProgramAdditionalLiterature();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadTrainingProgramAdditionalLiterature() {
+    this.trainingProgramAdditionalLiteratureService.getValue(this.id)
+      .subscribe((data: TrainingProgramAdditionalLiterature[]) => {
+        if (data !== undefined){
+          this.trainingProgramAdditionalLiteratures = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.trainingProgramAdditionalLiteratures.sort(function(a, b) {
+            return a.serialNumber - b.serialNumber;
+          });
+          this.loadTrainingProgramRegulation();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadTrainingProgramRegulation() {
+    this.trainingProgramRegulationService.getValue(this.id)
+      .subscribe((data: TrainingProgramRegulation[]) => {
+        if (data !== undefined){
+          this.trainingProgramRegulations = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.trainingProgramRegulations.sort(function(a, b) {
+            return a.serialNumber - b.serialNumber;
+          });
           this.getDocument();
         }
       });
@@ -120,7 +180,10 @@ export class DocxGeneratorComponent implements OnInit{
       this.curriculumTopicsList,
       this.trainingProgram,
       this.trainingProgramCurriculumSections,
-      this.trainingProgramFinalExaminations
+      this.trainingProgramFinalExaminations,
+      this.trainingProgramMainLiteratures,
+      this.trainingProgramAdditionalLiteratures,
+      this.trainingProgramRegulations
     );
     const docxTmp = documentCreator.create([
       model,
