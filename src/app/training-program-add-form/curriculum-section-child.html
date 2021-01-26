@@ -1,8 +1,8 @@
 <div class="example-container">
   <h4><strong>Раздел {{curriculumSectionNumber}}</strong></h4>
   <h5 *ngIf="curriculumSection">{{curriculumSection.name}}</h5>
-  <button type="button" mdbBtn color="success" size="sm" class="relative waves-light" (click)="addCurriculumSection()"
-          mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon></button>
+  <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal.show()"
+          mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить название раздела</button>
   <ng-select [items]="curriculumSections"
              (change)="saveTrainingProgramCurriculumSection()"
              bindValue=""
@@ -15,18 +15,44 @@
     [cdkDropListData]="done"
     class="example-list"
     (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let item of done" cdkDrag>{{item.second}}
+    <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+            mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить тему учебной программы</button><br>
+    <div class="example-box" *ngFor="let item of done; index as i" cdkDrag>{{i+1}}. {{item.second}}
       <mdb-checkbox [(ngModel)]="item.third" [default]="true">Вариативная</mdb-checkbox>
       <label>Количество часов</label>
       <input [(ngModel)]="item.fourth" type="number" class="md-textarea form-control" mdbInput>
       <label>Форма занятия</label>
       <select [(ngModel)]="item.fifth" class="browser-default custom-select">
-       <option *ngFor="let el of occupationForms" [ngValue]="el.id">{{el.fullName}}</option>
+        <option *ngFor="let el of occupationForms" [ngValue]="el.id">{{el.fullName}}</option>
       </select>
-      <button [value]="item.seventh" (click)="deleteCurriculumTopicTrainingProgram($event.target.value)">x</button>
+      <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
+              [value]="item.seventh" (click)="deleteCurriculumTopicTrainingProgram($event.target.value, i)" mdbWavesEffect>x</button>
     </div>
   </div>
-  <div class="addWindow" *ngIf="addSection == true">
-  <app-curriculum-section ></app-curriculum-section>
+</div>
+
+
+<!--шаблон для добавления Раздела учебной программы-->
+<div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-fluid" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide(); cancel()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">Раздел учебной программы</h4>
+      </div>
+      <div class="modal-body">
+        <label>Название</label>
+        <input type="text" [(ngModel)]="this.curriculumSectionTmp.name" class="md-textarea form-control" mdbInput>
+        <br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" mdbBtn color="primary" class="relative waves-light"
+                (click)="basicModal.hide(); addCurriculumSection()"
+                mdbWavesEffect>Сохранить</button>
+      </div>
+    </div>
   </div>
 </div>

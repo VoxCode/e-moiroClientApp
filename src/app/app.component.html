@@ -1,5 +1,5 @@
 <!--Navbar-->
-<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark primary-color-dark" [containerInside]="false">
+<mdb-navbar style="position: fixed; z-index: 100; width: 100%;" SideClass="navbar navbar-expand-lg navbar-dark primary-color-dark" [containerInside]="false">
 
   <!-- Navbar brand -->
   <mdb-navbar-brand><a class="navbar-brand" routerLink="/curriculumTopic">Электронный МОИРО</a></mdb-navbar-brand>
@@ -46,10 +46,11 @@
   </links>
   <!-- Collapsible content -->
 
-</mdb-navbar>
+</mdb-navbar><br><br>
 <!--/.Navbar-->
 
 <div class="main">
+  <br>
   <router-outlet></router-outlet>
 </div>
 

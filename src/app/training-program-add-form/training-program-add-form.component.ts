@@ -44,7 +44,6 @@ export class TrainingProgramAddFormComponent implements OnInit{
   curriculumSectionContentList = [];
   todo = [];
   name: string;
-  curriculumSectionNumber: number;
 
 
   constructor(
@@ -61,7 +60,6 @@ export class TrainingProgramAddFormComponent implements OnInit{
   // tslint:disable-next-line:typedef
   ngOnInit() {
     this.trainingProgram = new TrainingProgram();
-    this.curriculumSectionNumber = 0;
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
   }
@@ -139,10 +137,9 @@ export class TrainingProgramAddFormComponent implements OnInit{
 
   // tslint:disable-next-line:typedef
   addCurriculumSection(curriculumSectionId: number, trainingProgramCurriculumSectionId: number) {
-    this.curriculumSectionNumber++;
+
     this.curriculumSectionContentList.push({
       done: [],
-      curriculumSectionNumber: this.curriculumSectionNumber,
       curriculumSectionId,
       trainingProgramCurriculumSectionId
     });
@@ -159,10 +156,10 @@ export class TrainingProgramAddFormComponent implements OnInit{
   // DELETE
 
   // tslint:disable-next-line:typedef
-  deleteTrainingProgramCurriculumSection(index: number) {
-    const idx = this.trainingProgramCurriculumSectionList[index - 1].id;
-    this.curriculumSectionContentList.splice(index - 1, 1);
-    this.trainingProgramCurriculumSectionService.deleteValue(idx)
+  deleteTrainingProgramCurriculumSection(index: number, id: number) {
+    console.log(index, id);
+    this.curriculumSectionContentList.splice(index, 1);
+    this.trainingProgramCurriculumSectionService.deleteValue(id)
       .subscribe();
   }
 }

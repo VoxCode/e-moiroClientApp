@@ -11,6 +11,8 @@
     <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="save()" mdbWavesEffect>
       <mdb-icon size="lg" far icon="save"></mdb-icon></button>
   </div>
+  <br>
+  <h3><strong>Перетащите необходимые элементы</strong></h3>
 
   <div cdkDropListGroup>
     <div class="row">
@@ -23,7 +25,7 @@
             [cdkDropListData]="todo"
             class="example-list"
             (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item.third}}</div>
+            <div class="example-box" *ngFor="let item of todo; index as i" cdkDrag>{{i+1}}. {{item.third}}</div>
           </div>
         </div>
       </div>
@@ -31,14 +33,16 @@
         <div class="example-container">
           <h2>Выбрано</h2>
           <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal.show()"
-                  mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon></button>
+                  mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить</button>
 
           <div
             cdkDropList
             [cdkDropListData]="done"
             class="example-list"
             (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let item of done" cdkDrag>{{item.third}}</div>
+            <div class="example-box" *ngFor="let item of done; index as i" cdkDrag>{{i+1}}. {{item.third}}
+              <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
+                      [value]="item.fourth" (click)="deleteTrainingProgramRegulation($event.target.value, i)" mdbWavesEffect>x</button></div>
           </div>
         </div>
       </div>
@@ -48,8 +52,8 @@
 
 
   <button type="button" routerLink="/trainingProgramAddForm4/{{id}}" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Назад</button>
-  <button type="button" routerLink="/trainingProgram" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Завершить</button>
-  <button type="button" routerLink="/docxGenerator/{{id}}" mdbBtn color="success" class="relative waves-light" mdbWavesEffect>Сгенерировать документ</button>
+  <button type="button" (click)="save()" routerLink="/trainingProgram" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Завершить</button>
+  <button type="button" (click)="save()" routerLink="/docxGenerator/{{id}}" mdbBtn color="success" class="relative waves-light" mdbWavesEffect>Сгенерировать документ</button>
 </div>
 
 <!--шаблон для добавления-->

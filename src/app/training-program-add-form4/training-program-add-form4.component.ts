@@ -9,6 +9,8 @@ import {AdditionalLiterature} from '../models/AdditionalLiterature';
 import {AdditionalLiteratureService} from '../services/additional-literature.service';
 import {TrainingProgramAdditionalLiteratureService} from '../services/training-program-additional-literature.service';
 import {TrainingProgramAdditionalLiterature} from '../models/TrainingProgramAdditionalLiterature';
+import {CurriculumTopicAdditionalLiteratureService} from '../services/curriculum-topic-additional-literature.service';
+import {CurriculumTopicAdditionalLiterature} from '../models/СurriculumTopicAdditionalLiterature';
 
 @Component({
   selector: 'app-training-program-add-form4',
@@ -18,7 +20,8 @@ import {TrainingProgramAdditionalLiterature} from '../models/TrainingProgramAddi
     TrainingProgramService,
     AdditionalLiteratureService,
     TrainingProgramAdditionalLiteratureService,
-    CurriculumTopicService
+    CurriculumTopicService,
+    CurriculumTopicAdditionalLiteratureService
   ]
 })
 export class TrainingProgramAddForm4Component implements OnInit {
@@ -28,11 +31,15 @@ export class TrainingProgramAddForm4Component implements OnInit {
   id: number;
   trainingProgram: TrainingProgram;
   curriculumTopics: CurriculumTopic[];
+  curriculumTopic: CurriculumTopic;
+  additionalLiterature: AdditionalLiterature = new AdditionalLiterature();
+  curriculumTopicAdditionalLiterature: CurriculumTopicAdditionalLiterature = new CurriculumTopicAdditionalLiterature();
 
   constructor(
     private trainingProgramService: TrainingProgramService,
     private additionalLiteratureService: AdditionalLiteratureService,
     private trainingProgramAdditionalLiteratureService: TrainingProgramAdditionalLiteratureService,
+    private curriculumTopicAdditionalLiteratureService: CurriculumTopicAdditionalLiteratureService,
     private curriculumTopicService: CurriculumTopicService,
     private route: ActivatedRoute
   ) { }
@@ -162,4 +169,53 @@ export class TrainingProgramAddForm4Component implements OnInit {
       });
   }
 
+  // tslint:disable-next-line:typedef
+  cancel() {
+    this.additionalLiterature = new AdditionalLiterature();
+  }
+
+  // tslint:disable-next-line:typedef
+  addAdditionalLiterature() {
+    this.crateAdditionalLiterature();
+  }
+
+  // tslint:disable-next-line:typedef
+  crateAdditionalLiterature(){
+    this.additionalLiteratureService.createValue(this.additionalLiterature)
+      .subscribe((data: AdditionalLiterature) => {
+        if (data !== undefined){
+          this.additionalLiterature = data;
+          console.log('Success');
+          this.done.push({
+            first: this.additionalLiterature.id,
+            third: this.additionalLiterature.content
+          });
+          this.curriculumTopicAdditionalLiterature.additionalLiteratureId = this.additionalLiterature.id;
+          this.curriculumTopicAdditionalLiterature.curriculumTopicId = this.curriculumTopic.id;
+          this.crateCurriculumTopicAdditionalLiterature();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  crateCurriculumTopicAdditionalLiterature(){
+    this.curriculumTopicAdditionalLiteratureService.createValue(this.curriculumTopicAdditionalLiterature)
+      .subscribe((data: CurriculumTopicAdditionalLiterature) => {
+        if (data !== undefined){
+          this.curriculumTopicAdditionalLiterature = data;
+          console.log('Success');
+        }
+        this.cancel();
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  deleteTrainingProgramAdditionalLiterature(data: any, indx: number){
+    this.done.splice(indx, 1);
+    if (data !== 'undefined'){
+      this.trainingProgramAdditionalLiteratureService.deleteValue(+data).subscribe(() => {
+        console.log('Delete was successful ' + data);
+      });
+    }
+  }
 }

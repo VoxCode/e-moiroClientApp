@@ -208,4 +208,14 @@ export class TrainingProgramAddForm5Component implements OnInit {
         this.cancel();
       });
   }
+
+  // tslint:disable-next-line:typedef
+  deleteTrainingProgramRegulation(data: any, indx: number){
+    this.done.splice(indx, 1);
+    if (data !== 'undefined'){
+      this.trainingProgramRegulationService.deleteValue(+data).subscribe(() => {
+        console.log('Delete was successful ' + data);
+      });
+    }
+  }
 }

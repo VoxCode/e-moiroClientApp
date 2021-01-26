@@ -11,6 +11,9 @@
     <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="save()" mdbWavesEffect>
       <mdb-icon size="lg" far icon="save"></mdb-icon></button>
   </div>
+  <br>
+  <h3><strong>Перетащите необходимые элементы</strong></h3>
+
   <div cdkDropListGroup>
     <div class="row">
       <div class="col-sm-3">
@@ -22,32 +25,32 @@
             [cdkDropListData]="todo"
             class="example-list"
             (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item.second}}</div>
+            <div class="example-box" *ngFor="let item of todo; index as i" cdkDrag>{{i+1}}. {{item.second}}</div>
           </div>
         </div>
 
       </div>
       <div class="col-sm-7">
-        <div *ngFor="let item of curriculumSectionContentList">
-          <app-curriculum-section-child [curriculumSectionNumber]="item.curriculumSectionNumber"
+        <div *ngFor="let item of curriculumSectionContentList; index as i">
+          <app-curriculum-section-child [curriculumSectionNumber]="i+1"
                                         [done]="item.done"
                                         [id]="id"
                                         [curriculumSectionId]="item.curriculumSectionId"
-                                        [trainingProgramCurriculumSectionId]="item.trainingProgramCurriculumSectionId">
+                                        [(trainingProgramCurriculumSectionId)]="item.trainingProgramCurriculumSectionId">
           </app-curriculum-section-child>
           <button type="button" id="deleteBtn" mdbBtn color="danger" size="sm" class="relative waves-light"
-                  (click)="deleteTrainingProgramCurriculumSection(item.curriculumSectionNumber)" mdbWavesEffect>
-            <mdb-icon fas icon="trash-alt" size="sm"></mdb-icon></button>
+                  (click)="deleteTrainingProgramCurriculumSection(i, item.trainingProgramCurriculumSectionId)" mdbWavesEffect>
+            <mdb-icon fas icon="trash-alt" size="sm"></mdb-icon> Удалить {{item.curriculumSectionNumber}} Раздел</button>
         </div>
 
       </div>
       <div class="col-sm-2">
         <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
                 (click)="addCurriculumSection(0, 0)" mdbWavesEffect>
-          <mdb-icon fas icon="plus" size="sm"></mdb-icon></button>
+          <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел</button>
       </div>
     </div>
   </div>
   <br><br>
-  <button type="button" routerLink="/trainingProgramAddForm2/{{id}}" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Далее</button>
+  <button type="button" (click)="save()" routerLink="/trainingProgramAddForm2/{{id}}" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Далее</button>
 </div>

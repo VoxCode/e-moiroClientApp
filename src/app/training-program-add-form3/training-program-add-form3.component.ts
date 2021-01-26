@@ -9,6 +9,8 @@ import {MainLiteratureService} from '../services/main-literature.service';
 import {TrainingProgramMainLiterature} from '../models/TrainingProgramMainLiterature';
 import {TrainingProgramMainLiteratureService} from '../services/training-program-main-literature.service';
 import {MainLiterature} from '../models/MainLiterature';
+import {CurriculumTopicMainLiterature} from '../models/СurriculumTopicMainLiterature';
+import {CurriculumTopicMainLiteratureService} from '../services/curriculum-topic-main-literature.service';
 
 @Component({
   selector: 'app-training-program-add-form3',
@@ -18,7 +20,8 @@ import {MainLiterature} from '../models/MainLiterature';
     TrainingProgramService,
     MainLiteratureService,
     TrainingProgramMainLiteratureService,
-    CurriculumTopicService
+    CurriculumTopicService,
+    CurriculumTopicMainLiteratureService
   ]
 })
 export class TrainingProgramAddForm3Component implements OnInit {
@@ -28,12 +31,16 @@ export class TrainingProgramAddForm3Component implements OnInit {
   id: number;
   trainingProgram: TrainingProgram;
   curriculumTopics: CurriculumTopic[];
+  curriculumTopic: CurriculumTopic;
+  mainLiterature: MainLiterature = new MainLiterature();
+  curriculumTopicMainLiterature: CurriculumTopicMainLiterature = new CurriculumTopicMainLiterature();
 
   constructor(
     private trainingProgramService: TrainingProgramService,
     private mainLiteratureService: MainLiteratureService,
     private trainingProgramMainLiteratureService: TrainingProgramMainLiteratureService,
     private curriculumTopicService: CurriculumTopicService,
+    private curriculumTopicMainLiteratureService: CurriculumTopicMainLiteratureService,
     private route: ActivatedRoute
   ) { }
 
@@ -162,4 +169,53 @@ export class TrainingProgramAddForm3Component implements OnInit {
       });
   }
 
+  // tslint:disable-next-line:typedef
+  cancel() {
+    this.mainLiterature = new MainLiterature();
+  }
+
+  // tslint:disable-next-line:typedef
+  addMainLiterature() {
+    this.crateMainLiterature();
+  }
+
+  // tslint:disable-next-line:typedef
+  crateMainLiterature(){
+    this.mainLiteratureService.createValue(this.mainLiterature)
+      .subscribe((data: MainLiterature) => {
+        if (data !== undefined){
+          this.mainLiterature = data;
+          console.log('Success');
+          this.done.push({
+            first: this.mainLiterature.id,
+            third: this.mainLiterature.content
+          });
+          this.curriculumTopicMainLiterature.mainLiteratureId = this.mainLiterature.id;
+          this.curriculumTopicMainLiterature.curriculumTopicId = this.curriculumTopic.id;
+          this.crateCurriculumTopicMainLiterature();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  crateCurriculumTopicMainLiterature(){
+    this.curriculumTopicMainLiteratureService.createValue(this.curriculumTopicMainLiterature)
+      .subscribe((data: CurriculumTopicMainLiterature) => {
+        if (data !== undefined){
+          this.curriculumTopicMainLiterature = data;
+          console.log('Success');
+        }
+        this.cancel();
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  deleteTrainingProgramMainLiterature(data: any, indx: number){
+    this.done.splice(indx, 1);
+    if (data !== 'undefined'){
+      this.trainingProgramMainLiteratureService.deleteValue(+data).subscribe(() => {
+        console.log('Delete was successful ' + data);
+      });
+    }
+  }
 }

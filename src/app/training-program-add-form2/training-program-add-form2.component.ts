@@ -9,6 +9,8 @@ import {FinalExaminationService} from '../services/final-examination.service';
 import {FinalExamination} from '../models/FinalExamination';
 import {TrainingProgramFinalExaminationService} from '../services/training-program-final-examination.service';
 import {TrainingProgramFinalExamination} from '../models/TrainingProgramFinalExamination';
+import {CurriculumTopicFinalExamination} from '../models/CurriculumTopicFinalExamination';
+import {CurriculumTopicFinalExaminationService} from '../services/curriculum-topic-final-examination.service';
 
 @Component({
   selector: 'app-training-program-add-form2',
@@ -18,7 +20,8 @@ import {TrainingProgramFinalExamination} from '../models/TrainingProgramFinalExa
     TrainingProgramService,
     FinalExaminationService,
     TrainingProgramFinalExaminationService,
-    CurriculumTopicService
+    CurriculumTopicService,
+    CurriculumTopicFinalExaminationService
   ]
 })
 export class TrainingProgramAddForm2Component implements OnInit {
@@ -27,11 +30,15 @@ export class TrainingProgramAddForm2Component implements OnInit {
   id: number;
   trainingProgram: TrainingProgram;
   curriculumTopics: CurriculumTopic[];
+  curriculumTopic: CurriculumTopic;
+  finalExamination: FinalExamination = new FinalExamination();
+  curriculumTopicFinalExamination: CurriculumTopicFinalExamination = new CurriculumTopicFinalExamination();
 
   constructor(
     private trainingProgramService: TrainingProgramService,
     private finalExaminationService: FinalExaminationService,
     private trainingProgramFinalExaminationService: TrainingProgramFinalExaminationService,
+    private curriculumTopicFinalExaminationService: CurriculumTopicFinalExaminationService,
     private curriculumTopicService: CurriculumTopicService,
     private route: ActivatedRoute
   ) { }
@@ -139,7 +146,7 @@ export class TrainingProgramAddForm2Component implements OnInit {
       if (trainingProgramFinalExamination.id === undefined){
         this.trainingProgramFinalExaminationService.createValue(trainingProgramFinalExamination)
           .subscribe((data: TrainingProgramFinalExamination) => {
-            object.seventh = data.id;
+            object.fourth = data.id;
             console.log('Save was successful');
             trainingProgramFinalExamination = null;
           });
@@ -159,5 +166,56 @@ export class TrainingProgramAddForm2Component implements OnInit {
       .subscribe((data: TrainingProgramFinalExamination) => {
         console.log('Update was successful ' + data.serialNumber);
       });
+  }
+
+  // tslint:disable-next-line:typedef
+  cancel() {
+    this.finalExamination = new FinalExamination();
+  }
+
+  // tslint:disable-next-line:typedef
+  addFinalExamination() {
+    this.crateFinalExamination();
+  }
+
+  // tslint:disable-next-line:typedef
+  crateFinalExamination(){
+    this.finalExamination.certificationTypeId = this.trainingProgram.certificationTypeId;
+    this.finalExaminationService.createValue(this.finalExamination)
+      .subscribe((data: FinalExamination) => {
+        if (data !== undefined){
+          this.finalExamination = data;
+          console.log('Success');
+          this.done.push({
+            first: this.finalExamination.id,
+            third: this.finalExamination.content
+          });
+          this.curriculumTopicFinalExamination.finalExaminationId = this.finalExamination.id;
+          this.curriculumTopicFinalExamination.curriculumTopicId = this.curriculumTopic.id;
+          this.crateCurriculumTopicFinalExamination();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  crateCurriculumTopicFinalExamination(){
+    this.curriculumTopicFinalExaminationService.createValue(this.curriculumTopicFinalExamination)
+      .subscribe((data: CurriculumTopicFinalExamination) => {
+        if (data !== undefined){
+          this.curriculumTopicFinalExamination = data;
+          console.log('Success');
+        }
+        this.cancel();
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  deleteTrainingProgramFinalExamination(data: any, indx: number){
+    this.done.splice(indx, 1);
+    if (data !== 'undefined'){
+      this.trainingProgramFinalExaminationService.deleteValue(+data).subscribe(() => {
+        console.log('Delete was successful ' + data);
+      });
+    }
   }
 }

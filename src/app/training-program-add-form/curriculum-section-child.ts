@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {CurriculumTopicService} from '../services/curriculum-topic.service';
 import {TrainingProgramService} from '../services/training-program.service';
 import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
@@ -35,14 +35,15 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   @Input() id: number;
   @Input() curriculumSectionId: number;
   @Input() trainingProgramCurriculumSectionId: number;
+  @Output() trainingProgramCurriculumSectionIdChange = new EventEmitter();
 
   occupationForms: OccupationForm[] = [];
   curriculumSections: CurriculumSection[] = [];
   curriculumSection: CurriculumSection;
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
   trainingProgramCurriculumSection: TrainingProgramCurriculumSection;
-  addSection: boolean;
   subscription: SubscriptionLike;
+  curriculumSectionTmp: CurriculumSection = new CurriculumSection();
 
   constructor(
     private curriculumTopicService: CurriculumTopicService,
@@ -57,7 +58,6 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   // tslint:disable-next-line:typedef use-lifecycle-interface
   ngOnInit() {
     this.loadCurriculumSection();
-    this.addSection = false;
     this.loadOccupationForm();
 
     this.subscription = this.commonService.saveCurriculumSectionChild$.subscribe( idx => {
@@ -156,6 +156,8 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
       this.trainingProgramCurriculumSectionService.createValue(this.trainingProgramCurriculumSection)
         .subscribe((data: TrainingProgramCurriculumSection) => {
           this.trainingProgramCurriculumSection.id = data.id;
+          this.trainingProgramCurriculumSectionId = data.id;
+          this.trainingProgramCurriculumSectionIdChange.emit(data.id);
           console.log('Save was successful');
         });
     }
@@ -217,18 +219,47 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   // DELETE
 
   // tslint:disable-next-line:typedef
-  deleteCurriculumTopicTrainingProgram(data: any){
+  deleteCurriculumTopicTrainingProgram(data: any, indx: number){
+    this.done.splice(indx, 1);
     if (data !== 'undefined'){
-      const idx = this.done.findIndex(a => a.seventh === +data);
       this.curriculumTopicTrainingProgramService.deleteValue(+data).subscribe(() => {
         console.log('Delete was successful ' + data);
-        this.done.splice(idx, 1);
       });
     }
   }
 
   // tslint:disable-next-line:typedef
+  cancel() {
+    this.curriculumSectionTmp = new CurriculumSection();
+  }
+
+  // tslint:disable-next-line:typedef
   addCurriculumSection() {
-    // this.addSection = true;
+    this.crateCurriculumSection();
+  }
+
+  // tslint:disable-next-line:typedef
+  crateCurriculumSection(){
+    this.curriculumSectionService.createValue(this.curriculumSectionTmp)
+      .subscribe((data: CurriculumSection) => {
+        if (data !== undefined){
+          this.curriculumSectionTmp = data;
+          this.curriculumSection = this.curriculumSectionTmp;
+          console.log('Success');
+          this.saveTrainingProgramCurriculumSection();
+          this.cancel();
+          this.loadCurriculumSectionAfter();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadCurriculumSectionAfter(){
+    this.curriculumSectionService.getValues()
+      .subscribe((data: CurriculumSection[]) => {
+        if (data !== undefined) {
+          this.curriculumSections = data;
+        }
+      });
   }
 }
