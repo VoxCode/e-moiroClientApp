@@ -12,6 +12,12 @@ import {CommonService} from '../common-service/common-service.component';
 import {SubscriptionLike} from 'rxjs';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
 import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
+import {CurriculumTopic} from '../models/CurriculumTopic';
+import {CurriculumTopicStudentCategoryService} from '../services/curriculum-topic-student-category.service';
+import {CurriculumTopicDepartmentService} from '../services/curriculum-topic-department.service';
+import {CurriculumTopicStudentCategory} from '../models/CurriculumTopicStudentCategory';
+import {CurriculumTopicDepartment} from '../models/СurriculumTopicDepartment';
+import {TrainingProgram} from '../models/TrainingProgram';
 
 
 @Component({
@@ -25,6 +31,8 @@ import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurricu
     CurriculumTopicTrainingProgramService,
     OccupationFormService,
     CurriculumSectionService,
+    CurriculumTopicStudentCategoryService,
+    CurriculumTopicDepartmentService
   ]
 })
 
@@ -44,6 +52,8 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   trainingProgramCurriculumSection: TrainingProgramCurriculumSection;
   subscription: SubscriptionLike;
   curriculumSectionTmp: CurriculumSection = new CurriculumSection();
+  curriculumTopicTmp: CurriculumTopic = new CurriculumTopic();
+  trainingProgram: TrainingProgram;
 
   constructor(
     private curriculumTopicService: CurriculumTopicService,
@@ -52,13 +62,16 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private curriculumSectionService: CurriculumSectionService,
     private commonService: CommonService,
-    private occupationFormService: OccupationFormService
+    private occupationFormService: OccupationFormService,
+    private curriculumTopicStudentCategoryService: CurriculumTopicStudentCategoryService,
+    private curriculumTopicDepartmentService: CurriculumTopicDepartmentService
   ) { }
 
   // tslint:disable-next-line:typedef use-lifecycle-interface
   ngOnInit() {
     this.loadCurriculumSection();
     this.loadOccupationForm();
+    this.loadTrainingProgram();
 
     this.subscription = this.commonService.saveCurriculumSectionChild$.subscribe( idx => {
       this.saveCurriculumTopicTrainingProgram();
@@ -94,6 +107,16 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
           data.forEach((object) => {
             this.occupationForms.push(object);
           });
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadTrainingProgram() {
+    this.trainingProgramService.getValue(this.id)
+      .subscribe((data: TrainingProgram) => {
+        if (data !== undefined){
+          this.trainingProgram = data;
         }
       });
   }
@@ -231,6 +254,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   // tslint:disable-next-line:typedef
   cancel() {
     this.curriculumSectionTmp = new CurriculumSection();
+    this.curriculumTopicTmp = new CurriculumTopic();
   }
 
   // tslint:disable-next-line:typedef
@@ -262,4 +286,59 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
         }
       });
   }
+
+
+
+  // CurriculumTopic
+
+  // tslint:disable-next-line:typedef
+  addCurriculumTopic() {
+    this.crateCurriculumTopic();
+  }
+
+  // tslint:disable-next-line:typedef
+  crateCurriculumTopic(){
+    this.curriculumTopicService.createValue(this.curriculumTopicTmp)
+      .subscribe((data: CurriculumTopic) => {
+        if (data !== undefined){
+          this.curriculumTopicTmp = data;
+          console.log('Success CurriculumTopic');
+          this.done.push({
+            first: this.curriculumTopicTmp.id,
+            second: this.curriculumTopicTmp.topicTitle,
+            sixth: this.id,
+          });
+          this.crateCurriculumTopicStudentCategory();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  crateCurriculumTopicStudentCategory(){
+    const tmp: CurriculumTopicStudentCategory = new CurriculumTopicStudentCategory();
+    tmp.curriculumTopicId = this.curriculumTopicTmp.id;
+    tmp.studentCategoryId = this.trainingProgram.studentCategoryId;
+    this.curriculumTopicStudentCategoryService.createValue(tmp)
+      .subscribe((data: CurriculumTopicStudentCategory) => {
+        if (data !== undefined){
+          console.log('Success StudentCategory');
+          this.crateCurriculumTopicDepartment();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  crateCurriculumTopicDepartment(){
+    const tmp: CurriculumTopicDepartment = new CurriculumTopicDepartment();
+    tmp.curriculumTopicId = this.curriculumTopicTmp.id;
+    tmp.departmentId = this.trainingProgram.departmentId;
+    this.curriculumTopicDepartmentService.createValue(tmp)
+      .subscribe((data: CurriculumTopicDepartment) => {
+        if (data !== undefined){
+          console.log('Success Department');
+          this.cancel();
+        }
+      });
+  }
+
 }

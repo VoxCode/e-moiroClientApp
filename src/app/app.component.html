@@ -1,5 +1,5 @@
 <!--Navbar-->
-<mdb-navbar style="position: fixed; z-index: 100; width: 100%;" SideClass="navbar navbar-expand-lg navbar-dark primary-color-dark" [containerInside]="false">
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark primary-color-dark" [containerInside]="false">
 
   <!-- Navbar brand -->
   <mdb-navbar-brand><a class="navbar-brand" routerLink="/curriculumTopic">Электронный МОИРО</a></mdb-navbar-brand>
@@ -9,7 +9,7 @@
 
     <!-- Links -->
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item" routerLinkActive="active" routerLink="/curriculumTopic">
+      <li class="nav-item" routerLinkActive="active" routerLink="/trainingProgram">
         <a class="nav-link waves-light" mdbWavesEffect>Программы учебных занятий</a>
       </li>
 
@@ -46,11 +46,10 @@
   </links>
   <!-- Collapsible content -->
 
-</mdb-navbar><br><br>
+</mdb-navbar><br>
 <!--/.Navbar-->
 
 <div class="main">
-  <br>
   <router-outlet></router-outlet>
 </div>
 

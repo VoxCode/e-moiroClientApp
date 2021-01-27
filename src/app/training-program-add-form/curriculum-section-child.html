@@ -15,7 +15,7 @@
     [cdkDropListData]="done"
     class="example-list"
     (cdkDropListDropped)="drop($event)">
-    <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+    <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal2.show()"
             mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить тему учебной программы</button><br>
     <div class="example-box" *ngFor="let item of done; index as i" cdkDrag>{{i+1}}. {{item.second}}
       <mdb-checkbox [(ngModel)]="item.third" [default]="true">Вариативная</mdb-checkbox>
@@ -52,6 +52,33 @@
         <button type="button" mdbBtn color="primary" class="relative waves-light"
                 (click)="basicModal.hide(); addCurriculumSection()"
                 mdbWavesEffect>Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--шаблон для добавления Тем учебной программы-->
+<div mdbModal #basicModal2="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-fluid" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal2.hide()" (click)="cancel()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" >Тема учебной программы</h4>
+      </div>
+      <div class="modal-body">
+        <label>Тема</label>
+        <input type="text" [(ngModel)]="this.curriculumTopicTmp.topicTitle" class="md-textarea form-control" mdbInput>
+        <br>
+        <label>Аннотация</label>
+        <textarea type="text" [(ngModel)]="this.curriculumTopicTmp.annotation" class="md-textarea form-control" mdbInput></textarea>
+        <br>
+        <div class="modal-footer">
+          <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal2.hide()" (click)="addCurriculumTopic()"
+                  mdbWavesEffect>Сохранить</button>
+        </div>
       </div>
     </div>
   </div>
