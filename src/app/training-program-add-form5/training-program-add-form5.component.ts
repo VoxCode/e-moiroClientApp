@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {TrainingProgram} from '../models/TrainingProgram';
-import {CurriculumTopic} from '../models/CurriculumTopic';
 import {TrainingProgramService} from '../services/training-program.service';
-import {CurriculumTopicService} from '../services/curriculum-topic.service';
 import {ActivatedRoute} from '@angular/router';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {RegulationService} from '../services/regulation.service';
@@ -11,6 +9,8 @@ import {Regulation} from '../models/Regulation';
 import {TrainingProgramRegulation} from '../models/TrainingProgramRegulation';
 import {CurriculumTopicRegulation} from '../models/СurriculumTopicRegulation';
 import {CurriculumTopicRegulationService} from '../services/curriculum-topic-regulation.service';
+import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
+import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
 
 @Component({
   selector: 'app-training-program-add-form5',
@@ -20,7 +20,7 @@ import {CurriculumTopicRegulationService} from '../services/curriculum-topic-reg
     TrainingProgramService,
     RegulationService,
     TrainingProgramRegulationService,
-    CurriculumTopicService,
+    CurriculumTopicTrainingProgramService,
     CurriculumTopicRegulationService
   ]
 })
@@ -30,8 +30,8 @@ export class TrainingProgramAddForm5Component implements OnInit {
   done = [];
   id: number;
   trainingProgram: TrainingProgram;
-  curriculumTopics: CurriculumTopic[];
-  curriculumTopic: CurriculumTopic;
+  curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
+  curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram;
   regulation: Regulation = new Regulation();
   curriculumTopicRegulation: CurriculumTopicRegulation = new CurriculumTopicRegulation();
 
@@ -40,7 +40,7 @@ export class TrainingProgramAddForm5Component implements OnInit {
     private regulationService: RegulationService,
     private trainingProgramRegulationService: TrainingProgramRegulationService,
     private curriculumTopicRegulationService: CurriculumTopicRegulationService,
-    private curriculumTopicService: CurriculumTopicService,
+    private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private route: ActivatedRoute
   ) { }
 
@@ -77,11 +77,11 @@ export class TrainingProgramAddForm5Component implements OnInit {
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicTrainingProgram() {
-    this.curriculumTopicService.getCurriculumTopics(this.id).subscribe((data: CurriculumTopic[]) => {
+    this.curriculumTopicTrainingProgramService.getValue(this.id).subscribe((data: CurriculumTopicTrainingProgram[]) => {
       if (data !== undefined && data !== null){
-        this.curriculumTopics = data;
-        this.curriculumTopics.forEach((tmp) => {
-          this.loadRegulation(tmp.id);
+        this.curriculumTopicTrainingPrograms = data;
+        this.curriculumTopicTrainingPrograms.forEach((tmp) => {
+          this.loadRegulation(tmp.curriculumTopicId);
         });
       }
     });
@@ -191,7 +191,7 @@ export class TrainingProgramAddForm5Component implements OnInit {
             third: this.regulation.content
           });
           this.curriculumTopicRegulation.regulationId = this.regulation.id;
-          this.curriculumTopicRegulation.curriculumTopicId = this.curriculumTopic.id;
+          this.curriculumTopicRegulation.curriculumTopicId = this.curriculumTopicTrainingProgram.id;
           this.crateCurriculumTopicRegulation();
         }
       });

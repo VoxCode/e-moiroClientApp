@@ -72,8 +72,8 @@
       </div>
       <br>
       <label style="color: red; margin-left: 15px;">Связь с темой учебной программы</label>
-      <select style="margin-left: 15px;" [(ngModel)]="curriculumTopic" class="browser-default custom-select">
-        <option *ngFor="let el of curriculumTopics" [ngValue]="el">{{el.topicTitle}}</option>
+      <select style="margin-left: 15px;" [(ngModel)]="curriculumTopicTrainingProgram" class="browser-default custom-select">
+        <option *ngFor="let el of curriculumTopicTrainingPrograms" [ngValue]="el">{{el.topicTitle}}</option>
       </select>
       <div class="modal-footer">
         <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="addAdditionalLiterature()"

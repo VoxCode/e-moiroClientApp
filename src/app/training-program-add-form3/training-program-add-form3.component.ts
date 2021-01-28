@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {TrainingProgram} from '../models/TrainingProgram';
-import {CurriculumTopic} from '../models/CurriculumTopic';
 import {TrainingProgramService} from '../services/training-program.service';
-import {CurriculumTopicService} from '../services/curriculum-topic.service';
 import {ActivatedRoute} from '@angular/router';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {MainLiteratureService} from '../services/main-literature.service';
@@ -11,6 +9,8 @@ import {TrainingProgramMainLiteratureService} from '../services/training-program
 import {MainLiterature} from '../models/MainLiterature';
 import {CurriculumTopicMainLiterature} from '../models/СurriculumTopicMainLiterature';
 import {CurriculumTopicMainLiteratureService} from '../services/curriculum-topic-main-literature.service';
+import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
+import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
 
 @Component({
   selector: 'app-training-program-add-form3',
@@ -20,8 +20,8 @@ import {CurriculumTopicMainLiteratureService} from '../services/curriculum-topic
     TrainingProgramService,
     MainLiteratureService,
     TrainingProgramMainLiteratureService,
-    CurriculumTopicService,
-    CurriculumTopicMainLiteratureService
+    CurriculumTopicMainLiteratureService,
+    CurriculumTopicTrainingProgramService
   ]
 })
 export class TrainingProgramAddForm3Component implements OnInit {
@@ -30,8 +30,8 @@ export class TrainingProgramAddForm3Component implements OnInit {
   done = [];
   id: number;
   trainingProgram: TrainingProgram;
-  curriculumTopics: CurriculumTopic[];
-  curriculumTopic: CurriculumTopic;
+  curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
+  curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram;
   mainLiterature: MainLiterature = new MainLiterature();
   curriculumTopicMainLiterature: CurriculumTopicMainLiterature = new CurriculumTopicMainLiterature();
 
@@ -39,8 +39,8 @@ export class TrainingProgramAddForm3Component implements OnInit {
     private trainingProgramService: TrainingProgramService,
     private mainLiteratureService: MainLiteratureService,
     private trainingProgramMainLiteratureService: TrainingProgramMainLiteratureService,
-    private curriculumTopicService: CurriculumTopicService,
     private curriculumTopicMainLiteratureService: CurriculumTopicMainLiteratureService,
+    private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private route: ActivatedRoute
   ) { }
 
@@ -77,11 +77,11 @@ export class TrainingProgramAddForm3Component implements OnInit {
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicTrainingProgram() {
-    this.curriculumTopicService.getCurriculumTopics(this.id).subscribe((data: CurriculumTopic[]) => {
+    this.curriculumTopicTrainingProgramService.getValue(this.id).subscribe((data: CurriculumTopicTrainingProgram[]) => {
       if (data !== undefined && data !== null){
-        this.curriculumTopics = data;
-        this.curriculumTopics.forEach((tmp) => {
-          this.loadMainLiterature(tmp.id);
+        this.curriculumTopicTrainingPrograms = data;
+        data.forEach((tmp) => {
+          this.loadMainLiterature(tmp.curriculumTopicId);
         });
       }
     });
@@ -191,7 +191,7 @@ export class TrainingProgramAddForm3Component implements OnInit {
             third: this.mainLiterature.content
           });
           this.curriculumTopicMainLiterature.mainLiteratureId = this.mainLiterature.id;
-          this.curriculumTopicMainLiterature.curriculumTopicId = this.curriculumTopic.id;
+          this.curriculumTopicMainLiterature.curriculumTopicId = this.curriculumTopicTrainingProgram.id;
           this.crateCurriculumTopicMainLiterature();
         }
       });
