@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {TrainingProgram} from '../models/TrainingProgram';
-import {CurriculumTopic} from '../models/CurriculumTopic';
 import {TrainingProgramService} from '../services/training-program.service';
-import {CurriculumTopicService} from '../services/curriculum-topic.service';
 import {ActivatedRoute} from '@angular/router';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {AdditionalLiterature} from '../models/AdditionalLiterature';
@@ -11,6 +9,8 @@ import {TrainingProgramAdditionalLiteratureService} from '../services/training-p
 import {TrainingProgramAdditionalLiterature} from '../models/TrainingProgramAdditionalLiterature';
 import {CurriculumTopicAdditionalLiteratureService} from '../services/curriculum-topic-additional-literature.service';
 import {CurriculumTopicAdditionalLiterature} from '../models/СurriculumTopicAdditionalLiterature';
+import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
+import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
 
 @Component({
   selector: 'app-training-program-add-form4',
@@ -20,8 +20,8 @@ import {CurriculumTopicAdditionalLiterature} from '../models/СurriculumTopicAdd
     TrainingProgramService,
     AdditionalLiteratureService,
     TrainingProgramAdditionalLiteratureService,
-    CurriculumTopicService,
-    CurriculumTopicAdditionalLiteratureService
+    CurriculumTopicAdditionalLiteratureService,
+    CurriculumTopicTrainingProgramService
   ]
 })
 export class TrainingProgramAddForm4Component implements OnInit {
@@ -30,8 +30,8 @@ export class TrainingProgramAddForm4Component implements OnInit {
   done = [];
   id: number;
   trainingProgram: TrainingProgram;
-  curriculumTopics: CurriculumTopic[];
-  curriculumTopic: CurriculumTopic;
+  curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
+  curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram;
   additionalLiterature: AdditionalLiterature = new AdditionalLiterature();
   curriculumTopicAdditionalLiterature: CurriculumTopicAdditionalLiterature = new CurriculumTopicAdditionalLiterature();
 
@@ -40,7 +40,7 @@ export class TrainingProgramAddForm4Component implements OnInit {
     private additionalLiteratureService: AdditionalLiteratureService,
     private trainingProgramAdditionalLiteratureService: TrainingProgramAdditionalLiteratureService,
     private curriculumTopicAdditionalLiteratureService: CurriculumTopicAdditionalLiteratureService,
-    private curriculumTopicService: CurriculumTopicService,
+    private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private route: ActivatedRoute
   ) { }
 
@@ -77,11 +77,11 @@ export class TrainingProgramAddForm4Component implements OnInit {
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicTrainingProgram() {
-    this.curriculumTopicService.getCurriculumTopics(this.id).subscribe((data: CurriculumTopic[]) => {
+    this.curriculumTopicTrainingProgramService.getValue(this.id).subscribe((data: CurriculumTopicTrainingProgram[]) => {
       if (data !== undefined && data !== null){
-        this.curriculumTopics = data;
-        this.curriculumTopics.forEach((tmp) => {
-          this.loadAdditionalLiterature(tmp.id);
+        this.curriculumTopicTrainingPrograms = data;
+        data.forEach((tmp) => {
+          this.loadAdditionalLiterature(tmp.curriculumTopicId);
         });
       }
     });
@@ -191,7 +191,7 @@ export class TrainingProgramAddForm4Component implements OnInit {
             third: this.additionalLiterature.content
           });
           this.curriculumTopicAdditionalLiterature.additionalLiteratureId = this.additionalLiterature.id;
-          this.curriculumTopicAdditionalLiterature.curriculumTopicId = this.curriculumTopic.id;
+          this.curriculumTopicAdditionalLiterature.curriculumTopicId = this.curriculumTopicTrainingProgram.id;
           this.crateCurriculumTopicAdditionalLiterature();
         }
       });

@@ -3,14 +3,14 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 import {ActivatedRoute} from '@angular/router';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {TrainingProgramService} from '../services/training-program.service';
-import {CurriculumTopicService} from '../services/curriculum-topic.service';
-import {CurriculumTopic} from '../models/CurriculumTopic';
 import {FinalExaminationService} from '../services/final-examination.service';
 import {FinalExamination} from '../models/FinalExamination';
 import {TrainingProgramFinalExaminationService} from '../services/training-program-final-examination.service';
 import {TrainingProgramFinalExamination} from '../models/TrainingProgramFinalExamination';
 import {CurriculumTopicFinalExamination} from '../models/CurriculumTopicFinalExamination';
 import {CurriculumTopicFinalExaminationService} from '../services/curriculum-topic-final-examination.service';
+import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
+import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
 
 @Component({
   selector: 'app-training-program-add-form2',
@@ -20,7 +20,7 @@ import {CurriculumTopicFinalExaminationService} from '../services/curriculum-top
     TrainingProgramService,
     FinalExaminationService,
     TrainingProgramFinalExaminationService,
-    CurriculumTopicService,
+    CurriculumTopicTrainingProgramService,
     CurriculumTopicFinalExaminationService
   ]
 })
@@ -29,8 +29,8 @@ export class TrainingProgramAddForm2Component implements OnInit {
   done = [];
   id: number;
   trainingProgram: TrainingProgram;
-  curriculumTopics: CurriculumTopic[];
-  curriculumTopic: CurriculumTopic;
+  curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
+  curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram;
   finalExamination: FinalExamination = new FinalExamination();
   curriculumTopicFinalExamination: CurriculumTopicFinalExamination = new CurriculumTopicFinalExamination();
 
@@ -39,7 +39,7 @@ export class TrainingProgramAddForm2Component implements OnInit {
     private finalExaminationService: FinalExaminationService,
     private trainingProgramFinalExaminationService: TrainingProgramFinalExaminationService,
     private curriculumTopicFinalExaminationService: CurriculumTopicFinalExaminationService,
-    private curriculumTopicService: CurriculumTopicService,
+    private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private route: ActivatedRoute
   ) { }
 
@@ -76,11 +76,11 @@ export class TrainingProgramAddForm2Component implements OnInit {
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicTrainingProgram() {
-    this.curriculumTopicService.getCurriculumTopics(this.id).subscribe((data: CurriculumTopic[]) => {
+    this.curriculumTopicTrainingProgramService.getValue(this.id).subscribe((data: CurriculumTopicTrainingProgram[]) => {
       if (data !== undefined && data !== null){
-        this.curriculumTopics = data;
-        this.curriculumTopics.forEach((tmp) => {
-          this.loadFinalExamination(tmp.id);
+        this.curriculumTopicTrainingPrograms = data;
+        data.forEach((tmp) => {
+          this.loadFinalExamination(tmp.curriculumTopicId);
         });
       }
     });
@@ -191,7 +191,7 @@ export class TrainingProgramAddForm2Component implements OnInit {
             third: this.finalExamination.content
           });
           this.curriculumTopicFinalExamination.finalExaminationId = this.finalExamination.id;
-          this.curriculumTopicFinalExamination.curriculumTopicId = this.curriculumTopic.id;
+          this.curriculumTopicFinalExamination.curriculumTopicId = this.curriculumTopicTrainingProgram.id;
           this.crateCurriculumTopicFinalExamination();
         }
       });
