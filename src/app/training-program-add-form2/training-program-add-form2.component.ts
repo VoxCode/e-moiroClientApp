@@ -79,22 +79,25 @@ export class TrainingProgramAddForm2Component implements OnInit {
     this.curriculumTopicTrainingProgramService.getValue(this.id).subscribe((data: CurriculumTopicTrainingProgram[]) => {
       if (data !== undefined && data !== null){
         this.curriculumTopicTrainingPrograms = data;
-        data.forEach((tmp) => {
-          this.loadFinalExamination(tmp.curriculumTopicId);
-        });
+        this.loadFinalExamination();
       }
     });
   }
 
   // tslint:disable-next-line:typedef
-  loadFinalExamination(curriculumTopicId: number) {
-    this.finalExaminationService.getFinalExaminations(curriculumTopicId, this.trainingProgram.certificationTypeId)
+  loadFinalExamination() {
+    // tslint:disable-next-line:prefer-const
+    let curriculumTopicIdArray: number[] = [this.curriculumTopicTrainingPrograms.length];
+    console.log(curriculumTopicIdArray);
+    this.curriculumTopicTrainingPrograms.forEach(i => {
+      curriculumTopicIdArray.push(i.curriculumTopicId);
+    });
+    this.finalExaminationService.getFinalExamination(this.trainingProgram.certificationTypeId, curriculumTopicIdArray)
       .subscribe((data: FinalExamination[]) => {
         if (data !== undefined && data !== null){
           data.forEach((tmp) => {
             this.todo.push({
               first: tmp.id,
-              second: tmp.certificationTypeId,
               third: tmp.content
             });
           });

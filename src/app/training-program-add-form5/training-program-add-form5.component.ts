@@ -11,6 +11,7 @@ import {CurriculumTopicRegulation} from '../models/СurriculumTopicRegulation';
 import {CurriculumTopicRegulationService} from '../services/curriculum-topic-regulation.service';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
 import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
+import {MainLiterature} from '../models/MainLiterature';
 
 @Component({
   selector: 'app-training-program-add-form5',
@@ -78,19 +79,22 @@ export class TrainingProgramAddForm5Component implements OnInit {
   // tslint:disable-next-line:typedef
   loadCurriculumTopicTrainingProgram() {
     this.curriculumTopicTrainingProgramService.getValue(this.id).subscribe((data: CurriculumTopicTrainingProgram[]) => {
-      if (data !== undefined && data !== null){
+      if (data !== undefined && data !== null) {
         this.curriculumTopicTrainingPrograms = data;
-        this.curriculumTopicTrainingPrograms.forEach((tmp) => {
-          this.loadRegulation(tmp.curriculumTopicId);
-        });
+        this.loadRegulation();
       }
     });
   }
 
   // tslint:disable-next-line:typedef
-  loadRegulation(curriculumTopicId: number) {
-    const key = 1;
-    this.regulationService.getRegulations(curriculumTopicId, key)
+  loadRegulation() {
+    // tslint:disable-next-line:prefer-const
+    const curriculumTopicIdArray: number[] = [this.curriculumTopicTrainingPrograms.length];
+    console.log(curriculumTopicIdArray);
+    this.curriculumTopicTrainingPrograms.forEach(i => {
+      curriculumTopicIdArray.push(i.curriculumTopicId);
+    });
+    this.regulationService.getRegulation(curriculumTopicIdArray)
       .subscribe((data: Regulation[]) => {
         if (data !== undefined && data !== null){
           data.forEach((tmp) => {

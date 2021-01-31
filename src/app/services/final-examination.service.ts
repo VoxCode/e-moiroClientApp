@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { FinalExamination } from '../models/FinalExamination';
 import { environment } from '../../environments/environment';
+import {timeout} from 'rxjs/operators';
 
 @Injectable()
 export class FinalExaminationService {
@@ -17,8 +18,9 @@ export class FinalExaminationService {
     return this.http.get(this.url + '/' + id);
   }
   // tslint:disable-next-line:typedef
-  getFinalExaminations(curriculumTopicId: number, certificationTypeId: number) {
-    return this.http.get(this.url + '/' + curriculumTopicId + '/' + certificationTypeId);
+  getFinalExamination(certificationTypeId: number, curriculumTopicIdArray: number[]) {
+    timeout(30000);
+    return this.http.post(this.url + '/' + certificationTypeId, curriculumTopicIdArray);
   }
   // tslint:disable-next-line:typedef
   createValue(finalExamination: FinalExamination) {

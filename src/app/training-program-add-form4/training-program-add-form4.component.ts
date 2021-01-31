@@ -80,17 +80,20 @@ export class TrainingProgramAddForm4Component implements OnInit {
     this.curriculumTopicTrainingProgramService.getValue(this.id).subscribe((data: CurriculumTopicTrainingProgram[]) => {
       if (data !== undefined && data !== null){
         this.curriculumTopicTrainingPrograms = data;
-        data.forEach((tmp) => {
-          this.loadAdditionalLiterature(tmp.curriculumTopicId);
-        });
+        this.loadAdditionalLiterature();
       }
     });
   }
 
   // tslint:disable-next-line:typedef
-  loadAdditionalLiterature(curriculumTopicId: number) {
-    const key = 1;
-    this.additionalLiteratureService.getAdditionalLiterature(curriculumTopicId, key)
+  loadAdditionalLiterature() {
+    // tslint:disable-next-line:prefer-const
+    let curriculumTopicIdArray: number[] = [this.curriculumTopicTrainingPrograms.length];
+    console.log(curriculumTopicIdArray);
+    this.curriculumTopicTrainingPrograms.forEach(i => {
+      curriculumTopicIdArray.push(i.curriculumTopicId);
+    });
+    this.additionalLiteratureService.getAdditionalLiterature(curriculumTopicIdArray)
       .subscribe((data: AdditionalLiterature[]) => {
         if (data !== undefined && data !== null){
           data.forEach((tmp) => {

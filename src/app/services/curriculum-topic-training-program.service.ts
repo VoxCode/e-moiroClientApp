@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { CurriculumTopicTrainingProgram } from '../models/СurriculumTopicTrainingProgram';
 import { environment } from '../../environments/environment';
+import {timeout} from 'rxjs/operators';
 
 @Injectable()
 export class CurriculumTopicTrainingProgramService {
@@ -18,6 +19,7 @@ export class CurriculumTopicTrainingProgramService {
   }
   // tslint:disable-next-line:typedef
   getValueList(trainingProgramId: number, curriculumSectionId: number, sectionNumber: number) {
+    timeout(30000);
     return this.http.get(this.url + '/' + trainingProgramId + '/' + curriculumSectionId + '/' + sectionNumber);
   }
   // tslint:disable-next-line:typedef

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { Regulation } from '../models/Regulation';
 import { environment } from '../../environments/environment';
+import {timeout} from 'rxjs/operators';
 
 @Injectable()
 export class RegulationService {
@@ -17,8 +18,9 @@ export class RegulationService {
     return this.http.get(this.url + '/' + id);
   }
   // tslint:disable-next-line:typedef
-  getRegulations(curriculumTopicId: number, key: number) {
-    return this.http.get(this.url + '/' + curriculumTopicId + '/' + key);
+  getRegulation(curriculumTopicIdArray: number[]) {
+    timeout(30000);
+    return this.http.post(this.url + '/' + 1, curriculumTopicIdArray);
   }
   // tslint:disable-next-line:typedef
   createValue(regulation: Regulation) {
