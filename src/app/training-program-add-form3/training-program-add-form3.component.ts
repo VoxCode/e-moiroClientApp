@@ -11,6 +11,7 @@ import {CurriculumTopicMainLiterature} from '../models/СurriculumTopicMainLiter
 import {CurriculumTopicMainLiteratureService} from '../services/curriculum-topic-main-literature.service';
 import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
+import {newArray} from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-training-program-add-form3',
@@ -80,17 +81,20 @@ export class TrainingProgramAddForm3Component implements OnInit {
     this.curriculumTopicTrainingProgramService.getValue(this.id).subscribe((data: CurriculumTopicTrainingProgram[]) => {
       if (data !== undefined && data !== null){
         this.curriculumTopicTrainingPrograms = data;
-        data.forEach((tmp) => {
-          this.loadMainLiterature(tmp.curriculumTopicId);
-        });
+        this.loadMainLiterature();
       }
     });
   }
 
   // tslint:disable-next-line:typedef
-  loadMainLiterature(curriculumTopicId: number) {
-    const key = 1;
-    this.mainLiteratureService.getMainLiterature(curriculumTopicId, +key)
+  loadMainLiterature() {
+    // tslint:disable-next-line:prefer-const
+    let curriculumTopicIdArray: number[] = [this.curriculumTopicTrainingPrograms.length];
+    console.log(curriculumTopicIdArray);
+    this.curriculumTopicTrainingPrograms.forEach(i => {
+      curriculumTopicIdArray.push(i.curriculumTopicId);
+    });
+    this.mainLiteratureService.getMainLiterature(curriculumTopicIdArray)
       .subscribe((data: MainLiterature[]) => {
         if (data !== undefined && data !== null){
           data.forEach((tmp) => {

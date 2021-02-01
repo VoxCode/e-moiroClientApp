@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { AdditionalLiterature } from '../models/AdditionalLiterature';
 import { environment } from '../../environments/environment';
+import {timeout} from 'rxjs/operators';
+
 
 @Injectable()
 export class AdditionalLiteratureService {
@@ -14,11 +16,13 @@ export class AdditionalLiteratureService {
   }
   // tslint:disable-next-line:typedef
   getValue(id: number) {
+    timeout(30000);
     return this.http.get(this.url + '/' + id);
   }
   // tslint:disable-next-line:typedef
-  getAdditionalLiterature(curriculumTopicId: number, key: number) {
-    return this.http.get(this.url + '/' + curriculumTopicId + '/' + key);
+  getAdditionalLiterature(curriculumTopicIdArray: number[]) {
+    timeout(30000);
+    return this.http.post(this.url + '/' + 1, curriculumTopicIdArray);
   }
   // tslint:disable-next-line:typedef
   createValue(additionalLiterature: AdditionalLiterature) {
