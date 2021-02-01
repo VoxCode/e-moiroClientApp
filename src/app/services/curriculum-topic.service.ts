@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { CurriculumTopic } from '../models/CurriculumTopic';
 import { environment } from '../../environments/environment';
+import {CurriculumSection} from '../models/CurriculumSection';
 
 @Injectable()
 export class CurriculumTopicService {

@@ -194,7 +194,7 @@ export class TrainingProgramAddForm4Component implements OnInit {
             third: this.additionalLiterature.content
           });
           this.curriculumTopicAdditionalLiterature.additionalLiteratureId = this.additionalLiterature.id;
-          this.curriculumTopicAdditionalLiterature.curriculumTopicId = this.curriculumTopicTrainingProgram.id;
+          this.curriculumTopicAdditionalLiterature.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
           this.crateCurriculumTopicAdditionalLiterature();
         }
       });

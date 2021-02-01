@@ -194,7 +194,7 @@ export class TrainingProgramAddForm2Component implements OnInit {
             third: this.finalExamination.content
           });
           this.curriculumTopicFinalExamination.finalExaminationId = this.finalExamination.id;
-          this.curriculumTopicFinalExamination.curriculumTopicId = this.curriculumTopicTrainingProgram.id;
+          this.curriculumTopicFinalExamination.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
           this.crateCurriculumTopicFinalExamination();
         }
       });

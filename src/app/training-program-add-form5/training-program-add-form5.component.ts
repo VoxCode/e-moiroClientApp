@@ -195,7 +195,7 @@ export class TrainingProgramAddForm5Component implements OnInit {
             third: this.regulation.content
           });
           this.curriculumTopicRegulation.regulationId = this.regulation.id;
-          this.curriculumTopicRegulation.curriculumTopicId = this.curriculumTopicTrainingProgram.id;
+          this.curriculumTopicRegulation.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
           this.crateCurriculumTopicRegulation();
         }
       });

@@ -90,7 +90,6 @@ export class DepartmentComponent implements OnInit, AfterViewInit {
   crate(){
     this.valueService.createValue(this.value)
       .subscribe((data: Department) => {
-        // this.values.push(data);
         this.value = data;
         const index = this.elements.length + 1;
         this.mdbTable.addRow({
