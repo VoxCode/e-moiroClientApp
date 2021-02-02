@@ -99,6 +99,7 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
   crate(){
     this.valueService.createValue(this.value)
       .subscribe((data: CurriculumTopic) => {
+        console.log('Success');
         this.value = data;
         const index = this.elements.length + 1;
        // this.value.curriculumSectionName = this.curriculumSections.find(p => p.id === +this.value.curriculumSectionId).name;

@@ -195,7 +195,7 @@ export class TrainingProgramAddForm3Component implements OnInit {
             third: this.mainLiterature.content
           });
           this.curriculumTopicMainLiterature.mainLiteratureId = this.mainLiterature.id;
-          this.curriculumTopicMainLiterature.curriculumTopicId = this.curriculumTopicTrainingProgram.id;
+          this.curriculumTopicMainLiterature.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
           this.crateCurriculumTopicMainLiterature();
         }
       });
