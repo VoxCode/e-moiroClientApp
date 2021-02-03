@@ -46,7 +46,6 @@ export class TrainingProgramAddForm2Component implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgramFinalExamination();
-    this.loadTrainingProgram();
   }
 
   // tslint:disable-next-line:typedef
@@ -109,6 +108,7 @@ export class TrainingProgramAddForm2Component implements OnInit {
   loadTrainingProgramFinalExamination() {
     this.trainingProgramFinalExaminationService.getValue(this.id)
       .subscribe((data: TrainingProgramFinalExamination[]) => {
+        this.loadTrainingProgram();
         if (data !== undefined && data !== null){
           // tslint:disable-next-line:only-arrow-functions typedef
           data.sort(function(a, b) {

@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   // apiUrl: 'https://localhost:44358/'
-  // apiUrl: 'http://api.e.moiro.by/'
-  apiUrl: 'http://localhost:5000/'
+  apiUrl: 'http://api.e.moiro.by/'
+  // apiUrl: 'http://127.0.0.1:5009/'
 };
 
 /*

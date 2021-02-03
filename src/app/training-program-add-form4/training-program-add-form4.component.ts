@@ -47,7 +47,7 @@ export class TrainingProgramAddForm4Component implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgramAdditionalLiterature();
-    this.loadTrainingProgram();
+
   }
 
   // tslint:disable-next-line:typedef
@@ -110,6 +110,7 @@ export class TrainingProgramAddForm4Component implements OnInit {
   loadTrainingProgramAdditionalLiterature() {
     this.trainingProgramAdditionalLiteratureService.getValue(this.id)
       .subscribe((data: TrainingProgramAdditionalLiterature[]) => {
+        this.loadTrainingProgram();
         if (data !== undefined && data !== null){
           // tslint:disable-next-line:only-arrow-functions typedef
           data.sort(function(a, b) {

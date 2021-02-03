@@ -11,7 +11,6 @@ import {CurriculumTopicRegulation} from '../models/СurriculumTopicRegulation';
 import {CurriculumTopicRegulationService} from '../services/curriculum-topic-regulation.service';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
 import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
-import {MainLiterature} from '../models/MainLiterature';
 
 @Component({
   selector: 'app-training-program-add-form5',
@@ -48,7 +47,7 @@ export class TrainingProgramAddForm5Component implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgramRegulation();
-    this.loadTrainingProgram();
+
   }
 
   // tslint:disable-next-line:typedef
@@ -111,6 +110,7 @@ export class TrainingProgramAddForm5Component implements OnInit {
   loadTrainingProgramRegulation() {
     this.trainingProgramRegulationService.getValue(this.id)
       .subscribe((data: TrainingProgramRegulation[]) => {
+        this.loadTrainingProgram();
         if (data !== undefined && data !== null){
           // tslint:disable-next-line:only-arrow-functions typedef
           data.sort(function(a, b) {

@@ -74,7 +74,8 @@ export class DocumentCreator {
             return arr;
           })
           .reduce((prev, curr) => prev.concat(curr), []),
-        this.MainNameDocument(this.trainingProgram.name),
+        this.MainNameDocument('«' + this.trainingProgram.name + '»'),
+        this.StudentCategoryMain(this.trainingProgram.name),
         ...internalParameter
           .map((nothing) => {
             const arr: Paragraph[] = [];
@@ -478,6 +479,22 @@ export class DocumentCreator {
       children: [
         new TextRun({
           text: 'УЧЕБНАЯ ПРОГРАММА ПОВЫШЕНИЯ КВАЛИФИКАЦИИ\n' +
+            exactly + '\n',
+          size : 30,
+          bold : true,
+        }),
+      ],
+    });
+  }
+
+  public StudentCategoryMain(exactly: string): Paragraph  // Написать логику для удаления и подстановки на возможные другие варианты!!!
+  {
+    exactly = exactly.substring( exactly.indexOf(' ') + 1, exactly.length );
+    return new Paragraph({
+      alignment: AlignmentType.CENTER,
+      children: [
+        new TextRun({
+          text: '\nучителей ' +
             exactly + '\n',
           size : 30,
           bold : true,
