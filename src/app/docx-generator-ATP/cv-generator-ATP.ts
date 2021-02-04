@@ -1,16 +1,5 @@
-import {
-  AlignmentType,
-  BorderStyle,
-  Document,
-  HeadingLevel, PageBreak,
-  Paragraph,
-  Table,
-  TableCell,
-  TableRow,
-  TabStopPosition,
-  TabStopType,
-  TextRun
-} from 'docx';
+import { AlignmentType, BorderStyle, Document, HeadingLevel, PageBreak, Paragraph, Table, TableCell, TableRow,
+  TabStopPosition, TabStopType, TextRun } from 'docx';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
@@ -18,10 +7,13 @@ import {TrainingProgramFinalExamination} from '../models/TrainingProgramFinalExa
 import {TrainingProgramMainLiterature} from '../models/TrainingProgramMainLiterature';
 import {TrainingProgramAdditionalLiterature} from '../models/TrainingProgramAdditionalLiterature';
 import {TrainingProgramRegulation} from '../models/TrainingProgramRegulation';
+import {StudentCategory} from '../models/StudentCategory';
+import {CertificationType} from '../models/CertificationType';
 
 export class DocumentCreator {
 
   teacher: number;
+  isVariableOn: boolean;
 
   constructor(
     private curriculumTopicsList: CurriculumTopicTrainingProgram[][],
@@ -30,7 +22,9 @@ export class DocumentCreator {
     private trainingProgramFinalExaminations: TrainingProgramFinalExamination[],
     private trainingProgramMainLiteratures: TrainingProgramMainLiterature[],
     private trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[],
-    private trainingProgramRegulations: TrainingProgramRegulation[]
+    private trainingProgramRegulations: TrainingProgramRegulation[],
+    private studentCategory: StudentCategory,
+    private certificationType: CertificationType
   ) { }
 
   // tslint:disable-next-line:no-shadowed-variable
@@ -75,7 +69,7 @@ export class DocumentCreator {
           })
           .reduce((prev, curr) => prev.concat(curr), []),
         this.MainNameDocument('«' + this.trainingProgram.name + '»'),
-        this.StudentCategoryMain(this.trainingProgram.name),
+        this.StudentCategoryMain(this.studentCategory.name),
         ...internalParameter
           .map((nothing) => {
             const arr: Paragraph[] = [];
@@ -99,14 +93,14 @@ export class DocumentCreator {
               arr.push(this.someText('Разработчики учебной программы:'));
               for (let i = 0; i < this.teacher; i++) {
                 arr.push(
-                  this.someText('Rector name' + i.toString() + ', ' + 'Доцент, три пяди во лбу и вообще мастер своего дела (наврное)')
+                  this.someText('Rector name' + i.toString() + ', ' + 'Доцент, три пяди во лбу и вообще мастер своего дела')
                 );
               }
             }
             else
             {
               arr.push(this.someText( 'Разработчики учебной программы'));
-              arr.push(this.someText( 'Rector name, ' + 'Доцент, три пяди во лбу и вообще мастер своего дела (наврное)'));
+              arr.push(this.someText( 'Rector name, ' + 'Доцент, три пяди во лбу и вообще мастер своего дела'));
             }
             arr.push(this.emptyParagraph());
             let coun: number;
@@ -115,13 +109,13 @@ export class DocumentCreator {
             {
               arr.push(this.someText('Рецензенты:'));
               for (let i = 0; i < this.teacher; i++) {
-                arr.push(this.someText('Рецензент name' + i.toString() + ', ' + 'Доцент, три пяди во лбу и вообще мастер своего дела (наврное)'));
+                arr.push(this.someText('Рецензент name' + i.toString() + ', ' + 'Доцент, три пяди во лбу и вообще мастер своего дела'));
               }
             }
             else
             {
               arr.push(this.someText( 'Рецензент:'));
-              arr.push(this.someText( 'Рецензент name, ' + 'Доцент, три пяди во лбу и вообще мастер своего дела (наврное)'));
+              arr.push(this.someText( 'Рецензент name, ' + 'Доцент, три пяди во лбу и вообще мастер своего дела'));
             }
             for (let i = 0; i < 20; i++)
             {
@@ -164,7 +158,7 @@ export class DocumentCreator {
             arr.push(this.someText('Средства повышения квалификации', 720, true));
             arr.push(this.someText('some text like lections', ));
             arr.push(this.someText('Форма итоговой аттестации.', 720, true));
-            arr.push(this.someText(this.trainingProgram.certificationTypeName, ));
+            arr.push(this.someText(this.certificationType.name ));
             arr.push(this.pageBreak());
             return arr;
           })
@@ -182,18 +176,28 @@ export class DocumentCreator {
               arr.push(this.emptyParagraph());
               arr.push(this.titleText(index + 1 + '.' + object.name + '.'));
               arr.push(this.emptyParagraph());
-              arr.push(this.someTextCenter('Инвариантная часть.', 0,  true));
+              if (this.trainingProgram.isDistanceLearning === true){
+                arr.push(this.someTextCenter('Инвариантная часть.', 0,  true));
+              }
+
               let i = 1;
               this.curriculumTopicsList[index].forEach(obj => {
+                this.isVariableOn = false;
                 if (obj.isVariable === false){
                   arr.push(this.someText((index + 1) + '.' + i + ' ' + obj.topicTitle + ' (' + obj.fullName +
                     ' ' + obj.classHours + ' часа)', 0, true));
                   arr.push(this.someText(obj.annotation, 720));
                   i++;
                 }
+                else {
+                  this.isVariableOn = true;
+                }
               });
               arr.push(this.emptyParagraph());
-              arr.push(this.someTextCenter('Вариативная часть.', 0,  true));
+              if (this.trainingProgram.isDistanceLearning === true && this.isVariableOn === true){
+                arr.push(this.someTextCenter('Вариативная часть.', 0,  true));
+              }
+
               let j = 1;
               this.curriculumTopicsList[index].forEach(obj => {
                 if (obj.isVariable === true) {
@@ -213,7 +217,7 @@ export class DocumentCreator {
         // #region FivePage
         ...internalParameter
           .map((nothing) => {
-            if (this.trainingProgram.isDistanceLearning){
+            if (this.trainingProgram.isDistanceLearning === true && this.trainingProgram.isTestWork){
               const arr: Paragraph[] = [];
               arr.push(this.titleText('содержание самостоятельной работы'));
               arr.push(this.emptyParagraph());
@@ -236,7 +240,7 @@ export class DocumentCreator {
         // #region Содержание контрольно работы
         ...internalParameter
           .map((nothing) => {
-            if (this.trainingProgram.isDistanceLearning) {
+            if (this.trainingProgram.isDistanceLearning === true && this.trainingProgram.isControlWork){
               const arr: Paragraph[] = [];
               arr.push(this.titleText('содержание контрольной работы'));
               arr.push(this.emptyParagraph());
@@ -430,7 +434,52 @@ export class DocumentCreator {
               children: [new Paragraph({
                 children: [
                   new TextRun({
-                    text : 'Ректор института',
+                    text : 'Декан факультета',
+                    size: 30,
+                  }),
+                ]
+              })]
+            }),
+          ],
+        }),
+        new TableRow({
+          cantSplit: true,
+          children: [
+            new TableCell({
+              children: [new Paragraph({
+                children: [
+                  new TextRun({
+                    text : 'профессионального развития',
+                    size: 30,
+                  }),
+                ]
+              })]
+            }),
+          ],
+        }),
+        new TableRow({
+          cantSplit: true,
+          children: [
+            new TableCell({
+              children: [new Paragraph({
+                children: [
+                  new TextRun({
+                    text : 'руководящих работников',
+                    size: 30,
+                  }),
+                ]
+              })]
+            }),
+          ],
+        }),
+        new TableRow({
+          cantSplit: true,
+          children: [
+            new TableCell({
+              children: [new Paragraph({
+                children: [
+                  new TextRun({
+                    text : 'и специалистов образования',
                     size: 30,
                   }),
                 ]
@@ -445,7 +494,7 @@ export class DocumentCreator {
               children: [new Paragraph({
                 children: [
                   new TextRun({
-                    text : '__________ ' + 'Кондратьева И.П.',
+                    text : '__________ ' + 'Ротмирова Т.В.',
                     size: 30,
                   }),
                 ]

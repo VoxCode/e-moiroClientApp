@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { Packer } from 'docx';
-import { model, empty } from './cv-data';
-import { DocumentCreator } from './cv-generator';
+import { model, empty } from './cv-data-ATP';
+import { DocumentCreator } from './cv-generator-ATP';
 import {TrainingProgramService} from '../services/training-program.service';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {ActivatedRoute} from '@angular/router';
@@ -17,11 +17,15 @@ import {TrainingProgramRegulationService} from '../services/training-program-reg
 import {TrainingProgramMainLiterature} from '../models/TrainingProgramMainLiterature';
 import {TrainingProgramAdditionalLiterature} from '../models/TrainingProgramAdditionalLiterature';
 import {TrainingProgramRegulation} from '../models/TrainingProgramRegulation';
+import {StudentCategoryService} from '../services/student-category.service';
+import {StudentCategory} from '../models/StudentCategory';
+import {CertificationTypeService} from '../services/certification-type.service';
+import {CertificationType} from '../models/CertificationType';
 
 @Component({
   selector: 'app-docx-generator',
-  templateUrl: './docx-generator.component.html',
-  styleUrls: ['./docx-generator.component.scss'],
+  templateUrl: './docx-generator-ATP.component.html',
+  styleUrls: ['./docx-generator-ATP.component.scss'],
   providers: [
     TrainingProgramService,
     TrainingProgramCurriculumSectionService,
@@ -29,14 +33,18 @@ import {TrainingProgramRegulation} from '../models/TrainingProgramRegulation';
     TrainingProgramMainLiteratureService,
     TrainingProgramAdditionalLiteratureService,
     TrainingProgramRegulationService,
-    CurriculumTopicTrainingProgramService
+    CurriculumTopicTrainingProgramService,
+    StudentCategoryService,
+    CertificationTypeService
   ]
 })
 
-export class DocxGeneratorComponent implements OnInit{
+export class DocxGeneratorATPComponent implements OnInit{
   id: number;
   curriculumTopicsList: CurriculumTopicTrainingProgram[][];
   trainingProgram: TrainingProgram;
+  studentCategory: StudentCategory;
+  certificationType: CertificationType;
   trainingProgramCurriculumSections: TrainingProgramCurriculumSection[];
   trainingProgramFinalExaminations: TrainingProgramFinalExamination[];
   trainingProgramMainLiteratures: TrainingProgramMainLiterature[];
@@ -52,6 +60,8 @@ export class DocxGeneratorComponent implements OnInit{
     private trainingProgramAdditionalLiteratureService: TrainingProgramAdditionalLiteratureService,
     private trainingProgramRegulationService: TrainingProgramRegulationService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
+    private studentCategoryService: StudentCategoryService,
+    private certificationTypeService: CertificationTypeService,
     private route: ActivatedRoute
   ) { }
 
@@ -169,6 +179,28 @@ export class DocxGeneratorComponent implements OnInit{
           this.trainingProgramRegulations.sort(function(a, b) {
             return a.serialNumber - b.serialNumber;
           });
+          this.loadStudentCategory();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadStudentCategory() {
+    this.studentCategoryService.getValue(this.trainingProgram.studentCategoryId)
+      .subscribe((data: StudentCategory) => {
+        if (data !== undefined){
+          this.studentCategory = data;
+          this.loadCertificationType();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadCertificationType() {
+    this.certificationTypeService.getValue(this.trainingProgram.certificationTypeId)
+      .subscribe((data: CertificationType) => {
+        if (data !== undefined){
+          this.certificationType = data;
           this.getDocument();
         }
       });
@@ -183,7 +215,9 @@ export class DocxGeneratorComponent implements OnInit{
       this.trainingProgramFinalExaminations,
       this.trainingProgramMainLiteratures,
       this.trainingProgramAdditionalLiteratures,
-      this.trainingProgramRegulations
+      this.trainingProgramRegulations,
+      this.studentCategory,
+      this.certificationType
     );
     const docxTmp = documentCreator.create([
       model,

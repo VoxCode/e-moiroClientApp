@@ -39,7 +39,7 @@ import {StudentCategoryEditComponent} from './student-category/student-category-
 import {CurriculumTopicEditComponent} from './curriculum-topic/curriculum-topic-edit.component';
 import {OccupationFormEditComponent} from './occupation-form/occupation-form-edit.component';
 import {GroupAddComponent} from './group/group-add.component';
-import {DocxGeneratorComponent} from './docx-generator/docx-generator.component';
+import {DocxGeneratorATPComponent} from './docx-generator-ATP/docx-generator-ATP.component';
 import {CertificationTypeComponent} from './certification-type/certification-type.component';
 import {FinalExaminationComponent} from './final-examination/final-examination.component';
 import {TestWorkComponent} from './test-work/test-work.component';
@@ -62,6 +62,7 @@ import { TrainingProgramStepperComponent } from './training-program-stepper/trai
 import { TrainingProgramAddForm3Component } from './training-program-add-form3/training-program-add-form3.component';
 import { TrainingProgramAddForm4Component } from './training-program-add-form4/training-program-add-form4.component';
 import { TrainingProgramAddForm5Component } from './training-program-add-form5/training-program-add-form5.component';
+import {DocxGeneratorTPComponent} from './docx-generator-TP/docx-generator-TP.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +97,8 @@ import { TrainingProgramAddForm5Component } from './training-program-add-form5/t
     RegulationEditComponent,
     CurriculumTopicListComponent,
     CurriculumTopicAddFormComponent,
-    DocxGeneratorComponent,
+    DocxGeneratorATPComponent,
+    DocxGeneratorTPComponent,
     CertificationTypeComponent,
     CertificationTypeEditComponent,
     FinalExaminationEditComponent,

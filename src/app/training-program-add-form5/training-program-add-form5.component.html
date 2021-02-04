@@ -53,7 +53,10 @@
 
   <button type="button" routerLink="/trainingProgramAddForm4/{{id}}" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Назад</button>
   <button type="button" (click)="save()" routerLink="/trainingProgram" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Завершить</button>
-  <button type="button" (click)="save()" routerLink="/docxGenerator/{{id}}" mdbBtn color="success" class="relative waves-light" mdbWavesEffect>Сгенерировать документ</button>
+  <button type="button" (click)="save()" routerLink="/docxGeneratorTP/{{id}}" mdbBtn color="success"
+          class="relative waves-light" mdbWavesEffect>Сгенерировать УП</button>
+  <button type="button" (click)="save()" routerLink="/docxGeneratorATP/{{id}}" mdbBtn color="success"
+          class="relative waves-light" mdbWavesEffect>Сгенерировать УТП</button>
 </div>
 
 <!--шаблон для добавления-->

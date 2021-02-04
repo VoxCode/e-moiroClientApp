@@ -18,7 +18,7 @@ import {MainLiteratureComponent} from './main-literature/main-literature.compone
 import {FormOfEducationComponent} from './form-of-education/form-of-education.component';
 import {CurriculumTopicAddFormComponent} from './curriculum-topic-add-form/curriculum-topic-add-form.component';
 import {GroupAddComponent} from './group/group-add.component';
-import {DocxGeneratorComponent} from './docx-generator/docx-generator.component';
+import {DocxGeneratorATPComponent} from './docx-generator-ATP/docx-generator-ATP.component';
 import {TestWorkComponent} from './test-work/test-work.component';
 import {CertificationTypeComponent} from './certification-type/certification-type.component';
 import {FinalExaminationComponent} from './final-examination/final-examination.component';
@@ -27,9 +27,11 @@ import {TrainingProgramAddForm2Component} from './training-program-add-form2/tra
 import {TrainingProgramAddForm3Component} from './training-program-add-form3/training-program-add-form3.component';
 import {TrainingProgramAddForm4Component} from './training-program-add-form4/training-program-add-form4.component';
 import {TrainingProgramAddForm5Component} from './training-program-add-form5/training-program-add-form5.component';
+import {DocxGeneratorTPComponent} from './docx-generator-TP/docx-generator-TP.component';
 
 const routes: Routes = [
-  { path: 'docxGenerator/:id', component:  DocxGeneratorComponent, canActivate: [AuthGuardService]},
+  { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent, canActivate: [AuthGuardService]},
+  { path: 'docxGeneratorATP/:id', component:  DocxGeneratorATPComponent, canActivate: [AuthGuardService]},
   { path: 'login', component: LoginComponent},
   { path: 'additionalLiterature', component: AdditionalLiteratureComponent, canActivate: [AuthGuardService]},
   { path: 'regulation', component: RegulationComponent, canActivate: [AuthGuardService]},
