@@ -68,8 +68,9 @@ export class DocumentCreatorDean {
             return arr;
           })
           .reduce((prev, curr) => prev.concat(curr), []),
-        this.MainNameDocument('«' + this.trainingProgram.name + '»'),
-        this.StudentCategoryMain(this.studentCategory.name),
+        this.mainATPName('«' + this.trainingProgram.name + '»'),
+        this.durationAndFormOfStudy(
+          this.trainingProgram.numberOfHours, this.trainingProgram.isDistanceLearning, this.trainingProgram.name), // Переписать"""!!!!!!!
         ...internalParameter
           .map((nothing) => {
             const arr: Paragraph[] = [];
@@ -521,34 +522,50 @@ export class DocumentCreatorDean {
     });
   }
 
-  public MainNameDocument(exactly: string): Paragraph
+  public mainATPName(exactly: string): Paragraph
   {
     return new Paragraph({
       alignment: AlignmentType.CENTER,
       children: [
         new TextRun({
-          text: 'УЧЕБНО-ТЕМАТИЧЕСКИЙ ПЛАН\n' + 'повышения квалификации\n' +
-            exactly + '\n',
+          text: 'УЧЕБНО-ТЕМАТИЧЕСКИЙ ПЛАН',
           size : 30,
           bold : true,
+        }),
+        new TextRun({
+          text: 'повышения квалификации',
+          size : 30,
+          bold : true,
+          break: 1
+        }),
+        new TextRun({
+          text: exactly,
+          size : 30,
+          bold : true,
+          break: 1
         }),
       ],
     });
   }
 
-  public StudentCategoryMain(exactly: string): Paragraph  // Написать логику для удаления и подстановки на возможные другие варианты!!!
-  {
-    exactly = exactly.substring( exactly.indexOf(' ') + 1, exactly.length );
+  public durationAndFormOfStudy(numberOfHours: number, isDistance: boolean, formOfEducation: string): Paragraph{
+    let tmp = '';
+    if (isDistance === true){
+      tmp = ' (дистанционная)';
+    }
     return new Paragraph({
-      alignment: AlignmentType.CENTER,
       children: [
         new TextRun({
-          text: '\nучителей ' +
-            exactly + '\n',
-          size : 30,
-          bold : true,
+          text: 'Продолжительность обучения - ' + ' (' + numberOfHours + ' ' + 'часов' + ')',
+          size : 30
+
         }),
-      ],
+        new TextRun({
+          text: 'Форма получения образования - ' + 'для каждой группы своя???' + tmp,
+          size : 30,
+          break: 1
+        })
+      ]
     });
   }
 

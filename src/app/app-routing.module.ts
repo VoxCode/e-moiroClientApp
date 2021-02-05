@@ -56,7 +56,8 @@ const routes: Routes = [
   { path: 'trainingProgramAddForm4/:id', component: TrainingProgramAddForm4Component, canActivate: [AuthGuardService]},
   { path: 'trainingProgramAddForm5/:id', component: TrainingProgramAddForm5Component, canActivate: [AuthGuardService]},
   { path: 'finalExamination', component: FinalExaminationComponent, canActivate: [AuthGuardService]},
-  { path: 'register', component: RegisterComponent}
+  { path: 'register', component: RegisterComponent},
+  { path: '**', redirectTo: 'trainingProgram'}
 ];
 
 @NgModule({
