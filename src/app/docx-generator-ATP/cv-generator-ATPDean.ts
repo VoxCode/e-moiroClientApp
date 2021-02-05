@@ -10,7 +10,7 @@ import {TrainingProgramRegulation} from '../models/TrainingProgramRegulation';
 import {StudentCategory} from '../models/StudentCategory';
 import {CertificationType} from '../models/CertificationType';
 
-export class DocumentCreator {
+export class DocumentCreatorDean {
 
   teacher: number;
   isVariableOn: boolean;
@@ -494,7 +494,7 @@ export class DocumentCreator {
               children: [new Paragraph({
                 children: [
                   new TextRun({
-                    text : '__________ ' + 'Ротмирова Т.В.',
+                    text : '__________ ' + 'Ротмирова Е.А.',
                     size: 30,
                   }),
                 ]
@@ -527,7 +527,7 @@ export class DocumentCreator {
       alignment: AlignmentType.CENTER,
       children: [
         new TextRun({
-          text: 'УЧЕБНАЯ ПРОГРАММА ПОВЫШЕНИЯ КВАЛИФИКАЦИИ\n' +
+          text: 'УЧЕБНО-ТЕМАТИЧЕСКИЙ ПЛАН\n' + 'повышения квалификации\n' +
             exactly + '\n',
           size : 30,
           bold : true,
@@ -638,7 +638,7 @@ export class DocumentCreator {
       alignment: AlignmentType.CENTER,
       children: [
         new TextRun(`Mobile: ${phoneNumber} | LinkedIn: ${profileUrl} | Email: ${email}`),
-        new TextRun('Address:  58 Elm Avenue, Kent ME4 6ER, UK').break(),
+        new TextRun('Address:  58 Elm Avenue, Kent ME4 6ER, UK'),
       ],
     });
   }

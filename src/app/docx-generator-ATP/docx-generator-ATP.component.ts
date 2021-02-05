@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import { Packer } from 'docx';
 import { model, empty } from './cv-data-ATP';
-import { DocumentCreator } from './cv-generator-ATP';
+import {DocumentCreatorDean} from './cv-generator-ATPDean';
+import {DocumentCreatorRector} from './cv-generator-ATPRector';
 import {TrainingProgramService} from '../services/training-program.service';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {ActivatedRoute} from '@angular/router';
@@ -201,14 +202,14 @@ export class DocxGeneratorATPComponent implements OnInit{
       .subscribe((data: CertificationType) => {
         if (data !== undefined){
           this.certificationType = data;
-          this.getDocument();
+          this.getDocumentRector();
         }
       });
   }
 
   // tslint:disable-next-line:typedef
-  public getDocument() {
-    const documentCreator = new DocumentCreator(
+  public getDocumentRector() {
+    const documentCreator = new DocumentCreatorRector(
       this.curriculumTopicsList,
       this.trainingProgram,
       this.trainingProgramCurriculumSections,
@@ -226,5 +227,37 @@ export class DocxGeneratorATPComponent implements OnInit{
     Packer.toBlob(docxTmp).then(blob => {
       this.docx = blob;
     });
+  }
+
+  // tslint:disable-next-line:typedef
+  public getDocumentDean() {
+    const documentCreator = new DocumentCreatorDean(
+      this.curriculumTopicsList,
+      this.trainingProgram,
+      this.trainingProgramCurriculumSections,
+      this.trainingProgramFinalExaminations,
+      this.trainingProgramMainLiteratures,
+      this.trainingProgramAdditionalLiteratures,
+      this.trainingProgramRegulations,
+      this.studentCategory,
+      this.certificationType
+    );
+    const docxTmp = documentCreator.create([
+      model,
+      empty
+    ]);
+    Packer.toBlob(docxTmp).then(blob => {
+      this.docx = blob;
+    });
+  }
+
+  // tslint:disable-next-line:typedef
+  generateRector() {
+     this.getDocumentRector();
+  }
+
+  // tslint:disable-next-line:typedef
+  generateDean() {
+    this.getDocumentDean();
   }
 }

@@ -10,7 +10,7 @@ import {TrainingProgramRegulation} from '../models/TrainingProgramRegulation';
 import {StudentCategory} from '../models/StudentCategory';
 import {CertificationType} from '../models/CertificationType';
 
-export class DocumentCreator {
+export class DocumentCreatorRector {
 
   teacher: number;
   isVariableOn: boolean;
@@ -442,7 +442,6 @@ export class DocumentCreator {
             }),
           ],
         }),
-
         new TableRow({
           children: [
             new TableCell({
