@@ -12,5 +12,6 @@ export class TrainingProgram {
     public studentCategoryId?: number,
     public studentCategoryName?: string,
     public certificationTypeId?: number,
-    public certificationTypeName?: string){ }
+    public certificationTypeName?: string,
+    public formOfEducationId?: number){ }
 }

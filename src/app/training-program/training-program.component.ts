@@ -134,6 +134,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     this.value.departmentId = this.department.id;
     this.value.studentCategoryId = this.studentCategory.id;
     this.value.certificationTypeId = this.certificationType.id;
+    this.value.formOfEducationId = 1;
     this.valueService.createValue(this.value)
       .subscribe((data: TrainingProgram) => {
         this.value = data;
@@ -175,6 +176,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     this.value.departmentId = el.eight;
     this.value.studentCategoryId = el.tenth;
     this.value.certificationTypeId = el.twelfth;
+    this.value.formOfEducationId = 1;
     this.valueService.updateValue(this.value)
       .subscribe();
     this.cancel();
