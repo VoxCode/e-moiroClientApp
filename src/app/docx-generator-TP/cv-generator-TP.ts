@@ -1,5 +1,19 @@
-import { AlignmentType, BorderStyle, Document, HeadingLevel, PageBreak, Paragraph, Table, TableCell, TableRow,
-  TabStopPosition, TabStopType, TextRun } from 'docx';
+import {
+  AlignmentType,
+  BorderStyle,
+  convertMillimetersToTwip,
+  Document,
+  Footer,
+  Header,
+  PageBreak,
+  PageNumber,
+  PageNumberFormat,
+  Paragraph,
+  Table,
+  TableCell,
+  TableRow,
+  TextRun
+} from 'docx';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
@@ -46,43 +60,56 @@ export class DocumentCreator {
       },
     });
 
-    document.addSection( {
+    document.addSection({
       margins: {
-        top: 1133,
-        right: 566,
-        bottom: 1133,
-        left: 1699,
+        top: convertMillimetersToTwip(20),
+        right: convertMillimetersToTwip(10),
+        bottom: convertMillimetersToTwip(20),
+        left: convertMillimetersToTwip(30)
+      },
+      footers: {
+        default: new Footer({
+          children: [this.yearBoth()]
+        })
       },
       children: [
-        //#region "First page"
-        this.titleMOIRO(),
-        this.emptyParagraph(),
-        this.tableApproveDocument('2020'),
-        ...internalParameter
-          .map((nothing) => {
-            const arr: Paragraph[] = [];
-            for (let i = 0; i < 14; i++)
-            {
-              arr.push(this.emptyParagraph());
-            }
-            return arr;
-          })
-          .reduce((prev, curr) => prev.concat(curr), []),
-        this.MainNameDocument('«' + this.trainingProgram.name + '»'),
-        this.StudentCategoryMain(this.studentCategory.name),
-        ...internalParameter
-          .map((nothing) => {
-            const arr: Paragraph[] = [];
-            for (let i = 0; i < 18; i++)
-            {
-              arr.push(this.emptyParagraph());
-            }
-            return arr;
-          })
-          .reduce((prev, curr) => prev.concat(curr), []),
-        this.yearBoth(2020),
-        this.pageBreak(),
-        //#endregion First page
+        new Paragraph({
+          children: [
+            //#region "First page"
+            this.titleMOIRO(),
+            this.emptyParagraph(),
+            this.tableApproveDocument(this.getNowYear()),
+            this.MainNameDocument('«' + this.trainingProgram.name + '»'),
+            this.StudentCategoryMain(this.studentCategory.name)
+            //#endregion First page
+          ]
+        }),
+      ],
+    });
+
+    document.addSection( {
+      margins: {
+        top: convertMillimetersToTwip(20),
+        right: convertMillimetersToTwip(10),
+        bottom: convertMillimetersToTwip(20),
+        left: convertMillimetersToTwip(30),
+      },
+      headers: {
+        default: new Header({ // The first header
+          children: [this.pageNumbers()],
+        })
+      },
+      footers: {
+        default: new Footer({
+          children: [new Paragraph('')]
+        })
+      },
+      properties: {
+        pageNumberStart: 2,
+        pageNumberFormatType: PageNumberFormat.DECIMAL,
+      },
+      children: [
+
 
         //#region "Second page"
         ...internalParameter
@@ -125,12 +152,12 @@ export class DocumentCreator {
             arr.push(this.someText('кафедра частных методик общего среднего образования\n' +
               'государственного учреждения образования\n' +
               '«Минский областной институт развития образования»\n' +
-              'протокол заседания от ____________ 2020 № ______\n'));
+              'протокол заседания от ____________ ' + this.getNowYear() + ' № ______\n'));
             arr.push(this.emptyParagraph());
             arr.push(this.someText('научно-методический совет\n' +
               'государственного учреждения образования \n' +
               '«Минский областной институт развития образования»\n' +
-              'протокол заседания от ____________ 2020 № ______\n'));
+              'протокол заседания от ____________ ' + this.getNowYear() + ' № ______\n'));
             arr.push(this.pageBreak());
             return arr;
           })
@@ -174,9 +201,9 @@ export class DocumentCreator {
             this.trainingProgramCurriculumSections.forEach((object, index) =>
             {
               arr.push(this.emptyParagraph());
-              arr.push(this.titleText(index + 1 + '.' + object.name + '.'));
+              arr.push(this.titleText(index + 1 + '.' + object.name));
               arr.push(this.emptyParagraph());
-              if (this.trainingProgram.isDistanceLearning === true){
+              if (this.trainingProgram.isDistanceLearning === false){
                 arr.push(this.someTextCenter('Инвариантная часть.', 0,  true));
               }
 
@@ -184,7 +211,7 @@ export class DocumentCreator {
               this.curriculumTopicsList[index].forEach(obj => {
                 this.isVariableOn = false;
                 if (obj.isVariable === false){
-                  arr.push(this.someText((index + 1) + '.' + i + ' ' + obj.topicTitle + ' (' + obj.fullName +
+                  arr.push(this.someTextCurriculumTopics((index + 1) + '.' + i + ' ' + obj.topicTitle, ' (' + obj.fullName.toLowerCase() + ',' +
                     ' ' + obj.classHours + ' часа)', 0, true));
                   arr.push(this.someText(obj.annotation, 720));
                   i++;
@@ -194,14 +221,14 @@ export class DocumentCreator {
                 }
               });
               arr.push(this.emptyParagraph());
-              if (this.trainingProgram.isDistanceLearning === true && this.isVariableOn === true){
+              if (this.trainingProgram.isDistanceLearning === false && this.isVariableOn === true){
                 arr.push(this.someTextCenter('Вариативная часть.', 0,  true));
               }
 
               let j = 1;
               this.curriculumTopicsList[index].forEach(obj => {
                 if (obj.isVariable === true) {
-                  arr.push(this.someText((index + 1) + '.' + j + ' ' + obj.topicTitle + ' (' + obj.fullName +
+                  arr.push(this.someTextCurriculumTopics(obj.topicTitle, ' (' + obj.fullName.toLowerCase() + ', ' +
                     ' ' + obj.classHours + ' часа)', 0, true));
                   arr.push(this.someText(obj.annotation, 720));
                   j++;
@@ -217,7 +244,7 @@ export class DocumentCreator {
         // #region FivePage
         ...internalParameter
           .map((nothing) => {
-            if (this.trainingProgram.isDistanceLearning === true && this.trainingProgram.isTestWork){
+            if (this.trainingProgram.isDistanceLearning === false && this.trainingProgram.isTestWork){
               const arr: Paragraph[] = [];
               arr.push(this.titleText('содержание самостоятельной работы'));
               arr.push(this.emptyParagraph());
@@ -240,7 +267,7 @@ export class DocumentCreator {
         // #region Содержание контрольно работы
         ...internalParameter
           .map((nothing) => {
-            if (this.trainingProgram.isDistanceLearning === true && this.trainingProgram.isControlWork){
+            if (this.trainingProgram.isDistanceLearning === false && this.trainingProgram.isControlWork){
               const arr: Paragraph[] = [];
               arr.push(this.titleText('содержание контрольной работы'));
               arr.push(this.emptyParagraph());
@@ -264,7 +291,7 @@ export class DocumentCreator {
         ...internalParameter
           .map((nothing) => {
             const arr: Paragraph[] = [];
-            arr.push(this.titleText('Материалы итоговой аттестации слушателей'));
+            arr.push(this.titleText('Материалы итоговой аттестации для слушателей'));
             arr.push(this.emptyParagraph());
             arr.push(this.someTextCenter('Вопросы для проведения зачета', 0 , true));
             arr.push(this.emptyParagraph());
@@ -277,9 +304,11 @@ export class DocumentCreator {
           })
           .reduce((prev, curr) => prev.concat(curr), []),
         // #endregion
+
         // #region Материалы итоговой аттестации
         ...internalParameter
           .map((nothing) => {
+            let indx = 0;
             const arr: Paragraph[] = [];
             arr.push(this.titleText('список используемой литературы'));
             arr.push(this.emptyParagraph());
@@ -287,17 +316,20 @@ export class DocumentCreator {
             this.trainingProgramMainLiteratures.forEach((object, i) => {
               arr.push(this.someText((i + 1) +
                 '. ' + object.content, 720));
+              indx = i + 1;
             });
             arr.push(this.emptyParagraph());
             arr.push(this.someText('Дополнительная', 720, true));
             this.trainingProgramAdditionalLiteratures.forEach((object, i) => {
-              arr.push(this.someText((i + 1) +
+              indx = indx + 1;
+              arr.push(this.someText((indx) +
                 '. ' + object.content, 720));
             });
             arr.push(this.emptyParagraph());
             arr.push(this.someText('Нормативные правовые акты', 720, true));
             this.trainingProgramRegulations.forEach((object, i) => {
-              arr.push(this.someText((i + 1) +
+              indx = indx + 1;
+              arr.push(this.someText((indx) +
                 '. ' + object.content, 720));
             });
             arr.push(this.pageBreak());
@@ -343,6 +375,29 @@ export class DocumentCreator {
       ]
     });
   }
+
+  public someTextCurriculumTopics(txt: string, txt2: string, indent?: number, bld?: boolean, caps?: boolean ): Paragraph{
+    return new Paragraph({
+      style: 'default',
+      alignment: AlignmentType.JUSTIFIED,
+      indent: {
+        left: 0,
+        firstLine: indent,
+      },
+      children: [
+        new TextRun({
+          text: txt,
+          allCaps: caps,
+          bold: bld,
+        }),
+        new TextRun({
+          text: txt2,
+          italics: true
+        })
+      ]
+    });
+  }
+
   public someTextCenter(txt: string, indent?: number, bld?: boolean, caps?: boolean ): Paragraph{
     return new Paragraph({
       style: 'default',
@@ -449,7 +504,7 @@ export class DocumentCreator {
               children: [new Paragraph({
                 children: [
                   new TextRun({
-                    text : '__________ ' + 'Кондратьева И.П.',
+                    text : '__________ ' + 'И.П.Кондратьева',
                     size: 30,
                   }),
                 ]
@@ -486,6 +541,7 @@ export class DocumentCreator {
             exactly + '\n',
           size : 30,
           bold : true,
+          break: 9
         }),
       ],
     });
@@ -507,15 +563,27 @@ export class DocumentCreator {
     });
   }
 
-  public yearBoth(year: number): Paragraph
+  public yearBoth(): Paragraph
   {
     return new Paragraph({
       alignment: AlignmentType.CENTER,
       children: [
         new TextRun({
-          text: 'Минск, ' + year.toString(),
-          size : 30,
+          text: 'Минск, ' + this.getNowYear(),
+          size : 30
         })
+      ]
+    });
+  }
+
+  public pageNumbers(): Paragraph
+  {
+    return new Paragraph({
+      alignment: AlignmentType.CENTER,
+      children: [
+        new TextRun({
+          children: ['Page Number ', PageNumber.CURRENT],
+        }),
       ]
     });
   }
@@ -535,161 +603,10 @@ export class DocumentCreator {
       ],
     });
   }
-  // ===============================================
-  // ----- this code generated by owner module -----
-  // ===============================================
 
-
-  /* this.createHeading('Education'),
-  ...educations
-    .map((education) => {
-      const arr: Paragraph[] = [];
-      arr.push(
-        this.createInstitutionHeader(education.schoolName, `${education.startDate.year} - ${education.endDate.year}`),
-      );
-      arr.push(this.createRoleText(`${education.fieldOfStudy} - ${education.degree}`));
-
-      const bulletPoints = this.splitParagraphIntoBullets(education.notes);
-      bulletPoints.forEach((bulletPoint) => {
-        arr.push(this.createBullet(bulletPoint));
-      });
-
-      return arr;
-    })
-    .reduce((prev, curr) => prev.concat(curr), []),
-  this.createHeading('Experience'),
-  ...experiences
-    .map((position) => {
-      const arr: Paragraph[] = [];
-
-      arr.push(
-        this.createInstitutionHeader(
-          position.company.name,
-          this.createPositionDateText(position.startDate, position.endDate, position.isCurrent),
-        ),
-      );
-      arr.push(this.createRoleText(position.title));
-
-      const bulletPoints = this.splitParagraphIntoBullets(position.summary);
-
-      bulletPoints.forEach((bulletPoint) => {
-        arr.push(this.createBullet(bulletPoint));
-      });
-
-      return arr;
-    })
-    .reduce((prev, curr) => prev.concat(curr), []),
-  this.createHeading('Skills, Achievements and Interests'),
-  this.createSubHeading('Skills'),
-  this.createSkillList(skills),
-  this.createSubHeading('Achievements'),
-  ...this.createAchivementsList(achievements),
-  this.createSubHeading('Interests'),
-  this.createInterests('Programming, Technology, Music Production, Web Design, 3D Modelling, Dancing.'),
-  this.createHeading('References'),*/
-
-  public createContactInfo(phoneNumber: string, profileUrl: string, email: string): Paragraph {
-    return new Paragraph({
-      alignment: AlignmentType.CENTER,
-      children: [
-        new TextRun(`Mobile: ${phoneNumber} | LinkedIn: ${profileUrl} | Email: ${email}`),
-        new TextRun('Address:  58 Elm Avenue, Kent ME4 6ER, UK'),
-      ],
-    });
-  }
-
-  public createHeading(text: string): Paragraph {
-    return new Paragraph({
-      text,
-      heading: HeadingLevel.HEADING_1,
-      thematicBreak: true,
-    });
-  }
-
-  public createSubHeading(text: string): Paragraph {
-    return new Paragraph({
-      text,
-      heading: HeadingLevel.HEADING_2,
-    });
-  }
-
-  public createInstitutionHeader(institutionName: string, dateText: string): Paragraph {
-    return new Paragraph({
-      tabStops: [
-        {
-          type: TabStopType.RIGHT,
-          position: TabStopPosition.MAX,
-        },
-      ],
-      children: [
-        new TextRun({
-          text: institutionName,
-          bold: true,
-        }),
-        new TextRun({
-          text: `\t${dateText}`,
-          bold: true,
-        }),
-      ],
-    });
-  }
-
-  public createRoleText(roleText: string): Paragraph {
-    return new Paragraph({
-      children: [
-        new TextRun({
-          text: roleText,
-          italics: true,
-        }),
-      ],
-    });
-  }
-
-  public createBullet(text: string): Paragraph {
-    return new Paragraph({
-      text: 'fdngfn',
-      bullet: {
-        level: 0,
-      },
-    });
-  }
-
-  // tslint:disable-next-line:no-any
-  public createSkillList(skills: any[]): Paragraph {
-    return new Paragraph({
-      children: [new TextRun(skills.map((skill) => skill.name).join(', ') + '.')],
-    });
-  }
-
-  // tslint:disable-next-line:no-any
-  public createAchivementsList(achivements: any[]): Paragraph[] {
-    return achivements.map(
-      (achievement) =>
-        new Paragraph({
-          text: achievement.name,
-          bullet: {
-            level: 0,
-          },
-        }),
-    );
-  }
-
-  public createInterests(interests: string): Paragraph {
-    return new Paragraph({
-      children: [new TextRun(interests)],
-    });
-  }
-
-  public splitParagraphIntoBullets(text: string): string[] {
-    return text.split('\n\n');
-  }
-
-  // tslint:disable-next-line:no-any
-  public createPositionDateText(startDate: any, endDate: any, isCurrent: boolean): string {
-    const startDateText = this.getMonthFromInt(startDate.month) + '. ' + startDate.year;
-    const endDateText = isCurrent ? 'Present' : `${this.getMonthFromInt(endDate.month)}. ${endDate.year}`;
-
-    return `${startDateText} - ${endDateText}`;
+  // tslint:disable-next-line:typedef
+  public getNowYear(){
+    return new Date().getFullYear().toString();
   }
 
   public getMonthFromInt(value: number): string {

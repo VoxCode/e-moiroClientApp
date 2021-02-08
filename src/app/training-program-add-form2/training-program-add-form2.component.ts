@@ -174,6 +174,7 @@ export class TrainingProgramAddForm2Component implements OnInit {
   // tslint:disable-next-line:typedef
   cancel() {
     this.finalExamination = new FinalExamination();
+    this.curriculumTopicFinalExamination = new CurriculumTopicFinalExamination();
   }
 
   // tslint:disable-next-line:typedef
