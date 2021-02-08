@@ -1,6 +1,5 @@
 import {
   AlignmentType,
-  BorderStyle,
   convertMillimetersToTwip,
   Document,
   Footer,
@@ -9,9 +8,7 @@ import {
   PageNumber,
   PageNumberFormat,
   Paragraph,
-  Table,
-  TableCell,
-  TableRow,
+  TabStopType,
   TextRun
 } from 'docx';
 import {TrainingProgram} from '../models/TrainingProgram';
@@ -95,7 +92,7 @@ export class DocumentCreator {
         left: convertMillimetersToTwip(30),
       },
       headers: {
-        default: new Header({ // The first header
+        default: new Header({
           children: [this.pageNumbers()],
         })
       },
@@ -342,9 +339,27 @@ export class DocumentCreator {
     return document;
   }
 
-  // ==============================================
-  // -------- this code write by Gybarev ----------
-  // ==============================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Methods
 
   public emptyParagraph(): Paragraph{
     return new Paragraph({
@@ -423,110 +438,52 @@ export class DocumentCreator {
       alignment: AlignmentType.CENTER,
       children: [
         new TextRun({
-          text: 'ГОСУДАРСТВЕННОЕ УЧРЕЖДЕНИЕ ОБРАЗОВАНИЯ\n' +
-            '«МИНСКИЙ ОБЛАСТНОЙ ИНСТИТУТ РАЗВИТИЯ ОБРАЗОВАНИЯ»\n',
+          text: 'ГОСУДАРСТВЕННОЕ УЧРЕЖДЕНИЕ ОБРАЗОВАНИЯ',
           size : 30,
           bold : true,
+        }),
+        new TextRun({
+          text: '«МИНСКИЙ ОБЛАСТНОЙ ИНСТИТУТ РАЗВИТИЯ ОБРАЗОВАНИЯ»',
+          size : 30,
+          bold : true,
+          break: 1
         }),
       ],
     });
   }
 
-  public tableApproveDocument(year: string): Table
+  // tslint:disable-next-line:typedef
+  public tableApproveDocument(year: string)
   {
-    return new Table({
-      alignment: AlignmentType.RIGHT,
-      borders: {
-        insideHorizontal:
-          {
-            style: BorderStyle.NONE,
-            size: 0,
-            color: '0000000',
-          },
-        top: {
-          style: BorderStyle.NONE,
-          size: 1,
-          color: '000000',
-        },
-        bottom: {
-          style: BorderStyle.NONE,
-          size: 0,
-          color: 'white',
-        },
-        left: {
-          style: BorderStyle.NONE,
-          size: 0,
-          color: '000000'
-        },
-        right: {
-          style: BorderStyle.NONE,
-          size: 0,
-          color: '000000'
-        },
-      },
-      rows: [
-        new TableRow({
-          cantSplit: true,
-          children: [
-            new TableCell({
-              children: [new Paragraph({
-                children: [
-                  new TextRun({
-                    text: 'утверждаю',
-                    size : 30,
-                    allCaps: true,
-                  }),
-                ]
-              })]
-            }),
-          ],
-        }),
 
-        new TableRow({
-          cantSplit: true,
-          children: [
-            new TableCell({
-              children: [new Paragraph({
-                children: [
-                  new TextRun({
-                    text : 'Ректор института',
-                    size: 30,
-                  }),
-                ]
-              })]
-            }),
-          ],
+    return new Paragraph({
+      children: [
+        new TextRun({
+          text: '\tутверждаю',
+          size : 30,
+          allCaps: true
         }),
-
-        new TableRow({
-          children: [
-            new TableCell({
-              children: [new Paragraph({
-                children: [
-                  new TextRun({
-                    text : '__________ ' + 'И.П.Кондратьева',
-                    size: 30,
-                  }),
-                ]
-              })]
-            }),
-          ],
+        new TextRun({
+          text: '\tРектор института',
+          size : 30,
+          break: 1
         }),
-
-        new TableRow({
-          children: [
-            new TableCell({
-              children: [new Paragraph({
-                children: [
-                  new TextRun({
-                    text : '__________ ' + year,
-                    size: 30,
-                  }),
-                ]
-              })]
-            }),
-          ],
+        new TextRun({
+          text: '\t__________ ' + 'И.П.Кондратьева',
+          size : 30,
+          break: 1
         }),
+        new TextRun({
+          text: '\t__________ ' + year,
+          size : 30,
+          break: 1
+        })
+      ],
+      tabStops: [
+        {
+          type: TabStopType.LEFT,
+          position: 5500,
+        },
       ],
     });
   }
@@ -582,7 +539,7 @@ export class DocumentCreator {
       alignment: AlignmentType.CENTER,
       children: [
         new TextRun({
-          children: ['Page Number ', PageNumber.CURRENT],
+          children: ['', PageNumber.CURRENT],
         }),
       ]
     });

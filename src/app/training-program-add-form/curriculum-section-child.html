@@ -26,7 +26,7 @@
         <option *ngFor="let el of occupationForms" [ngValue]="el.id">{{el.fullName}}</option>
       </select>
       <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
-              [value]="item.seventh" (click)="deleteCurriculumTopicTrainingProgram($event.target.value, i)" mdbWavesEffect>x</button>
+              [value]="item.seventh" (click)="deleteCurriculumTopicTrainingProgram($event.target.value, i)" mdbWavesEffect><mdb-icon fas icon="times" size="lg"></mdb-icon></button>
     </div>
   </div>
 </div>

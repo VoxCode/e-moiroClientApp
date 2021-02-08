@@ -42,7 +42,7 @@
             (cdkDropListDropped)="drop($event)">
             <div class="example-box" *ngFor="let item of done; index as i" cdkDrag>{{i+1}}. {{item.third}}
               <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
-                      [value]="item.fourth" (click)="deleteTrainingProgramRegulation($event.target.value, i)" mdbWavesEffect>x</button></div>
+                      [value]="item.fourth" (click)="deleteTrainingProgramRegulation($event.target.value, i)" mdbWavesEffect><mdb-icon fas icon="times" size="lg"></mdb-icon></button></div>
           </div>
         </div>
       </div>
