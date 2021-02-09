@@ -51,7 +51,7 @@
         </div>
 
       </div>
-      <div class="col-sm-2">
+      <div class="col-sm-2" *ngIf="curriculumSectionContentList.length === 0">
         <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
                 (click)="addCurriculumSection(0, 0)" mdbWavesEffect>
           <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел</button>

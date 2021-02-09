@@ -18,11 +18,10 @@
           <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.show()"
                   mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
         </div>
-        <div class="tableTP">
           <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" class="z-depth-1">
             <thead class="sticky-top">
             <tr>
-              <th style="width: 50px;" *ngFor="let head of headElements; let i = index" [mdbTableSort]="elements"
+              <th *ngFor="let head of headElements; let i = index" [mdbTableSort]="elements"
                   [sortBy]="headElements[i]"
                   scope="col">{{head | titlecase}}
                 <mdb-icon fas icon="sort"></mdb-icon>
@@ -35,7 +34,7 @@
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.first}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.second}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.third}}</td>
-              <td style="width: 10px;" *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
                 <mdb-checkbox [disabled]="true" [(ngModel)]="el.fourth" [default]="true"></mdb-checkbox></td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.ninth}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.eleventh}}</td>
@@ -63,7 +62,6 @@
             </tfoot>
           </table>
         </div>
-      </div>
     </div>
   </div>
 </div>

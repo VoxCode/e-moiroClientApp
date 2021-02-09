@@ -84,8 +84,18 @@ export class TrainingProgramAddFormComponent implements OnInit{
       .subscribe((data: TrainingProgram) => {
         if (data !== undefined){
           this.trainingProgram = data;
-          this.loadCurriculumTopic();
           this.loadTrainingProgramCurriculumSection();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadCurriculumTopicTrainingProgram(){
+    this.curriculumTopicTrainingProgramService.getValue(this.id)
+      .subscribe((data: CurriculumTopicTrainingProgram[]) => {
+        if (data !== undefined && data !== null){
+          const curriculumTopicTrainingPrograms = data;
+          this.loadCurriculumTopic(curriculumTopicTrainingPrograms);
         }
       });
   }
@@ -103,12 +113,13 @@ export class TrainingProgramAddFormComponent implements OnInit{
           this.trainingProgramCurriculumSectionList.forEach( object => {
             this.addCurriculumSection(object.curriculumSectionId, object.id);
           });
+          this.loadCurriculumTopicTrainingProgram();
         }
       });
   }
 
   // tslint:disable-next-line:typedef
-  loadCurriculumTopic() {
+  loadCurriculumTopic(curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[]) {
     this.curriculumTopicService.getValue(this.trainingProgram.studentCategoryId, this.trainingProgram.departmentId)
       .subscribe((data: CurriculumTopic[]) => {
         if (data.length !== 0){
@@ -120,14 +131,17 @@ export class TrainingProgramAddFormComponent implements OnInit{
           });
 
           this.curriculumTopicList.forEach((object, index) => {
-            this.todo.push({
-              first: this.curriculumTopicList[index].id,
-              second: this.curriculumTopicList[index].topicTitle,
-              third: this.curriculumTopicTrainingProgram.isVariable,
-              fourth: this.curriculumTopicTrainingProgram.classHours,
-              fifth: this.curriculumTopicTrainingProgram.occupationFormId,
-              sixth: this.id
-            });
+            const tmp2 = curriculumTopicTrainingPrograms.find(a => a.curriculumTopicId === object.id);
+            if (tmp2 === undefined) {
+              this.todo.push({
+                first: this.curriculumTopicList[index].id,
+                second: this.curriculumTopicList[index].topicTitle,
+                third: this.curriculumTopicTrainingProgram.isVariable,
+                fourth: this.curriculumTopicTrainingProgram.classHours,
+                fifth: this.curriculumTopicTrainingProgram.occupationFormId,
+                sixth: this.id
+              });
+            }
           });
           // tslint:disable-next-line:only-arrow-functions typedef
           this.curriculumTopicList.sort(function(a, b) {

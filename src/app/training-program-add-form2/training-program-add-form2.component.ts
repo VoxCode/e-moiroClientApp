@@ -103,7 +103,6 @@ export class TrainingProgramAddForm2Component implements OnInit {
   loadFinalExamination() {
     // tslint:disable-next-line:prefer-const
     let curriculumTopicIdArray: number[] = [this.curriculumTopicTrainingPrograms.length];
-    console.log(curriculumTopicIdArray);
     this.curriculumTopicTrainingPrograms.forEach(i => {
       curriculumTopicIdArray.push(i.curriculumTopicId);
     });
@@ -111,10 +110,13 @@ export class TrainingProgramAddForm2Component implements OnInit {
       .subscribe((data: FinalExamination[]) => {
         if (data !== undefined && data !== null){
           data.forEach((tmp) => {
-            this.todo.push({
-              first: tmp.id,
-              third: tmp.content
-            });
+            const tmp2 = this.done.find(a => a.seventh === tmp.id);
+            if (tmp2 === undefined){
+              this.todo.push({
+                first: tmp.id,
+                third: tmp.content
+              });
+            }
           });
         }
       });
