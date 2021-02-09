@@ -231,8 +231,8 @@ export class DocumentCreator {
                   j++;
                 }
               });
+              arr.push(this.pageBreak());
             });
-            arr.push(this.pageBreak());
             return arr;
           })
           .reduce((prev, curr) => prev.concat(curr), []),

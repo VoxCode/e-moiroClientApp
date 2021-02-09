@@ -16,7 +16,7 @@
 
   <div cdkDropListGroup>
     <div class="row">
-      <div class="col-sm-3">
+      <div class="col-sm-4">
         <div class="offer">
           <div class="example-container">
             <h2>Предложено</h2>
@@ -31,7 +31,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-7">
+      <div class="col-sm-6">
         <div *ngFor="let item of curriculumSectionContentList; index as i">
           <app-curriculum-section-child [curriculumSectionNumber]="i+1"
                                         [done]="item.done"
@@ -39,9 +39,15 @@
                                         [curriculumSectionId]="item.curriculumSectionId"
                                         [(trainingProgramCurriculumSectionId)]="item.trainingProgramCurriculumSectionId">
           </app-curriculum-section-child>
-          <button type="button" id="deleteBtn" mdbBtn color="danger" size="sm" class="relative waves-light"
+          <button type="button" class="deleteBtn" mdbBtn color="danger" size="sm" class="relative waves-light"
                   (click)="deleteTrainingProgramCurriculumSection(i, item.trainingProgramCurriculumSectionId)" mdbWavesEffect>
-            <mdb-icon fas icon="trash-alt" size="sm"></mdb-icon> Удалить {{item.curriculumSectionNumber}} Раздел</button>
+            <mdb-icon fas icon="trash-alt" size="sm"></mdb-icon> Удалить Раздел
+          </button>
+
+          <button *ngIf="i === curriculumSectionContentList.length - 1" class="deleteBtn" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+                  (click)="addCurriculumSection(0, 0)" mdbWavesEffect>
+            <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел
+          </button>
         </div>
 
       </div>

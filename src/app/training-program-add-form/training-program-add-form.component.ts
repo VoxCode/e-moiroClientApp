@@ -114,6 +114,10 @@ export class TrainingProgramAddFormComponent implements OnInit{
         if (data.length !== 0){
           this.curriculumTopicList = data;
           this.todo = [];
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.curriculumTopicList.sort(function(a, b) {
+            return b.id - a.id;
+          });
 
           this.curriculumTopicList.forEach((object, index) => {
             this.todo.push({

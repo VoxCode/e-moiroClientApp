@@ -103,7 +103,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
     this.occupationFormService.getValues()
       .subscribe((data: OccupationForm[]) => {
         if (data.length !== 0){
-          this.occupationForms.push({id: 0, fullName: 'Выберите тип занятия'});
+          this.occupationForms.push({id: 0, fullName: 'Выбрать тип занятия'});
           data.forEach((object) => {
             this.occupationForms.push(object);
           });
@@ -307,6 +307,9 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
             first: this.curriculumTopicTmp.id,
             second: this.curriculumTopicTmp.topicTitle,
             sixth: this.id,
+            third: false,
+            fourth: 0,
+            fifth: 0
           });
           this.crateCurriculumTopicStudentCategory();
         }

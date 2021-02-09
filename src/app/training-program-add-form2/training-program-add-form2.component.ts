@@ -11,6 +11,8 @@ import {CurriculumTopicFinalExamination} from '../models/CurriculumTopicFinalExa
 import {CurriculumTopicFinalExaminationService} from '../services/curriculum-topic-final-examination.service';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
 import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
+import {CertificationTypeService} from '../services/certification-type.service';
+import {CertificationType} from '../models/CertificationType';
 
 @Component({
   selector: 'app-training-program-add-form2',
@@ -21,7 +23,8 @@ import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topi
     FinalExaminationService,
     TrainingProgramFinalExaminationService,
     CurriculumTopicTrainingProgramService,
-    CurriculumTopicFinalExaminationService
+    CurriculumTopicFinalExaminationService,
+    CertificationTypeService
   ]
 })
 export class TrainingProgramAddForm2Component implements OnInit {
@@ -33,6 +36,7 @@ export class TrainingProgramAddForm2Component implements OnInit {
   curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram;
   finalExamination: FinalExamination = new FinalExamination();
   curriculumTopicFinalExamination: CurriculumTopicFinalExamination = new CurriculumTopicFinalExamination();
+  certificationType: CertificationType = new CertificationType();
 
   constructor(
     private trainingProgramService: TrainingProgramService,
@@ -40,6 +44,7 @@ export class TrainingProgramAddForm2Component implements OnInit {
     private trainingProgramFinalExaminationService: TrainingProgramFinalExaminationService,
     private curriculumTopicFinalExaminationService: CurriculumTopicFinalExaminationService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
+    private certificationTypeService: CertificationTypeService,
     private route: ActivatedRoute
   ) { }
 
@@ -68,6 +73,17 @@ export class TrainingProgramAddForm2Component implements OnInit {
       .subscribe((data: TrainingProgram) => {
         if (data !== undefined){
           this.trainingProgram = data;
+          this.loadCertificationType();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadCertificationType() {
+    this.certificationTypeService.getValue(this.trainingProgram.certificationTypeId)
+      .subscribe((data: CertificationType) => {
+        if (data !== undefined){
+          this.certificationType = data;
           this.loadCurriculumTopicTrainingProgram();
         }
       });
@@ -175,6 +191,7 @@ export class TrainingProgramAddForm2Component implements OnInit {
   cancel() {
     this.finalExamination = new FinalExamination();
     this.curriculumTopicFinalExamination = new CurriculumTopicFinalExamination();
+    this.curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
   }
 
   // tslint:disable-next-line:typedef
