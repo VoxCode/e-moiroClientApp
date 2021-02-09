@@ -19,3 +19,8 @@ td{
 button{
   border-radius: 5px;
 }
+
+.modal-body {
+  max-height: 80vh;
+  overflow-y: scroll;
+}

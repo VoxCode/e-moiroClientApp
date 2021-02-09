@@ -19,3 +19,8 @@ td{
   max-width: 150px;
   word-wrap: break-word;
 }
+
+.modal-body {
+  max-height: 80vh;
+  overflow-y: scroll;
+}

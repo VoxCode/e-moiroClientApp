@@ -9,8 +9,8 @@
     <form [formGroup]="form">
       <div class="md-form">
         <p>Название</p>
-        <input id="second" type="text" class="form-control" formControlName="second" mdbInput mdbValidate
-                  [validateSuccess]="false">
+        <textarea id="second" type="text" class="form-control" formControlName="second" mdbInput mdbValidate
+                  [validateSuccess]="false"></textarea>
 
         <mdb-error *ngIf="second.invalid && (second.dirty || second.touched)">Input is required</mdb-error>
       </div>

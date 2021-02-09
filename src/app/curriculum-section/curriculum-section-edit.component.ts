@@ -5,7 +5,8 @@ import {MDBModalRef} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-modal-edit',
-  templateUrl: './curriculum-section-edit.component.html'
+  templateUrl: './curriculum-section-edit.component.html',
+  styleUrls: ['./curriculum-section.component.scss']
 })
 export class CurriculumSectionEditComponent {
   public editableRow: { id: string, first: string, last: string, handle: string };

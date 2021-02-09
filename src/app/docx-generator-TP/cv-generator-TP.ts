@@ -511,8 +511,7 @@ export class DocumentCreator {
       alignment: AlignmentType.CENTER,
       children: [
         new TextRun({
-          text: '\nучителей ' +
-            exactly + '\n',
+          text: 'учителей, ' + exactly,
           size : 30,
           bold : true,
         }),

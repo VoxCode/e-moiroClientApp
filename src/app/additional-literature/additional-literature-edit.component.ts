@@ -5,7 +5,8 @@ import {MDBModalRef} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-modal-edit',
-  templateUrl: './additional-literature-edit.component.html'
+  templateUrl: './additional-literature-edit.component.html',
+  styleUrls: ['./additional-literature.component.scss']
 })
 export class AdditionalLiteratureEditComponent {
 

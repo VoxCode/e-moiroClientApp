@@ -1,6 +1,6 @@
 .example-container {
   min-width: 200px;
-  max-width: 100%;
+
   margin: 0 25px 25px 0;
   display: inline-block;
   vertical-align: top;
@@ -10,7 +10,8 @@
   top: 20px;
   padding: 10px;
   background-color: ghostwhite;
-
+  max-height: 80vh;
+  overflow-y: scroll;
 }
 
 .example-list {

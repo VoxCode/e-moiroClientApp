@@ -12,6 +12,7 @@ import {CertificationType} from '../models/CertificationType';
 @Component({
   selector: 'app-modal-edit',
   templateUrl: './training-program-edit.component.html',
+  styleUrls: ['./training-program.component.scss'],
   providers: [
     DepartmentService,
     StudentCategoryService,

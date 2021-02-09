@@ -8,6 +8,7 @@ import {TeachingPosition} from '../models/TeachingPosition';
 @Component({
   selector: 'app-modal-edit',
   templateUrl: './teacher-edit.component.html',
+  styleUrls: ['./teacher.component.scss'],
   providers: [TeachingPositionService]
 })
 export class TeacherEditComponent {

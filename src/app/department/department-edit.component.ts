@@ -5,7 +5,8 @@ import {MDBModalRef} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-modal-edit',
-  templateUrl: './department-edit.component.html'
+  templateUrl: './department-edit.component.html',
+  styleUrls: ['./department.component.scss']
 })
 export class DepartmentEditComponent {
 
