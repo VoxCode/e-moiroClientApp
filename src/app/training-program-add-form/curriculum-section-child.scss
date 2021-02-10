@@ -1,8 +1,6 @@
 .example-container {
-  min-width: 600px;
   max-width: 100%;
   margin: 0 25px 25px 0;
-  display: inline-block;
   vertical-align: top;
   border: black solid 1px;
   border-radius: 5px;
@@ -25,7 +23,6 @@
   padding: 20px 10px;
   border-bottom: solid 1px #ccc;
   color: rgba(0, 0, 0, 0.87);
-  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -81,27 +78,26 @@ ng-option {
 }
 
 #isVariable {
-  display: inline-block;
   min-width: 130px;
-  position: relative;
-  margin-top: -90px;
+}
 
+#curriculumTitle {
+  width: 100%;
+}
+
+#curriculumAnnotation {
+  width: 100%;
 }
 
 #hours {
-  display: inline-block;
   min-width: 130px;
-  position: relative;
   margin-top: 20px;
-  margin-left: -130px;
   margin-right: 10px;
 }
 
 #formOfEducation {
-  display: inline-block;
   min-width: 220px;
   margin-top: 21px;
-  position: relative;
 }
 
 .modal-body {
@@ -109,3 +105,6 @@ ng-option {
   overflow-y: scroll;
 }
 
+h5, h4 {
+  text-align: center;
+}

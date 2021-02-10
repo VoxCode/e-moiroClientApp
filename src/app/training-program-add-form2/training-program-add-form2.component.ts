@@ -62,6 +62,7 @@ export class TrainingProgramAddForm2Component implements OnInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
+      this.save();
     }
   }
 
@@ -109,6 +110,10 @@ export class TrainingProgramAddForm2Component implements OnInit {
     this.finalExaminationService.getFinalExamination(this.trainingProgram.certificationTypeId, curriculumTopicIdArray)
       .subscribe((data: FinalExamination[]) => {
         if (data !== undefined && data !== null){
+          // tslint:disable-next-line:only-arrow-functions typedef
+          data.sort(function(a, b) {
+            return b.id - a.id;
+          });
           data.forEach((tmp) => {
             const tmp2 = this.done.find(a => a.seventh === tmp.id);
             if (tmp2 === undefined){
@@ -227,17 +232,18 @@ export class TrainingProgramAddForm2Component implements OnInit {
         if (data !== undefined){
           this.curriculumTopicFinalExamination = data;
           console.log('Success');
+          this.save();
         }
         this.cancel();
       });
   }
 
   // tslint:disable-next-line:typedef
-  deleteTrainingProgramFinalExamination(data: any, indx: number){
+  deleteTrainingProgramFinalExamination(id: number, indx: number){
     this.done.splice(indx, 1);
-    if (data !== 'undefined'){
-      this.trainingProgramFinalExaminationService.deleteValue(+data).subscribe(() => {
-        console.log('Delete was successful ' + data);
+    if (id !== undefined){
+      this.trainingProgramFinalExaminationService.deleteValue(id).subscribe(() => {
+        console.log('Delete was successful ' + id);
       });
     }
   }

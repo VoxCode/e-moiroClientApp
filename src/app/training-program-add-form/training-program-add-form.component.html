@@ -20,7 +20,6 @@
         <div class="offer">
           <div class="example-container">
             <h2>Предложено</h2>
-
             <div
               cdkDropList
               [cdkDropListData]="todo"
@@ -31,7 +30,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-6">
+      <div class="col-sm-8">
         <div *ngFor="let item of curriculumSectionContentList; index as i">
           <app-curriculum-section-child [curriculumSectionNumber]="i+1"
                                         [done]="item.done"
@@ -51,7 +50,7 @@
         </div>
 
       </div>
-      <div class="col-sm-2" *ngIf="curriculumSectionContentList.length === 0">
+      <div *ngIf="curriculumSectionContentList.length === 0">
         <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
                 (click)="addCurriculumSection(0, 0)" mdbWavesEffect>
           <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел</button>

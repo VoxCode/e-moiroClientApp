@@ -59,6 +59,7 @@ export class TrainingProgramAddForm5Component implements OnInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
+      this.save();
     }
   }
 
@@ -95,6 +96,10 @@ export class TrainingProgramAddForm5Component implements OnInit {
     this.regulationService.getRegulation(curriculumTopicIdArray)
       .subscribe((data: Regulation[]) => {
         if (data !== undefined && data !== null){
+          // tslint:disable-next-line:only-arrow-functions typedef
+          data.sort(function(a, b) {
+            return b.id - a.id;
+          });
           data.forEach((tmp) => {
             const tmp2 = this.done.find(a => a.seventh === tmp.id);
             if (tmp2 === undefined) {
@@ -153,7 +158,10 @@ export class TrainingProgramAddForm5Component implements OnInit {
       if (trainingProgramRegulation.id === undefined){
         this.trainingProgramRegulationService.createValue(trainingProgramRegulation)
           .subscribe((data: TrainingProgramRegulation) => {
-            object.seventh = data.id;
+            object.fourth = data.id;
+            object.fifth = data.trainingProgramId;
+            object.seventh = data.regulationId;
+            object.eight = data.serialNumber;
             console.log('Save was successful');
             trainingProgramRegulation = null;
           });
@@ -178,6 +186,8 @@ export class TrainingProgramAddForm5Component implements OnInit {
   // tslint:disable-next-line:typedef
   cancel() {
     this.regulation = new Regulation();
+    this.curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
+    this.curriculumTopicRegulation = new CurriculumTopicRegulation();
   }
 
   // tslint:disable-next-line:typedef
@@ -210,17 +220,18 @@ export class TrainingProgramAddForm5Component implements OnInit {
         if (data !== undefined){
           this.curriculumTopicRegulation = data;
           console.log('Success');
+          this.save();
         }
         this.cancel();
       });
   }
 
   // tslint:disable-next-line:typedef
-  deleteTrainingProgramRegulation(data: any, indx: number){
+  deleteTrainingProgramRegulation(id: number, indx: number){
     this.done.splice(indx, 1);
-    if (data !== 'undefined'){
-      this.trainingProgramRegulationService.deleteValue(+data).subscribe(() => {
-        console.log('Delete was successful ' + data);
+    if (id !== undefined){
+      this.trainingProgramRegulationService.deleteValue(id).subscribe(() => {
+        console.log('Delete was successful ' + id);
       });
     }
   }

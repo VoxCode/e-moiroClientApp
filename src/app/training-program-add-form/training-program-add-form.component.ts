@@ -139,7 +139,8 @@ export class TrainingProgramAddFormComponent implements OnInit{
                 third: this.curriculumTopicTrainingProgram.isVariable,
                 fourth: this.curriculumTopicTrainingProgram.classHours,
                 fifth: this.curriculumTopicTrainingProgram.occupationFormId,
-                sixth: this.id
+                sixth: this.id,
+                ninth: object.annotation
               });
             }
           });

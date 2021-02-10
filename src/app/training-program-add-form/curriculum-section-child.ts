@@ -156,7 +156,8 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
                 fifth: object.occupationFormId,
                 sixth: object.trainingProgramId,
                 seventh: object.id,
-                eight: object.serialNumber
+                eight: object.serialNumber,
+                ninth: object.annotation
               });
             });
           }
@@ -242,11 +243,11 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   // DELETE
 
   // tslint:disable-next-line:typedef
-  deleteCurriculumTopicTrainingProgram(data: any, indx: number){
+  deleteCurriculumTopicTrainingProgram(id: any, indx: number){
     this.done.splice(indx, 1);
-    if (data !== 'undefined'){
-      this.curriculumTopicTrainingProgramService.deleteValue(+data).subscribe(() => {
-        console.log('Delete was successful ' + data);
+    if (id !== 'undefined'){
+      this.curriculumTopicTrainingProgramService.deleteValue(id).subscribe(() => {
+        console.log('Delete was successful ' + id);
       });
     }
   }

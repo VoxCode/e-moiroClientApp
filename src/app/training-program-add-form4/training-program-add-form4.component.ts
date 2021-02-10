@@ -59,6 +59,7 @@ export class TrainingProgramAddForm4Component implements OnInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
+      this.save();
     }
   }
 
@@ -95,6 +96,10 @@ export class TrainingProgramAddForm4Component implements OnInit {
     this.additionalLiteratureService.getAdditionalLiterature(curriculumTopicIdArray)
       .subscribe((data: AdditionalLiterature[]) => {
         if (data !== undefined && data !== null){
+          // tslint:disable-next-line:only-arrow-functions typedef
+          data.sort(function(a, b) {
+            return b.id - a.id;
+          });
           data.forEach((tmp) => {
             const tmp2 = this.done.find(a => a.seventh === tmp.id);
             if (tmp2 === undefined) {
@@ -153,7 +158,7 @@ export class TrainingProgramAddForm4Component implements OnInit {
       if (trainingProgramAdditionalLiterature.id === undefined){
         this.trainingProgramAdditionalLiteratureService.createValue(trainingProgramAdditionalLiterature)
           .subscribe((data: TrainingProgramAdditionalLiterature) => {
-            object.seventh = data.id;
+            object.fourth = data.id;
             console.log('Save was successful');
             trainingProgramAdditionalLiterature = null;
           });
@@ -178,6 +183,8 @@ export class TrainingProgramAddForm4Component implements OnInit {
   // tslint:disable-next-line:typedef
   cancel() {
     this.additionalLiterature = new AdditionalLiterature();
+    this.curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
+    this.curriculumTopicAdditionalLiterature = new CurriculumTopicAdditionalLiterature();
   }
 
   // tslint:disable-next-line:typedef
@@ -210,17 +217,18 @@ export class TrainingProgramAddForm4Component implements OnInit {
         if (data !== undefined){
           this.curriculumTopicAdditionalLiterature = data;
           console.log('Success');
+          this.save();
         }
         this.cancel();
       });
   }
 
   // tslint:disable-next-line:typedef
-  deleteTrainingProgramAdditionalLiterature(data: any, indx: number){
+  deleteTrainingProgramAdditionalLiterature(id: number, indx: number){
     this.done.splice(indx, 1);
-    if (data !== 'undefined'){
-      this.trainingProgramAdditionalLiteratureService.deleteValue(+data).subscribe(() => {
-        console.log('Delete was successful ' + data);
+    if (id !== undefined){
+      this.trainingProgramAdditionalLiteratureService.deleteValue(id).subscribe(() => {
+        console.log('Delete was successful ' + id);
       });
     }
   }

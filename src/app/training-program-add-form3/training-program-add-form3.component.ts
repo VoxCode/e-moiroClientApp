@@ -60,6 +60,7 @@ export class TrainingProgramAddForm3Component implements OnInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
+      this.save();
     }
   }
 
@@ -96,6 +97,10 @@ export class TrainingProgramAddForm3Component implements OnInit {
     this.mainLiteratureService.getMainLiterature(curriculumTopicIdArray)
       .subscribe((data: MainLiterature[]) => {
         if (data !== undefined && data !== null){
+          // tslint:disable-next-line:only-arrow-functions typedef
+          data.sort(function(a, b) {
+            return b.id - a.id;
+          });
           data.forEach((tmp) => {
             const tmp2 = this.done.find(a => a.seventh === tmp.id);
             if (tmp2 === undefined) {
@@ -154,7 +159,7 @@ export class TrainingProgramAddForm3Component implements OnInit {
       if (trainingProgramMainLiterature.id === undefined){
         this.trainingProgramMainLiteratureService.createValue(trainingProgramMainLiterature)
           .subscribe((data: TrainingProgramMainLiterature) => {
-            object.seventh = data.id;
+            object.fourth = data.id;
             console.log('Save was successful');
             trainingProgramMainLiterature = null;
           });
@@ -179,6 +184,8 @@ export class TrainingProgramAddForm3Component implements OnInit {
   // tslint:disable-next-line:typedef
   cancel() {
     this.mainLiterature = new MainLiterature();
+    this.curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
+    this.curriculumTopicMainLiterature = new CurriculumTopicMainLiterature();
   }
 
   // tslint:disable-next-line:typedef
@@ -211,17 +218,18 @@ export class TrainingProgramAddForm3Component implements OnInit {
         if (data !== undefined){
           this.curriculumTopicMainLiterature = data;
           console.log('Success');
+          this.save();
         }
         this.cancel();
       });
   }
 
   // tslint:disable-next-line:typedef
-  deleteTrainingProgramMainLiterature(data: any, indx: number){
+  deleteTrainingProgramMainLiterature(id: number, indx: number){
     this.done.splice(indx, 1);
-    if (data !== 'undefined'){
-      this.trainingProgramMainLiteratureService.deleteValue(+data).subscribe(() => {
-        console.log('Delete was successful ' + data);
+    if (id !== undefined){
+      this.trainingProgramMainLiteratureService.deleteValue(id).subscribe(() => {
+        console.log('Delete was successful ' + id);
       });
     }
   }
