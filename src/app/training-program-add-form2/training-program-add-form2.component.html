@@ -25,7 +25,8 @@
             cdkDropList
             [cdkDropListData]="todo"
             class="example-list"
-            (cdkDropListDropped)="drop($event)">
+            (cdkDropListDropped)="drop($event)"
+            [cdkDropListEnterPredicate]="noReturnPredicate">
             <div class="example-box" *ngFor="let item of todo; index as i" cdkDrag>{{i+1}}. {{item.third}}</div>
           </div>
         </div>
@@ -53,7 +54,7 @@
 
 
   <button type="button" routerLink="/trainingProgramAddForm/{{id}}" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Назад</button>
-  <button type="button" (click)="save()" routerLink="/trainingProgramAddForm3/{{id}}" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Далее</button>
+  <button type="button" routerLink="/trainingProgramAddForm3/{{id}}" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Далее</button>
 </div>
 
 <!--шаблон для добавления-->

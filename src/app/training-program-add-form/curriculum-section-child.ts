@@ -93,6 +93,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
         event.container.data,
         event.previousIndex,
         event.currentIndex);
+      this.saveCurriculumTopicTrainingProgram();
     }
   }
 
@@ -103,10 +104,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
     this.occupationFormService.getValues()
       .subscribe((data: OccupationForm[]) => {
         if (data.length !== 0){
-          this.occupationForms.push({id: 0, fullName: 'Выбрать тип занятия'});
-          data.forEach((object) => {
-            this.occupationForms.push(object);
-          });
+          this.occupationForms = data;
         }
       });
   }
@@ -139,29 +137,29 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicTrainingProgram(){
-      this.curriculumTopicTrainingProgramService.getValueList(this.id, this.curriculumSection.id, this.curriculumSectionNumber)
-        .subscribe((data: CurriculumTopicTrainingProgram[]) => {
-          if (data !== undefined){
-            this.curriculumTopicTrainingPrograms = data;
-            // tslint:disable-next-line:only-arrow-functions typedef
-            this.curriculumTopicTrainingPrograms.sort(function(a, b) {
-              return a.serialNumber - b.serialNumber;
+    this.curriculumTopicTrainingProgramService.getValueList(this.id, this.curriculumSection.id, this.curriculumSectionNumber)
+      .subscribe((data: CurriculumTopicTrainingProgram[]) => {
+        if (data !== undefined){
+          this.curriculumTopicTrainingPrograms = data;
+          // tslint:disable-next-line:only-arrow-functions typedef
+          this.curriculumTopicTrainingPrograms.sort(function(a, b) {
+            return a.serialNumber - b.serialNumber;
+          });
+          this.curriculumTopicTrainingPrograms.forEach((object, index) => {
+            this.done.push({
+              first: object.curriculumTopicId,
+              second: object.topicTitle,
+              third: object.isVariable,
+              fourth: object.classHours,
+              fifth: object.occupationFormId,
+              sixth: object.trainingProgramId,
+              seventh: object.id,
+              eight: object.serialNumber,
+              ninth: object.annotation
             });
-            this.curriculumTopicTrainingPrograms.forEach((object, index) => {
-              this.done.push({
-                first: object.curriculumTopicId,
-                second: object.topicTitle,
-                third: object.isVariable,
-                fourth: object.classHours,
-                fifth: object.occupationFormId,
-                sixth: object.trainingProgramId,
-                seventh: object.id,
-                eight: object.serialNumber,
-                ninth: object.annotation
-              });
-            });
-          }
-        });
+          });
+        }
+      });
   }
 
   // SAVE
@@ -201,7 +199,12 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
         curriculumTopicTrainingProgram.curriculumTopicId = object.first;
         curriculumTopicTrainingProgram.classHours = object.fourth;
         curriculumTopicTrainingProgram.isVariable = object.third;
-        curriculumTopicTrainingProgram.occupationFormId = object.fifth;
+        if (object.fifth) {
+          curriculumTopicTrainingProgram.occupationFormId = object.fifth;
+        }
+        else {
+          curriculumTopicTrainingProgram.occupationFormId = 1;
+        }
         curriculumTopicTrainingProgram.serialNumber = i;
         curriculumTopicTrainingProgram.curriculumSectionId = this.curriculumSection.id;
         curriculumTopicTrainingProgram.id = object.seventh;
@@ -237,7 +240,25 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
     this.curriculumTopicTrainingProgramService.updateValue(tmp)
       .subscribe((data: CurriculumTopicTrainingProgram) => {
         console.log('Update was successful ' + data.serialNumber);
-    });
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  updateSingleCurriculumTopicTrainingProgram(tmp: any){
+    const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
+    curriculumTopicTrainingProgram.id = tmp.seventh;
+    curriculumTopicTrainingProgram.isVariable = tmp.third;
+    curriculumTopicTrainingProgram.classHours = tmp.fourth;
+    curriculumTopicTrainingProgram.serialNumber = tmp.eight;
+    curriculumTopicTrainingProgram.curriculumTopicId = tmp.first;
+    curriculumTopicTrainingProgram.occupationFormId = tmp.fifth;
+    curriculumTopicTrainingProgram.trainingProgramId = tmp.sixth;
+    curriculumTopicTrainingProgram.curriculumSectionId = this.curriculumSection.id;
+
+    this.curriculumTopicTrainingProgramService.updateValue(curriculumTopicTrainingProgram)
+      .subscribe((data: CurriculumTopicTrainingProgram) => {
+        console.log('Update was successful ' + data.serialNumber);
+      });
   }
 
   // DELETE
@@ -341,6 +362,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
         if (data !== undefined){
           console.log('Success Department');
           this.cancel();
+          this.saveCurriculumTopicTrainingProgram();
         }
       });
   }

@@ -63,6 +63,7 @@ import { TrainingProgramAddForm3Component } from './training-program-add-form3/t
 import { TrainingProgramAddForm4Component } from './training-program-add-form4/training-program-add-form4.component';
 import { TrainingProgramAddForm5Component } from './training-program-add-form5/training-program-add-form5.component';
 import {DocxGeneratorTPComponent} from './docx-generator-TP/docx-generator-TP.component';
+import { FilterPipe } from './filter.pipe';
 
 @NgModule({
   declarations: [
@@ -113,7 +114,8 @@ import {DocxGeneratorTPComponent} from './docx-generator-TP/docx-generator-TP.co
     TrainingProgramStepperComponent,
     TrainingProgramAddForm3Component,
     TrainingProgramAddForm4Component,
-    TrainingProgramAddForm5Component
+    TrainingProgramAddForm5Component,
+    FilterPipe
   ],
     imports: [
         BrowserModule,

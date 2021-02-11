@@ -63,6 +63,11 @@ export class TrainingProgramAddForm5Component implements OnInit {
     }
   }
 
+  // tslint:disable-next-line:typedef
+  noReturnPredicate() {
+    return false;
+  }
+
   // LOAD
 
   // tslint:disable-next-line:typedef

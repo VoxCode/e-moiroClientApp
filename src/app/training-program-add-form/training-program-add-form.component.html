@@ -4,6 +4,7 @@
       <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon> Выход</button>
   </div><br>
   <h4 *ngIf="trainingProgram">Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
+  <h5><strong>Количество часов: {{trainingProgram.numberOfHours}}</strong></h5>
 
   <app-training-program-stepper [id]="id"></app-training-program-stepper>
 
@@ -16,22 +17,28 @@
 
   <div cdkDropListGroup>
     <div class="row">
-      <div class="col-sm-4">
+      <div class="col-sm-4"><br>
         <div class="offer">
+          <h2 style="margin-left: 15px; margin-top: 15px">Предложено</h2>
+          <div style="margin: 0 25px 25px 0" class="md-form">
+            <input style="max-width: 100%; margin-left: 10px" type="search" class="form-control" id="search-input" [(ngModel)]="searchText"
+                   mdbInput>
+            <label style="margin-left: 10px" for="search-input">Поиск</label>
+          </div>
           <div class="example-container">
-            <h2>Предложено</h2>
             <div
               cdkDropList
               [cdkDropListData]="todo"
               class="example-list"
-              (cdkDropListDropped)="drop($event)">
-              <div class="example-box" *ngFor="let item of todo; index as i" cdkDrag>{{i+1}}. {{item.second}}</div>
+              (cdkDropListDropped)="drop($event)"
+              [cdkDropListEnterPredicate]="noReturnPredicate">
+              <div class="example-box" *ngFor="let item of todo | filter: searchText; index as i" cdkDrag>{{i+1}}. {{item.second}}</div>
             </div>
           </div>
         </div>
       </div>
       <div class="col-sm-8">
-        <div *ngFor="let item of curriculumSectionContentList; index as i">
+        <div *ngFor="let item of curriculumSectionContentList; index as i ">
           <app-curriculum-section-child [curriculumSectionNumber]="i+1"
                                         [done]="item.done"
                                         [id]="id"
@@ -58,5 +65,5 @@
     </div>
   </div>
   <br><br>
-  <button type="button" (click)="save()" routerLink="/trainingProgramAddForm2/{{id}}" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Далее</button>
+  <button type="button" routerLink="/trainingProgramAddForm2/{{id}}" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Далее</button>
 </div>

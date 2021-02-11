@@ -32,6 +32,7 @@ export class TrainingProgramAddFormComponent implements OnInit{
   value: number;
   trainingProgram: TrainingProgram;
   curriculumTopic: CurriculumTopic;
+  searchText: string;
 
   curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram = {
     isVariable: false,
@@ -74,6 +75,11 @@ export class TrainingProgramAddFormComponent implements OnInit{
         event.previousIndex,
         event.currentIndex);
     }
+  }
+
+  // tslint:disable-next-line:typedef
+  noReturnPredicate() {
+    return false;
   }
 
   // LOAD
@@ -137,8 +143,8 @@ export class TrainingProgramAddFormComponent implements OnInit{
                 first: this.curriculumTopicList[index].id,
                 second: this.curriculumTopicList[index].topicTitle,
                 third: this.curriculumTopicTrainingProgram.isVariable,
-                fourth: this.curriculumTopicTrainingProgram.classHours,
-                fifth: this.curriculumTopicTrainingProgram.occupationFormId,
+                fourth: 0,
+                fifth: 1,
                 sixth: this.id,
                 ninth: object.annotation
               });

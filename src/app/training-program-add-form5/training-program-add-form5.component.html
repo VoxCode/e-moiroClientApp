@@ -24,7 +24,8 @@
             cdkDropList
             [cdkDropListData]="todo"
             class="example-list"
-            (cdkDropListDropped)="drop($event)">
+            (cdkDropListDropped)="drop($event)"
+            [cdkDropListEnterPredicate]="noReturnPredicate">
             <div class="example-box" *ngFor="let item of todo; index as i" cdkDrag>{{i+1}}. {{item.third}}</div>
           </div>
         </div>
@@ -52,10 +53,10 @@
 
 
   <button type="button" routerLink="/trainingProgramAddForm4/{{id}}" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Назад</button>
-  <button type="button" (click)="save()" routerLink="/trainingProgram" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Завершить</button>
-  <button type="button" (click)="save()" routerLink="/docxGeneratorTP/{{id}}" mdbBtn color="success"
+  <button type="button" routerLink="/trainingProgram" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Завершить</button>
+  <button type="button" routerLink="/docxGeneratorTP/{{id}}" mdbBtn color="success"
           class="relative waves-light" mdbWavesEffect>Сгенерировать УП</button>
-  <button type="button" (click)="save()" routerLink="/docxGeneratorATP/{{id}}" mdbBtn color="success"
+  <button type="button" routerLink="/docxGeneratorATP/{{id}}" mdbBtn color="success"
           class="relative waves-light" mdbWavesEffect>Сгенерировать УТП</button>
 </div>
 
