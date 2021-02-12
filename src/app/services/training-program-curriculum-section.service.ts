@@ -13,6 +13,10 @@ export class TrainingProgramCurriculumSectionService {
     return this.http.get(this.url);
   }
   // tslint:disable-next-line:typedef
+  getSelectValues(departmentId: number) {
+    return this.http.get(this.url + '/' + departmentId + '/' + 1);
+  }
+  // tslint:disable-next-line:typedef
   getValue(id: number) {
     return this.http.get(this.url + '/' + id);
   }
