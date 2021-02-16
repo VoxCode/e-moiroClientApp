@@ -19,7 +19,6 @@ export class RegulationService {
   }
   // tslint:disable-next-line:typedef
   getRegulation(curriculumTopicIdArray: number[]) {
-    timeout(30000);
     return this.http.post(this.url + '/' + 1, curriculumTopicIdArray);
   }
   // tslint:disable-next-line:typedef

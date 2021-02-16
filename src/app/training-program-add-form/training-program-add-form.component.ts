@@ -101,6 +101,7 @@ export class TrainingProgramAddFormComponent implements OnInit{
       .subscribe((data: TrainingProgramCurriculumSection[]) => {
         if (data !== undefined){
           this.trainingProgramCurriculumSectionList = data;
+          console.log(this.trainingProgramCurriculumSectionList);
           // tslint:disable-next-line:only-arrow-functions typedef
           this.trainingProgramCurriculumSectionList.sort(function(a, b) {
             return a.sectionNumber - b.sectionNumber;

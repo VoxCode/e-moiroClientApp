@@ -19,7 +19,6 @@ export class MainLiteratureService {
   }
   // tslint:disable-next-line:typedef
   getMainLiterature(curriculumTopicIdArray: number[]) {
-    timeout(30000);
     return this.http.post(this.url + '/' + 1, curriculumTopicIdArray);
   }
   // tslint:disable-next-line:typedef

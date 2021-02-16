@@ -16,12 +16,10 @@ export class AdditionalLiteratureService {
   }
   // tslint:disable-next-line:typedef
   getValue(id: number) {
-    timeout(30000);
     return this.http.get(this.url + '/' + id);
   }
   // tslint:disable-next-line:typedef
   getAdditionalLiterature(curriculumTopicIdArray: number[]) {
-    timeout(30000);
     return this.http.post(this.url + '/' + 1, curriculumTopicIdArray);
   }
   // tslint:disable-next-line:typedef

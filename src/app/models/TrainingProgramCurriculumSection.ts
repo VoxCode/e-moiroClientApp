@@ -4,6 +4,5 @@ export class TrainingProgramCurriculumSection {
     public trainingProgramId?: number,
     public curriculumSectionId?: number,
     public sectionNumber?: number,
-    public name?: string
-    ){ }
+    public name?: string){ }
 }

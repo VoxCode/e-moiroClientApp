@@ -105,8 +105,7 @@ export class DocxGeneratorTPComponent implements OnInit{
     this.trainingProgramCurriculumSections.forEach(object => {
       this.curriculumTopicTrainingProgramService.getValueList(
         this.id,
-        object.curriculumSectionId,
-        object.sectionNumber
+        object.curriculumSectionId
       )
         .subscribe((data: CurriculumTopicTrainingProgram[]) => {
           if (data !== undefined){

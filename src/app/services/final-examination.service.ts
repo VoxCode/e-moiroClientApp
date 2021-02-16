@@ -19,7 +19,6 @@ export class FinalExaminationService {
   }
   // tslint:disable-next-line:typedef
   getFinalExamination(certificationTypeId: number, curriculumTopicIdArray: number[]) {
-    timeout(30000);
     return this.http.post(this.url + '/' + certificationTypeId, curriculumTopicIdArray);
   }
   // tslint:disable-next-line:typedef

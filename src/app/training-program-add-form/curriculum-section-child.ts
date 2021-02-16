@@ -46,6 +46,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   @Output() trainingProgramCurriculumSectionIdChange = new EventEmitter();
 
   occupationForms: OccupationForm[] = [];
+  curriculumSection: CurriculumSection = new CurriculumSection();
   trainingProgramCurriculumSections: TrainingProgramCurriculumSection[] = [];
   trainingProgramCurriculumSectionSelect: TrainingProgramCurriculumSection = new TrainingProgramCurriculumSection();
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
@@ -113,23 +114,36 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
       .subscribe((data: TrainingProgram) => {
         if (data !== undefined){
           this.trainingProgram = data;
-          this.loadTrainingProgramCurriculumSection();
+          this.loadCurriculumSection();
         }
       });
   }
 
   // tslint:disable-next-line:typedef
-  loadTrainingProgramCurriculumSection(){
-    this.trainingProgramCurriculumSectionService.getSelectValues(this.trainingProgram.departmentId)
-      .subscribe((data: TrainingProgramCurriculumSection[]) => {
+  loadCurriculumSection(){
+    this.curriculumSectionService.getSelectValues(this.trainingProgram.departmentId)
+      .subscribe((data: CurriculumSection[]) => {
         if (data.length !== 0) {
-          this.trainingProgramCurriculumSections = data;
-          if (this.curriculumSectionId !== 0 || this.trainingProgramCurriculumSectionId !== 0) {
+          const model: TrainingProgramCurriculumSection[] = [];
+          data.forEach(tmp => {
+            model.push({
+              id: 0,
+              trainingProgramId: this.id,
+              curriculumSectionId: tmp.id,
+              sectionNumber: this.curriculumSectionNumber,
+              name: tmp.name
+            });
+          });
+          this.trainingProgramCurriculumSections = model;
+          if (this.curriculumSectionId !== 0 && this.trainingProgramCurriculumSectionId !== 0) {
             this.trainingProgramCurriculumSectionSelect = this.trainingProgramCurriculumSections
               .find(a => a.curriculumSectionId === this.curriculumSectionId);
             if (this.trainingProgramCurriculumSectionSelect !== undefined){
               this.loadCurriculumTopicTrainingProgram();
             }
+          }
+          else {
+            this.crateTrainingProgramCurriculumSection();
           }
         }
       });
@@ -138,7 +152,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   // tslint:disable-next-line:typedef
   loadCurriculumTopicTrainingProgram(){
     this.curriculumTopicTrainingProgramService.getValueList(
-      this.id, this.trainingProgramCurriculumSectionSelect.curriculumSectionId, this.curriculumSectionNumber)
+      this.id, this.trainingProgramCurriculumSectionId)
       .subscribe((data: CurriculumTopicTrainingProgram[]) => {
         if (data !== undefined){
           this.curriculumTopicTrainingPrograms = data;
@@ -164,18 +178,6 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   }
 
   // SAVE
-
-  // tslint:disable-next-line:typedef
-  saveTrainingProgramCurriculumSection(){
-      console.log(this.trainingProgramCurriculumSectionSelect);
-      this.trainingProgramCurriculumSectionService.createValue(this.trainingProgramCurriculumSectionSelect)
-        .subscribe((data: TrainingProgramCurriculumSection) => {
-          this.trainingProgramCurriculumSectionSelect.id = data.id;
-          // this.trainingProgramCurriculumSectionId = data.id;
-          // this.trainingProgramCurriculumSectionIdChange.emit(data.id);
-          console.log('Save was successful');
-        });
-  }
 
   // tslint:disable-next-line:typedef
   saveCurriculumTopicTrainingProgram(){ // Сохранение списка тем учебных программ
@@ -217,6 +219,8 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
 
   // tslint:disable-next-line:typedef
   updateTrainingProgramCurriculumSection(){
+    this.trainingProgramCurriculumSectionSelect.id = this.trainingProgramCurriculumSectionId;
+    console.log(this.trainingProgramCurriculumSectionSelect);
     this.trainingProgramCurriculumSectionService.updateValue(this.trainingProgramCurriculumSectionSelect)
       .subscribe((data: TrainingProgramCurriculumSection) => {
         console.log('Update was successful');
@@ -273,18 +277,36 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   }
 
   // tslint:disable-next-line:typedef
+  crateTrainingProgramCurriculumSection(){
+    const model: TrainingProgramCurriculumSection = new TrainingProgramCurriculumSection();
+    model.sectionNumber = this.curriculumSectionNumber;
+    model.curriculumSectionId = 1;
+    model.id = 0;
+    model.trainingProgramId = this.id;
+    this.trainingProgramCurriculumSectionService.createValue(model)
+      .subscribe((data: TrainingProgramCurriculumSection) => {
+        console.log(data.id);
+        model.id = data.id;
+        model.name = this.trainingProgramCurriculumSections
+          .find(a => a.curriculumSectionId === model.curriculumSectionId).name;
+        this.trainingProgramCurriculumSectionId = data.id;
+        this.trainingProgramCurriculumSectionIdChange.emit(data.id);
+        this.trainingProgramCurriculumSectionSelect = model;
+        console.log('Crate was successful');
+      });
+  }
+
+  // tslint:disable-next-line:typedef
   crateCurriculumSection(){
     this.curriculumSectionService.createValue(this.curriculumSectionTmp)
       .subscribe((data: CurriculumSection) => {
         if (data !== undefined){
           this.curriculumSectionTmp.id = data.id;
-          this.trainingProgramCurriculumSectionSelect.id = 0;
+          this.trainingProgramCurriculumSectionSelect.id = this.trainingProgramCurriculumSectionId;
           this.trainingProgramCurriculumSectionSelect.curriculumSectionId = this.curriculumSectionTmp.id;
-          this.trainingProgramCurriculumSectionSelect.trainingProgramId = this.id;
-          this.trainingProgramCurriculumSectionSelect.sectionNumber = this.curriculumSectionNumber;
           this.trainingProgramCurriculumSectionSelect.name = this.curriculumSectionTmp.name;
           console.log('Success');
-          this.saveTrainingProgramCurriculumSection();
+          this.updateTrainingProgramCurriculumSection();
           this.cancel();
           this.loadTrainingProgramCurriculumSectionAfter();
         }
@@ -293,10 +315,20 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
 
   // tslint:disable-next-line:typedef
   loadTrainingProgramCurriculumSectionAfter(){
-    this.trainingProgramCurriculumSectionService.getSelectValues(this.trainingProgram.departmentId)
-      .subscribe((data: TrainingProgramCurriculumSection[]) => {
-        if (data) {
-          this.trainingProgramCurriculumSections = data;
+    this.curriculumSectionService.getSelectValues(this.trainingProgram.departmentId)
+      .subscribe((data: CurriculumSection[]) => {
+        if (data.length !== 0) {
+          const model: TrainingProgramCurriculumSection[] = [];
+          data.forEach(tmp => {
+            model.push({
+              id: 0,
+              trainingProgramId: this.id,
+              curriculumSectionId: tmp.id,
+              sectionNumber: this.curriculumSectionNumber,
+              name: tmp.name
+            });
+          });
+          this.trainingProgramCurriculumSections = model;
         }
       });
   }
@@ -358,5 +390,4 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
         }
       });
   }
-
 }
