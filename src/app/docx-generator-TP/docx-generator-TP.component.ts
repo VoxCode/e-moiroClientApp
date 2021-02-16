@@ -103,7 +103,7 @@ export class DocxGeneratorTPComponent implements OnInit{
   // tslint:disable-next-line:typedef
   loadCurriculumTopicTrainingProgram(){
     this.trainingProgramCurriculumSections.forEach(object => {
-      this.curriculumTopicTrainingProgramService.getValueList(object.curriculumSectionId)                  // ПЕРЕПИСАТЬ!!!!!!!!!!!!!!!!!!
+      this.curriculumTopicTrainingProgramService.getValueList(object.id)
         .subscribe((data: CurriculumTopicTrainingProgram[]) => {
           if (data !== undefined){
             const curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = data;
