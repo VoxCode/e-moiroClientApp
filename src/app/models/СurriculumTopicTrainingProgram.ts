@@ -6,7 +6,7 @@ export class CurriculumTopicTrainingProgram {
     public serialNumber?: number,
     public curriculumTopicId?: number,
     public trainingProgramId?: number,
-    public curriculumSectionId?: number,
+    public trainingProgrmaCurriculumSectionId?: number,
     public topicTitle?: string,
     public testWork?: string,
     public annotation?: string,

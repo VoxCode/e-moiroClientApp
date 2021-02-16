@@ -17,8 +17,8 @@ export class CurriculumTopicTrainingProgramService {
     return this.http.get(this.url + '/' + id);
   }
   // tslint:disable-next-line:typedef
-  getValueList(trainingProgramId: number, trainingProgramCurriculumSectionId: number) {
-    return this.http.get(this.url + '/' + trainingProgramId + '/' + trainingProgramCurriculumSectionId);
+  getValueList(trainingProgramCurriculumSectionId: number) {
+    return this.http.get(this.url + '/' + trainingProgramCurriculumSectionId + '/' + 1);
   }
   // tslint:disable-next-line:typedef
   createValue(curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram) {

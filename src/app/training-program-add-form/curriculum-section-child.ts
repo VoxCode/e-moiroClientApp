@@ -70,7 +70,6 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   // tslint:disable-next-line:typedef use-lifecycle-interface
   ngOnInit() {
     this.loadOccupationForm();
-
     this.subscription = this.commonService.saveCurriculumSectionChild$.subscribe( idx => {
       this.saveCurriculumTopicTrainingProgram();
     });
@@ -123,16 +122,18 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   loadCurriculumSection(){
     this.curriculumSectionService.getSelectValues(this.trainingProgram.departmentId)
       .subscribe((data: CurriculumSection[]) => {
-        if (data.length !== 0) {
+        if (data !== null) {
           const model: TrainingProgramCurriculumSection[] = [];
           data.forEach(tmp => {
-            model.push({
-              id: 0,
-              trainingProgramId: this.id,
-              curriculumSectionId: tmp.id,
-              sectionNumber: this.curriculumSectionNumber,
-              name: tmp.name
-            });
+            if (this.curriculumSectionId === 1 || tmp.id !== 1) {
+              model.push({
+                id: 0,
+                trainingProgramId: this.id,
+                curriculumSectionId: tmp.id,
+                sectionNumber: this.curriculumSectionNumber,
+                name: tmp.name
+              });
+            }
           });
           this.trainingProgramCurriculumSections = model;
           if (this.curriculumSectionId !== 0 && this.trainingProgramCurriculumSectionId !== 0) {
@@ -143,6 +144,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
             }
           }
           else {
+
             this.crateTrainingProgramCurriculumSection();
           }
         }
@@ -151,8 +153,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicTrainingProgram(){
-    this.curriculumTopicTrainingProgramService.getValueList(
-      this.id, this.trainingProgramCurriculumSectionId)
+    this.curriculumTopicTrainingProgramService.getValueList(this.trainingProgramCurriculumSectionId)
       .subscribe((data: CurriculumTopicTrainingProgram[]) => {
         if (data !== undefined){
           this.curriculumTopicTrainingPrograms = data;
@@ -197,7 +198,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
           curriculumTopicTrainingProgram.occupationFormId = 1;
         }
         curriculumTopicTrainingProgram.serialNumber = i;
-        curriculumTopicTrainingProgram.curriculumSectionId = this.trainingProgramCurriculumSectionSelect.curriculumSectionId;
+        curriculumTopicTrainingProgram.trainingProgrmaCurriculumSectionId = this.trainingProgramCurriculumSectionId;
         curriculumTopicTrainingProgram.id = object.seventh;
         if (curriculumTopicTrainingProgram.id === undefined){
           this.curriculumTopicTrainingProgramService.createValue(curriculumTopicTrainingProgram)
@@ -220,7 +221,6 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   // tslint:disable-next-line:typedef
   updateTrainingProgramCurriculumSection(){
     this.trainingProgramCurriculumSectionSelect.id = this.trainingProgramCurriculumSectionId;
-    console.log(this.trainingProgramCurriculumSectionSelect);
     this.trainingProgramCurriculumSectionService.updateValue(this.trainingProgramCurriculumSectionSelect)
       .subscribe((data: TrainingProgramCurriculumSection) => {
         console.log('Update was successful');
@@ -245,7 +245,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
     curriculumTopicTrainingProgram.curriculumTopicId = tmp.first;
     curriculumTopicTrainingProgram.occupationFormId = tmp.fifth;
     curriculumTopicTrainingProgram.trainingProgramId = tmp.sixth;
-    curriculumTopicTrainingProgram.curriculumSectionId = this.trainingProgramCurriculumSectionSelect.curriculumSectionId;
+    curriculumTopicTrainingProgram.trainingProgrmaCurriculumSectionId = this.trainingProgramCurriculumSectionId;
 
     this.curriculumTopicTrainingProgramService.updateValue(curriculumTopicTrainingProgram)
       .subscribe((data: CurriculumTopicTrainingProgram) => {
@@ -285,13 +285,10 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
     model.trainingProgramId = this.id;
     this.trainingProgramCurriculumSectionService.createValue(model)
       .subscribe((data: TrainingProgramCurriculumSection) => {
-        console.log(data.id);
-        model.id = data.id;
-        model.name = this.trainingProgramCurriculumSections
-          .find(a => a.curriculumSectionId === model.curriculumSectionId).name;
+        this.trainingProgramCurriculumSectionSelect = data;
+        this.trainingProgramCurriculumSectionSelect.name = 'Выбрать название раздела';
         this.trainingProgramCurriculumSectionId = data.id;
         this.trainingProgramCurriculumSectionIdChange.emit(data.id);
-        this.trainingProgramCurriculumSectionSelect = model;
         console.log('Crate was successful');
       });
   }
@@ -302,9 +299,13 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
       .subscribe((data: CurriculumSection) => {
         if (data !== undefined){
           this.curriculumSectionTmp.id = data.id;
-          this.trainingProgramCurriculumSectionSelect.id = this.trainingProgramCurriculumSectionId;
-          this.trainingProgramCurriculumSectionSelect.curriculumSectionId = this.curriculumSectionTmp.id;
-          this.trainingProgramCurriculumSectionSelect.name = this.curriculumSectionTmp.name;
+          const model: TrainingProgramCurriculumSection = new TrainingProgramCurriculumSection();
+          model.id = this.trainingProgramCurriculumSectionId;
+          model.curriculumSectionId = this.curriculumSectionTmp.id;
+          model.name = this.curriculumSectionTmp.name;
+          model.sectionNumber = this.curriculumSectionNumber;
+          model.trainingProgramId = this.id;
+          this.trainingProgramCurriculumSectionSelect = model;
           console.log('Success');
           this.updateTrainingProgramCurriculumSection();
           this.cancel();

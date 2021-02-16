@@ -2,8 +2,8 @@
   <h4><strong>Раздел {{curriculumSectionNumber}}</strong></h4>
   <h5 *ngIf="trainingProgramCurriculumSectionSelect"><strong>{{trainingProgramCurriculumSectionSelect.name}}</strong></h5>
   <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal.show()"
-          mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить название раздела</button>
-  <ng-select *ngIf="trainingProgramCurriculumSectionSelect.name !== ''" [items]="trainingProgramCurriculumSections"
+          mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Создать новое название раздела</button>
+  <ng-select [items]="trainingProgramCurriculumSections"
              (change)="updateTrainingProgramCurriculumSection()"
              bindValue=""
              bindLabel="name"
