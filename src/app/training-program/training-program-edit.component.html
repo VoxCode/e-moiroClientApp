@@ -59,6 +59,11 @@
         <option *ngFor="let el of certificationTypes" [ngValue]="el.id">{{el.name}}</option>
       </select>
 
+      <label>Форма получения образования</label>
+      <select class="browser-default custom-select" id="thirteenth" formControlName="twelfth">
+        <option *ngFor="let el of formOfEducations" [ngValue]="el.id">{{el.name}}</option>
+      </select>
+
 
     </form>
   </div>

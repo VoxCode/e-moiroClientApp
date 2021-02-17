@@ -8,6 +8,8 @@ import {CertificationTypeService} from '../services/certification-type.service';
 import {Department} from '../models/Department';
 import {StudentCategory} from '../models/StudentCategory';
 import {CertificationType} from '../models/CertificationType';
+import {FormOfEducation} from '../models/FormOfEducation';
+import {FormOfEducationService} from '../services/form-of-education.service';
 
 @Component({
   selector: 'app-modal-edit',
@@ -16,13 +18,15 @@ import {CertificationType} from '../models/CertificationType';
   providers: [
     DepartmentService,
     StudentCategoryService,
-    CertificationTypeService
+    CertificationTypeService,
+    FormOfEducationService,
   ]
 })
 export class TrainingProgramEditComponent {
   departments: Department[];
   studentCategories: StudentCategory[];
   certificationTypes: CertificationType[];
+  formOfEducations: FormOfEducation[];
   isDistanceLearning: any;
   public editableRow: {
     id: string,
@@ -39,6 +43,8 @@ export class TrainingProgramEditComponent {
     eleventh: string,
     twelfth: string,
     last: string,
+    thirteenth: string,
+    fourteenth: string,
     handle: string };
   public saveButtonClicked: Subject<any> = new Subject<any>();
 
@@ -53,20 +59,24 @@ export class TrainingProgramEditComponent {
     seventh: new FormControl(''),
     eight: new FormControl(''),
     tenth: new FormControl(''),
-    twelfth: new FormControl('')
+    twelfth: new FormControl(''),
+    thirteenth: new FormControl('')
   });
 
-  constructor(public modalRef: MDBModalRef,
-              private departmentService: DepartmentService,
-              private studentCategoryService: StudentCategoryService,
-              private certificationTypeService: CertificationTypeService,
-              ) { }
+  constructor(
+    public modalRef: MDBModalRef,
+    private departmentService: DepartmentService,
+    private studentCategoryService: StudentCategoryService,
+    private certificationTypeService: CertificationTypeService,
+    private formOfEducationService: FormOfEducationService
+  ) { }
 
   // tslint:disable-next-line:typedef use-lifecycle-interface
   ngOnInit() {
     this.loadDepartment();
     this.loadStudentCategory();
     this.loadCertificationType();
+    this.loadFormOfEducation();
     this.isDistanceLearning = this.editableRow.fourth;
     console.log(this.isDistanceLearning);
     this.form.controls.id.patchValue(this.editableRow.id);
@@ -80,6 +90,7 @@ export class TrainingProgramEditComponent {
     this.form.controls.eight.patchValue(this.editableRow.eight);
     this.form.controls.tenth.patchValue(this.editableRow.tenth);
     this.form.controls.twelfth.patchValue(this.editableRow.twelfth);
+    this.form.controls.thirteenth.patchValue(this.editableRow.thirteenth);
   }
 
   // tslint:disable-next-line:typedef
@@ -88,6 +99,7 @@ export class TrainingProgramEditComponent {
     this.editableRow.ninth = this.departments.find(p => p.id === +this.editableRow.eight).name;
     this.editableRow.eleventh = this.studentCategories.find(p => p.id === +this.editableRow.tenth).name;
     this.editableRow.last = this.certificationTypes.find(p => p.id === +this.editableRow.twelfth).name;
+    this.editableRow.fourteenth = this.formOfEducations.find(p => p.id === +this.editableRow.thirteenth).name;
     this.saveButtonClicked.next(this.editableRow);
     this.modalRef.hide();
   }
@@ -112,6 +124,8 @@ export class TrainingProgramEditComponent {
   get tenth() { return this.form.get('tenth'); }
   // tslint:disable-next-line:typedef
   get twelfth() { return this.form.get('twelfth'); }
+  // tslint:disable-next-line:typedef
+  get thirteenth() { return this.form.get('thirteenth'); }
 
   // tslint:disable-next-line:typedef
   loadDepartment() {
@@ -134,6 +148,14 @@ export class TrainingProgramEditComponent {
     this.certificationTypeService.getValues()
       .subscribe((data: CertificationType[]) => {
         this.certificationTypes = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadFormOfEducation() {
+    this.formOfEducationService.getValues()
+      .subscribe((data: FormOfEducation[]) => {
+        this.formOfEducations = data;
       });
   }
 

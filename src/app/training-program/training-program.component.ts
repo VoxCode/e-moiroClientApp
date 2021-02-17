@@ -9,6 +9,8 @@ import {Department} from '../models/Department';
 import {StudentCategory} from '../models/StudentCategory';
 import {CertificationType} from '../models/CertificationType';
 import {TrainingProgramEditComponent} from './training-program-edit.component';
+import {FormOfEducation} from '../models/FormOfEducation';
+import {FormOfEducationService} from '../services/form-of-education.service';
 
 
 @Component({
@@ -19,7 +21,8 @@ import {TrainingProgramEditComponent} from './training-program-edit.component';
     TrainingProgramService,
     DepartmentService,
     StudentCategoryService,
-    CertificationTypeService
+    CertificationTypeService,
+    FormOfEducationService
   ]
 })
 export class TrainingProgramComponent implements OnInit, AfterViewInit {
@@ -28,9 +31,11 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   departments: Department[];
   studentCategories: StudentCategory[];
   certificationTypes: CertificationType[];
+  formOfEducations: FormOfEducation[];
   department: Department = new Department();
   studentCategory: StudentCategory = new StudentCategory();
   certificationType: CertificationType = new CertificationType();
+  formOfEducation: FormOfEducation = new FormOfEducation();
 
   @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
@@ -38,7 +43,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
 
   elements: any = [];
   headElements = ['Номер', 'id', 'Название', 'Количество часов', 'Дистанционное обучение', 'Кафедра',
-    'Категория обучающихся', 'Тип аттестации', 'Команда'];
+    'Категория обучающихся', 'Тип аттестации', 'Форма получения образования', 'Команда'];
   searchText = '';
   previous: string;
   modalRef: MDBModalRef;
@@ -48,6 +53,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     private departmentService: DepartmentService,
     private studentCategoryService: StudentCategoryService,
     private certificationTypeService: CertificationTypeService,
+    private formOfEducationService: FormOfEducationService,
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService) { }
 
@@ -62,6 +68,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     this.loadDepartment();
     this.loadStudentCategory();
     this.loadCertificationType();
+    this.loadFormOfEducation();
   }
 
   // tslint:disable-next-line:typedef use-lifecycle-interface
@@ -120,6 +127,8 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
             tenth: this.values[i - 1].studentCategoryId,
             eleventh: this.values[i - 1].studentCategoryName,
             twelfth: this.values[i - 1].certificationTypeId,
+            thirteenth: this.values[i - 1].formOfEducationId,
+            fourteenth: this.values[i - 1].formOfEducationName,
             last: this.values[i - 1].certificationTypeName});
         }
         this.mdbTable.setDataSource(this.elements);
@@ -134,7 +143,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     this.value.departmentId = this.department.id;
     this.value.studentCategoryId = this.studentCategory.id;
     this.value.certificationTypeId = this.certificationType.id;
-    this.value.formOfEducationId = 1;
+    this.value.formOfEducationId = this.formOfEducation.id;
     this.valueService.createValue(this.value)
       .subscribe((data: TrainingProgram) => {
         this.value = data;
@@ -142,6 +151,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
         this.value.departmentName = this.departments.find(p => p.id === +this.value.departmentId).name;
         this.value.studentCategoryName = this.studentCategories.find(p => p.id === +this.value.studentCategoryId).name;
         this.value.certificationTypeName = this.certificationTypes.find(p => p.id === +this.value.certificationTypeId).name;
+        this.value.formOfEducationName = this.formOfEducations.find(p => p.id === +this.value.formOfEducationId).name;
         this.mdbTable.addRow({
           id: index.toString(),
           first: this.value.id,
@@ -156,6 +166,8 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
           tenth: this.value.studentCategoryId,
           eleventh: this.value.studentCategoryName,
           twelfth: this.value.certificationTypeId,
+          thirteenth: this.value.formOfEducationId,
+          fourteenth: this.value.formOfEducationName,
           last: this.value.certificationTypeName
         });
         this.mdbTable.setDataSource(this.elements);
@@ -176,7 +188,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     this.value.departmentId = el.eight;
     this.value.studentCategoryId = el.tenth;
     this.value.certificationTypeId = el.twelfth;
-    this.value.formOfEducationId = 1;
+    this.value.formOfEducationId = el.thirteenth;
     this.valueService.updateValue(this.value)
       .subscribe();
     this.cancel();
@@ -201,6 +213,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     this.value.departmentId = p.eight;
     this.value.studentCategoryId = p.tenth;
     this.value.certificationTypeId = p.twelfth;
+    this.value.formOfEducationId = p.thirteenth;
     this.valueService.deleteValue(this.value.id)
       .subscribe(data => {
         this.removeRow(p);
@@ -268,6 +281,14 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     this.certificationTypeService.getValues()
       .subscribe((data: CertificationType[]) => {
         this.certificationTypes = data;
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadFormOfEducation() {
+    this.formOfEducationService.getValues()
+      .subscribe((data: FormOfEducation[]) => {
+        this.formOfEducations = data;
       });
   }
 }
