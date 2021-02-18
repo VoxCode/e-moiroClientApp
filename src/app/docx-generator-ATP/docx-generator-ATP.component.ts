@@ -22,6 +22,8 @@ import {StudentCategoryService} from '../services/student-category.service';
 import {StudentCategory} from '../models/StudentCategory';
 import {CertificationTypeService} from '../services/certification-type.service';
 import {CertificationType} from '../models/CertificationType';
+import {FormOfEducationService} from '../services/form-of-education.service';
+import {FormOfEducation} from "../models/FormOfEducation";
 
 @Component({
   selector: 'app-docx-generator',
@@ -36,7 +38,8 @@ import {CertificationType} from '../models/CertificationType';
     TrainingProgramRegulationService,
     CurriculumTopicTrainingProgramService,
     StudentCategoryService,
-    CertificationTypeService
+    CertificationTypeService,
+    FormOfEducationService
   ]
 })
 
@@ -46,6 +49,7 @@ export class DocxGeneratorATPComponent implements OnInit{
   trainingProgram: TrainingProgram;
   studentCategory: StudentCategory;
   certificationType: CertificationType;
+  formOfEducation: FormOfEducation;
   trainingProgramCurriculumSections: TrainingProgramCurriculumSection[];
   trainingProgramFinalExaminations: TrainingProgramFinalExamination[];
   trainingProgramMainLiteratures: TrainingProgramMainLiterature[];
@@ -63,6 +67,7 @@ export class DocxGeneratorATPComponent implements OnInit{
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private studentCategoryService: StudentCategoryService,
     private certificationTypeService: CertificationTypeService,
+    private formOfEducationService: FormOfEducationService,
     private route: ActivatedRoute
   ) { }
 
@@ -198,6 +203,17 @@ export class DocxGeneratorATPComponent implements OnInit{
       .subscribe((data: CertificationType) => {
         if (data !== undefined){
           this.certificationType = data;
+          this.loadFormOfEducation();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadFormOfEducation() {
+    this.formOfEducationService.getValue(this.trainingProgram.formOfEducationId)
+      .subscribe((data: CertificationType) => {
+        if (data !== undefined){
+          this.formOfEducation = data;
           this.getDocumentRector();
         }
       });
@@ -214,7 +230,8 @@ export class DocxGeneratorATPComponent implements OnInit{
       this.trainingProgramAdditionalLiteratures,
       this.trainingProgramRegulations,
       this.studentCategory,
-      this.certificationType
+      this.certificationType,
+      this.formOfEducation
     );
     const docxTmp = documentCreator.create([
       model,
@@ -236,7 +253,8 @@ export class DocxGeneratorATPComponent implements OnInit{
       this.trainingProgramAdditionalLiteratures,
       this.trainingProgramRegulations,
       this.studentCategory,
-      this.certificationType
+      this.certificationType,
+      this.formOfEducation
     );
     const docxTmp = documentCreator.create([
       model,

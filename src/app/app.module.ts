@@ -64,7 +64,6 @@ import { TrainingProgramAddForm4Component } from './training-program-add-form4/t
 import { TrainingProgramAddForm5Component } from './training-program-add-form5/training-program-add-form5.component';
 import {DocxGeneratorTPComponent} from './docx-generator-TP/docx-generator-TP.component';
 import { FilterPipe } from './filter.pipe';
-import { RegisterFormComponentComponent } from './register-form-component/register-form-component.component';
 
 @NgModule({
   declarations: [
@@ -116,8 +115,7 @@ import { RegisterFormComponentComponent } from './register-form-component/regist
     TrainingProgramAddForm3Component,
     TrainingProgramAddForm4Component,
     TrainingProgramAddForm5Component,
-    FilterPipe,
-    RegisterFormComponentComponent
+    FilterPipe
   ],
     imports: [
         BrowserModule,
