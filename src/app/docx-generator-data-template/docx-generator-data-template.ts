@@ -1,6 +1,5 @@
 import {
   AlignmentType,
-  convertInchesToTwip, convertMillimetersToTwip,
   PageBreak,
   PageNumber,
   Paragraph,
@@ -8,7 +7,8 @@ import {
   TableCell,
   TableRow,
   TabStopType,
-  TextRun, WidthType
+  TextRun,
+  VerticalAlign
 } from 'docx';
 
 export class DocxGeneratorDataTemplate {
@@ -330,22 +330,25 @@ export class DocxGeneratorDataTemplate {
             new TableCell({
               children: [new Paragraph('Названия разделов и тем')],
               rowSpan: 3,
-              width: {
-                size: convertMillimetersToTwip(54.8),
-              }
+              verticalAlign: VerticalAlign.CENTER
             }),
             new TableCell({
               children: [new Paragraph('Количество учебных часов')],
-              columnSpan: 2,
-              width: {
-                size: convertMillimetersToTwip(80.1),
-              },
+              columnSpan: 9,
+              verticalAlign: VerticalAlign.CENTER
             }),
             new TableCell({
               children: [new Paragraph('Кафедра')],
-              width: {
-                size: convertMillimetersToTwip(30.5),
-              }
+              rowSpan: 3,
+              verticalAlign: VerticalAlign.CENTER
+            }),
+          ],
+        }),
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph('Распределение по видам занятий')],
+              columnSpan: 9
             }),
           ],
         }),
@@ -353,24 +356,32 @@ export class DocxGeneratorDataTemplate {
           children: [
             new TableCell({
               children: [new Paragraph('Всего')],
-              rowSpan: 2
             }),
             new TableCell({
-              children: [new Paragraph('Распределение по видам занятий')],
-              columnSpan: 3
-            }),
-          ],
-        }),
-        new TableRow({
-          children: [
-            new TableCell({
-              children: [new Paragraph('1')],
+              children: [new Paragraph('Лекции')],
+              verticalAlign: VerticalAlign.CENTER
             }),
             new TableCell({
-              children: [new Paragraph('1')],
+              children: [new Paragraph('Практические занятия')],
+              verticalAlign: VerticalAlign.CENTER
             }),
             new TableCell({
-              children: [new Paragraph('1')],
+              children: [new Paragraph('Семинарские занятия')],
+            }),
+            new TableCell({
+              children: [new Paragraph('Круглые столы, тематические дискуссии ')],
+            }),
+            new TableCell({
+              children: [new Paragraph('Лабораторные занятия')],
+            }),
+            new TableCell({
+              children: [new Paragraph('Деловые игры')],
+            }),
+            new TableCell({
+              children: [new Paragraph('Тренинги')],
+            }),
+            new TableCell({
+              children: [new Paragraph('Конференции')],
             }),
           ],
         }),
@@ -385,13 +396,71 @@ export class DocxGeneratorDataTemplate {
             new TableCell({
               children: [new Paragraph('3')],
             }),
+            new TableCell({
+              children: [new Paragraph('4')],
+            }),
+            new TableCell({
+              children: [new Paragraph('5')],
+            }),
+            new TableCell({
+              children: [new Paragraph('6')],
+            }),
+            new TableCell({
+              children: [new Paragraph('7')],
+            }),
+            new TableCell({
+              children: [new Paragraph('8')],
+            }),
+            new TableCell({
+              children: [new Paragraph('9')],
+            }),
+            new TableCell({
+              children: [new Paragraph('10')],
+            }),
+            new TableCell({
+              children: [new Paragraph('11')],
+            }),
+          ],
+        }),
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph('1')],
+            }),
+            new TableCell({
+              children: [new Paragraph('2')],
+            }),
+            new TableCell({
+              children: [new Paragraph('3')],
+            }),
+            new TableCell({
+              children: [new Paragraph('4')],
+            }),
+            new TableCell({
+              children: [new Paragraph('5')],
+            }),
+            new TableCell({
+              children: [new Paragraph('6')],
+            }),
+            new TableCell({
+              children: [new Paragraph('7')],
+            }),
+            new TableCell({
+              children: [new Paragraph('8')],
+            }),
+            new TableCell({
+              children: [new Paragraph('9')],
+            }),
+            new TableCell({
+              children: [new Paragraph('10')],
+            }),
+            new TableCell({
+              children: [new Paragraph('11')],
+            }),
           ],
         }),
       ],
-      width: {
-        size: convertMillimetersToTwip(165.4),
-        type: WidthType.DXA,
-      }
+
     });
   }
 
