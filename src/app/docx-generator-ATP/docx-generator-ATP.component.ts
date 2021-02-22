@@ -23,6 +23,8 @@ import {CertificationTypeService} from '../services/certification-type.service';
 import {CertificationType} from '../models/CertificationType';
 import {FormOfEducationService} from '../services/form-of-education.service';
 import {FormOfEducation} from '../models/FormOfEducation';
+import {OccupationFormService} from '../services/occupation-form.service';
+import {OccupationForm} from "../models/OccupationForm";
 
 @Component({
   selector: 'app-docx-generator',
@@ -38,7 +40,8 @@ import {FormOfEducation} from '../models/FormOfEducation';
     CurriculumTopicTrainingProgramService,
     StudentCategoryService,
     CertificationTypeService,
-    FormOfEducationService
+    FormOfEducationService,
+    OccupationFormService
   ]
 })
 
@@ -54,6 +57,7 @@ export class DocxGeneratorATPComponent implements OnInit{
   trainingProgramMainLiteratures: TrainingProgramMainLiterature[];
   trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[];
   trainingProgramRegulations: TrainingProgramRegulation[];
+  occupationForms: OccupationForm[];
   docx: any;
   isRector = true;
 
@@ -68,6 +72,7 @@ export class DocxGeneratorATPComponent implements OnInit{
     private studentCategoryService: StudentCategoryService,
     private certificationTypeService: CertificationTypeService,
     private formOfEducationService: FormOfEducationService,
+    private occupationFormService: OccupationFormService,
     private route: ActivatedRoute
   ) { }
 
@@ -214,6 +219,17 @@ export class DocxGeneratorATPComponent implements OnInit{
       .subscribe((data: CertificationType) => {
         if (data !== undefined){
           this.formOfEducation = data;
+          this.loadOccupationForm();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadOccupationForm() {
+    this.occupationFormService.getValues()
+      .subscribe((data: OccupationForm[]) => {
+        if (data !== undefined || data !== null){
+          this.occupationForms = data;
           this.getDocument();
         }
       });
@@ -232,6 +248,7 @@ export class DocxGeneratorATPComponent implements OnInit{
       this.studentCategory,
       this.certificationType,
       this.formOfEducation,
+      this.occupationForms,
       this.isRector
     );
     const docxTmp = documentCreator.create([

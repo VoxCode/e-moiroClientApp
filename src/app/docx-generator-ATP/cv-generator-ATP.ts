@@ -10,6 +10,7 @@ import {StudentCategory} from '../models/StudentCategory';
 import {CertificationType} from '../models/CertificationType';
 import {DocxGeneratorDataTemplate} from '../docx-generator-data-template/docx-generator-data-template';
 import {FormOfEducation} from '../models/FormOfEducation';
+import {OccupationForm} from '../models/OccupationForm';
 
 export class DocumentCreatorRector {
 
@@ -27,6 +28,7 @@ export class DocumentCreatorRector {
     private studentCategory: StudentCategory,
     private certificationType: CertificationType,
     private formOfEducation: FormOfEducation,
+    private occupationForms: OccupationForm[],
     private isRector: boolean
   ) { }
 
@@ -82,7 +84,10 @@ export class DocumentCreatorRector {
             //#endregion First page
           ]
         }),
-        this.docxGeneratorDataTemplate.tableATP()
+        this.docxGeneratorDataTemplate.tableATP(
+          this.trainingProgramCurriculumSections,
+          this.curriculumTopicsList,
+          this.occupationForms)
       ],
     });
 

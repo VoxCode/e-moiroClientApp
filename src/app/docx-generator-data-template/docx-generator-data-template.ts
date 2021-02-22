@@ -5,11 +5,14 @@ import {
   Paragraph,
   Table,
   TableCell,
-  TableRow,
+  TableRow, TableShading,
   TabStopType,
   TextRun,
   VerticalAlign
 } from 'docx';
+import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
+import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
+import {OccupationForm} from '../models/OccupationForm';
 
 export class DocxGeneratorDataTemplate {
 
@@ -153,7 +156,6 @@ export class DocxGeneratorDataTemplate {
       ],
     });
   }
-
 
   public approveDean(year: string): Paragraph
   {
@@ -331,145 +333,80 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
-  public tableATP(): Table{
-    return new Table({
-      rows: [
-        new TableRow({
-          children: [
-            new TableCell({
-              children: [new Paragraph('Названия разделов и тем')],
-              rowSpan: 3,
-              verticalAlign: VerticalAlign.CENTER
-            }),
-            new TableCell({
-              children: [new Paragraph('Количество учебных часов')],
-              columnSpan: 9,
-              verticalAlign: VerticalAlign.CENTER
-            }),
-            new TableCell({
-              children: [new Paragraph('Кафедра')],
-              rowSpan: 3,
-              verticalAlign: VerticalAlign.CENTER
-            }),
-          ],
-        }),
-        new TableRow({
-          children: [
-            new TableCell({
-              children: [new Paragraph('Распределение по видам занятий')],
-              columnSpan: 9
-            }),
-          ],
-        }),
-        new TableRow({
-          children: [
-            new TableCell({
-              children: [new Paragraph('Всего')],
-            }),
-            new TableCell({
-              children: [new Paragraph('Лекции')],
-              verticalAlign: VerticalAlign.CENTER
-            }),
-            new TableCell({
-              children: [new Paragraph('Практические занятия')],
-              verticalAlign: VerticalAlign.CENTER
-            }),
-            new TableCell({
-              children: [new Paragraph('Семинарские занятия')],
-            }),
-            new TableCell({
-              children: [new Paragraph('Круглые столы, тематические дискуссии ')],
-            }),
-            new TableCell({
-              children: [new Paragraph('Лабораторные занятия')],
-            }),
-            new TableCell({
-              children: [new Paragraph('Деловые игры')],
-            }),
-            new TableCell({
-              children: [new Paragraph('Тренинги')],
-            }),
-            new TableCell({
-              children: [new Paragraph('Конференции')],
-            }),
-          ],
-        }),
-        new TableRow({
-          children: [
-            new TableCell({
-              children: [new Paragraph('1')],
-            }),
-            new TableCell({
-              children: [new Paragraph('2')],
-            }),
-            new TableCell({
-              children: [new Paragraph('3')],
-            }),
-            new TableCell({
-              children: [new Paragraph('4')],
-            }),
-            new TableCell({
-              children: [new Paragraph('5')],
-            }),
-            new TableCell({
-              children: [new Paragraph('6')],
-            }),
-            new TableCell({
-              children: [new Paragraph('7')],
-            }),
-            new TableCell({
-              children: [new Paragraph('8')],
-            }),
-            new TableCell({
-              children: [new Paragraph('9')],
-            }),
-            new TableCell({
-              children: [new Paragraph('10')],
-            }),
-            new TableCell({
-              children: [new Paragraph('11')],
-            }),
-          ],
-        }),
-        new TableRow({
-          children: [
-            new TableCell({
-              children: [new Paragraph('1')],
-            }),
-            new TableCell({
-              children: [new Paragraph('2')],
-            }),
-            new TableCell({
-              children: [new Paragraph('3')],
-            }),
-            new TableCell({
-              children: [new Paragraph('4')],
-            }),
-            new TableCell({
-              children: [new Paragraph('5')],
-            }),
-            new TableCell({
-              children: [new Paragraph('6')],
-            }),
-            new TableCell({
-              children: [new Paragraph('7')],
-            }),
-            new TableCell({
-              children: [new Paragraph('8')],
-            }),
-            new TableCell({
-              children: [new Paragraph('9')],
-            }),
-            new TableCell({
-              children: [new Paragraph('10')],
-            }),
-            new TableCell({
-              children: [new Paragraph('11')],
-            }),
-          ],
-        }),
-      ],
+  public tableATP(
+    trainingProgramCurriculumSections: TrainingProgramCurriculumSection[],
+    curriculumTopicsList: CurriculumTopicTrainingProgram[][],
+    occupationForms: OccupationForm[]): Table{
+    const row: any = [];
+    row.push(
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph('Названия разделов и тем')],
+            rowSpan: 3,
+            verticalAlign: VerticalAlign.CENTER
+          }),
+          new TableCell({
+            children: [new Paragraph('Количество учебных часов')],
+            columnSpan: occupationForms.length + 1,
+            verticalAlign: VerticalAlign.CENTER
+          }),
+          new TableCell({
+            children: [new Paragraph('Кафедра')],
+            rowSpan: 3,
+            verticalAlign: VerticalAlign.CENTER
+          }),
+        ],
+      }),
+    );
+    row.push(
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph('Распределение по видам занятий')],
+            columnSpan: occupationForms.length + 1
+          }),
+        ],
+      }),
+    );
+    row.push(this.tableRowNumber(occupationForms.length));
+    row.push(this.tableRowOccupationForm(occupationForms));
 
+    return new Table({
+      rows: row
+    });
+  }
+
+  public tableRowOccupationForm(occupationForms: OccupationForm[]): TableRow
+  {
+    const child: any = [];
+    occupationForms.forEach(obj => {
+      child.push(new TableCell({
+        children: [
+          new Paragraph(obj.fullName)
+        ]
+      }));
+    });
+    return new TableRow({
+      children: child
+    });
+  }
+
+  public tableRowNumber(occupationFormLength: number): TableRow
+  {
+    const child: any = [];
+    for (let i = 1; i < occupationFormLength + 3; i++){
+      child.push(new TableCell({
+        children: [
+          new Paragraph((i).toString())
+        ]
+      }));
+    }
+
+
+
+    return new TableRow({
+      children: child
     });
   }
 

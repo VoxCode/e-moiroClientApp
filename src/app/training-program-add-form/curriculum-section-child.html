@@ -36,8 +36,10 @@
         <input  (focusout)="updateSingleCurriculumTopicTrainingProgram(item)" min="0" max="10" [(ngModel)]="item.fourth" (change)= "item.fourth < 0 ? item.fourth = 0 : item.fourth;
          item.fourth > 10 ? item.fourth = 0 : item.fourth;" type="number" class="md-textarea form-control" mdbInput>
       </div><br>
-      <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal2.show()"
-              mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon></button>
+      <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+              (click)="basicModal2.show()" mdbWavesEffect>
+        <mdb-icon fas icon="plus" size="lg"></mdb-icon>
+      </button>
       <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
               (click)="deleteCurriculumTopicTrainingProgram(item.seventh, i)" mdbWavesEffect>
         <mdb-icon fas icon="times" size="lg"></mdb-icon>

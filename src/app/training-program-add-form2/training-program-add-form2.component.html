@@ -40,10 +40,9 @@
             <div class="example-box" *ngFor="let item of done; index as i" cdkDrag>{{i+1}}. {{item.third}}
               <br><br>
               <div class="buttons">
-                <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal.show()"
-                        mdbWavesEffect>
-                  <mdb-icon fas icon="plus" size="sm">
-                  </mdb-icon>
+                <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+                        (click)="basicModal.show()" mdbWavesEffect>
+                  <mdb-icon fas icon="plus" size="lg"></mdb-icon>
                 </button>
                 <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
                         (click)="deleteTrainingProgramFinalExamination(item.fourth, i)" mdbWavesEffect>
