@@ -26,7 +26,8 @@ export class DocumentCreatorRector {
     private trainingProgramRegulations: TrainingProgramRegulation[],
     private studentCategory: StudentCategory,
     private certificationType: CertificationType,
-    private formOfEducation: FormOfEducation
+    private formOfEducation: FormOfEducation,
+    private isRector: boolean
   ) { }
 
   public create([]): Document {
@@ -74,7 +75,7 @@ export class DocumentCreatorRector {
             //#region "First page"
             this.docxGeneratorDataTemplate.titleMOIRO(),
             this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.approveRector(this.docxGeneratorDataTemplate.getNowYear()),
+            this.docxGeneratorDataTemplate.approve(this.docxGeneratorDataTemplate.getNowYear(), this.isRector),
             this.docxGeneratorDataTemplate.mainNameDocumentATP('«' + this.trainingProgram.name + '»'),
             this.docxGeneratorDataTemplate.trainingProgramInfoATP(
               this.trainingProgram.numberOfHours, this.formOfEducation.name, this.trainingProgram.isDistanceLearning),

@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { Packer } from 'docx';
 import { model, empty } from './cv-data-ATP';
-import {DocumentCreatorDean} from './cv-generator-ATPDean';
-import {DocumentCreatorRector} from './cv-generator-ATPRector';
+import {DocumentCreatorRector} from './cv-generator-ATP';
 import {TrainingProgramService} from '../services/training-program.service';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {ActivatedRoute} from '@angular/router';
@@ -23,7 +22,7 @@ import {StudentCategory} from '../models/StudentCategory';
 import {CertificationTypeService} from '../services/certification-type.service';
 import {CertificationType} from '../models/CertificationType';
 import {FormOfEducationService} from '../services/form-of-education.service';
-import {FormOfEducation} from "../models/FormOfEducation";
+import {FormOfEducation} from '../models/FormOfEducation';
 
 @Component({
   selector: 'app-docx-generator',
@@ -56,6 +55,7 @@ export class DocxGeneratorATPComponent implements OnInit{
   trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[];
   trainingProgramRegulations: TrainingProgramRegulation[];
   docx: any;
+  isRector = true;
 
   constructor(
     private trainingProgramService: TrainingProgramService,
@@ -214,13 +214,13 @@ export class DocxGeneratorATPComponent implements OnInit{
       .subscribe((data: CertificationType) => {
         if (data !== undefined){
           this.formOfEducation = data;
-          this.getDocumentRector();
+          this.getDocument();
         }
       });
   }
 
   // tslint:disable-next-line:typedef
-  public getDocumentRector() {
+  public getDocument() {
     const documentCreator = new DocumentCreatorRector(
       this.curriculumTopicsList,
       this.trainingProgram,
@@ -231,30 +231,8 @@ export class DocxGeneratorATPComponent implements OnInit{
       this.trainingProgramRegulations,
       this.studentCategory,
       this.certificationType,
-      this.formOfEducation
-    );
-    const docxTmp = documentCreator.create([
-      model,
-      empty
-    ]);
-    Packer.toBlob(docxTmp).then(blob => {
-      this.docx = blob;
-    });
-  }
-
-  // tslint:disable-next-line:typedef
-  public getDocumentDean() {
-    const documentCreator = new DocumentCreatorDean(
-      this.curriculumTopicsList,
-      this.trainingProgram,
-      this.trainingProgramCurriculumSections,
-      this.trainingProgramFinalExaminations,
-      this.trainingProgramMainLiteratures,
-      this.trainingProgramAdditionalLiteratures,
-      this.trainingProgramRegulations,
-      this.studentCategory,
-      this.certificationType,
-      this.formOfEducation
+      this.formOfEducation,
+      this.isRector
     );
     const docxTmp = documentCreator.create([
       model,
@@ -267,11 +245,13 @@ export class DocxGeneratorATPComponent implements OnInit{
 
   // tslint:disable-next-line:typedef
   generateRector() {
-     this.getDocumentRector();
+    this.isRector = true;
+    this.getDocument();
   }
 
   // tslint:disable-next-line:typedef
   generateDean() {
-    this.getDocumentDean();
+    this.isRector = false;
+    this.getDocument();
   }
 }

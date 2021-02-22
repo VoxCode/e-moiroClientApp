@@ -110,8 +110,17 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
-  // tslint:disable-next-line:typedef
-  public approveRector(year: string)
+  public approve(year: string, isRector: boolean): Paragraph
+  {
+    if (isRector === true){
+      return this.approveRector(year);
+    }
+    else {
+      return this.approveDean(year);
+    }
+  }
+
+  public approveRector(year: string): Paragraph
   {
     return new Paragraph({
       children: [
@@ -145,8 +154,8 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
-  // tslint:disable-next-line:typedef
-  public approveDean(year: string)
+
+  public approveDean(year: string): Paragraph
   {
     return new Paragraph({
       children: [
@@ -464,8 +473,8 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
-  // tslint:disable-next-line:typedef
-  public getNowYear(){
+  public getNowYear(): string
+  {
     return new Date().getFullYear().toString();
   }
 
