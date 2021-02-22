@@ -100,7 +100,6 @@ export class TrainingProgramAddForm2Component implements OnInit {
     this.curriculumTopicTrainingProgramService.getValue(this.id).subscribe((data: CurriculumTopicTrainingProgram[]) => {
       if (data !== undefined && data !== null){
         this.curriculumTopicTrainingPrograms = data;
-        console.log(this.curriculumTopicTrainingPrograms);
         this.loadFinalExamination();
       }
     });

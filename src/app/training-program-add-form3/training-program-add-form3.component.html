@@ -28,7 +28,7 @@
       <div class="col-sm-6">
         <div class="example-container">
           <h2>Выбрано</h2>
-          <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal.show()"
+          <button *ngIf="done.length === 0" type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal.show()"
                   mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить</button>
 
           <div
@@ -37,8 +37,19 @@
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div class="example-box" *ngFor="let item of done; index as i" cdkDrag>{{i+1}}. {{item.third}}
-              <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
-                      (click)="deleteTrainingProgramMainLiterature(item.fourth, i)" mdbWavesEffect><mdb-icon fas icon="times" size="lg"></mdb-icon></button></div>
+              <br><br>
+              <div class="buttons">
+                <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal.show()"
+                        mdbWavesEffect>
+                  <mdb-icon fas icon="plus" size="sm">
+                  </mdb-icon>
+                </button>
+                <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
+                        (click)="deleteTrainingProgramMainLiterature(item.fourth, i)" mdbWavesEffect>
+                  <mdb-icon fas icon="times" size="lg"></mdb-icon>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -60,7 +71,7 @@
         <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()" (click)="cancel()">
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel">Нормативные правовые акты</h4>
+        <h4 class="modal-title w-100" id="myModalLabel">Основная литература</h4>
       </div>
       <div class="modal-body">
         <label>Содержание</label>

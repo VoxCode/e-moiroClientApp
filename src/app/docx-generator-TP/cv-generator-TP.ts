@@ -13,7 +13,7 @@ import {DocxGeneratorDataTemplate} from '../docx-generator-data-template/docx-ge
 export class DocumentCreator {
 
   teacher: number;
-  isVariableOn: boolean;
+  isVariableOn = false;
   docxGeneratorDataTemplate: DocxGeneratorDataTemplate = new DocxGeneratorDataTemplate(28);
 
   constructor(
@@ -193,12 +193,11 @@ export class DocumentCreator {
               arr.push(this.docxGeneratorDataTemplate.titleText(index + 1 + '.' + object.name));
               arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
               if (this.trainingProgram.isDistanceLearning === false){
-                arr.push(this.docxGeneratorDataTemplate.someTextCenter('Инвариантная часть.', 0,  true));
+                arr.push(this.docxGeneratorDataTemplate.someTextCenter('Инвариантная часть', 0,  true));
               }
 
               let i = 1;
               this.curriculumTopicsList[index].forEach(obj => {
-                this.isVariableOn = false;
                 if (obj.isVariable === false){
                   arr.push(this.docxGeneratorDataTemplate
                     .someTextCurriculumTopics((index + 1) + '.' + i + ' ' + obj.topicTitle, ' (' + obj.fullName.toLowerCase() + ',' +
@@ -212,7 +211,7 @@ export class DocumentCreator {
               });
               arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
               if (this.trainingProgram.isDistanceLearning === false && this.isVariableOn === true){
-                arr.push(this.docxGeneratorDataTemplate.someTextCenter('Вариативная часть.', 0,  true));
+                arr.push(this.docxGeneratorDataTemplate.someTextCenter('Вариативная часть', 0,  true));
               }
 
               let j = 1;
@@ -284,7 +283,7 @@ export class DocumentCreator {
         ...internalParameter
           .map((nothing) => {
             const arr: Paragraph[] = [];
-            arr.push(this.docxGeneratorDataTemplate.titleText('Материалы итоговой аттестации для слушателей'));
+            arr.push(this.docxGeneratorDataTemplate.titleText('Материалы для итоговой аттестации слушателей'));
             arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
             arr.push(this.docxGeneratorDataTemplate.someTextCenter('Вопросы для проведения зачета', 0 , true));
             arr.push(this.docxGeneratorDataTemplate.emptyParagraph());

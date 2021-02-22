@@ -15,8 +15,9 @@
     [cdkDropListData]="done"
     class="example-list"
     (cdkDropListDropped)="drop($event)">
-    <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal2.show()"
-            mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить тему учебной программы</button><br>
+    <button *ngIf="done.length === 0" type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal2.show()"
+            mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить тему</button>
+    <br>
     <div class="example-box"  *ngFor="let item of done; index as i" cdkDrag>
 
       <div id="curriculumTitle"><b>{{i+1}}. {{item.second}}</b></div><br>
@@ -24,17 +25,19 @@
       <div id="isVariable" *ngIf="trainingProgram.isDistanceLearning === false">
         <mdb-checkbox (change)="updateSingleCurriculumTopicTrainingProgram(item)" [(ngModel)]="item.third" [default]="true">Вариативная</mdb-checkbox>
       </div><br>
-      <div id="hours">
-        <label>Количество часов</label>
-        <input  (focusout)="updateSingleCurriculumTopicTrainingProgram(item)" min="0" max="10" [(ngModel)]="item.fourth" (change)= "item.fourth < 0 ? item.fourth = 0 : item.fourth;
-         item.fourth > 10 ? item.fourth = 0 : item.fourth;" type="number" class="md-textarea form-control" mdbInput>
-      </div><br>
       <div id="formOfEducation">
         <label>Форма занятия</label>
         <select (change)="updateSingleCurriculumTopicTrainingProgram(item)" [(ngModel)]="item.fifth" class="browser-default custom-select">
           <option *ngFor="let el of occupationForms" [ngValue]="el.id">{{el.fullName}}</option>
         </select>
       </div><br>
+      <div id="hours">
+        <label>Количество часов</label>
+        <input  (focusout)="updateSingleCurriculumTopicTrainingProgram(item)" min="0" max="10" [(ngModel)]="item.fourth" (change)= "item.fourth < 0 ? item.fourth = 0 : item.fourth;
+         item.fourth > 10 ? item.fourth = 0 : item.fourth;" type="number" class="md-textarea form-control" mdbInput>
+      </div><br>
+      <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal2.show()"
+              mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon></button>
       <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
               (click)="deleteCurriculumTopicTrainingProgram(item.seventh, i)" mdbWavesEffect>
         <mdb-icon fas icon="times" size="lg"></mdb-icon>
