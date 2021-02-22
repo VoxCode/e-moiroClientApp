@@ -57,6 +57,7 @@ export class TrainingProgramAddForm2Component implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      this.save();
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,

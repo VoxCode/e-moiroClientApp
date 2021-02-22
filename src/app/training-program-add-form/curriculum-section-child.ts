@@ -85,6 +85,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      this.saveCurriculumTopicTrainingProgram();
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,

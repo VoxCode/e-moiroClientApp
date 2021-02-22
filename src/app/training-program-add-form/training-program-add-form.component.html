@@ -46,7 +46,7 @@
           </app-curriculum-section-child>
           <button type="button" class="deleteBtn" mdbBtn color="danger" size="sm" class="relative waves-light"
                   (click)="deleteTrainingProgramCurriculumSection(i, item.trainingProgramCurriculumSectionId)" mdbWavesEffect>
-            <mdb-icon fas icon="trash-alt" size="sm"></mdb-icon> Удалить Раздел
+            <mdb-icon fas icon="trash-alt" size="sm"></mdb-icon> Удалить Раздел {{i + 1}}
           </button>
 
           <button *ngIf="i === curriculumSectionContentList.length - 1" class="deleteBtn" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
