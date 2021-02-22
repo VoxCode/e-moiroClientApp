@@ -5,7 +5,7 @@ import {
   Paragraph,
   Table,
   TableCell,
-  TableRow, TableShading,
+  TableRow,
   TabStopType,
   TextRun,
   VerticalAlign
@@ -348,7 +348,7 @@ export class DocxGeneratorDataTemplate {
           }),
           new TableCell({
             children: [new Paragraph('Количество учебных часов')],
-            columnSpan: occupationForms.length + 1,
+            columnSpan: occupationForms.length,
             verticalAlign: VerticalAlign.CENTER
           }),
           new TableCell({
@@ -364,13 +364,17 @@ export class DocxGeneratorDataTemplate {
         children: [
           new TableCell({
             children: [new Paragraph('Распределение по видам занятий')],
-            columnSpan: occupationForms.length + 1
+            columnSpan: occupationForms.length
           }),
         ],
       }),
     );
-    row.push(this.tableRowNumber(occupationForms.length));
     row.push(this.tableRowOccupationForm(occupationForms));
+    row.push(this.tableRowNumber(occupationForms.length));
+    trainingProgramCurriculumSections.forEach(obj => {
+      row.push(this.tableRowCurriculumSection(obj));
+    });
+
 
     return new Table({
       rows: row
@@ -380,12 +384,19 @@ export class DocxGeneratorDataTemplate {
   public tableRowOccupationForm(occupationForms: OccupationForm[]): TableRow
   {
     const child: any = [];
+    child.push(new TableCell({
+      children: [
+        new Paragraph('Всего')
+      ]
+    }));
     occupationForms.forEach(obj => {
-      child.push(new TableCell({
-        children: [
-          new Paragraph(obj.fullName)
-        ]
-      }));
+      if (obj.id !== 1){
+        child.push(new TableCell({
+          children: [
+            new Paragraph(obj.fullName)
+          ]
+        }));
+      }
     });
     return new TableRow({
       children: child
@@ -402,9 +413,19 @@ export class DocxGeneratorDataTemplate {
         ]
       }));
     }
+    return new TableRow({
+      children: child
+    });
+  }
 
-
-
+  public tableRowCurriculumSection(trainingProgramCurriculumSection: TrainingProgramCurriculumSection): TableRow
+  {
+    const child: any = [];
+    child.push(new TableCell({
+      children: [
+        new Paragraph(trainingProgramCurriculumSection.name)
+      ]
+    }));
     return new TableRow({
       children: child
     });
@@ -413,36 +434,5 @@ export class DocxGeneratorDataTemplate {
   public getNowYear(): string
   {
     return new Date().getFullYear().toString();
-  }
-
-  public getMonthFromInt(value: number): string {
-    switch (value) {
-      case 1:
-        return 'Jan';
-      case 2:
-        return 'Feb';
-      case 3:
-        return 'Mar';
-      case 4:
-        return 'Apr';
-      case 5:
-        return 'May';
-      case 6:
-        return 'Jun';
-      case 7:
-        return 'Jul';
-      case 8:
-        return 'Aug';
-      case 9:
-        return 'Sept';
-      case 10:
-        return 'Oct';
-      case 11:
-        return 'Nov';
-      case 12:
-        return 'Dec';
-      default:
-        return 'N/A';
-    }
   }
 }
