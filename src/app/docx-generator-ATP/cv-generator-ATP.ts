@@ -90,36 +90,6 @@ export class DocumentCreatorRector {
           this.occupationForms)
       ],
     });
-
-    document.addSection( {
-      margins: {
-        top: convertMillimetersToTwip(20),
-        right: convertMillimetersToTwip(10),
-        bottom: convertMillimetersToTwip(20),
-        left: convertMillimetersToTwip(30),
-      },
-      headers: {
-        default: new Header({
-          children: [this.docxGeneratorDataTemplate.pageNumbers()],
-        })
-      },
-      footers: {
-        default: new Footer({
-          children: [new Paragraph('')]
-        })
-      },
-      properties: {
-        pageNumberStart: 2,
-        pageNumberFormatType: PageNumberFormat.DECIMAL,
-      },
-      children: [
-        new Paragraph({
-          children: [
-            this.docxGeneratorDataTemplate.titleText('список используемой литературы')
-          ]
-        }),
-      ],
-    });
     return document;
   }
 }

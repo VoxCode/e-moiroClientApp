@@ -338,46 +338,129 @@ export class DocxGeneratorDataTemplate {
     curriculumTopicsList: CurriculumTopicTrainingProgram[][],
     occupationForms: OccupationForm[]): Table{
     const row: any = [];
-    row.push(
-      new TableRow({
-        children: [
-          new TableCell({
-            children: [new Paragraph('Названия разделов и тем')],
-            rowSpan: 3,
-            verticalAlign: VerticalAlign.CENTER
-          }),
-          new TableCell({
-            children: [new Paragraph('Количество учебных часов')],
-            columnSpan: occupationForms.length,
-            verticalAlign: VerticalAlign.CENTER
-          }),
-          new TableCell({
-            children: [new Paragraph('Кафедра')],
-            rowSpan: 3,
-            verticalAlign: VerticalAlign.CENTER
-          }),
-        ],
-      }),
-    );
-    row.push(
-      new TableRow({
-        children: [
-          new TableCell({
-            children: [new Paragraph('Распределение по видам занятий')],
-            columnSpan: occupationForms.length
-          }),
-        ],
-      }),
-    );
+    row.push(this.tableHeaderFirstRow(occupationForms));
+    row.push(this.tableHeaderSecondRow(occupationForms));
     row.push(this.tableRowOccupationForm(occupationForms));
     row.push(this.tableRowNumber(occupationForms.length));
-    trainingProgramCurriculumSections.forEach(obj => {
-      row.push(this.tableRowCurriculumSection(obj));
+
+    trainingProgramCurriculumSections.forEach((obj, index) => {
+      row.push(this.tableRowCurriculumSection(obj, index));
+      row.push(this.invariantTableRow());
+
+      curriculumTopicsList[index].forEach((curriculumTopic, i) => {
+        row.push(this.curriculumTopicTableRow(curriculumTopic, index, i));
+
+      });
+      curriculumTopicsList[index].forEach((curriculumTopic, i) => {
+        row.push(this.curriculumTopicTableRow(curriculumTopic, index, i));
+
+      });
+
+      row.push(this.variableTableRow());
     });
 
 
     return new Table({
       rows: row
+    });
+  }
+
+  public tableHeaderFirstRow(occupationForms: any[]): TableRow {
+    const child: any = [];
+    child.push(new TableCell({
+        children: [new Paragraph('Названия разделов и тем')],
+        rowSpan: 3,
+        verticalAlign: VerticalAlign.CENTER
+      }),
+      new TableCell({
+        children: [new Paragraph('Количество учебных часов')],
+        columnSpan: occupationForms.length,
+        verticalAlign: VerticalAlign.CENTER
+      }),
+      new TableCell({
+        children: [new Paragraph('Кафедра')],
+        rowSpan: 3,
+        verticalAlign: VerticalAlign.CENTER
+      }),
+    );
+    return new TableRow({
+      children: child,
+      tableHeader: true,
+      cantSplit: true
+    });
+  }
+
+  public tableHeaderSecondRow(occupationForms: any[]): TableRow {
+    const child: any = [];
+    child.push(new TableCell({
+        children: [new Paragraph('Распределение по видам занятий')],
+        columnSpan: occupationForms.length
+      })
+    );
+    return new TableRow({
+      children: child,
+      tableHeader: true,
+      cantSplit: true
+    });
+  }
+
+  public curriculumTopicTableRow(
+    curriculumTopic: CurriculumTopicTrainingProgram, index: number, i: number): TableRow {
+    const child: any = [];
+    child.push(new TableCell({
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: (++index) + '.' + (++i) + '. ' + curriculumTopic.topicTitle,
+            }),
+          ]
+        })
+      ]
+    }));
+    return new TableRow({
+      children: child,
+      cantSplit: true
+    });
+  }
+
+  public invariantTableRow(): TableRow {
+    const child: any = [];
+    child.push(new TableCell({
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: 'Инвариантная часть',
+              bold : true,
+            }),
+          ]
+        })
+      ]
+    }));
+    return new TableRow({
+      children: child,
+      cantSplit: true
+    });
+  }
+
+  public variableTableRow(): TableRow {
+    const child: any = [];
+    child.push(new TableCell({
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: 'Вариативная часть',
+              bold : true,
+            }),
+          ]
+        })
+      ]
+    }));
+    return new TableRow({
+      children: child,
+      cantSplit: true
     });
   }
 
@@ -399,7 +482,9 @@ export class DocxGeneratorDataTemplate {
       }
     });
     return new TableRow({
-      children: child
+      children: child,
+      tableHeader: true,
+      cantSplit: true
     });
   }
 
@@ -414,25 +499,40 @@ export class DocxGeneratorDataTemplate {
       }));
     }
     return new TableRow({
-      children: child
+      children: child,
+      tableHeader: true,
+      cantSplit: true
     });
   }
 
-  public tableRowCurriculumSection(trainingProgramCurriculumSection: TrainingProgramCurriculumSection): TableRow
+  public tableRowCurriculumSection(
+    trainingProgramCurriculumSection: TrainingProgramCurriculumSection, index: number): TableRow
   {
     const child: any = [];
     child.push(new TableCell({
       children: [
-        new Paragraph(trainingProgramCurriculumSection.name)
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: (++index) + '. ' + this.capitalizeFirstLetter(trainingProgramCurriculumSection.name),
+              bold : true,
+            }),
+          ]
+        })
       ]
     }));
     return new TableRow({
-      children: child
+      children: child,
+      cantSplit: true
     });
   }
 
   public getNowYear(): string
   {
     return new Date().getFullYear().toString();
+  }
+
+  public capitalizeFirstLetter(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   }
 }
