@@ -348,11 +348,7 @@ export class DocxGeneratorDataTemplate {
       row.push(this.invariantTableRow());
 
       curriculumTopicsList[index].forEach((curriculumTopic, i) => {
-        row.push(this.curriculumTopicTableRow(curriculumTopic, index, i));
-
-      });
-      curriculumTopicsList[index].forEach((curriculumTopic, i) => {
-        row.push(this.curriculumTopicTableRow(curriculumTopic, index, i));
+        row.push(this.curriculumTopicTableRow(curriculumTopic, index, i, occupationForms));
 
       });
 
@@ -405,7 +401,7 @@ export class DocxGeneratorDataTemplate {
   }
 
   public curriculumTopicTableRow(
-    curriculumTopic: CurriculumTopicTrainingProgram, index: number, i: number): TableRow {
+    curriculumTopic: CurriculumTopicTrainingProgram, index: number, i: number, occupationForms: OccupationForm[]): TableRow {
     const child: any = [];
     child.push(new TableCell({
       children: [
@@ -418,10 +414,48 @@ export class DocxGeneratorDataTemplate {
         })
       ]
     }));
+    child.push(new TableCell({
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: '',
+              bold: true
+            })
+          ]
+        })
+      ]
+    }));
+
+    occupationForms.forEach(obj => {
+      child.push(new TableCell({
+        children: [
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: this.curriculumTopicClassHours(obj.id, curriculumTopic),
+                bold: true
+              })
+            ]
+          })
+        ]
+      }));
+    });
+
     return new TableRow({
       children: child,
       cantSplit: true
     });
+  }
+
+  public curriculumTopicClassHours(
+    occupationFormId: number, curriculumTopic: CurriculumTopicTrainingProgram): string {
+    if (occupationFormId === curriculumTopic.occupationFormId && occupationFormId !== 1) {
+      return curriculumTopic.classHours.toString();
+    }
+    else {
+      return '';
+    }
   }
 
   public invariantTableRow(): TableRow {
@@ -476,8 +510,15 @@ export class DocxGeneratorDataTemplate {
       if (obj.id !== 1){
         child.push(new TableCell({
           children: [
-            new Paragraph(obj.fullName)
-          ]
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: obj.fullName,
+                  characterSpacing: 100
+                })
+              ]
+            })
+          ],
         }));
       }
     });
