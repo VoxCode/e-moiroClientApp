@@ -13,6 +13,7 @@ import {
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
 import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
 import {OccupationForm} from '../models/OccupationForm';
+import {TrainingProgram} from '../models/TrainingProgram';
 
 export class DocxGeneratorDataTemplate {
 
@@ -336,7 +337,8 @@ export class DocxGeneratorDataTemplate {
   public tableATP(
     trainingProgramCurriculumSections: TrainingProgramCurriculumSection[],
     curriculumTopicsList: CurriculumTopicTrainingProgram[][],
-    occupationForms: OccupationForm[]): Table{
+    occupationForms: OccupationForm[],
+    trainingProgram: TrainingProgram): Table{
     const row: any = [];
     row.push(this.tableHeaderFirstRow(occupationForms));
     row.push(this.tableHeaderSecondRow(occupationForms));
@@ -345,16 +347,27 @@ export class DocxGeneratorDataTemplate {
 
     trainingProgramCurriculumSections.forEach((obj, index) => {
       row.push(this.tableRowCurriculumSection(obj, index));
-      row.push(this.invariantTableRow());
-
-      curriculumTopicsList[index].forEach((curriculumTopic, i) => {
-        row.push(this.curriculumTopicTableRow(curriculumTopic, index, i, occupationForms));
-
+      if (!trainingProgram.isDistanceLearning) {
+        row.push(this.invariantTableRow());
+      }
+      let i = 0;
+      curriculumTopicsList[index].forEach(curriculumTopic => {
+        if (!curriculumTopic.isVariable || trainingProgram.isDistanceLearning) {
+          row.push(this.curriculumTopicTableRow(curriculumTopic, index, i, occupationForms, false));
+          ++i;
+        }
       });
-
-      row.push(this.variableTableRow());
+      if (!trainingProgram.isDistanceLearning) {
+        row.push(this.variableTableRow());
+        let j = 0;
+        curriculumTopicsList[index].forEach(curriculumTopic => {
+          if (curriculumTopic.isVariable){
+            row.push(this.curriculumTopicTableRow(curriculumTopic, index, j, occupationForms, true));
+            j++;
+          }
+        });
+      }
     });
-
 
     return new Table({
       rows: row
@@ -381,7 +394,6 @@ export class DocxGeneratorDataTemplate {
     );
     return new TableRow({
       children: child,
-      tableHeader: true,
       cantSplit: true
     });
   }
@@ -395,26 +407,90 @@ export class DocxGeneratorDataTemplate {
     );
     return new TableRow({
       children: child,
-      tableHeader: true,
       cantSplit: true
     });
   }
 
   public curriculumTopicTableRow(
-    curriculumTopic: CurriculumTopicTrainingProgram, index: number, i: number, occupationForms: OccupationForm[]): TableRow {
+    curriculumTopic: CurriculumTopicTrainingProgram,
+    index: number,
+    i: number,
+    occupationForms: OccupationForm[],
+    variable: boolean): TableRow {
     const child: any = [];
+    if (!variable) {
+      child.push(new TableCell({
+        children: [
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: (++index) + '.' + (++i) + '. ' + curriculumTopic.topicTitle,
+              }),
+            ]
+          })
+        ]
+      }));
+    }
+    else {
+      child.push(new TableCell({
+        children: [
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: curriculumTopic.topicTitle,
+              }),
+            ]
+          })
+        ]
+      }));
+    }
+
+    const classHours: string[] = [];
+    let totalClassHours = 0;
+    let j = 0;
+    occupationForms.forEach(obj => {
+      if (obj.id !== 1) {
+        let tmp: string;
+        tmp = this.curriculumTopicClassHours(obj.id, curriculumTopic);
+        if (tmp !== '') {
+          totalClassHours = j;
+        }
+        classHours.push(tmp);
+        j++;
+      }
+    });
+
     child.push(new TableCell({
+      verticalAlign: VerticalAlign.CENTER,
       children: [
         new Paragraph({
           children: [
             new TextRun({
-              text: (++index) + '.' + (++i) + '. ' + curriculumTopic.topicTitle,
-            }),
+              text: classHours[totalClassHours],
+              bold: true
+            })
           ]
         })
       ]
     }));
+
+    classHours.forEach(obj => {
+      child.push(new TableCell({
+        verticalAlign: VerticalAlign.CENTER,
+        children: [
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: obj
+              })
+            ]
+          })
+        ]
+      }));
+    });
+
     child.push(new TableCell({
+      verticalAlign: VerticalAlign.CENTER,
       children: [
         new Paragraph({
           children: [
@@ -427,21 +503,6 @@ export class DocxGeneratorDataTemplate {
       ]
     }));
 
-    occupationForms.forEach(obj => {
-      child.push(new TableCell({
-        children: [
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: this.curriculumTopicClassHours(obj.id, curriculumTopic),
-                bold: true
-              })
-            ]
-          })
-        ]
-      }));
-    });
-
     return new TableRow({
       children: child,
       cantSplit: true
@@ -450,7 +511,7 @@ export class DocxGeneratorDataTemplate {
 
   public curriculumTopicClassHours(
     occupationFormId: number, curriculumTopic: CurriculumTopicTrainingProgram): string {
-    if (occupationFormId === curriculumTopic.occupationFormId && occupationFormId !== 1) {
+    if (occupationFormId === curriculumTopic.occupationFormId) {
       return curriculumTopic.classHours.toString();
     }
     else {
@@ -514,7 +575,6 @@ export class DocxGeneratorDataTemplate {
               children: [
                 new TextRun({
                   text: obj.fullName,
-                  characterSpacing: 100
                 })
               ]
             })

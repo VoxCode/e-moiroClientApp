@@ -87,7 +87,8 @@ export class DocumentCreatorRector {
         this.docxGeneratorDataTemplate.tableATP(
           this.trainingProgramCurriculumSections,
           this.curriculumTopicsList,
-          this.occupationForms)
+          this.occupationForms,
+          this.trainingProgram)
       ],
     });
     return document;
