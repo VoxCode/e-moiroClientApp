@@ -14,6 +14,8 @@ import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTraining
 import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
 import {OccupationForm} from '../models/OccupationForm';
 import {TrainingProgram} from '../models/TrainingProgram';
+import {CurriculumSectionAllClassHours} from './table-ATP/table-class-hours/curriculum-section-all-class-hours';
+import {CurriculumSectionOccupationFormAllClassHours} from './table-ATP/table-class-hours/curriculum-section-occupation-form-all-class-hours';
 
 export class DocxGeneratorDataTemplate {
 
@@ -367,6 +369,13 @@ export class DocxGeneratorDataTemplate {
           }
         });
       }
+
+      const firstCurriculumTopic = new CurriculumSectionAllClassHours(curriculumTopicsList[0]);
+      console.log(firstCurriculumTopic.curriculumSectionAllClassHours);
+
+      const dfdCurriculumTopic = new CurriculumSectionOccupationFormAllClassHours(curriculumTopicsList[0], occupationForms);
+      console.log(dfdCurriculumTopic.curriculumSectionAllClassHours);
+
     });
 
     return new Table({
@@ -389,12 +398,13 @@ export class DocxGeneratorDataTemplate {
       new TableCell({
         children: [new Paragraph('Кафедра')],
         rowSpan: 3,
-        verticalAlign: VerticalAlign.CENTER
+        verticalAlign: VerticalAlign.CENTER,
       }),
     );
     return new TableRow({
       children: child,
-      cantSplit: true
+      cantSplit: true,
+      tableHeader: true,
     });
   }
 
@@ -407,7 +417,8 @@ export class DocxGeneratorDataTemplate {
     );
     return new TableRow({
       children: child,
-      cantSplit: true
+      cantSplit: true,
+      tableHeader: true,
     });
   }
 
