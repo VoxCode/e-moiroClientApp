@@ -16,6 +16,8 @@ import {OccupationForm} from '../models/OccupationForm';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {CurriculumSectionAllClassHours} from './table-ATP/table-class-hours/curriculum-section-all-class-hours';
 import {CurriculumSectionOccupationFormAllClassHours} from './table-ATP/table-class-hours/curriculum-section-occupation-form-all-class-hours';
+import {TrainingProgramAllClassHours} from './table-ATP/table-class-hours/training-program-all-class-hours';
+import {TrainingProgramOccupationFormAllClassHours} from './table-ATP/table-class-hours/training-program-occupation-form-all-class-hours';
 
 export class DocxGeneratorDataTemplate {
 
@@ -370,13 +372,19 @@ export class DocxGeneratorDataTemplate {
         });
       }
 
-      const firstCurriculumTopic = new CurriculumSectionAllClassHours(curriculumTopicsList[0]);
-      console.log(firstCurriculumTopic.curriculumSectionAllClassHours);
-
-      const dfdCurriculumTopic = new CurriculumSectionOccupationFormAllClassHours(curriculumTopicsList[0], occupationForms);
-      console.log(dfdCurriculumTopic.curriculumSectionAllClassHours);
+      // const firstCurriculumTopic = new CurriculumSectionAllClassHours(curriculumTopicsList[index]);
+      // console.log(firstCurriculumTopic.curriculumSectionAllClassHours);
+      //
+      // const dfdCurriculumTopic = new CurriculumSectionOccupationFormAllClassHours(curriculumTopicsList[index], occupationForms);
+      // console.log(dfdCurriculumTopic.curriculumSectionAllClassHours);
 
     });
+
+    const tmp1 = new TrainingProgramAllClassHours(curriculumTopicsList);
+    console.log(tmp1.getTrainingProgramAllClassHours);
+
+    const tmp2 = new TrainingProgramOccupationFormAllClassHours(curriculumTopicsList, occupationForms);
+    console.log(tmp2.getTrainingProgramAllClassHours);
 
     return new Table({
       rows: row
