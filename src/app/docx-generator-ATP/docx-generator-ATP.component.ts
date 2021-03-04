@@ -24,7 +24,9 @@ import {CertificationType} from '../models/CertificationType';
 import {FormOfEducationService} from '../services/form-of-education.service';
 import {FormOfEducation} from '../models/FormOfEducation';
 import {OccupationFormService} from '../services/occupation-form.service';
-import {OccupationForm} from "../models/OccupationForm";
+import {OccupationForm} from '../models/OccupationForm';
+import {DepartmentService} from '../services/department.service';
+import {Department} from '../models/Department';
 
 @Component({
   selector: 'app-docx-generator',
@@ -41,7 +43,8 @@ import {OccupationForm} from "../models/OccupationForm";
     StudentCategoryService,
     CertificationTypeService,
     FormOfEducationService,
-    OccupationFormService
+    OccupationFormService,
+    DepartmentService
   ]
 })
 
@@ -52,6 +55,7 @@ export class DocxGeneratorATPComponent implements OnInit{
   studentCategory: StudentCategory;
   certificationType: CertificationType;
   formOfEducation: FormOfEducation;
+  department: Department;
   trainingProgramCurriculumSections: TrainingProgramCurriculumSection[];
   trainingProgramFinalExaminations: TrainingProgramFinalExamination[];
   trainingProgramMainLiteratures: TrainingProgramMainLiterature[];
@@ -73,6 +77,7 @@ export class DocxGeneratorATPComponent implements OnInit{
     private certificationTypeService: CertificationTypeService,
     private formOfEducationService: FormOfEducationService,
     private occupationFormService: OccupationFormService,
+    private departmentService: DepartmentService,
     private route: ActivatedRoute
   ) { }
 
@@ -228,8 +233,19 @@ export class DocxGeneratorATPComponent implements OnInit{
   loadOccupationForm() {
     this.occupationFormService.getValues()
       .subscribe((data: OccupationForm[]) => {
-        if (data !== undefined || data !== null){
+        if (data !== undefined){
           this.occupationForms = data;
+          this.loadDepartment();
+        }
+      });
+  }
+
+  // tslint:disable-next-line:typedef
+  loadDepartment() {
+    this.departmentService.getValue(this.trainingProgram.departmentId)
+      .subscribe((data: Department) => {
+        if (data !== undefined){
+          this.department = data;
           this.getDocument();
         }
       });
@@ -249,7 +265,8 @@ export class DocxGeneratorATPComponent implements OnInit{
       this.certificationType,
       this.formOfEducation,
       this.occupationForms,
-      this.isRector
+      this.isRector,
+      this.department
     );
     const docxTmp = documentCreator.create([
       model,

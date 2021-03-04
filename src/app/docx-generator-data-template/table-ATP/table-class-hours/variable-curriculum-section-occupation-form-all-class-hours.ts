@@ -16,6 +16,9 @@ export class VariableCurriculumSectionOccupationFormAllClassHours {
           classHours += curriculumTopic.classHours;
           this.classHoursList[index] = classHours;
         }
+        if (!this.classHoursList[index]) {
+          this.classHoursList[index] = 0;
+        }
       });
     });
     return this.classHoursList;

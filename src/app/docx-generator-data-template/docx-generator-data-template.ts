@@ -18,6 +18,11 @@ import {CurriculumSectionAllClassHours} from './table-ATP/table-class-hours/curr
 import {CurriculumSectionOccupationFormAllClassHours} from './table-ATP/table-class-hours/curriculum-section-occupation-form-all-class-hours';
 import {TrainingProgramAllClassHours} from './table-ATP/table-class-hours/training-program-all-class-hours';
 import {TrainingProgramOccupationFormAllClassHours} from './table-ATP/table-class-hours/training-program-occupation-form-all-class-hours';
+import {InvariantCurriculumSectionAllClassHours} from './table-ATP/table-class-hours/invariant-curriculum-section-all-class-hours';
+import {InvariantCurriculumSectionOccupationFormAllClassHours} from './table-ATP/table-class-hours/invariant-curriculum-section-occupation-form-all-class-hours';
+import {VariableCurriculumSectionAllClassHours} from './table-ATP/table-class-hours/variable-curriculum-section-all-class-hours';
+import {VariableCurriculumSectionOccupationFormAllClassHours} from './table-ATP/table-class-hours/variable-curriculum-section-occupation-form-all-class-hours';
+import {Department} from "../models/Department";
 
 export class DocxGeneratorDataTemplate {
 
@@ -342,7 +347,8 @@ export class DocxGeneratorDataTemplate {
     trainingProgramCurriculumSections: TrainingProgramCurriculumSection[],
     curriculumTopicsList: CurriculumTopicTrainingProgram[][],
     occupationForms: OccupationForm[],
-    trainingProgram: TrainingProgram): Table{
+    trainingProgram: TrainingProgram,
+    department: Department): Table{
     const row: any = [];
     row.push(this.tableHeaderFirstRow(occupationForms));
     row.push(this.tableHeaderSecondRow(occupationForms));
@@ -350,41 +356,33 @@ export class DocxGeneratorDataTemplate {
     row.push(this.tableRowNumber(occupationForms.length));
 
     trainingProgramCurriculumSections.forEach((obj, index) => {
-      row.push(this.tableRowCurriculumSection(obj, index));
+      row.push(this.tableRowCurriculumSection(obj, index, curriculumTopicsList[index], occupationForms));
       if (!trainingProgram.isDistanceLearning) {
-        row.push(this.invariantTableRow());
+        row.push(this.invariantTableRow(curriculumTopicsList[index], occupationForms));
       }
       let i = 0;
+      const invariantCurriculumTopicsList = curriculumTopicsList[index].filter(a => !a.isVariable);
+      const variableCurriculumTopicsList = curriculumTopicsList[index].filter(a => a.isVariable);
       curriculumTopicsList[index].forEach(curriculumTopic => {
         if (!curriculumTopic.isVariable || trainingProgram.isDistanceLearning) {
-          row.push(this.curriculumTopicTableRow(curriculumTopic, index, i, occupationForms, false));
+          row.push(this.curriculumTopicTableRow(
+            curriculumTopic, index, i, occupationForms, false, department, invariantCurriculumTopicsList));
           ++i;
         }
       });
       if (!trainingProgram.isDistanceLearning) {
-        row.push(this.variableTableRow());
+        row.push(this.variableTableRow(curriculumTopicsList[index], occupationForms));
         let j = 0;
         curriculumTopicsList[index].forEach(curriculumTopic => {
           if (curriculumTopic.isVariable){
-            row.push(this.curriculumTopicTableRow(curriculumTopic, index, j, occupationForms, true));
+            row.push(this.curriculumTopicTableRow(
+              curriculumTopic, index, j, occupationForms, true, department, variableCurriculumTopicsList));
             j++;
           }
         });
       }
-
-      // const firstCurriculumTopic = new CurriculumSectionAllClassHours(curriculumTopicsList[index]);
-      // console.log(firstCurriculumTopic.curriculumSectionAllClassHours);
-      //
-      // const dfdCurriculumTopic = new CurriculumSectionOccupationFormAllClassHours(curriculumTopicsList[index], occupationForms);
-      // console.log(dfdCurriculumTopic.curriculumSectionAllClassHours);
-
     });
-
-    const tmp1 = new TrainingProgramAllClassHours(curriculumTopicsList);
-    console.log(tmp1.getTrainingProgramAllClassHours);
-
-    const tmp2 = new TrainingProgramOccupationFormAllClassHours(curriculumTopicsList, occupationForms);
-    console.log(tmp2.getTrainingProgramAllClassHours);
+    row.push(this.resultsTableRow(curriculumTopicsList, occupationForms));
 
     return new Table({
       rows: row
@@ -435,7 +433,9 @@ export class DocxGeneratorDataTemplate {
     index: number,
     i: number,
     occupationForms: OccupationForm[],
-    variable: boolean): TableRow {
+    variable: boolean,
+    department: Department,
+    list: CurriculumTopicTrainingProgram[]): TableRow {
     const child: any = [];
     if (!variable) {
       child.push(new TableCell({
@@ -451,6 +451,7 @@ export class DocxGeneratorDataTemplate {
       }));
     }
     else {
+      ++i;
       child.push(new TableCell({
         children: [
           new Paragraph({
@@ -508,23 +509,26 @@ export class DocxGeneratorDataTemplate {
       }));
     });
 
-    child.push(new TableCell({
-      verticalAlign: VerticalAlign.CENTER,
-      children: [
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: '',
-              bold: true
-            })
-          ]
-        })
-      ]
-    }));
+    if (i === 1) {
+      child.push(new TableCell({
+        verticalAlign: VerticalAlign.CENTER,
+        children: [
+          new Paragraph({
+            children: [
+              new TextRun({
+                text:  department.name.toLowerCase(),
+              })
+            ],
+          })
+        ],
+        rowSpan: list.length
+      }));
+    }
+
 
     return new TableRow({
       children: child,
-      cantSplit: true
+      cantSplit: true,
     });
   }
 
@@ -538,8 +542,13 @@ export class DocxGeneratorDataTemplate {
     }
   }
 
-  public invariantTableRow(): TableRow {
+  public invariantTableRow(
+    curriculumTopics: CurriculumTopicTrainingProgram[],
+    occupationForms: OccupationForm[]): TableRow {
     const child: any = [];
+    const tmpClassHours = new InvariantCurriculumSectionAllClassHours(curriculumTopics);
+    const tmpOccupationFormClassHours = new InvariantCurriculumSectionOccupationFormAllClassHours(curriculumTopics, occupationForms);
+    const tmpClassHoursList = tmpOccupationFormClassHours.curriculumSectionAllClassHours;
     child.push(new TableCell({
       children: [
         new Paragraph({
@@ -552,20 +561,133 @@ export class DocxGeneratorDataTemplate {
         })
       ]
     }));
+    child.push(new TableCell({
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: tmpClassHours.curriculumSectionAllClassHours.toString(),
+              bold : true,
+            }),
+          ]
+        })
+      ]
+    }));
+    tmpClassHoursList.forEach((obj, i) => {
+      if (i !== 6) {
+        if (obj === 0) {
+          child.push(new TableCell({
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: '',
+                  }),
+                ]
+              })
+            ]
+          }));
+        }
+        else {
+          child.push(new TableCell({
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: obj.toString(),
+                  }),
+                ]
+              })
+            ]
+          }));
+        }
+      }
+    });
+    child.push(new TableCell({
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: '',
+              bold : true,
+            }),
+          ]
+        })
+      ]
+    }));
     return new TableRow({
       children: child,
       cantSplit: true
     });
   }
 
-  public variableTableRow(): TableRow {
+  public variableTableRow(
+    curriculumTopics: CurriculumTopicTrainingProgram[],
+    occupationForms: OccupationForm[]): TableRow {
     const child: any = [];
+    const tmpClassHours = new VariableCurriculumSectionAllClassHours(curriculumTopics);
+    const tmpOccupationFormClassHours = new VariableCurriculumSectionOccupationFormAllClassHours(curriculumTopics, occupationForms);
+    const tmpClassHoursList = tmpOccupationFormClassHours.curriculumSectionAllClassHours;
     child.push(new TableCell({
       children: [
         new Paragraph({
           children: [
             new TextRun({
               text: 'Вариативная часть',
+              bold : true,
+            }),
+          ]
+        })
+      ]
+    }));
+    child.push(new TableCell({
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: tmpClassHours.curriculumSectionAllClassHours.toString(),
+              bold : true,
+            }),
+          ]
+        })
+      ]
+    }));
+    tmpClassHoursList.forEach((obj, i) => {
+      if (i !== 6) {
+        if (obj === 0) {
+          child.push(new TableCell({
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: '',
+                  }),
+                ]
+              })
+            ]
+          }));
+        }
+        else {
+          child.push(new TableCell({
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: obj.toString(),
+                  }),
+                ]
+              })
+            ]
+          }));
+        }
+      }
+    });
+    child.push(new TableCell({
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: '',
               bold : true,
             }),
           ]
@@ -626,8 +748,15 @@ export class DocxGeneratorDataTemplate {
   }
 
   public tableRowCurriculumSection(
-    trainingProgramCurriculumSection: TrainingProgramCurriculumSection, index: number): TableRow
+    trainingProgramCurriculumSection: TrainingProgramCurriculumSection,
+    index: number,
+    curriculumTopicsList: CurriculumTopicTrainingProgram[],
+    occupationForms: OccupationForm[]
+  ): TableRow
   {
+    const allClassHours = new CurriculumSectionAllClassHours(curriculumTopicsList);
+    const allOccupationFormsClassHours = new CurriculumSectionOccupationFormAllClassHours(curriculumTopicsList, occupationForms);
+    const tmpClassHours = allOccupationFormsClassHours.curriculumSectionAllClassHours;
     const child: any = [];
     child.push(new TableCell({
       children: [
@@ -635,6 +764,142 @@ export class DocxGeneratorDataTemplate {
           children: [
             new TextRun({
               text: (++index) + '. ' + this.capitalizeFirstLetter(trainingProgramCurriculumSection.name),
+              bold : true,
+            }),
+          ]
+        })
+      ]
+    }));
+    child.push(new TableCell({
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: allClassHours.curriculumSectionAllClassHours.toString(),
+              bold : true,
+            }),
+          ]
+        })
+      ]
+    }));
+    tmpClassHours.forEach((object, idx) => {
+      if (idx !== 6) {
+        if (object === 0) {
+          child.push(new TableCell({
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: '',
+                    bold : true,
+                  }),
+                ]
+              })
+            ]
+          }));
+        }
+        else {
+          child.push(new TableCell({
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: object.toString(),
+                    bold : true,
+                  }),
+                ]
+              })
+            ]
+          }));
+        }
+      }
+    });
+    child.push(new TableCell({
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: '',
+              bold : true,
+            }),
+          ]
+        })
+      ]
+    }));
+    return new TableRow({
+      children: child,
+      cantSplit: true
+    });
+  }
+
+  public resultsTableRow(
+    curriculumTopicsList: CurriculumTopicTrainingProgram[][],
+    occupationForms: OccupationForm[]): TableRow {
+    const child: any = [];
+    const tmpClassHours = new TrainingProgramAllClassHours(curriculumTopicsList);
+    const tmpOccupationFormClassHours = new TrainingProgramOccupationFormAllClassHours(curriculumTopicsList, occupationForms);
+    const tmpClassHoursList = tmpOccupationFormClassHours.getTrainingProgramAllClassHours;
+    child.push(new TableCell({
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: 'ВСЕГО',
+              bold : true,
+              allCaps: true
+            }),
+          ]
+        })
+      ]
+    }));
+    child.push(new TableCell({
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: tmpClassHours.getTrainingProgramAllClassHours.toString(),
+              bold : true,
+            }),
+          ]
+        })
+      ]
+    }));
+    tmpClassHoursList.forEach((obj, i) => {
+      if (i !== 6) {
+        if (obj === 0) {
+          child.push(new TableCell({
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: '',
+                  }),
+                ]
+              })
+            ]
+          }));
+        }
+        else {
+          child.push(new TableCell({
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: obj.toString(),
+                  }),
+                ]
+              })
+            ]
+          }));
+        }
+      }
+    });
+    child.push(new TableCell({
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: '',
               bold : true,
             }),
           ]

@@ -11,6 +11,7 @@ import {CertificationType} from '../models/CertificationType';
 import {DocxGeneratorDataTemplate} from '../docx-generator-data-template/docx-generator-data-template';
 import {FormOfEducation} from '../models/FormOfEducation';
 import {OccupationForm} from '../models/OccupationForm';
+import {Department} from '../models/Department';
 
 export class DocumentCreatorRector {
 
@@ -29,7 +30,8 @@ export class DocumentCreatorRector {
     private certificationType: CertificationType,
     private formOfEducation: FormOfEducation,
     private occupationForms: OccupationForm[],
-    private isRector: boolean
+    private isRector: boolean,
+    private department: Department
   ) { }
 
   public create([]): Document {
@@ -88,7 +90,8 @@ export class DocumentCreatorRector {
           this.trainingProgramCurriculumSections,
           this.curriculumTopicsList,
           this.occupationForms,
-          this.trainingProgram)
+          this.trainingProgram,
+          this.department)
       ],
     });
     return document;

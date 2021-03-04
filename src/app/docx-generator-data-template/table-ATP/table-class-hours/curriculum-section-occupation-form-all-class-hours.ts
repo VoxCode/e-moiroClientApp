@@ -17,6 +17,9 @@ export class CurriculumSectionOccupationFormAllClassHours {
           this.classHoursList[index] = classHours;
         }
       });
+      if (!this.classHoursList[index]) {
+        this.classHoursList[index] = 0;
+      }
     });
     return this.classHoursList;
   }
