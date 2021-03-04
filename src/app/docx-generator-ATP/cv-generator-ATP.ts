@@ -91,7 +91,9 @@ export class DocumentCreatorRector {
           this.curriculumTopicsList,
           this.occupationForms,
           this.trainingProgram,
-          this.department)
+          this.department,
+          this.certificationType
+          )
       ],
     });
     return document;

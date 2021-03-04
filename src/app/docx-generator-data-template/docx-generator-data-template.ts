@@ -22,7 +22,8 @@ import {InvariantCurriculumSectionAllClassHours} from './table-ATP/table-class-h
 import {InvariantCurriculumSectionOccupationFormAllClassHours} from './table-ATP/table-class-hours/invariant-curriculum-section-occupation-form-all-class-hours';
 import {VariableCurriculumSectionAllClassHours} from './table-ATP/table-class-hours/variable-curriculum-section-all-class-hours';
 import {VariableCurriculumSectionOccupationFormAllClassHours} from './table-ATP/table-class-hours/variable-curriculum-section-occupation-form-all-class-hours';
-import {Department} from "../models/Department";
+import {Department} from '../models/Department';
+import {CertificationType} from '../models/CertificationType';
 
 export class DocxGeneratorDataTemplate {
 
@@ -348,7 +349,8 @@ export class DocxGeneratorDataTemplate {
     curriculumTopicsList: CurriculumTopicTrainingProgram[][],
     occupationForms: OccupationForm[],
     trainingProgram: TrainingProgram,
-    department: Department): Table{
+    department: Department,
+    certificationType: CertificationType): Table{
     const row: any = [];
     row.push(this.tableHeaderFirstRow(occupationForms));
     row.push(this.tableHeaderSecondRow(occupationForms));
@@ -383,6 +385,7 @@ export class DocxGeneratorDataTemplate {
       }
     });
     row.push(this.resultsTableRow(curriculumTopicsList, occupationForms));
+    row.push(this.certificationTypeRow(occupationForms.length, certificationType.name));
 
     return new Table({
       rows: row
@@ -905,6 +908,48 @@ export class DocxGeneratorDataTemplate {
           ]
         })
       ]
+    }));
+    return new TableRow({
+      children: child,
+      cantSplit: true
+    });
+  }
+
+  public certificationTypeRow(occupationFormLength: number, certificationTypeName: string): TableRow {
+    const child: any = [];
+    child.push(new TableCell({
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: 'Форма итоговой аттестации',
+            }),
+          ]
+        })
+      ],
+    }));
+    child.push(new TableCell({
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: certificationTypeName.toLowerCase(),
+            }),
+          ]
+        })
+      ],
+      columnSpan: occupationFormLength
+    }));
+    child.push(new TableCell({
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: '',
+            }),
+          ]
+        })
+      ],
     }));
     return new TableRow({
       children: child,
