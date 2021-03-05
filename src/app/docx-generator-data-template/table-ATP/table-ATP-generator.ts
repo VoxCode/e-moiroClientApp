@@ -5,8 +5,6 @@ import {TrainingProgram} from '../../models/TrainingProgram';
 import {Department} from '../../models/Department';
 import {CertificationType} from '../../models/CertificationType';
 import {Paragraph, Table, TableCell, TableRow, TextRun} from 'docx';
-import {VariableCurriculumSectionAllClassHours} from './table-class-hours/variable-curriculum-section-all-class-hours';
-import {VariableCurriculumSectionOccupationFormAllClassHours} from './table-class-hours/variable-curriculum-section-occupation-form-all-class-hours';
 import {TrainingProgramAllClassHours} from './table-class-hours/training-program-all-class-hours';
 import {TrainingProgramOccupationFormAllClassHours} from './table-class-hours/training-program-occupation-form-all-class-hours';
 import {TableHeaderFirstRow} from './table-ATP-structure/table-header/table-header-first-row';
@@ -16,7 +14,7 @@ import {TableHeaderFourthRow} from './table-ATP-structure/table-header/table-hea
 import {TableCurriculumSection} from './table-ATP-structure/table-curriculum-section';
 import {TableCurriculumTopic} from './table-ATP-structure/table-curriculum-topic';
 import {TableInvariantSection} from './table-ATP-structure/table-invariant-section';
-import {TableVariableSection} from "./table-ATP-structure/table-variable-section";
+import {TableVariableSection} from './table-ATP-structure/table-variable-section';
 
 export class TableATPGenerator {
   constructor() {
