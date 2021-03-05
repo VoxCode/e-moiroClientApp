@@ -12,11 +12,13 @@ import {DocxGeneratorDataTemplate} from '../docx-generator-data-template/docx-ge
 import {FormOfEducation} from '../models/FormOfEducation';
 import {OccupationForm} from '../models/OccupationForm';
 import {Department} from '../models/Department';
+import {TableATPGenerator} from '../docx-generator-data-template/table-ATP/table-ATP-generator';
 
 export class DocumentCreatorRector {
 
   teacher: number;
   docxGeneratorDataTemplate: DocxGeneratorDataTemplate = new DocxGeneratorDataTemplate(28);
+  tableATPGenerator: TableATPGenerator = new TableATPGenerator();
 
   constructor(
     private curriculumTopicsList: CurriculumTopicTrainingProgram[][],
@@ -86,7 +88,7 @@ export class DocumentCreatorRector {
             //#endregion First page
           ]
         }),
-        this.docxGeneratorDataTemplate.tableATP(
+        this.tableATPGenerator.tableATP(
           this.trainingProgramCurriculumSections,
           this.curriculumTopicsList,
           this.occupationForms,

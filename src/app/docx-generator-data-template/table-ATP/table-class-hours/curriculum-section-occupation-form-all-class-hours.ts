@@ -6,9 +6,7 @@ export class CurriculumSectionOccupationFormAllClassHours {
   constructor(
     private curriculumTopics: CurriculumTopicTrainingProgram[],
     private occupationForms: OccupationForm[]
-  ) { }
-
-  public get curriculumSectionAllClassHours(): number[] {
+  ) {
     this.occupationForms.forEach((occupationForm, index) => {
       let classHours = 0;
       this.curriculumTopics.forEach(curriculumTopic => {
@@ -21,6 +19,9 @@ export class CurriculumSectionOccupationFormAllClassHours {
         this.classHoursList[index] = 0;
       }
     });
+  }
+
+  public get curriculumSectionAllClassHours(): number[] {
     return this.classHoursList;
   }
 }
