@@ -4,9 +4,7 @@ import {OccupationForm} from '../../models/OccupationForm';
 import {TrainingProgram} from '../../models/TrainingProgram';
 import {Department} from '../../models/Department';
 import {CertificationType} from '../../models/CertificationType';
-import {Paragraph, Table, TableCell, TableRow, TextRun} from 'docx';
-import {TrainingProgramAllClassHours} from './table-class-hours/training-program-all-class-hours';
-import {TrainingProgramOccupationFormAllClassHours} from './table-class-hours/training-program-occupation-form-all-class-hours';
+import {Table} from 'docx';
 import {TableHeaderFirstRow} from './table-ATP-structure/table-header/table-header-first-row';
 import {TableHeaderSecondRow} from './table-ATP-structure/table-header/table-header-second-row';
 import {TableHeaderThirdRow} from './table-ATP-structure/table-header/table-header-third-row';
@@ -15,6 +13,8 @@ import {TableCurriculumSection} from './table-ATP-structure/table-curriculum-sec
 import {TableCurriculumTopic} from './table-ATP-structure/table-curriculum-topic';
 import {TableInvariantSection} from './table-ATP-structure/table-invariant-section';
 import {TableVariableSection} from './table-ATP-structure/table-variable-section';
+import {TableTotalClassHours} from './table-ATP-structure/table-total-class-hours';
+import {TableCertificationType} from './table-ATP-structure/table-certification-type';
 
 export class TableATPGenerator {
   constructor() {
@@ -31,6 +31,8 @@ export class TableATPGenerator {
     const secondRow = new TableHeaderSecondRow(occupationForms);
     const thirdRow = new TableHeaderThirdRow(occupationForms);
     const fourthRow = new TableHeaderFourthRow(occupationForms.length);
+    const tableTotalClassHours = new TableTotalClassHours(curriculumTopicsList, occupationForms);
+    const tableCertificationType = new TableCertificationType(occupationForms.length, certificationType.name);
     row.push(firstRow.insert());
     row.push(secondRow.insert());
     row.push(thirdRow.insert());
@@ -74,133 +76,15 @@ export class TableATPGenerator {
         });
       }
     });
-    row.push(this.resultsTableRow(curriculumTopicsList, occupationForms));
-    row.push(this.certificationTypeRow(occupationForms.length, certificationType.name));
+    row.push(tableTotalClassHours.insert());
+    row.push(tableCertificationType.insert());
 
     return new Table({
       rows: row
     });
   }
 
-  public resultsTableRow(
-    curriculumTopicsList: CurriculumTopicTrainingProgram[][],
-    occupationForms: OccupationForm[]): TableRow {
-    const child: any = [];
-    const tmpClassHours = new TrainingProgramAllClassHours(curriculumTopicsList);
-    const tmpOccupationFormClassHours = new TrainingProgramOccupationFormAllClassHours(curriculumTopicsList, occupationForms);
-    const tmpClassHoursList = tmpOccupationFormClassHours.getTrainingProgramAllClassHours;
-    child.push(new TableCell({
-      children: [
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: 'ВСЕГО',
-              bold : true,
-              allCaps: true
-            }),
-          ]
-        })
-      ]
-    }));
-    child.push(new TableCell({
-      children: [
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: tmpClassHours.getTrainingProgramAllClassHours.toString(),
-              bold : true,
-            }),
-          ]
-        })
-      ]
-    }));
-    tmpClassHoursList.forEach((obj, i) => {
-      if (i !== 6) {
-        if (obj === 0) {
-          child.push(new TableCell({
-            children: [
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: '',
-                  }),
-                ]
-              })
-            ]
-          }));
-        }
-        else {
-          child.push(new TableCell({
-            children: [
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: obj.toString(),
-                  }),
-                ]
-              })
-            ]
-          }));
-        }
-      }
-    });
-    child.push(new TableCell({
-      children: [
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: '',
-              bold : true,
-            }),
-          ]
-        })
-      ]
-    }));
-    return new TableRow({
-      children: child,
-      cantSplit: true
-    });
-  }
 
-  public certificationTypeRow(occupationFormLength: number, certificationTypeName: string): TableRow {
-    const child: any = [];
-    child.push(new TableCell({
-      children: [
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: 'Форма итоговой аттестации',
-            }),
-          ]
-        })
-      ],
-    }));
-    child.push(new TableCell({
-      children: [
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: certificationTypeName.toLowerCase(),
-            }),
-          ]
-        })
-      ],
-      columnSpan: occupationFormLength
-    }));
-    child.push(new TableCell({
-      children: [
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: '',
-            }),
-          ]
-        })
-      ],
-    }));
-    return new TableRow({
-      children: child,
-      cantSplit: true
-    });
-  }
+
+
 }
