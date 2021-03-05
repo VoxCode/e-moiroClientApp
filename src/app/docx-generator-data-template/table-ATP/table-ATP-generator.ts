@@ -15,6 +15,7 @@ import {TableInvariantSection} from './table-ATP-structure/table-invariant-secti
 import {TableVariableSection} from './table-ATP-structure/table-variable-section';
 import {TableTotalClassHours} from './table-ATP-structure/table-total-class-hours';
 import {TableCertificationType} from './table-ATP-structure/table-certification-type';
+import {TableIndividualSessions} from './table-ATP-structure/table-individual-sessions';
 
 export class TableATPGenerator {
   constructor() {
@@ -33,6 +34,7 @@ export class TableATPGenerator {
     const fourthRow = new TableHeaderFourthRow(occupationForms.length);
     const tableTotalClassHours = new TableTotalClassHours(curriculumTopicsList, occupationForms);
     const tableCertificationType = new TableCertificationType(occupationForms.length, certificationType.name);
+    const tableIndividualSessions = new TableIndividualSessions(occupationForms);
     row.push(firstRow.insert());
     row.push(secondRow.insert());
     row.push(thirdRow.insert());
@@ -78,6 +80,7 @@ export class TableATPGenerator {
     });
     row.push(tableTotalClassHours.insert());
     row.push(tableCertificationType.insert());
+    row.push(tableIndividualSessions.insert());
 
     return new Table({
       rows: row
