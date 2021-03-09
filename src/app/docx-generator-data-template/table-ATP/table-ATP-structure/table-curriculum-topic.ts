@@ -46,7 +46,7 @@ export class TableCurriculumTopic {
           new Paragraph({
             children: [
               new TextRun({
-                text:  this.department.name.toLowerCase(),
+                text:  this.department.name.substr(this.department.name.indexOf(' ') + 1),
               })
             ],
           })

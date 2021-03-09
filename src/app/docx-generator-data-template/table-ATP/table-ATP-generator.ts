@@ -34,7 +34,7 @@ export class TableATPGenerator {
     const fourthRow = new TableHeaderFourthRow(occupationForms.length);
     const tableTotalClassHours = new TableTotalClassHours(curriculumTopicsList, occupationForms);
     const tableCertificationType = new TableCertificationType(occupationForms.length, certificationType.name);
-    const tableIndividualSessions = new TableIndividualSessions(occupationForms);
+    const tableIndividualSessions = new TableIndividualSessions(occupationForms, department);
     row.push(firstRow.insert());
     row.push(secondRow.insert());
     row.push(thirdRow.insert());
