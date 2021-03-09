@@ -6,7 +6,7 @@ import {CurriculumSectionAllClassHours} from '../table-class-hours/curriculum-se
 import {CurriculumSectionOccupationFormAllClassHours} from '../table-class-hours/curriculum-section-occupation-form-all-class-hours';
 import {CapitalizeFirstLetter} from '../capitalize-first-letter';
 import {EmptyTableCell} from '../table-cell-templates/empty-table-cell';
-import {TableCellBoldText} from '../table-cell-templates/table-cell-bold-text';
+import {TableCellBoldTextAlignmentCenter} from '../table-cell-templates/table-cell-bold-text-alignment-center';
 
 export class TableCurriculumSection {
   private allClassHours = new CurriculumSectionAllClassHours(this.curriculumTopicsList);
@@ -20,7 +20,7 @@ export class TableCurriculumSection {
     private readonly index: number,
     private curriculumTopicsList: CurriculumTopicTrainingProgram[],
     private occupationForms: OccupationForm[]) {
-    const tableCellBoldText = new TableCellBoldText();
+    const tableCellBoldText = new TableCellBoldTextAlignmentCenter();
     this.child.push(new TableCell({
       children: [
         new Paragraph({

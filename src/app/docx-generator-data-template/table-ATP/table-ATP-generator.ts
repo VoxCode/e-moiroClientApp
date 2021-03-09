@@ -4,7 +4,7 @@ import {OccupationForm} from '../../models/OccupationForm';
 import {TrainingProgram} from '../../models/TrainingProgram';
 import {Department} from '../../models/Department';
 import {CertificationType} from '../../models/CertificationType';
-import {Table} from 'docx';
+import {convertMillimetersToTwip, Table, WidthType} from 'docx';
 import {TableHeaderFirstRow} from './table-ATP-structure/table-header/table-header-first-row';
 import {TableHeaderSecondRow} from './table-ATP-structure/table-header/table-header-second-row';
 import {TableHeaderThirdRow} from './table-ATP-structure/table-header/table-header-third-row';
@@ -83,7 +83,15 @@ export class TableATPGenerator {
     row.push(tableIndividualSessions.insert());
 
     return new Table({
-      rows: row
+      rows: row,
+      width: {
+        size: convertMillimetersToTwip(165.4),
+        type: WidthType.DXA,
+      },
+      margins: {
+        left: convertMillimetersToTwip(1.9),
+        right: convertMillimetersToTwip(1.9)
+      }
     });
   }
 

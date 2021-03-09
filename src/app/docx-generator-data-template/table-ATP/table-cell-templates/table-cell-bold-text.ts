@@ -1,4 +1,4 @@
-import {Paragraph, TableCell, TextRun, VerticalAlign} from 'docx';
+import {AlignmentType, Paragraph, TableCell, TextRun} from 'docx';
 
 export class TableCellBoldText {
   constructor() {
@@ -6,7 +6,6 @@ export class TableCellBoldText {
 
   public insertText(value: string): TableCell {
     return new TableCell({
-      verticalAlign: VerticalAlign.CENTER,
       children: [
         new Paragraph({
           children: [
@@ -16,7 +15,7 @@ export class TableCellBoldText {
             }),
           ]
         })
-      ]
+      ],
     });
   }
 }

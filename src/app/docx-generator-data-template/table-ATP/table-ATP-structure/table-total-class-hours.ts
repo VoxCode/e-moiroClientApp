@@ -3,9 +3,9 @@ import {OccupationForm} from '../../../models/OccupationForm';
 import {Paragraph, TableCell, TableRow, TextRun} from 'docx';
 import {TrainingProgramAllClassHours} from '../table-class-hours/training-program-all-class-hours';
 import {TrainingProgramOccupationFormAllClassHours} from '../table-class-hours/training-program-occupation-form-all-class-hours';
-import {TableCellBoldText} from '../table-cell-templates/table-cell-bold-text';
 import {EmptyTableCell} from '../table-cell-templates/empty-table-cell';
-import {TableCellDefaultText} from '../table-cell-templates/table-cell-default-text';
+import {TableCellBoldTextAlignmentCenter} from '../table-cell-templates/table-cell-bold-text-alignment-center';
+import {TableCellDefaultTextAlignmentCenter} from '../table-cell-templates/table-cell-default-text-alignment-center';
 
 export class TableTotalClassHours {
   constructor(
@@ -15,9 +15,9 @@ export class TableTotalClassHours {
   }
 
   public insert(): TableRow {
-    const tableCellBoldText = new TableCellBoldText();
+    const tableCellBoldText = new TableCellBoldTextAlignmentCenter();
     const emptyTableCell = new EmptyTableCell();
-    const defaultTableCell = new TableCellDefaultText();
+    const defaultTableCell = new TableCellDefaultTextAlignmentCenter();
     const child: any = [];
     const tmpClassHours = new TrainingProgramAllClassHours(this.curriculumTopicsList);
     const tmpOccupationFormClassHours = new TrainingProgramOccupationFormAllClassHours(this.curriculumTopicsList, this.occupationForms);

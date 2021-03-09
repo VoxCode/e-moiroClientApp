@@ -1,10 +1,10 @@
-import {Paragraph, TableCell, TableRow} from 'docx';
+import {AlignmentType, Paragraph, TableCell, TableRow} from 'docx';
 
 export class TableHeaderSecondRow {
   private child: any = [];
   constructor(private occupationForms: any[]) {
     this.child.push(new TableCell({
-        children: [new Paragraph('Распределение по видам занятий')],
+        children: [new Paragraph({text: 'Распределение по видам занятий', alignment: AlignmentType.CENTER} )],
         columnSpan: occupationForms.length
       })
     );

@@ -1,6 +1,6 @@
-import {Paragraph, TableCell, TextRun, VerticalAlign} from 'docx';
+import {AlignmentType, Paragraph, TableCell, TextRun} from 'docx';
 
-export class TableCellDefaultText {
+export class TableCellDefaultTextAlignmentCenter {
   constructor() {
   }
   public insertText(value: string): TableCell {
@@ -12,6 +12,7 @@ export class TableCellDefaultText {
               text: value,
             }),
           ],
+          alignment: AlignmentType.CENTER
         })
       ]
     });

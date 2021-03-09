@@ -2,9 +2,10 @@ import {CurriculumTopicTrainingProgram} from '../../../models/СurriculumTopicTr
 import {OccupationForm} from '../../../models/OccupationForm';
 import {Department} from '../../../models/Department';
 import {Paragraph, TableCell, TableRow, TextRun, VerticalAlign} from 'docx';
-import {TableCellBoldText} from '../table-cell-templates/table-cell-bold-text';
-import {TableCellDefaultText} from '../table-cell-templates/table-cell-default-text';
 import {CurriculumTopicTotalClassHours} from '../table-class-hours/curriculum-topic-total-class-hours';
+import {TableCellBoldTextAlignmentCenter} from '../table-cell-templates/table-cell-bold-text-alignment-center';
+import {TableCellDefaultTextAlignmentCenter} from '../table-cell-templates/table-cell-default-text-alignment-center';
+import {TableCellDefaultText} from "../table-cell-templates/table-cell-default-text";
 
 export class TableCurriculumTopic {
   constructor(
@@ -18,8 +19,9 @@ export class TableCurriculumTopic {
   }
 
   public insert(): TableRow {
-    const tableCellBoldText = new TableCellBoldText();
+    const tableCellBoldText = new TableCellBoldTextAlignmentCenter();
     const tableCellDefaultText = new TableCellDefaultText();
+    const tableCellDefaultTextCenter = new TableCellDefaultTextAlignmentCenter();
     const child: any = [];
     if (!this.variable) {
       child.push(tableCellDefaultText.insertText((++this.index) + '.' + (++this.i) + '. ' + this.curriculumTopic.topicTitle));
@@ -33,15 +35,14 @@ export class TableCurriculumTopic {
     const classHours = curriculumTopicTotalClassHours.getClassHours;
     const totalClassHours = curriculumTopicTotalClassHours.getTotalClassHours;
 
-    child.push(tableCellBoldText.insertText(classHours[totalClassHours]));
+    child.push(tableCellDefaultTextCenter.insertText(classHours[totalClassHours]));
 
     classHours.forEach(obj => {
-      child.push(tableCellDefaultText.insertText(obj));
+      child.push(tableCellDefaultTextCenter.insertText(obj));
     });
 
     if (this.i === 1) {
       child.push(new TableCell({
-        verticalAlign: VerticalAlign.CENTER,
         children: [
           new Paragraph({
             children: [

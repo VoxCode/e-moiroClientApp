@@ -1,4 +1,4 @@
-import {Paragraph, TableCell, TableRow} from 'docx';
+import {AlignmentType, convertMillimetersToTwip, Paragraph, TableCell, TableRow, WidthType} from 'docx';
 
 export class TableHeaderFourthRow {
   private child: any = [];
@@ -6,8 +6,12 @@ export class TableHeaderFourthRow {
     for (let i = 1; i < occupationFormLength + 3; i++){
       this.child.push(new TableCell({
         children: [
-          new Paragraph((i).toString())
-        ]
+          new Paragraph({text: i.toString(), alignment: AlignmentType.CENTER})
+        ],
+        width: {
+          size: convertMillimetersToTwip(10),
+          type: WidthType.DXA
+        }
       }));
     }
   }

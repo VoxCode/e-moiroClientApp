@@ -5,7 +5,8 @@ import {VariableCurriculumSectionAllClassHours} from '../table-class-hours/varia
 import {VariableCurriculumSectionOccupationFormAllClassHours} from '../table-class-hours/variable-curriculum-section-occupation-form-all-class-hours';
 import {TableCellBoldText} from '../table-cell-templates/table-cell-bold-text';
 import {EmptyTableCell} from '../table-cell-templates/empty-table-cell';
-import {TableCellDefaultText} from '../table-cell-templates/table-cell-default-text';
+import {TableCellDefaultTextAlignmentCenter} from '../table-cell-templates/table-cell-default-text-alignment-center';
+import {TableCellBoldTextAlignmentCenter} from '../table-cell-templates/table-cell-bold-text-alignment-center';
 
 export class TableVariableSection {
   private child: any = [];
@@ -16,14 +17,15 @@ export class TableVariableSection {
 
   public insert(): TableRow {
     const tableCellBoldText = new TableCellBoldText();
+    const tableCellBoldTextCenter = new TableCellBoldTextAlignmentCenter();
     const emptyTableCell = new EmptyTableCell();
-    const defaultTableCell = new TableCellDefaultText();
+    const defaultTableCell = new TableCellDefaultTextAlignmentCenter();
     const tmpClassHours = new VariableCurriculumSectionAllClassHours(this.curriculumTopics);
     const tmpOccupationFormClassHours = new VariableCurriculumSectionOccupationFormAllClassHours(
       this.curriculumTopics, this.occupationForms);
     const tmpClassHoursList = tmpOccupationFormClassHours.curriculumSectionAllClassHours;
     this.child.push(tableCellBoldText.insertText('Вариативная часть'));
-    this.child.push(tableCellBoldText.insertText(tmpClassHours.curriculumSectionAllClassHours.toString()));
+    this.child.push(tableCellBoldTextCenter.insertText(tmpClassHours.curriculumSectionAllClassHours.toString()));
     tmpClassHoursList.forEach((obj, i) => {
       if (i !== 6) {
         if (obj === 0) {

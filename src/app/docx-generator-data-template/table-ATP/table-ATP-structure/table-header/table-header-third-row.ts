@@ -1,15 +1,13 @@
 import {OccupationForm} from '../../../../models/OccupationForm';
-import {Paragraph, TableCell, TableRow, TextRun} from 'docx';
+import {convertMillimetersToTwip, Paragraph, TableCell, TableRow, TextRun, WidthType} from 'docx';
+import {TableCellBoldText} from '../../table-cell-templates/table-cell-bold-text';
 
 export class TableHeaderThirdRow {
   private child: any = [];
+  private tableCellBoldText = new TableCellBoldText();
   constructor(private occupationForms: OccupationForm[]) {
 
-    this.child.push(new TableCell({
-      children: [
-        new Paragraph('Всего')
-      ]
-    }));
+    this.child.push(this.tableCellBoldText.insertText('Всего'));
     occupationForms.forEach(obj => {
       if (obj.id !== 1){
         this.child.push(new TableCell({
@@ -22,6 +20,10 @@ export class TableHeaderThirdRow {
               ]
             })
           ],
+          width: {
+            size: 5,
+            type: WidthType.DXA
+          }
         }));
       }
     });

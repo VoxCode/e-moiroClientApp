@@ -1,4 +1,4 @@
-import {convertMillimetersToTwip, Document, Footer, Header, PageNumberFormat, Paragraph} from 'docx';
+import {convertMillimetersToTwip, Document, Header, PageNumberFormat, Paragraph} from 'docx';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
@@ -55,39 +55,30 @@ export class DocumentCreatorRector {
     });
 
     document.addSection({
+      headers: {
+        default: new Header({
+          children: [this.docxGeneratorDataTemplate.pageNumbers()],
+        })
+      },
+      properties: {
+        pageNumberStart: 2,
+        pageNumberFormatType: PageNumberFormat.DECIMAL,
+        titlePage: true
+      },
       margins: {
         top: convertMillimetersToTwip(20),
         right: convertMillimetersToTwip(10),
         bottom: convertMillimetersToTwip(20),
         left: convertMillimetersToTwip(30)
       },
-      headers: {
-        default: new Header({
-          children: [this.docxGeneratorDataTemplate.pageNumbers()],
-        })
-      },
-      footers: {
-        default: new Footer({
-          children: [new Paragraph('')]
-        })
-      },
-      properties: {
-        pageNumberStart: 2,
-        pageNumberFormatType: PageNumberFormat.DECIMAL,
-      },
       children: [
-        new Paragraph({
-          children: [
-            //#region "First page"
-            this.docxGeneratorDataTemplate.titleMOIRO(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.approve(this.docxGeneratorDataTemplate.getNowYear(), this.isRector),
-            this.docxGeneratorDataTemplate.mainNameDocumentATP('«' + this.trainingProgram.name + '»'),
-            this.docxGeneratorDataTemplate.trainingProgramInfoATP(
-              this.trainingProgram.numberOfHours, this.formOfEducation.name, this.trainingProgram.isDistanceLearning),
-            //#endregion First page
-          ]
-        }),
+        this.docxGeneratorDataTemplate.titleMOIRO(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.approve(this.docxGeneratorDataTemplate.getNowYear(), this.isRector),
+        this.docxGeneratorDataTemplate.mainNameDocumentATP('«' + this.trainingProgram.name + '»'),
+        this.docxGeneratorDataTemplate.trainingProgramInfoATP(
+          this.trainingProgram.numberOfHours, this.formOfEducation.name, this.trainingProgram.isDistanceLearning),
+        new Paragraph({ text: '' }),
         this.tableATPGenerator.tableATP(
           this.trainingProgramCurriculumSections,
           this.curriculumTopicsList,
@@ -95,7 +86,7 @@ export class DocumentCreatorRector {
           this.trainingProgram,
           this.department,
           this.certificationType
-          )
+        )
       ],
     });
     return document;

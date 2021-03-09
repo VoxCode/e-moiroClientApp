@@ -1,29 +1,36 @@
-import {Paragraph, TableCell, TableRow, VerticalAlign} from 'docx';
+import {AlignmentType, convertMillimetersToTwip, Paragraph, TableCell, TableRow, VerticalAlign, WidthType} from 'docx';
 
 export class TableHeaderFirstRow {
   private child: any = [];
   constructor(private occupationForms: any[]) {
 
     this.child.push(new TableCell({
-        children: [new Paragraph('Названия разделов и тем')],
-        rowSpan: 3,
-        verticalAlign: VerticalAlign.CENTER
-      }),
-      new TableCell({
-        children: [new Paragraph('Количество учебных часов')],
-        columnSpan: this.occupationForms.length,
-        verticalAlign: VerticalAlign.CENTER
-      }),
-      new TableCell({
-        children: [new Paragraph('Кафедра')],
+        children: [new Paragraph({text: 'Названия разделов и тем', alignment: AlignmentType.CENTER} )],
         rowSpan: 3,
         verticalAlign: VerticalAlign.CENTER,
+        width: {
+          size: convertMillimetersToTwip(54.9),
+          type: WidthType.DXA
+        }
+      }),
+      new TableCell({
+        children: [new Paragraph( {text: 'Количество учебных часов', alignment: AlignmentType.CENTER} )],
+        columnSpan: this.occupationForms.length,
+        verticalAlign: VerticalAlign.CENTER,
+      }),
+      new TableCell({
+        children: [new Paragraph({text: 'Кафедра', alignment: AlignmentType.CENTER} )],
+        rowSpan: 3,
+        verticalAlign: VerticalAlign.CENTER,
+        width: {
+          size: convertMillimetersToTwip(30.05),
+          type: WidthType.DXA
+        }
       }),
     );
   }
 
   public insert(): TableRow {
-
     return new TableRow({
       children: this.child,
       cantSplit: true,
