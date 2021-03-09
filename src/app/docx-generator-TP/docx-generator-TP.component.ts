@@ -208,7 +208,6 @@ export class DocxGeneratorTPComponent implements OnInit{
 
   // tslint:disable-next-line:typedef
   public getDocument() {
-    console.log(this.curriculumTopicsList);
     const documentCreator = new DocumentCreator(
       this.curriculumTopicsList,
       this.trainingProgram,

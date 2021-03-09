@@ -51,6 +51,7 @@ import { saveAs } from 'file-saver';
 
 export class DocxGeneratorATPComponent implements OnInit{
   id: number;
+  checkCurriculumTopicsList: number[] = [];
   curriculumTopicsList: CurriculumTopicTrainingProgram[][];
   trainingProgram: TrainingProgram;
   studentCategory: StudentCategory;
@@ -118,8 +119,8 @@ export class DocxGeneratorATPComponent implements OnInit{
   }
 
   // tslint:disable-next-line:typedef
-  loadCurriculumTopicTrainingProgram(){
-    this.trainingProgramCurriculumSections.forEach(object => {
+  loadCurriculumTopicTrainingProgram() {
+    this.trainingProgramCurriculumSections.forEach((object, index) => {
       this.curriculumTopicTrainingProgramService.getValueList(object.id)
         .subscribe((data: CurriculumTopicTrainingProgram[]) => {
           if (data !== undefined){
@@ -128,8 +129,9 @@ export class DocxGeneratorATPComponent implements OnInit{
             curriculumTopicTrainingPrograms.sort(function(a, b) {
               return a.serialNumber - b.serialNumber;
             });
-            this.curriculumTopicsList.push(curriculumTopicTrainingPrograms);
-            if (this.curriculumTopicsList.length === this.trainingProgramCurriculumSections.length) {
+            this.curriculumTopicsList[index] = curriculumTopicTrainingPrograms;
+            this.checkCurriculumTopicsList.push(index);
+            if (this.checkCurriculumTopicsList.length === this.trainingProgramCurriculumSections.length) {
               this.loadTrainingProgramFinalExamination();
             }
           }
