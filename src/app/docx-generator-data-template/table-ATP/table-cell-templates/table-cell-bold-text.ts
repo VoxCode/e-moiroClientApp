@@ -1,4 +1,4 @@
-import {AlignmentType, Paragraph, TableCell, TextRun} from 'docx';
+import {Paragraph, TableCell, TextRun} from 'docx';
 
 export class TableCellBoldText {
   constructor() {

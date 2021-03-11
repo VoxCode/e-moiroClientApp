@@ -21,6 +21,7 @@
     "@angular/platform-browser": "^11.1.2",
     "@angular/platform-browser-dynamic": "^11.1.2",
     "@angular/router": "^11.1.2",
+    "@auth0/angular-jwt": "^5.0.2",
     "@fortawesome/fontawesome-free": "^5.15.2",
     "@ng-select/ng-select": "^6.1.0",
     "@syncfusion/ej2-angular-documenteditor": "^18.4.43",

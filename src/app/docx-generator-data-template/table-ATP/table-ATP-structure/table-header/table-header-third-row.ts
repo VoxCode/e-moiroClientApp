@@ -1,5 +1,5 @@
 import {OccupationForm} from '../../../../models/OccupationForm';
-import {convertMillimetersToTwip, Paragraph, TableCell, TableRow, TextRun, WidthType} from 'docx';
+import {Paragraph, TableCell, TableRow, TextRun, WidthType} from 'docx';
 import {TableCellBoldText} from '../../table-cell-templates/table-cell-bold-text';
 
 export class TableHeaderThirdRow {

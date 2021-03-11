@@ -64,6 +64,11 @@ import { TrainingProgramAddForm4Component } from './training-program-add-form4/t
 import { TrainingProgramAddForm5Component } from './training-program-add-form5/training-program-add-form5.component';
 import {DocxGeneratorTPComponent} from './docx-generator-TP/docx-generator-TP.component';
 import { FilterPipe } from './filter.pipe';
+import { JwtModule } from '@auth0/angular-jwt';
+
+export function tokenGetter(): string {
+  return localStorage.getItem('token');
+}
 
 @NgModule({
   declarations: [
@@ -117,22 +122,27 @@ import { FilterPipe } from './filter.pipe';
     TrainingProgramAddForm5Component,
     FilterPipe
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        ToastrModule.forRoot(),
-        InputsModule.forRoot(),
-        MDBBootstrapModule.forRoot(),
-        FormsModule,
-        NgSelectModule,
-        NgOptionHighlightModule,
-        DocumentEditorContainerModule,
-        DocumentEditorAllModule,
-        DragDropModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+    InputsModule.forRoot(),
+    MDBBootstrapModule.forRoot(),
+    FormsModule,
+    NgSelectModule,
+    NgOptionHighlightModule,
+    DocumentEditorContainerModule,
+    DocumentEditorAllModule,
+    DragDropModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter
+      }
+    })
+  ],
   providers: [
     AuthService,
     CommonService,
