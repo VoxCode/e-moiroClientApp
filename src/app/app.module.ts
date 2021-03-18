@@ -120,7 +120,7 @@ export function tokenGetter(): string {
     TrainingProgramAddForm3Component,
     TrainingProgramAddForm4Component,
     TrainingProgramAddForm5Component,
-    FilterPipe
+    FilterPipe,
   ],
   imports: [
     BrowserModule,
