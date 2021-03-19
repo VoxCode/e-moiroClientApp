@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  private invalidLogin: boolean;
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -26,7 +27,10 @@ export class LoginComponent implements OnInit {
     console.log(this.loginForm);
     this.authService.login(this.loginForm.value).subscribe(data => {
       this.authService.saveToken(data.token);
-      this.router.navigate(['curriculumTopic']);
+      this.invalidLogin = false;
+      this.router.navigate(['trainingProgram']);
+    }, err => {
+      this.invalidLogin = true;
     });
   }
 

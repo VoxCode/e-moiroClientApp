@@ -14,11 +14,6 @@
 
         <mdb-error *ngIf="last.invalid && (last.dirty || last.touched)">Input is required</mdb-error>
       </div>
-
-      <label>Должность</label>
-      <select class="browser-default custom-select" id="second" formControlName="second">
-        <option *ngFor="let el of teachingPositions" [ngValue]="el.id">{{el.name}}</option>
-      </select>
       <br><br>
       <div>
         <mdb-checkbox [default]="true" formControlName="third">Кафедрал</mdb-checkbox>

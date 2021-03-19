@@ -71,11 +71,6 @@
       <div class="modal-body">
         <label>Имя</label>
         <input type="text" [(ngModel)]="this.value.name" class="md-textarea form-control" mdbInput>
-        <br>
-        <label>Должность</label>
-        <select [(ngModel)]="teachingPosition" class="browser-default custom-select">
-          <option *ngFor="let el of teachingPositions" [ngValue]="el">{{el.name}}</option>
-        </select>
         <br><br>
         <mdb-checkbox [(ngModel)]="this.value.isCathedral" [default]="true">Кафедрал</mdb-checkbox>
       </div>

@@ -1,7 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import { TeacherService } from '../services/teacher.service';
 import { Teacher } from '../models/Teacher';
-import {TeachingPosition} from '../models/TeachingPosition';
 import {TeachingPositionService} from '../services/teaching-position.service';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {TeacherEditComponent} from './teacher-edit.component';
@@ -15,8 +14,6 @@ import {TeacherEditComponent} from './teacher-edit.component';
 export class TeacherComponent implements OnInit, AfterViewInit {
   value: Teacher = new Teacher();
   values: Teacher[];
-  teachingPositions: TeachingPosition[];
-  teachingPosition: TeachingPosition = new TeachingPosition();
 
   @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
@@ -42,7 +39,6 @@ export class TeacherComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   ngOnInit() {
     this.loadValue();
-    this.loadTeachingPosition();
   }
 
   // tslint:disable-next-line:typedef use-lifecycle-interface
@@ -104,12 +100,10 @@ export class TeacherComponent implements OnInit, AfterViewInit {
 
   // tslint:disable-next-line:typedef
   crate(){
-    this.value.teachingPositionId = this.teachingPosition.id;
     this.valueService.createValue(this.value)
       .subscribe((data: Teacher) => {
         this.value = data;
         const index = this.elements.length + 1;
-        this.value.teachingPositionName = this.teachingPositions.find(p => p.id === +this.value.teachingPositionId).name;
         this.mdbTable.addRow({
           id: index.toString(),
           first: this.value.id,
@@ -192,14 +186,6 @@ export class TeacherComponent implements OnInit, AfterViewInit {
       this.save(newElement);
     });
     this.mdbTable.setDataSource(this.elements);
-  }
-
-  // tslint:disable-next-line:typedef
-  loadTeachingPosition() {
-    this.teachingPositionService.getValues()
-      .subscribe((data: TeachingPosition[]) => {
-        this.teachingPositions = data;
-      });
   }
 }
 

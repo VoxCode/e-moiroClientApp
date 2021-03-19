@@ -12,7 +12,6 @@ import {GroupComponent} from './group/group.component';
 import {OccupationFormComponent} from './occupation-form/occupation-form.component';
 import {TeacherComponent} from './teacher/teacher.component';
 import {StudentCategoryComponent} from './student-category/student-category.component';
-import {TeachingPositionComponent} from './teaching-position/teaching-position.component';
 import {TrainingProgramComponent} from './training-program/training-program.component';
 import {MainLiteratureComponent} from './main-literature/main-literature.component';
 import {FormOfEducationComponent} from './form-of-education/form-of-education.component';
@@ -28,12 +27,13 @@ import {TrainingProgramAddForm3Component} from './training-program-add-form3/tra
 import {TrainingProgramAddForm4Component} from './training-program-add-form4/training-program-add-form4.component';
 import {TrainingProgramAddForm5Component} from './training-program-add-form5/training-program-add-form5.component';
 import {DocxGeneratorTPComponent} from './docx-generator-TP/docx-generator-TP.component';
+import {ViewerGuard} from './services/viewer-guard';
+import {AdminGuard} from './services/admin-guard';
 
 const routes: Routes = [
   { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent, canActivate: [AuthGuardService]},
   { path: 'docxGeneratorATP/:id', component:  DocxGeneratorATPComponent, canActivate: [AuthGuardService]},
-  { path: 'login', component: LoginComponent},
-  { path: 'additionalLiterature', component: AdditionalLiteratureComponent, canActivate: [AuthGuardService]},
+  { path: 'additionalLiterature', component: AdditionalLiteratureComponent, canActivate: [AuthGuardService, AdminGuard]},
   { path: 'regulation', component: RegulationComponent, canActivate: [AuthGuardService]},
   { path: 'curriculumSection', component: CurriculumSectionComponent, canActivate: [AuthGuardService]},
   { path: 'curriculumTopic', component: CurriculumTopicComponent, canActivate: [AuthGuardService]},
@@ -43,10 +43,9 @@ const routes: Routes = [
   { path: 'group', component: GroupComponent, canActivate: [AuthGuardService]},
   { path: 'groupAdd', component: GroupAddComponent, canActivate: [AuthGuardService]},
   { path: 'mainLiterature', component: MainLiteratureComponent, canActivate: [AuthGuardService]},
-  { path: 'occupationForm', component: OccupationFormComponent, canActivate: [AuthGuardService]},
+  { path: 'occupationForm', component: OccupationFormComponent, canActivate: [AuthGuardService, ViewerGuard]},
   { path: 'teacher', component: TeacherComponent, canActivate: [AuthGuardService]},
   { path: 'studentCategory', component: StudentCategoryComponent, canActivate: [AuthGuardService]},
-  { path: 'teachingPosition', component: TeachingPositionComponent, canActivate: [AuthGuardService]},
   { path: 'trainingProgram', component: TrainingProgramComponent, canActivate: [AuthGuardService]},
   { path: 'trainingProgramAddForm/:id', component: TrainingProgramAddFormComponent, canActivate: [AuthGuardService]},
   { path: 'testWork', component: TestWorkComponent, canActivate: [AuthGuardService]},
@@ -57,6 +56,7 @@ const routes: Routes = [
   { path: 'trainingProgramAddForm5/:id', component: TrainingProgramAddForm5Component, canActivate: [AuthGuardService]},
   { path: 'finalExamination', component: FinalExaminationComponent, canActivate: [AuthGuardService]},
   { path: 'register', component: RegisterComponent},
+  { path: 'login', component: LoginComponent},
   { path: '**', redirectTo: 'trainingProgram'}
 ];
 

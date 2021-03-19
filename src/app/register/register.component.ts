@@ -12,7 +12,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.registerForm = this.fb.group({
-      username: ['', [Validators.minLength(6), Validators.required]],
+      username: ['', [Validators.minLength(5), Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.minLength(6), Validators.required]]
     });
@@ -25,7 +25,6 @@ export class RegisterComponent implements OnInit {
   // tslint:disable-next-line:typedef
   register() {
     this.authService.register(this.registerForm.value).subscribe(data => {
-      console.log(data);
     });
   }
 

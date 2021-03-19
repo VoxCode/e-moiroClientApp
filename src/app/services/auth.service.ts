@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Observable, Subject} from 'rxjs';
+import {Observable} from 'rxjs';
 import { environment } from '../../environments/environment';
 import {JwtHelperService} from '@auth0/angular-jwt';
 
@@ -10,8 +10,6 @@ import {JwtHelperService} from '@auth0/angular-jwt';
 export class AuthService {
   private loginPath = environment.apiUrl + 'identity/login';
   private registerPath = environment.apiUrl + 'identity/register';
-  private authChangeSub = new Subject<boolean>();
-  public authChanged = this.authChangeSub.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -20,6 +18,20 @@ export class AuthService {
   public isUserAuthenticated = (): boolean => {
     const token = this.getToken();
     return token && !this.jwtHelper.isTokenExpired(token);
+  }
+
+  public isUserViewer = (): boolean => {
+    const token = this.getToken();
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    const role = decodedToken.role;
+    return role === 'Viewer';
+  }
+
+  public isUserAdmin = (): boolean => {
+    const token = this.getToken();
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    const role = decodedToken.role;
+    return role === 'Administrator';
   }
 
   login(data): Observable<any> {
@@ -43,13 +55,5 @@ export class AuthService {
   // tslint:disable-next-line:typedef
   getToken() {
     return localStorage.getItem('token');
-  }
-
-  // tslint:disable-next-line:typedef
-  isAuthenticated() {
-      if (this.getToken()) {
-        return true;
-      }
-      return false;
   }
 }

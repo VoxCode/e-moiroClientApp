@@ -5,15 +5,13 @@ import { AuthService } from './services/auth.service';
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent  {
-  title = 'E.moiro';
-constructor(private authService: AuthService ) {
-}
+export class AppComponent {
+  title = 'SmartMoiro';
+  constructor(
+    private authService: AuthService) { }
 
   // tslint:disable-next-line:typedef
   userLogout() {
     this.authService.logout();
   }
 }
-
-

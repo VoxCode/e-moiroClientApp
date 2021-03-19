@@ -28,7 +28,6 @@ export class TeacherEditComponent {
 
   // tslint:disable-next-line:typedef use-lifecycle-interface
   ngOnInit() {
-    this.loadTeachingPosition();
     this.form.controls.id.patchValue(this.editableRow.id);
     this.form.controls.first.patchValue(this.editableRow.first);
     this.form.controls.second.patchValue(this.editableRow.second);
@@ -52,12 +51,4 @@ export class TeacherEditComponent {
   get third() { return this.form.get('third'); }
   // tslint:disable-next-line:typedef
   get last() { return this.form.get('last'); }
-
-  // tslint:disable-next-line:typedef
-  loadTeachingPosition() {
-    this.teachingPositionService.getValues()
-      .subscribe((data: TeachingPosition[]) => {
-        this.teachingPositions = data;
-      });
-  }
 }

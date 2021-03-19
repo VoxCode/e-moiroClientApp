@@ -5,10 +5,7 @@ import {AppComponent} from './app.component';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {AuthService} from './services/auth.service';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
-import {AuthGuardService} from './services/auth-guard.service';
-import {TokenInterceptorService} from './services/token-interceptor.service';
 import {ErrorInterceptorService} from './services/error-interceptor.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToastrModule} from 'ngx-toastr';
@@ -22,7 +19,6 @@ import {MainLiteratureComponent} from './main-literature/main-literature.compone
 import {OccupationFormComponent} from './occupation-form/occupation-form.component';
 import {TeacherComponent} from './teacher/teacher.component';
 import {StudentCategoryComponent} from './student-category/student-category.component';
-import {TeachingPositionComponent} from './teaching-position/teaching-position.component';
 import {TrainingProgramComponent} from './training-program/training-program.component';
 import {CurriculumTopicListComponent} from './curriculum-topic-list/curriculum-topic-list.component';
 import {InputsModule, MDBBootstrapModule} from 'angular-bootstrap-md';
@@ -31,7 +27,6 @@ import {MainLiteratureEditComponent} from './main-literature/main-literature-edi
 import {RegulationEditComponent} from './regulation/regulation-edit.component';
 import {DepartmentEditComponent} from './department/department-edit.component';
 import {FormOfEducationEditComponent} from './form-of-education/form-of-education-edit.component';
-import {TeachingPositionEditComponent} from './teaching-position/teaching-position-edit.component';
 import {TeacherEditComponent} from './teacher/teacher-edit.component';
 import {CurriculumSectionEditComponent} from './curriculum-section/curriculum-section-edit.component';
 import {CurriculumTopicAddFormComponent} from './curriculum-topic-add-form/curriculum-topic-add-form.component';
@@ -65,6 +60,9 @@ import { TrainingProgramAddForm5Component } from './training-program-add-form5/t
 import {DocxGeneratorTPComponent} from './docx-generator-TP/docx-generator-TP.component';
 import { FilterPipe } from './filter.pipe';
 import { JwtModule } from '@auth0/angular-jwt';
+import {AuthGuardService} from "./services/auth-guard.service";
+import {AuthService} from "./services/auth.service";
+import {TokenInterceptorService} from "./services/token-interceptor.service";
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -95,8 +93,6 @@ export function tokenGetter(): string {
     TeacherEditComponent,
     StudentCategoryComponent,
     StudentCategoryEditComponent,
-    TeachingPositionComponent,
-    TeachingPositionEditComponent,
     TrainingProgramComponent,
     TrainingProgramEditComponent,
     RegulationComponent,

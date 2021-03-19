@@ -5,12 +5,12 @@ import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardService implements CanActivate {
+export class ViewerGuard implements CanActivate {
 
   constructor(private authService: AuthService, private router: Router) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    if (this.authService.isUserAuthenticated()) {
+    if (this.authService.isUserViewer()) {
       return true;
     } else {
       this.router.navigate(['login'], { queryParams: { returnUrl: state.url }});
