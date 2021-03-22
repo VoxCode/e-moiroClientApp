@@ -48,7 +48,7 @@ const routes: Routes = [
   { path: 'occupationForm', component: OccupationFormComponent, canActivate: [EditorGuardService, AdminGuardService]},
   { path: 'teacher', component: TeacherComponent, canActivate: [DeanGuardService, AdminGuardService]},
   { path: 'studentCategory', component: StudentCategoryComponent, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'trainingProgram', component: TrainingProgramComponent, canActivate: [ViewerGuardService, EditorGuardService, AdminGuardService]},
+  { path: 'trainingProgram', component: TrainingProgramComponent, canActivate: [AdminGuardService]},
   { path: 'trainingProgramAddForm/:id', component: TrainingProgramAddFormComponent, canActivate: [EditorGuardService, AdminGuardService]},
   { path: 'testWork', component: TestWorkComponent, canActivate: [EditorGuardService, AdminGuardService]},
   { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent, canActivate: [EditorGuardService, AdminGuardService]},
@@ -58,8 +58,7 @@ const routes: Routes = [
   { path: 'trainingProgramAddForm5/:id', component: TrainingProgramAddForm5Component, canActivate: [EditorGuardService, AdminGuardService]},
   { path: 'finalExamination', component: FinalExaminationComponent, canActivate: [EditorGuardService, AdminGuardService]},
   { path: 'register', component: RegisterComponent},
-  { path: 'login', component: LoginComponent},
-  { path: '**', redirectTo: 'trainingProgram'}
+  { path: 'login', component: LoginComponent}
 ];
 
 @NgModule({

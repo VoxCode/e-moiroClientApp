@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginForm.value).subscribe(data => {
       this.authService.saveToken(data.token);
       this.invalidLogin = false;
-      this.router.navigate(['trainingProgram']);
+      this.router.navigate(['**']);
     }, err => {
       this.invalidLogin = true;
     });
