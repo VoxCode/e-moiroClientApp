@@ -6,7 +6,7 @@ import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
-import {ErrorInterceptorService} from './services/error-interceptor.service';
+import {ErrorInterceptorService} from './services/security/error-interceptor.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToastrModule} from 'ngx-toastr';
 import {AdditionalLiteratureComponent} from './additional-literature/additional-literature.component';
@@ -60,9 +60,8 @@ import { TrainingProgramAddForm5Component } from './training-program-add-form5/t
 import {DocxGeneratorTPComponent} from './docx-generator-TP/docx-generator-TP.component';
 import { FilterPipe } from './filter.pipe';
 import { JwtModule } from '@auth0/angular-jwt';
-import {AuthGuardService} from "./services/auth-guard.service";
-import {AuthService} from "./services/auth.service";
-import {TokenInterceptorService} from "./services/token-interceptor.service";
+import {AuthService} from './services/security/auth.service';
+import {TokenInterceptorService} from './services/security/token-interceptor.service';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -142,7 +141,6 @@ export function tokenGetter(): string {
   providers: [
     AuthService,
     CommonService,
-    AuthGuardService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

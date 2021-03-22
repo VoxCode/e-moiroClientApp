@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable} from 'rxjs';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import {JwtHelperService} from '@auth0/angular-jwt';
 
 @Injectable({
@@ -15,23 +15,11 @@ export class AuthService {
     private http: HttpClient,
     private jwtHelper: JwtHelperService) { }
 
-  public isUserAuthenticated = (): boolean => {
-    const token = this.getToken();
-    return token && !this.jwtHelper.isTokenExpired(token);
-  }
-
-  public isUserViewer = (): boolean => {
+  public isUserAuthenticated = (userRole: string): boolean => {
     const token = this.getToken();
     const decodedToken = this.jwtHelper.decodeToken(token);
     const role = decodedToken.role;
-    return role === 'Viewer';
-  }
-
-  public isUserAdmin = (): boolean => {
-    const token = this.getToken();
-    const decodedToken = this.jwtHelper.decodeToken(token);
-    const role = decodedToken.role;
-    return role === 'Administrator';
+    return role === userRole;
   }
 
   login(data): Observable<any> {

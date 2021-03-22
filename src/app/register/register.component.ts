@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
-import validate = WebAssembly.validate;
+import { AuthService } from '../services/security/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -24,7 +23,7 @@ export class RegisterComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   register() {
-    this.authService.register(this.registerForm.value).subscribe(data => {
+    this.authService.register(this.registerForm.value).subscribe(() => {
     });
   }
 
