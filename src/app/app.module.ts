@@ -62,6 +62,11 @@ import { FilterPipe } from './filter.pipe';
 import { JwtModule } from '@auth0/angular-jwt';
 import {AuthService} from './services/security/auth.service';
 import {TokenInterceptorService} from './services/security/token-interceptor.service';
+import { AdminAreaComponent } from './admin-area/admin-area.component';
+import { CreatorAreaComponent } from './creator-area/creator-area.component';
+import { EditorAreaComponent } from './editor-area/editor-area.component';
+import { DeanAreaComponent } from './dean-area/dean-area.component';
+import { ViewerAreaComponent } from './viewer-area/viewer-area.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -116,6 +121,11 @@ export function tokenGetter(): string {
     TrainingProgramAddForm4Component,
     TrainingProgramAddForm5Component,
     FilterPipe,
+    AdminAreaComponent,
+    CreatorAreaComponent,
+    EditorAreaComponent,
+    DeanAreaComponent,
+    ViewerAreaComponent,
   ],
   imports: [
     BrowserModule,

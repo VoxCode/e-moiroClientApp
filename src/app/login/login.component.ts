@@ -18,18 +18,23 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  // tslint:disable-next-line:typedef
-  ngOnInit() {
+  ngOnInit(): void {
+    const role = this.authService.getRole();
+    if (role) {
+      const redirectPath = this.authService.getRedirectPath(role);
+      this.router.navigate([redirectPath]);
+    }
   }
 
   // tslint:disable-next-line:typedef
   login() {
-    console.log(this.loginForm);
     this.authService.login(this.loginForm.value).subscribe(data => {
       this.authService.saveToken(data.token);
+      const role = this.authService.getRole();
+      const redirectPath = this.authService.getRedirectPath(role);
+      this.router.navigate([redirectPath]);
       this.invalidLogin = false;
-      this.router.navigate(['**']);
-    }, err => {
+    }, () => {
       this.invalidLogin = true;
     });
   }
@@ -43,5 +48,4 @@ export class LoginComponent implements OnInit {
   get password() {
     return this.loginForm.get('password');
   }
-
 }

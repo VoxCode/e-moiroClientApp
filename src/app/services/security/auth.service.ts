@@ -16,10 +16,35 @@ export class AuthService {
     private jwtHelper: JwtHelperService) { }
 
   public isUserAuthenticated = (userRole: string): boolean => {
+    return this.getRole() === userRole;
+  }
+
+  public getRole(): string {
     const token = this.getToken();
-    const decodedToken = this.jwtHelper.decodeToken(token);
-    const role = decodedToken.role;
-    return role === userRole;
+    if (token) {
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      return decodedToken.role;
+    }
+  }
+
+  public getRedirectPath(role: string): string {
+    switch (role) {
+      case 'Administrator': {
+        return 'admin';
+      }
+      case 'Creator': {
+        return 'creator';
+      }
+      case 'Editor': {
+        return 'editor';
+      }
+      case 'Dean': {
+        return 'dean';
+      }
+      case 'Viewer': {
+        return 'viewer';
+      }
+    }
   }
 
   login(data): Observable<any> {

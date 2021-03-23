@@ -31,34 +31,65 @@ import {ViewerGuardService} from './services/security/guards/viewer-guard.servic
 import {AdminGuardService} from './services/security/guards/admin-guard.service';
 import {CreatorGuardService} from './services/security/guards/creator-guard.service';
 import {DeanGuardService} from './services/security/guards/dean-guard.service';
+import {AdminAreaComponent} from './admin-area/admin-area.component';
+import {EditorAreaComponent} from './editor-area/editor-area.component';
+import {CreatorAreaComponent} from './creator-area/creator-area.component';
+import {DeanAreaComponent} from './dean-area/dean-area.component';
+import {ViewerAreaComponent} from './viewer-area/viewer-area.component';
+
+const adminRoutes: Routes = [
+  { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
+  { path: 'docxGeneratorATP/:id', component:  DocxGeneratorATPComponent },
+  { path: 'additionalLiterature', component: AdditionalLiteratureComponent },
+  { path: 'regulation', component: RegulationComponent },
+  { path: 'curriculumSection', component: CurriculumSectionComponent },
+  { path: 'curriculumTopic', component: CurriculumTopicComponent },
+  { path: 'certificationType', component: CertificationTypeComponent },
+  { path: 'department', component: DepartmentComponent },
+  { path: 'formOfEducation', component: FormOfEducationComponent },
+  { path: 'group', component: GroupComponent },
+  { path: 'groupAdd', component: GroupAddComponent },
+  { path: 'mainLiterature', component: MainLiteratureComponent },
+  { path: 'occupationForm', component: OccupationFormComponent },
+  { path: 'teacher', component: TeacherComponent },
+  { path: 'studentCategory', component: StudentCategoryComponent },
+  { path: 'trainingProgram', component: TrainingProgramComponent },
+  { path: 'trainingProgramAddForm/:id', component: TrainingProgramAddFormComponent },
+  { path: 'testWork', component: TestWorkComponent },
+  { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent },
+  { path: 'trainingProgramAddForm2/:id', component: TrainingProgramAddForm2Component },
+  { path: 'trainingProgramAddForm3/:id', component: TrainingProgramAddForm3Component },
+  { path: 'trainingProgramAddForm4/:id', component: TrainingProgramAddForm4Component },
+  { path: 'trainingProgramAddForm5/:id', component: TrainingProgramAddForm5Component },
+  { path: 'finalExamination', component: FinalExaminationComponent },
+  { path: '**', redirectTo: 'trainingProgram'}
+];
+
+const editorRoutes: Routes = [
+
+];
+
+const creatorRoutes: Routes = [
+
+];
+
+const deanRoutes: Routes = [
+
+];
+
+const viewerRoutes: Routes = [
+
+];
 
 const routes: Routes = [
-  { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent, canActivate: [CreatorGuardService, AdminGuardService]},
-  { path: 'docxGeneratorATP/:id', component:  DocxGeneratorATPComponent, canActivate: [CreatorGuardService, AdminGuardService]},
-  { path: 'additionalLiterature', component: AdditionalLiteratureComponent, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'regulation', component: RegulationComponent, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'curriculumSection', component: CurriculumSectionComponent, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'curriculumTopic', component: CurriculumTopicComponent, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'certificationType', component: CertificationTypeComponent, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'department', component: DepartmentComponent, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'formOfEducation', component: FormOfEducationComponent, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'group', component: GroupComponent, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'groupAdd', component: GroupAddComponent, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'mainLiterature', component: MainLiteratureComponent, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'occupationForm', component: OccupationFormComponent, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'teacher', component: TeacherComponent, canActivate: [DeanGuardService, AdminGuardService]},
-  { path: 'studentCategory', component: StudentCategoryComponent, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'trainingProgram', component: TrainingProgramComponent, canActivate: [AdminGuardService]},
-  { path: 'trainingProgramAddForm/:id', component: TrainingProgramAddFormComponent, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'testWork', component: TestWorkComponent, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'trainingProgramAddForm2/:id', component: TrainingProgramAddForm2Component, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'trainingProgramAddForm3/:id', component: TrainingProgramAddForm3Component, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'trainingProgramAddForm4/:id', component: TrainingProgramAddForm4Component, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'trainingProgramAddForm5/:id', component: TrainingProgramAddForm5Component, canActivate: [EditorGuardService, AdminGuardService]},
-  { path: 'finalExamination', component: FinalExaminationComponent, canActivate: [EditorGuardService, AdminGuardService]},
+  { path: 'admin', component:  AdminAreaComponent, children: adminRoutes, canActivate: [AdminGuardService]},
+  { path: 'editor', component:  EditorAreaComponent, children: editorRoutes, canActivate: [EditorGuardService]},
+  { path: 'creator', component:  CreatorAreaComponent, children: creatorRoutes, canActivate: [CreatorGuardService]},
+  { path: 'dean', component:  DeanAreaComponent, children: deanRoutes, canActivate: [DeanGuardService]},
+  { path: 'viewer', component:  ViewerAreaComponent, children: viewerRoutes, canActivate: [ViewerGuardService]},
   { path: 'register', component: RegisterComponent},
-  { path: 'login', component: LoginComponent}
+  { path: 'login', component: LoginComponent},
+  { path: '**', redirectTo: 'login'}
 ];
 
 @NgModule({
