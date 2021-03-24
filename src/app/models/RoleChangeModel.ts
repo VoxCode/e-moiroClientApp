@@ -1,7 +1,8 @@
-export class User {
+export class RoleChangeModel {
   constructor(
     public id?: string,
     public userName?: string,
     public email?: string,
-    public role?: string) { }
+    public oldRole?: string,
+    public newRole?: string) { }
 }

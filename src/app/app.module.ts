@@ -67,6 +67,8 @@ import { CreatorAreaComponent } from './creator-area/creator-area.component';
 import { EditorAreaComponent } from './editor-area/editor-area.component';
 import { DeanAreaComponent } from './dean-area/dean-area.component';
 import { ViewerAreaComponent } from './viewer-area/viewer-area.component';
+import { UserComponent } from './admin-area/users/user.component';
+import { UserEditComponent } from './admin-area/users/user-edit.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -126,6 +128,8 @@ export function tokenGetter(): string {
     EditorAreaComponent,
     DeanAreaComponent,
     ViewerAreaComponent,
+    UserComponent,
+    UserEditComponent,
   ],
   imports: [
     BrowserModule,

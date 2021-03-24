@@ -1,0 +1,55 @@
+<h1>Дополнительная литература</h1>
+
+<div class="row">
+  <div class="col-sm-2">
+    <app-curriculum-topic-list></app-curriculum-topic-list>
+  </div>
+  <div class="col-sm">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="md-form">
+            <input type="text" class="form-control" [(ngModel)]="searchText" (keyup)="searchItems()" id="search-input"
+                   mdbInput>
+            <label for="search-input">Поиск</label>
+          </div>
+        </div>
+
+        <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" class="z-depth-1">
+          <thead class="sticky-top">
+          <tr>
+            <th *ngFor="let head of headElements; let i = index" [mdbTableSort]="elements"
+                [sortBy]="headElements[i]"
+                scope="col">{{head | titlecase}}
+              <mdb-icon fas icon="sort"></mdb-icon>
+            </th>
+          </tr>
+          </thead>
+          <tbody #row>
+          <tr mdbTableCol *ngFor="let el of elements; let i = index">
+            <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{el.id}}</th>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.first}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.second}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.last}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+                      *ngIf="el.second !== 'admin'" (click)="editRow(el)"
+                      mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
+              <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
+                      *ngIf="el.second !== 'admin'" (click)="delete(el)"
+                      mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+            </td>
+          </tr>
+          </tbody>
+          <tfoot class="grey lighten-5 w-100">
+          <tr>
+            <td colspan="5">
+              <mdb-table-pagination [tableEl]="tableEl" paginationAlign="" [searchDataSource]="elements"></mdb-table-pagination>
+            </td>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

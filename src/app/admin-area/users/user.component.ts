@@ -1,32 +1,36 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
-import { TeacherService } from '../services/teacher.service';
-import { Teacher } from '../models/Teacher';
-import {TeachingPositionService} from '../services/teaching-position.service';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
-import {TeacherEditComponent} from './teacher-edit.component';
+import {UserService} from '../../services/user.service';
+import {RoleService} from '../../services/role.service';
+import {User} from '../../models/User';
+import {UserEditComponent} from './user-edit.component';
+import {RoleChangeModel} from '../../models/RoleChangeModel';
+import {AuthService} from '../../services/security/auth.service';
 
 @Component({
-  selector: 'app-teacher',
-  templateUrl: './teacher.component.html',
-  styleUrls: ['./teacher.component.scss'],
-  providers: [TeacherService]
+  selector: 'app-users',
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.scss'],
+  providers: [UserService, RoleService, AuthService]
 })
-export class TeacherComponent implements OnInit, AfterViewInit {
-  value: Teacher = new Teacher();
-  values: Teacher[];
+export class UserComponent implements OnInit, AfterViewInit {
+  value: User = new User();
+  values: User[];
 
   @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
   @ViewChild('row', { static: true }) row: ElementRef;
 
   elements: any = [];
-  headElements = ['Номер', 'id', 'Должность', 'Кафедрал', 'Имя', 'Команда'];
+  headElements = ['Номер', 'Email', 'Логин', 'Роль', 'Команда'];
   searchText = '';
   previous: string;
   modalRef: MDBModalRef;
 
   constructor(
-    private valueService: TeacherService,
+    private valueService: UserService,
+    private roleService: RoleService,
+    private authService: AuthService,
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService) { }
 
@@ -75,20 +79,14 @@ export class TeacherComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   loadValue() {
     this.valueService.getValues()
-      .subscribe((data: Teacher[]) => {
+      .subscribe((data: User[]) => {
         this.values = data;
-        // tslint:disable-next-line:only-arrow-functions typedef
-        this.values.sort(function(a, b) {
-          return a.id - b.id;
-        });
         for (let i = 1; i <= this.values.length; i++) {
           this.elements.push({
             id: i.toString(),
-            first: this.values[i - 1].id,
-            second: this.values[i - 1].teachingPositionId,
-            third: this.values[i - 1].isCathedral,
-            fourth: this.values[i - 1].teachingPositionName,
-            last: this.values[i - 1].name});
+            first: this.values[i - 1].email,
+            second: this.values[i - 1].userName,
+            last: this.values[i - 1].role});
         }
         this.mdbTable.setDataSource(this.elements);
         this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
@@ -100,16 +98,15 @@ export class TeacherComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   crate(){
     this.valueService.createValue(this.value)
-      .subscribe((data: Teacher) => {
+      .subscribe((data: User) => {
+        // this.values.push(data);
         this.value = data;
         const index = this.elements.length + 1;
         this.mdbTable.addRow({
           id: index.toString(),
-          first: this.value.id,
-          second: this.value.teachingPositionId,
-          third: this.value.isCathedral,
-          fourth: this.value.teachingPositionName,
-          last: this.value.name
+          first: this.value.email,
+          second: this.value.userName,
+          last: this.value.role
         });
         this.mdbTable.setDataSource(this.elements);
         this.cancel();
@@ -117,30 +114,26 @@ export class TeacherComponent implements OnInit, AfterViewInit {
   }
 
   // tslint:disable-next-line:typedef
-  save(el: any) {
+  save(newEl: any, oldEl: any) {
     this.cancel();
-    this.value.id = el.first;
-    this.value.teachingPositionId = el.second;
-    this.value.isCathedral = el.third;
-    this.value.name = el.last;
-    this.valueService.updateValue(this.value)
-      .subscribe();
+    // const roleChangeModel: RoleChangeModel = new RoleChangeModel(newEl.);
+    // console.log(roleChangeModel);
+    // this.authService.changeRole(roleChangeModel)
+    //   .subscribe();
     this.cancel();
   }
   // tslint:disable-next-line:typedef
-  editValue(p: Teacher) {
+  editValue(p: User) {
     this.value = p;
   }
   // tslint:disable-next-line:typedef
   cancel() {
-    this.value = new Teacher();
+    this.value = new User();
   }
   // tslint:disable-next-line:typedef
   delete(p: any) {
     this.value.id = p.first;
-    this.value.teachingPositionId = p.second;
-    this.value.isCathedral = p.third;
-    this.value.name = p.last;
+    this.value.userName = p.last;
     this.valueService.deleteValue(this.value.id)
       .subscribe(data => {
         this.removeRow(p);
@@ -179,13 +172,11 @@ export class TeacherComponent implements OnInit, AfterViewInit {
         editableRow: el
       }
     };
-    this.modalRef = this.modalService.show(TeacherEditComponent, modalOptions);
+    this.modalRef = this.modalService.show(UserEditComponent, modalOptions);
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       this.elements[elementIndex] = newElement;
-      this.save(newElement);
+      this.save(newElement, el);
     });
     this.mdbTable.setDataSource(this.elements);
   }
 }
-
-

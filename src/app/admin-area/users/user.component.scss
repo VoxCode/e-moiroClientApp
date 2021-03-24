@@ -1,0 +1,25 @@
+.z-depth-1 {
+  margin-right: 25px;
+};
+
+td{
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.addButton{
+  position: relative;
+  float: right;
+}
+
+button{
+  border-radius: 5px;
+}
+
+.modal-body {
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {JwtHelperService} from '@auth0/angular-jwt';
+import {RoleChangeModel} from '../../models/RoleChangeModel';
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +54,10 @@ export class AuthService {
 
   register(data): Observable<any> {
     return this.http.post(this.registerPath, data);
+  }
+
+  changeRole(roleChangeModel: RoleChangeModel): Observable<any> {
+    return this.http.post(this.loginPath, roleChangeModel);
   }
 
   // tslint:disable-next-line:typedef

@@ -36,6 +36,7 @@ import {EditorAreaComponent} from './editor-area/editor-area.component';
 import {CreatorAreaComponent} from './creator-area/creator-area.component';
 import {DeanAreaComponent} from './dean-area/dean-area.component';
 import {ViewerAreaComponent} from './viewer-area/viewer-area.component';
+import {UserComponent} from "./admin-area/users/user.component";
 
 const adminRoutes: Routes = [
   { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
@@ -62,6 +63,7 @@ const adminRoutes: Routes = [
   { path: 'trainingProgramAddForm4/:id', component: TrainingProgramAddForm4Component },
   { path: 'trainingProgramAddForm5/:id', component: TrainingProgramAddForm5Component },
   { path: 'finalExamination', component: FinalExaminationComponent },
+  { path: 'user', component: UserComponent },
   { path: '**', redirectTo: 'trainingProgram'}
 ];
 
