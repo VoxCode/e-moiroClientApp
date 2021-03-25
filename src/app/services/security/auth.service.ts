@@ -11,6 +11,7 @@ import {RoleChangeModel} from '../../models/RoleChangeModel';
 export class AuthService {
   private loginPath = environment.apiUrl + 'identity/login';
   private registerPath = environment.apiUrl + 'identity/register';
+  private changeRolePath = environment.apiUrl + 'identity/changeRole';
 
   constructor(
     private http: HttpClient,
@@ -57,7 +58,7 @@ export class AuthService {
   }
 
   changeRole(roleChangeModel: RoleChangeModel): Observable<any> {
-    return this.http.post(this.loginPath, roleChangeModel);
+    return this.http.post(this.changeRolePath, roleChangeModel);
   }
 
   // tslint:disable-next-line:typedef

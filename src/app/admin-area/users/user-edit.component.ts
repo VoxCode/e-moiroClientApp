@@ -18,8 +18,8 @@ export class UserEditComponent {
   public saveButtonClicked: Subject<any> = new Subject<any>();
 
   public form: FormGroup = new FormGroup({
-    first: new FormControl('', Validators.required),
-    second: new FormControl('', Validators.required),
+    first: new FormControl({value: '', disabled: true}),
+    second: new FormControl({value: '', disabled: true}),
     last: new FormControl('', Validators.required)
   });
 
@@ -39,7 +39,6 @@ export class UserEditComponent {
   editRow() {
     this.editableRow = this.form.getRawValue();
     this.editableRow.last = this.roles.find(p => p.name === this.editableRow.last).name;
-    console.log(this.editableRow);
     this.saveButtonClicked.next(this.editableRow);
     this.modalRef.hide();
   }

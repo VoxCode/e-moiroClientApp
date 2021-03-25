@@ -2,8 +2,8 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {LoginComponent} from './login/login.component';
-import {RegisterComponent} from './register/register.component';
+import {LoginComponent} from './authorization/login/login.component';
+import {RegisterComponent} from './authorization/register/register.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {ErrorInterceptorService} from './services/security/error-interceptor.service';
@@ -69,6 +69,7 @@ import { DeanAreaComponent } from './dean-area/dean-area.component';
 import { ViewerAreaComponent } from './viewer-area/viewer-area.component';
 import { UserComponent } from './admin-area/users/user.component';
 import { UserEditComponent } from './admin-area/users/user-edit.component';
+import { AuthorizationComponent } from './authorization/authorization.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -130,6 +131,7 @@ export function tokenGetter(): string {
     ViewerAreaComponent,
     UserComponent,
     UserEditComponent,
+    AuthorizationComponent
   ],
   imports: [
     BrowserModule,

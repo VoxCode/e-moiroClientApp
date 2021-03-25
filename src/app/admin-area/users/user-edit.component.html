@@ -9,14 +9,14 @@
     <form [formGroup]="form">
       <div class="md-form">
         <p>Email</p>
-        <textarea id="first" type="text" class="form-control" formControlName="first" mdbInput mdbValidate
-                  [validateSuccess]="false"></textarea>
+        <input id="first" type="text" class="form-control" formControlName="first" mdbInput mdbValidate
+                  [validateSuccess]="false">
 
         <mdb-error *ngIf="first.invalid && (first.dirty || last.touched)">Input is required</mdb-error>
 
         <p>Логин</p>
-        <textarea id="second" type="text" class="form-control" formControlName="second" mdbInput mdbValidate
-                  [validateSuccess]="false"></textarea>
+        <input id="second" type="text" class="form-control" formControlName="second" mdbInput mdbValidate
+                  [validateSuccess]="false">
 
         <mdb-error *ngIf="second.invalid && (second.dirty || second.touched)">Input is required</mdb-error>
       </div>

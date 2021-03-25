@@ -1,7 +1,7 @@
 import { NgModule} from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './authorization/login/login.component';
+import { RegisterComponent } from './authorization/register/register.component';
 import { EditorGuardService } from './services/security/guards/editor-guard.service';
 import {AdditionalLiteratureComponent} from './additional-literature/additional-literature.component';
 import {RegulationComponent} from './regulation/regulation.component';
@@ -36,7 +36,8 @@ import {EditorAreaComponent} from './editor-area/editor-area.component';
 import {CreatorAreaComponent} from './creator-area/creator-area.component';
 import {DeanAreaComponent} from './dean-area/dean-area.component';
 import {ViewerAreaComponent} from './viewer-area/viewer-area.component';
-import {UserComponent} from "./admin-area/users/user.component";
+import {UserComponent} from './admin-area/users/user.component';
+import {AuthorizationComponent} from './authorization/authorization.component';
 
 const adminRoutes: Routes = [
   { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
@@ -91,7 +92,8 @@ const routes: Routes = [
   { path: 'viewer', component:  ViewerAreaComponent, children: viewerRoutes, canActivate: [ViewerGuardService]},
   { path: 'register', component: RegisterComponent},
   { path: 'login', component: LoginComponent},
-  { path: '**', redirectTo: 'login'}
+  { path: 'authorization', component: AuthorizationComponent},
+  { path: '**', redirectTo: 'authorization'}
 ];
 
 @NgModule({

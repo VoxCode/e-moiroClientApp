@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from '../services/security/auth.service';
+import { AuthService } from '../../services/security/auth.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -9,6 +9,8 @@ import {Router} from '@angular/router';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+  @ViewChild ('errorFrame') public modal: any;
+  @ViewChild ('frame') public modal2: any;
   registerForm: FormGroup;
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.registerForm = this.fb.group({
@@ -25,9 +27,10 @@ export class RegisterComponent implements OnInit {
   // tslint:disable-next-line:typedef
   register() {
     this.authService.register(this.registerForm.value).subscribe(() => {
-      this.router.navigate(['login']);
+      this.modal2.hide();
+      this.router.navigate(['authorization']);
     }, () => {
-      alert('Ошибка регистрации!');
+      this.modal.show();
     });
   }
 

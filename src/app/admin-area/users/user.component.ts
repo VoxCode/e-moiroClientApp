@@ -86,6 +86,7 @@ export class UserComponent implements OnInit, AfterViewInit {
             id: i.toString(),
             first: this.values[i - 1].email,
             second: this.values[i - 1].userName,
+            third: this.values[i - 1].id,
             last: this.values[i - 1].role});
         }
         this.mdbTable.setDataSource(this.elements);
@@ -96,30 +97,12 @@ export class UserComponent implements OnInit, AfterViewInit {
   }
 
   // tslint:disable-next-line:typedef
-  crate(){
-    this.valueService.createValue(this.value)
-      .subscribe((data: User) => {
-        // this.values.push(data);
-        this.value = data;
-        const index = this.elements.length + 1;
-        this.mdbTable.addRow({
-          id: index.toString(),
-          first: this.value.email,
-          second: this.value.userName,
-          last: this.value.role
-        });
-        this.mdbTable.setDataSource(this.elements);
-        this.cancel();
-      });
-  }
-
-  // tslint:disable-next-line:typedef
   save(newEl: any, oldEl: any) {
     this.cancel();
-    // const roleChangeModel: RoleChangeModel = new RoleChangeModel(newEl.);
-    // console.log(roleChangeModel);
-    // this.authService.changeRole(roleChangeModel)
-    //   .subscribe();
+    const roleChangeModel: RoleChangeModel = new RoleChangeModel(oldEl.second, oldEl.last, newEl.last);
+    console.log(roleChangeModel);
+    this.authService.changeRole(roleChangeModel)
+      .subscribe(() => {}, () => { location.reload(); alert('Ошибка изменения роли!'); });
     this.cancel();
   }
   // tslint:disable-next-line:typedef
@@ -132,9 +115,7 @@ export class UserComponent implements OnInit, AfterViewInit {
   }
   // tslint:disable-next-line:typedef
   delete(p: any) {
-    this.value.id = p.first;
-    this.value.userName = p.last;
-    this.valueService.deleteValue(this.value.id)
+    this.valueService.deleteValue(p.third)
       .subscribe(data => {
         this.removeRow(p);
       });

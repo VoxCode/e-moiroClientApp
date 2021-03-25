@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from '../services/security/auth.service';
+import { AuthService } from '../../services/security/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,22 +8,14 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
+  @ViewChild ('errorFrame') public modal: any;
   loginForm: FormGroup;
-  private invalidLogin: boolean;
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
+      username: ['', [Validators.minLength(5), Validators.required]],
+      password: ['', [Validators.minLength(6), Validators.required]]
     });
-  }
-
-  ngOnInit(): void {
-    const role = this.authService.getRole();
-    if (role) {
-      const redirectPath = this.authService.getRedirectPath(role);
-      this.router.navigate([redirectPath]);
-    }
   }
 
   // tslint:disable-next-line:typedef
@@ -33,9 +25,8 @@ export class LoginComponent implements OnInit {
       const role = this.authService.getRole();
       const redirectPath = this.authService.getRedirectPath(role);
       this.router.navigate([redirectPath]);
-      this.invalidLogin = false;
     }, () => {
-      this.invalidLogin = true;
+      this.modal.show();
     });
   }
 
