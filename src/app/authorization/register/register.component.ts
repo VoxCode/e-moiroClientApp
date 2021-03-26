@@ -1,18 +1,22 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/security/auth.service';
-import {Router} from '@angular/router';
+import {MDBModalRef} from 'angular-bootstrap-md';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
   @ViewChild ('errorFrame') public modal: any;
-  @ViewChild ('frame') public modal2: any;
   registerForm: FormGroup;
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  public closeForm: Subject<any> = new Subject<any>();
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    public modalRef: MDBModalRef) {
     this.registerForm = this.fb.group({
       username: ['', [Validators.minLength(5), Validators.required]],
       email: ['', [Validators.required, Validators.email]],
@@ -21,14 +25,10 @@ export class RegisterComponent implements OnInit {
    }
 
   // tslint:disable-next-line:typedef
-  ngOnInit() {
-  }
-
-  // tslint:disable-next-line:typedef
   register() {
     this.authService.register(this.registerForm.value).subscribe(() => {
-      this.modal2.hide();
-      this.router.navigate(['authorization']);
+      this.modalRef.hide();
+      this.closeForm.next();
     }, () => {
       this.modal.show();
     });

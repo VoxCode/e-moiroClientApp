@@ -9,7 +9,6 @@ export class CurriculumTopicTotalClassHours {
     private curriculumTopic: CurriculumTopicTrainingProgram) {
     let j = 0;
     occupationForms.forEach(obj => {
-      if (obj.id !== 1) {
         let tmp: string;
         tmp = this.curriculumTopicClassHours(obj.id, curriculumTopic);
         if (tmp !== '') {
@@ -17,7 +16,6 @@ export class CurriculumTopicTotalClassHours {
         }
         this.classHours.push(tmp);
         j++;
-      }
     });
   }
 

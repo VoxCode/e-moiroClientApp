@@ -27,9 +27,7 @@ export class TableIndividualSessions {
       ]
     }));
     this.occupationForms.forEach((obj, i) => {
-      if (i !== 6) {
-        child.push(emptyTableCell.insert());
-      }
+      child.push(emptyTableCell.insert());
     });
     child.push(defaultTableCell.insertText(this.department.name.substr(this.department.name.indexOf(' ') + 1)));
 

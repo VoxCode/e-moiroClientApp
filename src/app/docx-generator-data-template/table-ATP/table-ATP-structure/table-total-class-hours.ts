@@ -37,13 +37,11 @@ export class TableTotalClassHours {
     }));
     child.push(tableCellBoldText.insertText(tmpClassHours.getTrainingProgramAllClassHours.toString()));
     tmpClassHoursList.forEach((obj, i) => {
-      if (i !== 6) {
-        if (obj === 0) {
-          child.push(emptyTableCell.insert());
-        }
-        else {
-          child.push(defaultTableCell.insertText(obj.toString()));
-        }
+      if (obj === 0) {
+        child.push(emptyTableCell.insert());
+      }
+      else {
+        child.push(defaultTableCell.insertText(obj.toString()));
       }
     });
     child.push(emptyTableCell.insert());

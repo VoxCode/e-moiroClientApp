@@ -51,7 +51,6 @@ import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import {CommonService} from './common-service/common-service.component';
 import {DocumentEditorAllModule, DocumentEditorContainerModule} from '@syncfusion/ej2-angular-documenteditor';
 import {DocumentEdComponent} from './document-ed/document-ed.component';
-import { TrainingProgramDocxGeneratorComponent } from './training-program-docx-generator/training-program-docx-generator.component';
 import { TrainingProgramAddForm2Component } from './training-program-add-form2/training-program-add-form2.component';
 import { TrainingProgramStepperComponent } from './training-program-stepper/training-program-stepper.component';
 import { TrainingProgramAddForm3Component } from './training-program-add-form3/training-program-add-form3.component';
@@ -117,7 +116,6 @@ export function tokenGetter(): string {
     TrainingProgramAddFormComponent,
     CurriculumSectionChild,
     DocumentEdComponent,
-    TrainingProgramDocxGeneratorComponent,
     TrainingProgramAddForm2Component,
     TrainingProgramStepperComponent,
     TrainingProgramAddForm3Component,
@@ -131,7 +129,7 @@ export function tokenGetter(): string {
     ViewerAreaComponent,
     UserComponent,
     UserEditComponent,
-    AuthorizationComponent
+    AuthorizationComponent,
   ],
   imports: [
     BrowserModule,

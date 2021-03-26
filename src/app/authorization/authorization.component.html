@@ -33,10 +33,29 @@
 <img src="assets/герб%20моиро%20(Синий).png" alt="thumbnail"
      style="width: 200px; position: absolute; top: 10px; z-index: 99999">
 <div class="log">
-  <app-login></app-login>
+  <button type="button" mdbBtn type="button" gradient="blue" rounded="true" data-toggle="modal" data-target="#basicExample"
+          (click)="login()" mdbWavesEffect>Войти в систему</button>
 </div>
-
 <div class="reg">
-  <app-register></app-register>
+  <button type="button" mdbBtn type="button" gradient="blue" rounded="true" data-toggle="modal" data-target="#basicExample"
+          (click)="register()" mdbWavesEffect>Зарегистрироваться
+  </button>
 </div>
 
+<div mdbModal #successRegFrame="mdbModal" class="modal fade bottom" id="frameModalBottom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-side modal-bottom-left modal-notify modal-success" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading lead">Регистрация прошла успешно!   Введите свой логин и пароль</p>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="successRegFrame.hide()">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>

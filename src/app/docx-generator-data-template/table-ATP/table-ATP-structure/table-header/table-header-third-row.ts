@@ -9,23 +9,21 @@ export class TableHeaderThirdRow {
 
     this.child.push(this.tableCellBoldText.insertText('Всего'));
     occupationForms.forEach(obj => {
-      if (obj.id !== 1){
-        this.child.push(new TableCell({
-          children: [
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: obj.fullName,
-                })
-              ]
-            })
-          ],
-          width: {
-            size: 5,
-            type: WidthType.DXA
-          }
-        }));
-      }
+      this.child.push(new TableCell({
+        children: [
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: obj.fullName,
+              })
+            ]
+          })
+        ],
+        width: {
+          size: 5,
+          type: WidthType.DXA
+        }
+      }));
     });
   }
 

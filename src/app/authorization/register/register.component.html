@@ -1,70 +1,61 @@
-<button type="button" mdbBtn type="button" gradient="blue" rounded="true" data-toggle="modal" data-target="#basicExample"
-        (click)="frame.show()" mdbWavesEffect>Зарегистрироваться
-</button>
-
-<div mdbModal #frame="mdbModal" class="modal fade left" id="frameModalTop" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Регистрация</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="frame.hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form [formGroup]="registerForm" (ngSubmit)="register()">
-        <div class="modal-body mx-3">
-          <div class="md-form mb-5">
-            <mdb-icon fas icon="user" class="prefix grey-text"></mdb-icon>
-            <input type="text" id="orangeForm-name" class="form-control" [formControl]="username"
-                   mdbInput mdbValidate>
-            <label for="orangeForm-name">Ваш логин</label>
-            <mdb-error *ngIf="username.invalid && (username.dirty || username.touched)">
-              Логин должен содержать не менее 5 символов
-            </mdb-error>
-            <mdb-success *ngIf="username.valid && (username.dirty || username.touched)">
-              Все хорошо
-            </mdb-success>
-          </div>
-          <div class="md-form mb-5">
-            <mdb-icon fas icon="envelope" class="prefix grey-text"></mdb-icon>
-            <input type="email" id="orangeForm-email" class="form-control" [formControl]="email"
-                   mdbInput mdbValidate>
-            <label for="orangeForm-email">Ваша почта</label>
-            <mdb-error
-              *ngIf="email.invalid && (email.dirty || email.touched)">Input
-              Неккоректный email
-            </mdb-error>
-            <mdb-success
-              *ngIf="email.valid && (email.dirty || email.touched)">Input
-              Все хорошо
-            </mdb-success>
-          </div>
-
-          <div class="md-form mb-4">
-            <mdb-icon fas icon="lock" class="prefix grey-text"></mdb-icon>
-            <input type="password" id="orangeForm-pass" class="form-control" [formControl]="password"
-                   mdbInput mdbValidate>
-            <label for="orangeForm-pass">Ваш пароль</label>
-            <mdb-error
-              *ngIf="password.invalid && (password.dirty || password.touched)">
-              Пароль должен содержать не менее 6 символов
-            </mdb-error>
-            <mdb-success
-              *ngIf="password.valid && (password.dirty || password.touched)">
-              Все хорошо
-            </mdb-success>
-          </div>
-
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button mdbBtn color="deep-orange" class="waves-light"
-                  [disabled]="username.invalid || email.invalid || password.invalid" name="submit"
-                  mdbBtn gradient="blue" rounded="true" mdbWavesEffect>Регистрация</button>
-        </div>
-      </form>
-    </div>
+<div class="modal-content">
+  <div class="modal-header text-center">
+    <h4 class="modal-title w-100 font-weight-bold">Регистрация</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
+  <form [formGroup]="registerForm" (ngSubmit)="register()">
+    <div class="modal-body mx-3">
+      <div class="md-form mb-5">
+        <mdb-icon fas icon="user" class="prefix grey-text"></mdb-icon>
+        <input type="text" id="orangeForm-name" class="form-control" [formControl]="username"
+               mdbInput mdbValidate>
+        <label for="orangeForm-name">Ваш логин</label>
+        <mdb-error *ngIf="username.invalid && (username.dirty || username.touched)">
+          Логин должен содержать не менее 5 символов
+        </mdb-error>
+        <mdb-success *ngIf="username.valid && (username.dirty || username.touched)">
+          Все хорошо
+        </mdb-success>
+      </div>
+      <div class="md-form mb-5">
+        <mdb-icon fas icon="envelope" class="prefix grey-text"></mdb-icon>
+        <input type="email" id="orangeForm-email" class="form-control" [formControl]="email"
+               mdbInput mdbValidate>
+        <label for="orangeForm-email">Ваша почта</label>
+        <mdb-error
+          *ngIf="email.invalid && (email.dirty || email.touched)">Input
+          Неккоректный email
+        </mdb-error>
+        <mdb-success
+          *ngIf="email.valid && (email.dirty || email.touched)">Input
+          Все хорошо
+        </mdb-success>
+      </div>
+
+      <div class="md-form mb-4">
+        <mdb-icon fas icon="lock" class="prefix grey-text"></mdb-icon>
+        <input type="password" id="orangeForm-pass" class="form-control" [formControl]="password"
+               mdbInput mdbValidate>
+        <label for="orangeForm-pass">Ваш пароль</label>
+        <mdb-error
+          *ngIf="password.invalid && (password.dirty || password.touched)">
+          Пароль должен содержать не менее 6 символов
+        </mdb-error>
+        <mdb-success
+          *ngIf="password.valid && (password.dirty || password.touched)">
+          Все хорошо
+        </mdb-success>
+      </div>
+
+    </div>
+    <div class="modal-footer d-flex justify-content-center">
+      <button mdbBtn color="deep-orange" class="waves-light"
+              [disabled]="username.invalid || email.invalid || password.invalid" name="submit"
+              mdbBtn gradient="blue" rounded="true" mdbWavesEffect>Регистрация</button>
+    </div>
+  </form>
 </div>
 
 <div mdbModal #errorFrame="mdbModal" class="modal fade top" id="frameModalBottom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

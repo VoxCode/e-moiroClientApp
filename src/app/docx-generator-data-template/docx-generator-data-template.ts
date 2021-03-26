@@ -3,12 +3,8 @@ import {
   PageBreak,
   PageNumber,
   Paragraph,
-  Table,
-  TableCell,
-  TableRow,
   TabStopType,
-  TextRun,
-  VerticalAlign
+  TextRun
 } from 'docx';
 
 export class DocxGeneratorDataTemplate {

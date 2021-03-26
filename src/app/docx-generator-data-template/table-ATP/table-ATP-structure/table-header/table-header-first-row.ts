@@ -15,7 +15,7 @@ export class TableHeaderFirstRow {
       }),
       new TableCell({
         children: [new Paragraph( {text: 'Количество учебных часов', alignment: AlignmentType.CENTER} )],
-        columnSpan: this.occupationForms.length,
+        columnSpan: this.occupationForms.length + 1,
         verticalAlign: VerticalAlign.CENTER,
       }),
       new TableCell({

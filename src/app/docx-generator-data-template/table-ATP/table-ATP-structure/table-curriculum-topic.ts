@@ -1,11 +1,10 @@
 import {CurriculumTopicTrainingProgram} from '../../../models/СurriculumTopicTrainingProgram';
 import {OccupationForm} from '../../../models/OccupationForm';
 import {Department} from '../../../models/Department';
-import {Paragraph, TableCell, TableRow, TextRun, VerticalAlign} from 'docx';
+import {Paragraph, TableCell, TableRow, TextRun} from 'docx';
 import {CurriculumTopicTotalClassHours} from '../table-class-hours/curriculum-topic-total-class-hours';
-import {TableCellBoldTextAlignmentCenter} from '../table-cell-templates/table-cell-bold-text-alignment-center';
 import {TableCellDefaultTextAlignmentCenter} from '../table-cell-templates/table-cell-default-text-alignment-center';
-import {TableCellDefaultText} from "../table-cell-templates/table-cell-default-text";
+import {TableCellDefaultText} from '../table-cell-templates/table-cell-default-text';
 
 export class TableCurriculumTopic {
   constructor(
@@ -19,7 +18,6 @@ export class TableCurriculumTopic {
   }
 
   public insert(): TableRow {
-    const tableCellBoldText = new TableCellBoldTextAlignmentCenter();
     const tableCellDefaultText = new TableCellDefaultText();
     const tableCellDefaultTextCenter = new TableCellDefaultTextAlignmentCenter();
     const child: any = [];

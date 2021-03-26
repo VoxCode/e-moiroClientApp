@@ -36,13 +36,11 @@ export class TableCurriculumSection {
     this.child.push(tableCellBoldText.insertText(this.allClassHours.curriculumSectionAllClassHours.toString()));
 
     this.tmpClassHours.forEach((object, idx) => {
-      if (idx !== 6) {
-        if (object === 0) {
-          this.child.push(this.emptyTableCell.insert());
-        }
-        else {
-          this.child.push(tableCellBoldText.insertText(object.toString()));
-        }
+      if (object === 0) {
+        this.child.push(this.emptyTableCell.insert());
+      }
+      else {
+        this.child.push(tableCellBoldText.insertText(object.toString()));
       }
     });
     this.child.push(this.emptyTableCell.insert());

@@ -27,13 +27,11 @@ export class TableInvariantSection {
     this.child.push(tableCellBoldText.insertText('Инвариантная часть'));
     this.child.push(tableCellBoldTextCenter.insertText(tmpClassHours.curriculumSectionAllClassHours.toString()));
     tmpClassHoursList.forEach((obj, i) => {
-      if (i !== 6) {
-        if (obj === 0) {
-          this.child.push(emptyTableCell.insert());
-        }
-        else {
-          this.child.push(defaultTableCellCenter.insertText(obj.toString()));
-        }
+      if (obj === 0) {
+        this.child.push(emptyTableCell.insert());
+      }
+      else {
+        this.child.push(defaultTableCellCenter.insertText(obj.toString()));
       }
     });
     this.child.push(emptyTableCell.insert());
