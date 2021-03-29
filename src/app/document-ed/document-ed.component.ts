@@ -2588,6 +2588,6 @@ export class DocumentEdComponent implements OnChanges {
   }
 
   public saveAsDocx(): void {
-    this.container.documentEditor.save(this.trainingProgram.name + '(УП)', 'Docx');
+    this.container.documentEditor.save(this.trainingProgram.name + '(УТП)', 'Docx');
   }
 }

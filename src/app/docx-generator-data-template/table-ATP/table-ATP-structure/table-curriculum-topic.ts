@@ -56,7 +56,7 @@ export class TableCurriculumTopic {
 
     return new TableRow({
       children: child,
-      cantSplit: true,
+
     });
   }
 }

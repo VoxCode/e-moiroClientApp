@@ -27,7 +27,6 @@ import {OccupationFormService} from '../services/occupation-form.service';
 import {OccupationForm} from '../models/OccupationForm';
 import {DepartmentService} from '../services/department.service';
 import {Department} from '../models/Department';
-import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-docx-generator',
@@ -277,7 +276,7 @@ export class DocxGeneratorATPComponent implements OnInit{
     ]);
     Packer.toBlob(docxTmp).then(blob => {
       this.docx = blob;
-      // saveAs(blob, 'example.docx');
+
 
     });
   }
