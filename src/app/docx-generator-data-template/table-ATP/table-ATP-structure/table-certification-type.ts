@@ -32,7 +32,7 @@ export class TableCertificationType {
           ]
         })
       ],
-      columnSpan: this.occupationFormLength
+      columnSpan: this.occupationFormLength + 1
     }));
     child.push(emptyTableCell.insert());
 

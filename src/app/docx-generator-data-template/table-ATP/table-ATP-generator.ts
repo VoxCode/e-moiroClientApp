@@ -78,9 +78,9 @@ export class TableATPGenerator {
         });
       }
     });
-    // row.push(tableTotalClassHours.insert());
-    // row.push(tableCertificationType.insert());
-    // row.push(tableIndividualSessions.insert());
+    row.push(tableTotalClassHours.insert());
+    row.push(tableCertificationType.insert());
+    row.push(tableIndividualSessions.insert());
 
     return new Table({
       rows: row,

@@ -2,14 +2,24 @@ li:active, li:focus {
   outline: none;
 };
 
+button,
+button:active,
+button:focus {
+  outline: none;
+}
+
 .main{
-  min-height: 90vh;
+  position: relative;
   margin: 0;
+
 };
 
 body{
   width: 100%;
+
 };
+
+
 
 @import "~@ng-select/ng-select/themes/material.theme.css";
 
