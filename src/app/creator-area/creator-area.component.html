@@ -1,1 +1,59 @@
-<router-outlet></router-outlet>
+<!--Navbar-->
+<mdb-navbar SideClass="navbar fixed-top navbar-expand-lg navbar-dark primary-color-dark scrolling-navbar intro-fixed-nav" [containerInside]="false">
+
+  <!-- Navbar brand -->
+  <mdb-navbar-brand><a class="navbar-brand" routerLink="/curriculumTopic">Smart MOIRO</a></mdb-navbar-brand>
+
+  <!-- Collapsible content -->
+  <links>
+
+    <!-- Links -->
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" routerLinkActive="active" routerLink="/trainingProgram">
+        <a class="nav-link waves-light" mdbWavesEffect>Программы учебных занятий</a>
+      </li>
+    </ul>
+
+    <!-- Links -->
+    <ul class="navbar-nav ml-auto nav-flex-icons">
+      <li class="nav-item">
+        <a class="nav-link">
+          <div class="btn-group" mdbDropdown>
+            <mdb-icon fas icon="sign-out-alt" size="lg" mdbDropdownToggle></mdb-icon>
+            <div class="dropdown-menu dropdown-menu-right dropdown-primary">
+              <a class="dropdown-item" (click)="userLogout()" href="#">Выйти</a>
+            </div>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </links>
+  <!-- Collapsible content -->
+
+</mdb-navbar><br><br><br>
+<!--/.Navbar-->
+
+<main>
+  <div class="container-fluid">
+
+    <router-outlet></router-outlet>
+
+  </div>
+</main>
+<!-- /.Main -->
+<div class="main">
+
+</div>
+<br>
+
+<!-- Footer -->
+<footer class="page-footer font-small primary-color-dark pt-4">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2021 Copyright:
+    <a href="https://moiro.by">Smart МОИРО</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->

@@ -73,7 +73,16 @@ const editorRoutes: Routes = [
 ];
 
 const creatorRoutes: Routes = [
-
+  { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent },
+  { path: 'trainingProgram', component: TrainingProgramComponent },
+  { path: 'trainingProgramAddForm/:id', component: TrainingProgramAddFormComponent },
+  { path: 'trainingProgramAddForm2/:id', component: TrainingProgramAddForm2Component },
+  { path: 'trainingProgramAddForm3/:id', component: TrainingProgramAddForm3Component },
+  { path: 'trainingProgramAddForm4/:id', component: TrainingProgramAddForm4Component },
+  { path: 'trainingProgramAddForm5/:id', component: TrainingProgramAddForm5Component },
+  { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
+  { path: 'docxGeneratorATP/:id', component:  DocxGeneratorATPComponent },
+  { path: '**', redirectTo: 'trainingProgram'}
 ];
 
 const deanRoutes: Routes = [

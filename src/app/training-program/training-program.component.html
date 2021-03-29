@@ -1,7 +1,7 @@
 <h1>Учебная программа</h1>
 
 <div class="row">
-  <div class="col-sm-2">
+  <div *ngIf="globals.role === 'admin'" class="col-sm-2">
     <app-curriculum-topic-list></app-curriculum-topic-list>
   </div>
   <div class="col-sm">
@@ -41,15 +41,19 @@
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.last}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.fourteenth}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-                <button type="button" mdbBtn color="yellow" size="sm" class="relative waves-light" [routerLink]="['/admin/docxGeneratorTP', el.first]"
+                <button type="button" mdbBtn color="yellow" size="sm" class="relative waves-light"
+                        [routerLink]="['/' + globals.role +'/docxGeneratorTP', el.first]"
                         mdbWavesEffect><mdb-icon fas icon="file-alt" size="lg"></mdb-icon> УП</button>
-                <button type="button" mdbBtn color="gray" size="sm" class="relative waves-light" [routerLink]="['/admin/docxGeneratorATP', el.first]"
+                <button type="button" mdbBtn color="gray" size="sm" class="relative waves-light"
+                        [routerLink]="['/' + globals.role +'/docxGeneratorATP', el.first]"
                         mdbWavesEffect><mdb-icon fas icon="file-alt" size="lg"></mdb-icon> УТП</button>
-                <button type="button" mdbBtn color="success" size="sm" class="relative waves-light" [routerLink]="['/admin/trainingProgramAddForm', el.first]"
+                <button type="button" mdbBtn color="success" size="sm" class="relative waves-light"
+                        [routerLink]="['/' + globals.role +'/trainingProgramAddForm', el.first]"
                         mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
                 <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
                         mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
-                <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)"
+                <button *ngIf="globals.role === 'admin'" type="button"
+                        mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)"
                         mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
               </td>
             </tr>
@@ -86,11 +90,14 @@
         <input type="number" [(ngModel)]="this.value.numberOfHours" class="md-textarea form-control" mdbInput>
         <br>
         <mdb-checkbox [(ngModel)]="this.value.isDistanceLearning" [default]="true">Дистанционное обучение</mdb-checkbox>
-        <mdb-checkbox *ngIf="this.value.isDistanceLearning == true" [(ngModel)]="this.value.isControlWork" [default]="true">Контрольная работа</mdb-checkbox>
-        <mdb-checkbox *ngIf="this.value.isDistanceLearning == true" [(ngModel)]="this.value.isTestWork" [default]="true">Самостоятельная работа</mdb-checkbox>
+        <mdb-checkbox *ngIf="this.value.isDistanceLearning == true"
+                      [(ngModel)]="this.value.isControlWork" [default]="true">Контрольная работа</mdb-checkbox>
+        <mdb-checkbox *ngIf="this.value.isDistanceLearning == true"
+                      [(ngModel)]="this.value.isTestWork" [default]="true">Самостоятельная работа</mdb-checkbox>
         <br>
         <label *ngIf="this.value.isDistanceLearning == true">Содержание контрольной работы</label>
-        <textarea *ngIf="this.value.isDistanceLearning == true" type="text" [(ngModel)]="this.value.controlWork" class="md-textarea form-control" mdbInput></textarea>
+        <textarea *ngIf="this.value.isDistanceLearning == true" type="text"
+                  [(ngModel)]="this.value.controlWork" class="md-textarea form-control" mdbInput></textarea>
         <br>
         <label>Кафедра</label>
         <select [(ngModel)]="department" class="browser-default custom-select">

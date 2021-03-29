@@ -11,7 +11,7 @@ import {CurriculumTopicMainLiterature} from '../models/СurriculumTopicMainLiter
 import {CurriculumTopicMainLiteratureService} from '../services/curriculum-topic-main-literature.service';
 import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
-import {newArray} from '@angular/compiler/src/util';
+import {Globals} from '../globals';
 
 @Component({
   selector: 'app-training-program-add-form3',
@@ -37,6 +37,7 @@ export class TrainingProgramAddForm3Component implements OnInit {
   curriculumTopicMainLiterature: CurriculumTopicMainLiterature = new CurriculumTopicMainLiterature();
 
   constructor(
+    public globals: Globals,
     private trainingProgramService: TrainingProgramService,
     private mainLiteratureService: MainLiteratureService,
     private trainingProgramMainLiteratureService: TrainingProgramMainLiteratureService,

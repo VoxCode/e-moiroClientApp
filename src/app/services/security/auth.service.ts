@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {RoleChangeModel} from '../../models/RoleChangeModel';
+import {Globals} from "../../globals";
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class AuthService {
   private changeRolePath = environment.apiUrl + 'identity/changeRole';
 
   constructor(
+    private globals: Globals,
     private http: HttpClient,
     private jwtHelper: JwtHelperService) { }
 
@@ -25,6 +27,7 @@ export class AuthService {
     const token = this.getToken();
     if (token) {
       const decodedToken = this.jwtHelper.decodeToken(token);
+      this.globals.role = this.getRedirectPath(decodedToken.role);
       return decodedToken.role;
     }
   }

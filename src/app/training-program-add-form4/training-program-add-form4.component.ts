@@ -11,6 +11,7 @@ import {CurriculumTopicAdditionalLiteratureService} from '../services/curriculum
 import {CurriculumTopicAdditionalLiterature} from '../models/СurriculumTopicAdditionalLiterature';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
 import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
+import {Globals} from '../globals';
 
 @Component({
   selector: 'app-training-program-add-form4',
@@ -36,6 +37,7 @@ export class TrainingProgramAddForm4Component implements OnInit {
   curriculumTopicAdditionalLiterature: CurriculumTopicAdditionalLiterature = new CurriculumTopicAdditionalLiterature();
 
   constructor(
+    public globals: Globals,
     private trainingProgramService: TrainingProgramService,
     private additionalLiteratureService: AdditionalLiteratureService,
     private trainingProgramAdditionalLiteratureService: TrainingProgramAdditionalLiteratureService,

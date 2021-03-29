@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="backButton">
-    <button routerLink="/admin/trainingProgram" type="button" size="sm" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>
+    <button [routerLink]="'/' + globals.role +'/trainingProgram'" type="button" size="sm" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>
       <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon> Выход</button>
   </div><br>
   <h4 *ngIf="trainingProgram">Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
@@ -49,7 +49,8 @@
             <mdb-icon fas icon="trash-alt" size="sm"></mdb-icon> Удалить Раздел {{i + 1}}
           </button>
 
-          <button *ngIf="i === curriculumSectionContentList.length - 1" class="deleteBtn" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+          <button *ngIf="i === curriculumSectionContentList.length - 1"
+                  class="deleteBtn" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
                   (click)="addCurriculumSection(0, 0)" mdbWavesEffect>
             <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел
           </button>
@@ -58,5 +59,6 @@
     </div>
   </div>
   <br><br>
-  <button type="button" routerLink="/admin/trainingProgramAddForm2/{{id}}" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Далее</button>
+  <button type="button" [routerLink]="['/' + globals.role +'/trainingProgramAddForm2', id]"
+          mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Далее</button>
 </div>

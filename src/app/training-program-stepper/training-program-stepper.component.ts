@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Globals} from '../globals';
 
 @Component({
   selector: 'app-training-program-stepper',
@@ -8,7 +9,7 @@ import {Component, Input, OnInit} from '@angular/core';
 export class TrainingProgramStepperComponent implements OnInit {
   @Input() id: number;
 
-  constructor() { }
+  constructor(public globals: Globals) { }
 
   ngOnInit(): void {
   }

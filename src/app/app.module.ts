@@ -69,6 +69,7 @@ import { ViewerAreaComponent } from './viewer-area/viewer-area.component';
 import { UserComponent } from './admin-area/users/user.component';
 import { UserEditComponent } from './admin-area/users/user-edit.component';
 import { AuthorizationComponent } from './authorization/authorization.component';
+import {Globals} from './globals';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -154,6 +155,7 @@ export function tokenGetter(): string {
   ],
   providers: [
     AuthService,
+    Globals,
     CommonService,
     {
       provide: HTTP_INTERCEPTORS,

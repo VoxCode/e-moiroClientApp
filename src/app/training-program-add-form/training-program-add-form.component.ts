@@ -12,6 +12,7 @@ import {OccupationFormService} from '../services/occupation-form.service';
 import {CommonService} from '../common-service/common-service.component';
 import {TrainingProgramCurriculumSectionService} from '../services/training-program-curriculum-section.service';
 import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
+import {Globals} from '../globals';
 
 @Component({
   selector: 'app-training-program-add-form',
@@ -48,6 +49,7 @@ export class TrainingProgramAddFormComponent implements OnInit{
 
 
   constructor(
+    public globals: Globals,
     private curriculumTopicService: CurriculumTopicService,
     private trainingProgramService: TrainingProgramService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,

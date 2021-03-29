@@ -11,6 +11,8 @@ import {CertificationType} from '../models/CertificationType';
 import {TrainingProgramEditComponent} from './training-program-edit.component';
 import {FormOfEducation} from '../models/FormOfEducation';
 import {FormOfEducationService} from '../services/form-of-education.service';
+import {AuthService} from '../services/security/auth.service';
+import {Globals} from '../globals';
 
 
 @Component({
@@ -49,6 +51,8 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   modalRef: MDBModalRef;
 
   constructor(
+    public globals: Globals,
+    private authService: AuthService,
     private valueService: TrainingProgramService,
     private departmentService: DepartmentService,
     private studentCategoryService: StudentCategoryService,

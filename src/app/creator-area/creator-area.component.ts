@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import {AuthService} from '../services/security/auth.service';
 
 @Component({
   selector: 'app-creator-area',
   templateUrl: './creator-area.component.html',
   styleUrls: ['./creator-area.component.scss']
 })
-export class CreatorAreaComponent implements OnInit {
+export class CreatorAreaComponent {
+  constructor(
+    private authService: AuthService) { }
 
-  constructor() { }
-
-  ngOnInit(): void {
+  // tslint:disable-next-line:typedef
+  userLogout() {
+    this.authService.logout();
   }
-
 }

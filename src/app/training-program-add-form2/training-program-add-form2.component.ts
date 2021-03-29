@@ -13,6 +13,7 @@ import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTraining
 import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
 import {CertificationTypeService} from '../services/certification-type.service';
 import {CertificationType} from '../models/CertificationType';
+import {Globals} from '../globals';
 
 @Component({
   selector: 'app-training-program-add-form2',
@@ -39,6 +40,7 @@ export class TrainingProgramAddForm2Component implements OnInit {
   certificationType: CertificationType = new CertificationType();
 
   constructor(
+    public globals: Globals,
     private trainingProgramService: TrainingProgramService,
     private finalExaminationService: FinalExaminationService,
     private trainingProgramFinalExaminationService: TrainingProgramFinalExaminationService,

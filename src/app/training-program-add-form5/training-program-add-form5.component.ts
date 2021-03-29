@@ -11,6 +11,7 @@ import {CurriculumTopicRegulation} from '../models/СurriculumTopicRegulation';
 import {CurriculumTopicRegulationService} from '../services/curriculum-topic-regulation.service';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
 import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
+import {Globals} from '../globals';
 
 @Component({
   selector: 'app-training-program-add-form5',
@@ -36,6 +37,7 @@ export class TrainingProgramAddForm5Component implements OnInit {
   curriculumTopicRegulation: CurriculumTopicRegulation = new CurriculumTopicRegulation();
 
   constructor(
+    public globals: Globals,
     private trainingProgramService: TrainingProgramService,
     private regulationService: RegulationService,
     private trainingProgramRegulationService: TrainingProgramRegulationService,
