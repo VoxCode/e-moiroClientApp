@@ -70,6 +70,7 @@ import { UserComponent } from './admin-area/users/user.component';
 import { UserEditComponent } from './admin-area/users/user-edit.component';
 import { AuthorizationComponent } from './authorization/authorization.component';
 import {Globals} from './globals';
+import { RichTextEditorFormComponent } from './rich-text-editor-form/rich-text-editor-form.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -131,6 +132,7 @@ export function tokenGetter(): string {
     UserComponent,
     UserEditComponent,
     AuthorizationComponent,
+    RichTextEditorFormComponent,
   ],
   imports: [
     BrowserModule,
