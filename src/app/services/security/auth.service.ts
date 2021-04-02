@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {RoleChangeModel} from '../../models/RoleChangeModel';
-import {Globals} from "../../globals";
+import {Globals} from '../../globals';
 
 @Injectable({
   providedIn: 'root'

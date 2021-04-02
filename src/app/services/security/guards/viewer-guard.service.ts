@@ -13,7 +13,7 @@ export class ViewerGuardService implements CanActivate {
     if (this.authService.isUserAuthenticated('Viewer')) {
       return true;
     } else {
-      this.router.navigate(['login'], { queryParams: { returnUrl: state.url }});
+      this.router.navigate(['authorization']);
       return false;
     }
   }

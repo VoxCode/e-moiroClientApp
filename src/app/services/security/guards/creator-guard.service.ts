@@ -13,7 +13,7 @@ export class CreatorGuardService implements CanActivate {
     if (this.authService.isUserAuthenticated('Creator')) {
       return true;
     } else {
-      this.router.navigate(['login'], { queryParams: { returnUrl: state.url }});
+      this.router.navigate(['authorization']);
       return false;
     }
   }
