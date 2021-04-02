@@ -39,6 +39,7 @@ import {ViewerAreaComponent} from './viewer-area/viewer-area.component';
 import {UserComponent} from './admin-area/users/user.component';
 import {AuthorizationComponent} from './authorization/authorization.component';
 import {RichTextEditorFormComponent} from './rich-text-editor-form/rich-text-editor-form.component';
+import {TrainingProgramAddFormIntroductionComponent} from './training-program-add-form-introduction/training-program-add-form-introduction.component';
 
 const adminRoutes: Routes = [
   { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
@@ -76,6 +77,7 @@ const editorRoutes: Routes = [
 const creatorRoutes: Routes = [
   { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent },
   { path: 'trainingProgram', component: TrainingProgramComponent },
+  { path: 'trainingProgramAddFormIntroduction/:id', component: TrainingProgramAddFormIntroductionComponent },
   { path: 'trainingProgramAddForm/:id', component: TrainingProgramAddFormComponent },
   { path: 'trainingProgramAddForm2/:id', component: TrainingProgramAddForm2Component },
   { path: 'trainingProgramAddForm3/:id', component: TrainingProgramAddForm3Component },

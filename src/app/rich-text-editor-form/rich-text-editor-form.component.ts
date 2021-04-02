@@ -5,7 +5,8 @@ import {
   ImageService,
   HtmlEditorService,
   RichTextEditorComponent,
-  ResizeService
+  ResizeService,
+  QuickToolbarSettingsModel
 } from '@syncfusion/ej2-angular-richtexteditor';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
@@ -34,6 +35,10 @@ export class RichTextEditorFormComponent implements OnInit {
   constructor(private fb: FormBuilder) {
     // <--- inject FormBuilder
   }
+
+  public quickToolbarSettings: QuickToolbarSettingsModel = {
+    table: ['TableHeader', 'TableRows', 'TableColumns', 'TableCell', '-', 'BackgroundColor', 'TableRemove', 'TableCellVerticalAlign', 'Styles']
+  };
 
   ngOnInit(): void {
     this.rteForm = new FormGroup({

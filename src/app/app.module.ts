@@ -72,6 +72,7 @@ import { AuthorizationComponent } from './authorization/authorization.component'
 import {Globals} from './globals';
 import { RichTextEditorFormComponent } from './rich-text-editor-form/rich-text-editor-form.component';
 import {RichTextEditorAllModule} from '@syncfusion/ej2-angular-richtexteditor';
+import { TrainingProgramAddFormIntroductionComponent } from './training-program-add-form-introduction/training-program-add-form-introduction.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -134,6 +135,7 @@ export function tokenGetter(): string {
     UserEditComponent,
     AuthorizationComponent,
     RichTextEditorFormComponent,
+    TrainingProgramAddFormIntroductionComponent,
   ],
   imports: [
     BrowserModule,

@@ -3,7 +3,8 @@
     <div id='content' class='box-form'>
       <form [formGroup]="rteForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <ejs-richtexteditor #fromRTE formControlName="name" [toolbarSettings]='tools'  [showCharCount]='true'  (created)="rteCreated()">
+          <ejs-richtexteditor #fromRTE formControlName="name" [quickToolbarSettings]='quickToolbarSettings'
+                              [toolbarSettings]='tools'  [showCharCount]='true'  (created)="rteCreated()">
           </ejs-richtexteditor>
           <div *ngIf="rteForm.invalid && rteForm.controls.name.touched" class="alert alert-danger">
             <div *ngIf="rteForm.controls.name.errors.required">
@@ -21,4 +22,3 @@
     </div>
   </div>
 </div>
-

@@ -1,0 +1,12 @@
+<div class="container-fluid">
+  <div class="backButton">
+    <button [routerLink]="'/' + globals.role +'/trainingProgram'" type="button" size="sm" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>
+      <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon> Выход</button>
+  </div><br>
+  <h4 *ngIf="trainingProgram">Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
+  <h5 *ngIf="trainingProgram">Тип итоговой аттестации: <strong>{{certificationType.name}}</strong></h5>
+
+  <app-training-program-stepper [id]="id"></app-training-program-stepper>
+
+  <app-rich-text-editor-form></app-rich-text-editor-form>
+</div>

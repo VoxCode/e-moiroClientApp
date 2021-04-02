@@ -5,6 +5,13 @@
     <!-- Stepers Wrapper -->
     <ul class="stepper stepper-horizontal">
 
+      <li [routerLink]="['/' + globals.role +'/trainingProgramAddFormIntroduction', id]" routerLinkActive="active">
+        <a>
+          <span class="circle">0</span>
+          <span class="label">Введение</span>
+        </a>
+      </li>
+
       <!-- First Step -->
       <li [routerLink]="['/' + globals.role +'/trainingProgramAddForm', id]" routerLinkActive="active">
         <a>
