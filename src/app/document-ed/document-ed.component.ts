@@ -2545,10 +2545,6 @@ export class DocumentEdComponent implements OnChanges {
     }
   }
 
-  public onFileOpenClick(): void {
-    document.getElementById('open_sfdt').click();
-  }
-
   public onFileChange(e: any): void {
     if (e.target.files[0]) {
       const file = e.target.files[0];
