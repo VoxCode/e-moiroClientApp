@@ -4,7 +4,6 @@
       <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon> Выход</button>
   </div><br>
   <h4 *ngIf="trainingProgram">Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
-  <h5 *ngIf="trainingProgram">Тип итоговой аттестации: <strong>{{certificationType.name}}</strong></h5>
 
   <app-training-program-stepper [id]="id"></app-training-program-stepper>
 

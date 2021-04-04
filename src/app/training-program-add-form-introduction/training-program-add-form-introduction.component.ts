@@ -37,5 +37,4 @@ export class TrainingProgramAddFormIntroductionComponent implements OnInit {
         }
       });
   }
-
 }
