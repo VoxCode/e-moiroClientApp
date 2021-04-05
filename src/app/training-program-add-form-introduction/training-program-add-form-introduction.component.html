@@ -7,5 +7,8 @@
 
   <app-training-program-stepper [id]="id"></app-training-program-stepper>
 
-  <app-rich-text-editor-form></app-rich-text-editor-form>
+  <app-rich-text-editor-form *ngIf="introductionContent"
+  [content]="introductionContent"
+  (saveButtonClicked)="saveChanges($event)">
+  </app-rich-text-editor-form>
 </div>

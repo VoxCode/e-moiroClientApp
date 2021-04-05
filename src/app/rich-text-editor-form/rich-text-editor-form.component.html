@@ -3,11 +3,11 @@
     <div id='content' class='box-form'>
       <form [formGroup]="rteForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <ejs-richtexteditor #fromRTE formControlName="name" [quickToolbarSettings]='quickToolbarSettings'
+          <ejs-richtexteditor #fromRTE formControlName="content" [quickToolbarSettings]='quickToolbarSettings'
                               [toolbarSettings]='tools'  [showCharCount]='true'  (created)="rteCreated()">
           </ejs-richtexteditor>
-          <div *ngIf="rteForm.invalid && rteForm.controls.name.touched" class="alert alert-danger">
-            <div *ngIf="rteForm.controls.name.errors.required">
+          <div *ngIf="rteForm.invalid && rteForm.controls.content.touched" class="alert alert-danger">
+            <div *ngIf="rteForm.controls.content.errors.required">
               Введите данные!
             </div>
           </div>

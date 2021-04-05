@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {
   ToolbarService,
   LinkService,
@@ -8,7 +8,7 @@ import {
   ResizeService,
   QuickToolbarSettingsModel
 } from '@syncfusion/ej2-angular-richtexteditor';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 
 @Component({
@@ -18,7 +18,9 @@ import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
   providers: [ToolbarService, LinkService, ImageService, ResizeService, HtmlEditorService]
 })
 export class RichTextEditorFormComponent implements OnInit {
-  rteForm: FormGroup;
+  @Input() content: string;
+  @Output() saveButtonClicked: EventEmitter<any> = new EventEmitter<any>();
+  public editableRow: { content: string };
 
   @ViewChild('fromRTE')
   private rteEle: RichTextEditorComponent;
@@ -32,18 +34,22 @@ export class RichTextEditorFormComponent implements OnInit {
       'SourceCode', '|', 'Undo', 'Redo']
   };
 
-  constructor(private fb: FormBuilder) {
-    // <--- inject FormBuilder
-  }
-
   public quickToolbarSettings: QuickToolbarSettingsModel = {
-    table: ['TableHeader', 'TableRows', 'TableColumns', 'TableCell', '-', 'BackgroundColor', 'TableRemove', 'TableCellVerticalAlign', 'Styles']
+    table: ['TableHeader', 'TableRows', 'TableColumns',
+      'TableCell', '-', 'BackgroundColor', 'TableRemove',
+      'TableCellVerticalAlign', 'Styles']
   };
 
+  public rteForm: FormGroup = new FormGroup({
+    content: new FormControl(null, Validators.required)
+  });
+
+  constructor() {
+  }
+
   ngOnInit(): void {
-    this.rteForm = new FormGroup({
-      name: new FormControl(null, Validators.required)
-    });
+      console.log(this.content);
+      this.rteForm.controls.content.patchValue(this.content);
   }
 
   rteCreated(): void {
@@ -51,6 +57,7 @@ export class RichTextEditorFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    alert('Form submitted successfully');
+    this.editableRow = this.rteForm.getRawValue();
+    this.saveButtonClicked.emit(this.editableRow);
   }
 }

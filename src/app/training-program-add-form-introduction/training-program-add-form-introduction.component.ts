@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {Globals} from '../globals';
@@ -13,8 +13,10 @@ import {TrainingProgramService} from '../services/training-program.service';
     ]
 })
 export class TrainingProgramAddFormIntroductionComponent implements OnInit {
+
   id: number;
   trainingProgram: TrainingProgram;
+  introductionContent: string;
 
   constructor(
     public globals: Globals,
@@ -24,6 +26,7 @@ export class TrainingProgramAddFormIntroductionComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
+    this.loadTrainingProgram();
   }
 
   // LOAD
@@ -32,9 +35,21 @@ export class TrainingProgramAddFormIntroductionComponent implements OnInit {
   loadTrainingProgram() {
     this.trainingProgramService.getValue(this.id)
       .subscribe((data: TrainingProgram) => {
-        if (data !== undefined){
+        if (data){
           this.trainingProgram = data;
+          this.introductionContent = this.trainingProgram.introduction;
         }
       });
+  }
+
+  editTrainingProgram(): void {
+    this.trainingProgramService.updateValue(this.trainingProgram).subscribe(() => {
+        console.log('Update was successful');
+    });
+  }
+
+  saveChanges(editableRow: any): void {
+    this.trainingProgram.introduction = editableRow.content;
+    this.editTrainingProgram();
   }
 }

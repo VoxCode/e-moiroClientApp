@@ -2526,6 +2526,7 @@ L10n.load({
 })
 
 export class DocumentEdComponent implements OnChanges {
+  public hostUrl = 'https://ej2services.syncfusion.com/production/web-services/';
 
   @Input() docx: any[];
   @Input() trainingProgram: TrainingProgram;
@@ -2577,6 +2578,7 @@ export class DocumentEdComponent implements OnChanges {
   onCreate(): any {
     this.path = environment.apiUrl + 'api/WordToSDFT';
     this.loadFile(this.docx);
+    this.container.serviceUrl = this.hostUrl + 'api/documenteditor/';
   }
 
   public onPrint(): void {

@@ -3,6 +3,7 @@ export class TrainingProgram {
     public id?: number,
     public name?: string,
     public numberOfHours?: number,
+    public introduction?: string,
     public isDistanceLearning?: boolean,
     public isControlWork?: boolean,
     public isTestWork?: boolean,
