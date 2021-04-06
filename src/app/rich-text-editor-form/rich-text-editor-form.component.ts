@@ -48,7 +48,6 @@ export class RichTextEditorFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      console.log(this.content);
       this.rteForm.controls.content.patchValue(this.content);
   }
 
