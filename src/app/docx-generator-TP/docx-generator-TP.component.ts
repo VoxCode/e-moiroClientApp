@@ -21,8 +21,8 @@ import {StudentCategoryService} from '../services/student-category.service';
 import {StudentCategory} from '../models/StudentCategory';
 import {CertificationTypeService} from '../services/certification-type.service';
 import {CertificationType} from '../models/CertificationType';
-import {timer} from 'rxjs';
-import {delay, timeout} from 'rxjs/operators';
+import { asBlob } from 'html-docx-js-typescript';
+
 
 @Component({
   selector: 'app-docx-generator',
@@ -219,6 +219,11 @@ export class DocxGeneratorTPComponent implements OnInit{
       this.studentCategory,
       this.certificationType
     );
+
+    // asBlob(this.trainingProgram.introduction).then(data => {
+    //   this.docx = data;
+    // });
+
     const docxTmp = documentCreator.create([
       model,
       empty
