@@ -53,7 +53,7 @@ export class DocxGeneratorTPComponent implements OnInit{
   trainingProgramMainLiteratures: TrainingProgramMainLiterature[];
   trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[];
   trainingProgramRegulations: TrainingProgramRegulation[];
-  docx: any;
+  docx: any[] = [];
 
   constructor(
     private trainingProgramService: TrainingProgramService,
@@ -220,16 +220,15 @@ export class DocxGeneratorTPComponent implements OnInit{
       this.certificationType
     );
 
-    // asBlob(this.trainingProgram.introduction).then(data => {
-    //   this.docx = data;
-    // });
-
     const docxTmp = documentCreator.create([
       model,
       empty
     ]);
     Packer.toBlob(docxTmp).then(blob => {
-      this.docx = blob;
+      asBlob(this.trainingProgram.introduction).then(data => {
+        this.docx.push(blob);
+        this.docx.push(blob);
+      });
     });
   }
 }

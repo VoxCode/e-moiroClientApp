@@ -63,7 +63,7 @@ export class DocxGeneratorATPComponent implements OnInit{
   trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[];
   trainingProgramRegulations: TrainingProgramRegulation[];
   occupationForms: OccupationForm[];
-  docx: any;
+  docx: any[];
   isRector = true;
 
   constructor(
@@ -275,7 +275,7 @@ export class DocxGeneratorATPComponent implements OnInit{
       empty
     ]);
     Packer.toBlob(docxTmp).then(blob => {
-      this.docx = blob;
+      this.docx.push(blob);
 
 
     });

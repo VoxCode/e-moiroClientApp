@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import { L10n } from '@syncfusion/ej2-base';
 import { environment } from '../../environments/environment';
 import {
@@ -10,6 +10,7 @@ import {
   WordExportService
 } from '@syncfusion/ej2-angular-documenteditor';
 import {TrainingProgram} from '../models/TrainingProgram';
+import {DocxMergeService} from '../services/docx-merge.service';
 
 L10n.load({
   ru: {
@@ -2522,10 +2523,11 @@ L10n.load({
     EditorService,
     SelectionService,
     SfdtExportService,
-    WordExportService]
+    WordExportService,
+    DocxMergeService]
 })
 
-export class DocumentEdComponent implements OnChanges {
+export class DocumentEdComponent implements OnChanges, AfterViewInit {
   public hostUrl = 'https://ej2services.syncfusion.com/production/web-services/';
 
   @Input() docx: any[];
@@ -2537,13 +2539,15 @@ export class DocumentEdComponent implements OnChanges {
   public a: any;
 
   constructor(
+    private docxMergeService: DocxMergeService
   ) { }
 
-  // tslint:disable-next-line:typedef
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.docx !== undefined){
-      this.onCreate();
-    }
+  ngAfterViewInit(): void {
+    this.container.serviceUrl = this.hostUrl + 'api/documenteditor/';
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.onCreate();
   }
 
   public onFileChange(e: any): void {
@@ -2577,8 +2581,14 @@ export class DocumentEdComponent implements OnChanges {
 
   onCreate(): any {
     this.path = environment.apiUrl + 'api/WordToSDFT';
-    this.loadFile(this.docx);
-    this.container.serviceUrl = this.hostUrl + 'api/documenteditor/';
+    if (this.docx.length > 1) {
+      this.docxMergeService.merge(this.docx).subscribe((data: string) => {
+        this.container.documentEditor.open(data);
+      });
+    }
+    else {
+      this.loadFile(this.docx[0]);
+    }
   }
 
   public onPrint(): void {
