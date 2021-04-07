@@ -63,7 +63,7 @@ export class DocxGeneratorATPComponent implements OnInit{
   trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[];
   trainingProgramRegulations: TrainingProgramRegulation[];
   occupationForms: OccupationForm[];
-  docx: any[];
+  docx: any[] = [];
   isRector = true;
 
   constructor(
