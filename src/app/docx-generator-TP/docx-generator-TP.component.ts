@@ -22,6 +22,8 @@ import {StudentCategory} from '../models/StudentCategory';
 import {CertificationTypeService} from '../services/certification-type.service';
 import {CertificationType} from '../models/CertificationType';
 import { asBlob } from 'html-docx-js-typescript';
+import { saveAs } from 'file-saver';
+import {HtmlToDocxService} from '../services/html-to-docx.service';
 
 
 @Component({
@@ -37,7 +39,8 @@ import { asBlob } from 'html-docx-js-typescript';
     TrainingProgramRegulationService,
     CurriculumTopicTrainingProgramService,
     StudentCategoryService,
-    CertificationTypeService
+    CertificationTypeService,
+    HtmlToDocxService
   ]
 })
 
@@ -65,6 +68,7 @@ export class DocxGeneratorTPComponent implements OnInit{
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private studentCategoryService: StudentCategoryService,
     private certificationTypeService: CertificationTypeService,
+    private htmlToDocxService: HtmlToDocxService,
     private route: ActivatedRoute
   ) { }
 
@@ -206,8 +210,7 @@ export class DocxGeneratorTPComponent implements OnInit{
       });
   }
 
-  // tslint:disable-next-line:typedef
-  public getDocument() {
+  public getDocument(): void {
     const documentCreator = new DocumentCreator(
       this.curriculumTopicsList,
       this.trainingProgram,
@@ -224,8 +227,29 @@ export class DocxGeneratorTPComponent implements OnInit{
       model,
       empty
     ]);
+
+    const html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">\n' +
+      '<html>\n' +
+      '     <head>\n' +
+      '          <title></title>\n' +
+      '     </head>\n' +
+      '     <body>\n' +
+      '          Looks how cool is <font size="x-large"><b>Open Xml</b></font>.\n' +
+      '          Now with <font color="red"><u>HtmlToOpenXml</u></font>, it nevers been so easy to convert html.\n' +
+      '          <p>\n' +
+      '               If you like it, add me a rating on <a href="https://github.com/onizet/html2openxml">github</a>\n' +
+      '          </p>\n' +
+      '          <hr>\n' +
+      '     </body>\n' +
+      '</html>';
+
     Packer.toBlob(docxTmp).then(blob => {
       asBlob(this.trainingProgram.introduction).then(data => {
+        // saveAs(data, 'example.docx');
+        this.htmlToDocxService.convert(html).subscribe((tmpData) => {
+          // saveAs(tmpData, 'ex.docx');
+          console.log(tmpData);
+        });
         this.docx.push(blob);
         this.docx.push(blob);
       });

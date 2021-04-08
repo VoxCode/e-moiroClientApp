@@ -35,6 +35,7 @@
     "chokidar": "^3.5.1",
     "cli": "^1.0.1",
     "docx": "^5.5.0",
+    "file-saver": "^2.0.5",
     "hammerjs": "^2.0.8",
     "i": "^0.3.6",
     "mdbootstrap": "^4.19.2",
