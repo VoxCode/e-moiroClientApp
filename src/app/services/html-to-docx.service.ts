@@ -8,7 +8,10 @@ export class HtmlToDocxService {
   constructor(private http: HttpClient) { }
 
   // tslint:disable-next-line:typedef
-  convert(data: string) {
-    return this.http.post(this.url, data);
+  convert(data: string, docx: any) {
+    const formData: FormData = new FormData();
+    formData.append('files', docx);
+    formData.append('files', data);
+    return this.http.post(this.url, formData);
   }
 }

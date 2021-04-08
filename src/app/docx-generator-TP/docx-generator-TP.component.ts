@@ -228,14 +228,12 @@ export class DocxGeneratorTPComponent implements OnInit{
       empty
     ]);
 
-    const html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">\n' +
+    const html =
       '<html>\n' +
       '     <head>\n' +
       '          <title></title>\n' +
       '     </head>\n' +
       '     <body>\n' +
-      '          Looks how cool is <font size="x-large"><b>Open Xml</b></font>.\n' +
-      '          Now with <font color="red"><u>HtmlToOpenXml</u></font>, it nevers been so easy to convert html.\n' +
       '          <p>\n' +
       '               If you like it, add me a rating on <a href="https://github.com/onizet/html2openxml">github</a>\n' +
       '          </p>\n' +
@@ -246,12 +244,24 @@ export class DocxGeneratorTPComponent implements OnInit{
     Packer.toBlob(docxTmp).then(blob => {
       asBlob(this.trainingProgram.introduction).then(data => {
         // saveAs(data, 'example.docx');
-        this.htmlToDocxService.convert(html).subscribe((tmpData) => {
+        this.htmlToDocxService.convert(html, blob).subscribe((tmpData: string) => {
+          const byteCharacters = atob(tmpData);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+
+
+
+          const bloba = new Blob([byteArray], {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
           // saveAs(tmpData, 'ex.docx');
-          console.log(tmpData);
+          // console.log(blob);
+          console.log(this.trainingProgram.introduction);
+          this.docx.push(bloba);
         });
-        this.docx.push(blob);
-        this.docx.push(blob);
+        // this.docx.push(blob);
+        // this.docx.push(blob);
       });
     });
   }
