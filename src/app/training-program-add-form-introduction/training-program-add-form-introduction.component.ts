@@ -37,7 +37,12 @@ export class TrainingProgramAddFormIntroductionComponent implements OnInit {
       .subscribe((data: TrainingProgram) => {
         if (data){
           this.trainingProgram = data;
-          this.introductionContent = this.trainingProgram.introduction;
+          if (this.trainingProgram.introduction) {
+            this.introductionContent = this.trainingProgram.introduction;
+          }
+          else {
+            this.introductionContent = 'Empty';
+          }
         }
       });
   }
@@ -48,8 +53,9 @@ export class TrainingProgramAddFormIntroductionComponent implements OnInit {
     });
   }
 
-  saveChanges(editableRow: any): void {
-    this.trainingProgram.introduction = editableRow.content;
+  saveChanges(content: string): void {
+    this.trainingProgram.introduction = content;
+    console.log(content);
     this.editTrainingProgram();
   }
 }

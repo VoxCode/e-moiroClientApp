@@ -1,24 +1,12 @@
-import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
-import { L10n } from '@syncfusion/ej2-base';
-import { environment } from '../../environments/environment';
-import {
-  DocumentEditorContainerComponent,
-  EditorService,
-  SelectionService,
-  SfdtExportService,
-  ToolbarService,
-  WordExportService
-} from '@syncfusion/ej2-angular-documenteditor';
-import {TrainingProgram} from '../models/TrainingProgram';
-import {DocxMergeService} from '../services/docx-merge.service';
+import {L10n} from '@syncfusion/ej2-base';
 
 L10n.load({
   ru: {
-  tab: {
-    closeButtonTitle: 'близко'
-  },
-  pivotview: {
-    grandTotal: 'Общая сумма',
+    tab: {
+      closeButtonTitle: 'близко'
+    },
+    pivotview: {
+      grandTotal: 'Общая сумма',
       total: 'Общее количество',
       value: 'Значение',
       noValue: 'Неважно',
@@ -280,9 +268,9 @@ L10n.load({
       pyramid: 'пирамида',
       showLegend: 'Показать легенду',
       exit: 'Выход'
-  },
-  pivotfieldlist: {
-    staticFieldList: 'Список полей Pivot',
+    },
+    pivotfieldlist: {
+      staticFieldList: 'Список полей Pivot',
       fieldList: 'Список полей',
       dropFilterPrompt: 'Удалить фильтр здесь',
       dropColPrompt: 'Оставьте столбец здесь',
@@ -431,9 +419,9 @@ L10n.load({
       selectGroup: 'Выберите группы',
       of: 'из',
       removeCalculatedField: 'Вы уверены, что хотите удалить это вычисленное поле?'
-  },
-  filemanager: {
-    NewFolder: 'Новая папка',
+    },
+    filemanager: {
+      NewFolder: 'Новая папка',
       Upload: 'Загрузить',
       Delete: 'удалять',
       Rename: 'Rename',
@@ -524,29 +512,29 @@ L10n.load({
       'Access-Message': '{0} недоступен. Вам необходимо разрешение для выполнения действия {1}.',
       'Network-Error': 'Не удалось отправить на XMLHTTPRequest: Не удалось загрузить',
       'Server-Error': 'Ошибка сервера: Неверный ответ от'
-  },
-  inplaceeditor: {
-    save: 'Сохранить',
+    },
+    inplaceeditor: {
+      save: 'Сохранить',
       cancel: 'Отмена',
       loadingText: 'Loading ...',
       editIcon: 'Нажмите, чтобы редактировать',
       editAreaClick: 'Нажмите, чтобы редактировать',
       editAreaDoubleClick: 'Двойной щелчок для редактирования'
-  },
-  treegrid: {
-    Above: 'Над',
+    },
+    treegrid: {
+      Above: 'Над',
       Below: 'Ниже',
       AddRow: 'Добавить ряд',
       ExpandAll: 'Расширить все',
       CollapseAll: 'Свернуть все'
-  },
-  colorpicker: {
-    Apply: 'Выбрать',
+    },
+    colorpicker: {
+      Apply: 'Выбрать',
       Cancel: 'Отмена',
       ModeSwitcher: 'Переключить режим'
-  },
-  uploader: {
-    Browse: 'Просматривать...',
+    },
+    uploader: {
+      Browse: 'Просматривать...',
       Clear: 'ясно',
       Upload: 'Загрузить',
       dropFilesHint: 'Или сбросьте файлы здесь',
@@ -568,17 +556,17 @@ L10n.load({
       resume: 'Резюме',
       retry: 'Retry',
       fileUploadCancel: 'Загрузка файла отменена'
-  },
-  numerictextbox: {
-    incrementTitle: 'Значение приращения',
+    },
+    numerictextbox: {
+      incrementTitle: 'Значение приращения',
       decrementTitle: 'Значение декремента'
-  },
-  slider: {
-    incrementTitle: 'Увеличение',
+    },
+    slider: {
+      incrementTitle: 'Увеличение',
       decrementTitle: 'Уменьшить'
-  },
-  formValidator: {
-    required: 'Это поле обязательно к заполнению.',
+    },
+    formValidator: {
+      required: 'Это поле обязательно к заполнению.',
       email: 'Пожалуйста, введите действительный адрес электронной почты.',
       url: 'Пожалуйста, введите корректный адрес.',
       date: 'Пожалуйста, введите правильную дату.',
@@ -596,9 +584,9 @@ L10n.load({
       tel: 'Пожалуйста, введите действующий телефонный номер.',
       pattern: 'Пожалуйста, введите правильное значение шаблона.',
       equalTo: 'Пожалуйста, введите правильный текст совпадения'
-  },
-  richtexteditor: {
-    alignments: 'Трассы',
+    },
+    richtexteditor: {
+      alignments: 'Трассы',
       justifyLeft: 'Выровнять по левому краю',
       justifyCenter: 'Центр выравнивания',
       justifyRight: 'Выровнять право',
@@ -725,9 +713,9 @@ L10n.load({
       keepFormat: 'Держать',
       pasteDialogOk: 'Ok',
       pasteDialogCancel: 'Отмена'
-  },
-  diagram: {
-    Copy: 'копия',
+    },
+    diagram: {
+      Copy: 'копия',
       Cut: 'Порез',
       Paste: 'Вставить',
       Undo: 'Шаг назад',
@@ -741,9 +729,9 @@ L10n.load({
       MoveForward: 'Двигаться вперед',
       SendToBack: 'Отправить Вернуться',
       SendBackward: 'Отправить назад'
-  },
-  DocumentEditor: {
-    Table: 'Стол',
+    },
+    DocumentEditor: {
+      Table: 'Стол',
       Row: 'Строка',
       Cell: 'клетка',
       Ok: 'Ok',
@@ -954,13 +942,13 @@ L10n.load({
       Bullets: 'Пули',
       'Use bookmarks': 'Используйте закладки',
       'Table of Contents': 'Содержание'
-  },
-  barcode: {},
-  datamatrix: {},
-  qrcode: {},
-  drawing: {},
-  schedule: {
-    day: 'День',
+    },
+    barcode: {},
+    datamatrix: {},
+    qrcode: {},
+    drawing: {},
+    schedule: {
+      day: 'День',
       week: 'Неделя',
       workWeek: 'Рабочая неделя',
       month: 'Месяц',
@@ -1034,9 +1022,9 @@ L10n.load({
       editTitle: 'Изменить событие',
       beginFrom: 'Начать с',
       endAt: 'Конец в'
-  },
-  recurrenceeditor: {
-    none: 'Никто',
+    },
+    recurrenceeditor: {
+      none: 'Никто',
       daily: 'Ежедневно',
       weekly: 'еженедельно',
       monthly: 'ежемесячно',
@@ -1073,9 +1061,9 @@ L10n.load({
       monthExpander: 'Расширитель месяца',
       yearExpander: 'Год расширитель',
       repeatInterval: 'Повторить интервал'
-  },
-  spreadsheet: {
-    InsertingEmptyValue: 'Ссылочное значение недействительно.',
+    },
+    spreadsheet: {
+      InsertingEmptyValue: 'Ссылочное значение недействительно.',
       FindValue: 'Найти значение',
       ReplaceValue: 'Заменить значение',
       FindReplaceTooltip: 'Найти и заменить',
@@ -1358,9 +1346,9 @@ L10n.load({
       TRUNC: 'Возвращает усеченное значение числа с указанным количеством десятичных знаков.',
       EXP: 'Возвращает e, возведенное в степень заданного числа.',
       SelectBorderOption: 'Выберите опцию границы'
-  },
-  pdfviewer: {
-    PdfViewer: '﻿PDF Viewer',
+    },
+    pdfviewer: {
+      PdfViewer: '﻿PDF Viewer',
       Cancel: 'Отмена',
       'Download file': 'Загрузка файла',
       Download: 'Скачать',
@@ -1463,9 +1451,9 @@ L10n.load({
       'Calibrate Area': 'Калибровать площадь',
       'Calibrate Radius': 'Калибровать радиус',
       'Calibrate Volume': 'Калибровать громкость'
-  },
-  querybuilder: {
-    StartsWith: 'Начинается с',
+    },
+    querybuilder: {
+      StartsWith: 'Начинается с',
       EndsWith: 'Заканчивается',
       Contains: 'Содержит',
       Equal: 'равных',
@@ -1495,9 +1483,9 @@ L10n.load({
       AND: 'И',
       OR: 'ИЛИ',
       SelectValue: 'Введите значение'
-  },
-  grid: {
-    EmptyRecord: 'Нет записей для отображения',
+    },
+    grid: {
+      EmptyRecord: 'Нет записей для отображения',
       True: 'правда',
       False: 'ложный',
       InvalidFilterMessage: 'Неверные данные фильтра',
@@ -1582,9 +1570,9 @@ L10n.load({
       AND: 'И',
       OR: 'ИЛИ',
       ShowRowsWhere: 'Показать строки, где:'
-  },
-  pager: {
-    currentPageInfo: '{0} из {1} страниц',
+    },
+    pager: {
+      currentPageInfo: '{0} из {1} страниц',
       totalItemsInfo: '({0} наименований)',
       totalItemInfo: '({0} заглавие)',
       firstPageTooltip: 'Перейти на первую страницу',
@@ -1596,16 +1584,16 @@ L10n.load({
       pagerDropDown: 'пункты на странице',
       pagerAllDropDown: 'Предметы',
       All: 'Все'
-  },
-  calendar: {
-    today: 'сегодня'
-  },
-  datepicker: {
-    today: 'сегодня',
+    },
+    calendar: {
+      today: 'сегодня'
+    },
+    datepicker: {
+      today: 'сегодня',
       placeholder: 'Выберите дату'
-  },
-  daterangepicker: {
-    placeholder: 'Выберите диапазон дат',
+    },
+    daterangepicker: {
+      placeholder: 'Выберите диапазон дат',
       startLabel: 'Дата начала',
       endLabel: 'Дата окончания',
       applyText: 'Подать заявление',
@@ -1613,16 +1601,16 @@ L10n.load({
       selectedDays: 'Избранные дни',
       days: 'дней',
       customRange: 'Пользовательский диапазон'
-  },
-  timepicker: {
-    placeholder: 'Выберите время'
-  },
-  datetimepicker: {
-    today: 'сегодня',
+    },
+    timepicker: {
+      placeholder: 'Выберите время'
+    },
+    datetimepicker: {
+      today: 'сегодня',
       placeholder: 'Выберите дату и время'
-  },
-  gantt: {
-    emptyRecord: 'Нет записей для отображения',
+    },
+    gantt: {
+      emptyRecord: 'Нет записей для отображения',
       id: 'Я БЫ',
       name: 'имя',
       startDate: 'Дата начала',
@@ -1722,37 +1710,37 @@ L10n.load({
       group: 'группа',
       indent: 'индент',
       outdent: 'Выступ'
-  },
-  dropdowns: {
-    noRecordsTemplate: 'Записей не найдено',
+    },
+    dropdowns: {
+      noRecordsTemplate: 'Записей не найдено',
       actionFailureTemplate: 'Ошибка запроса',
       overflowCountTemplate: '+${count} больше ..',
       selectAllText: 'Выбрать все',
       unSelectAllText: 'Снять все',
       totalCountTemplate: '${count} выбран'
-  },
-  'drop-down-list': {
-    noRecordsTemplate: 'Записей не найдено',
+    },
+    'drop-down-list': {
+      noRecordsTemplate: 'Записей не найдено',
       actionFailureTemplate: 'Ошибка запроса'
-  },
-  'combo-box': {
-    noRecordsTemplate: 'Записей не найдено',
+    },
+    'combo-box': {
+      noRecordsTemplate: 'Записей не найдено',
       actionFailureTemplate: 'Ошибка запроса'
-  },
-  'auto-complete': {
-    noRecordsTemplate: 'Записей не найдено',
+    },
+    'auto-complete': {
+      noRecordsTemplate: 'Записей не найдено',
       actionFailureTemplate: 'Ошибка запроса'
-  },
-  'multi-select': {
-    noRecordsTemplate: 'Записей не найдено',
+    },
+    'multi-select': {
+      noRecordsTemplate: 'Записей не найдено',
       actionFailureTemplate: 'Ошибка запроса',
       overflowCountTemplate: '+${count} больше ..',
       selectAllText: 'Выбрать все',
       unSelectAllText: 'Снять все',
       totalCountTemplate: '${count} выбран'
-  },
-  listbox: {
-    noRecordsTemplate: 'Записей не найдено',
+    },
+    listbox: {
+      noRecordsTemplate: 'Записей не найдено',
       actionFailureTemplate: 'Ошибка запроса',
       selectAllText: 'Выбрать все',
       unSelectAllText: 'Снять все',
@@ -1762,12 +1750,12 @@ L10n.load({
       moveFrom: 'Двигаться из',
       moveAllTo: 'Переместить все в',
       moveAllFrom: 'Переместить все из'
-  },
-  dialog: {
-    close: 'близко'
-  },
-  'rich-text-editor': {
-    alignments: 'выравнивание',
+    },
+    dialog: {
+      close: 'близко'
+    },
+    'rich-text-editor': {
+      alignments: 'выравнивание',
       justifyleft: 'justifyLeft',
       justifycenter: 'justifyCenter',
       justifyright: 'justifyRight',
@@ -1860,34 +1848,34 @@ L10n.load({
       imageHeight: 'Высота',
       imageWidth: 'ширина',
       textPlaceholder: 'Введите текст'
-  },
-  'inplace-editor': {
-    editIcon: 'Нажмите, чтобы редактировать',
+    },
+    'inplace-editor': {
+      editIcon: 'Нажмите, чтобы редактировать',
       save: 'Сохранить',
       cancel: 'Отмена'
-  },
-  chart: {
-    Zoom: 'Увеличить',
+    },
+    chart: {
+      Zoom: 'Увеличить',
       ZoomIn: 'Приблизить',
       ZoomOut: 'Уменьшить',
       Reset: 'Сброс настроек',
       Pan: 'Кастрюля',
       ResetZoom: 'Сбросить масштаб'
-  },
-  'drop-down-base': {
-    noRecordsTemplate: 'Записей не найдено',
+    },
+    'drop-down-base': {
+      noRecordsTemplate: 'Записей не найдено',
       actionFailureTemplate: 'Ошибка запроса'
-  },
-  maps: {
-    Zoom: 'Увеличить',
+    },
+    maps: {
+      Zoom: 'Увеличить',
       ZoomIn: 'Приблизить',
       ZoomOut: 'Уменьшить',
       Reset: 'Сброс настроек',
       Pan: 'Кастрюля',
       ResetZoom: 'Сбросить масштаб'
-  },
-  PdfViewer: {
-    PdfViewer: 'PDF Viewer',
+    },
+    PdfViewer: {
+      PdfViewer: 'PDF Viewer',
       Cancel: 'Отмена',
       'Download file': 'Загрузка файла',
       Download: 'Скачать',
@@ -1989,9 +1977,9 @@ L10n.load({
       'Calibrate Area': 'Калибровать площадь',
       'Calibrate Radius': 'Калибровать радиус',
       'Calibrate Volume': 'Калибровать громкость'
-  },
-  documenteditor: {
-    Table: 'Стол',
+    },
+    documenteditor: {
+      Table: 'Стол',
       Row: 'Строка',
       Cell: 'клетка',
       Ok: 'Ok',
@@ -2337,9 +2325,9 @@ L10n.load({
       'Reject Changes': 'Отклонить изменения',
       User: 'пользователь',
       View: 'Посмотреть'
-  },
-  documenteditorcontainer: {
-    New: 'новый',
+    },
+    documenteditorcontainer: {
+      New: 'новый',
       Open: 'Загрузить документ',
       Undo: 'Шаг назад',
       Redo: 'Шаг вперед',
@@ -2491,12 +2479,12 @@ L10n.load({
       DropDown: 'Выпадающий список',
       'Update Fields': 'Обновить поля',
       'Update cross reference fields': 'Обновить поля перекрестных ссылок'
-  },
-  toast: {
-    close: 'близко'
-  },
-  kanban: {
-    items: 'Предметы',
+    },
+    toast: {
+      close: 'близко'
+    },
+    kanban: {
+      items: 'Предметы',
       min: 'Min',
       max: 'Максимум',
       cardsSelected: 'Выбранные карты',
@@ -2510,92 +2498,8 @@ L10n.load({
       yes: 'да',
       no: 'нет',
       close: 'близко'
+    }
   }
-}
 });
-
-@Component({
-  selector: 'app-document-ed',
-  templateUrl: './document-ed.component.html',
-  styleUrls: ['./document-ed.component.scss'],
-  providers: [
-    ToolbarService,
-    EditorService,
-    SelectionService,
-    SfdtExportService,
-    WordExportService,
-    DocxMergeService]
-})
-
-export class DocumentEdComponent implements OnChanges, AfterViewInit {
-  public hostUrl = 'https://ej2services.syncfusion.com/production/web-services/';
-
-  @Input() docx: any[];
-  @Input() trainingProgram: TrainingProgram;
-  @ViewChild('documentEditorContainerComponent')
-  public container: DocumentEditorContainerComponent;
-  public path: string;
-  public culture = 'ru';
-  public a: any;
-
-  constructor(
-    private docxMergeService: DocxMergeService
-  ) { }
-
-  ngAfterViewInit(): void {
-    this.container.serviceUrl = this.hostUrl + 'api/documenteditor/';
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.onCreate();
-  }
-
-  public onFileChange(e: any): void {
-    if (e.target.files[0]) {
-      const file = e.target.files[0];
-      if (file.name.substr(file.name.lastIndexOf('.')) !== '.sfdt') {
-        this.path = environment.apiUrl + 'api/WordToSDFT';
-        this.loadFile(file);
-      }
-    }
-  }
-
-// Ajax Converter to SFDT
-  public loadFile(file: any): void {
-    const ajax: XMLHttpRequest = new XMLHttpRequest();
-    ajax.open('POST', this.path, true);
-    ajax.onreadystatechange = () => {
-      if (ajax.readyState === 4) {
-        if (ajax.status === 200 || ajax.status === 304) {
-          this.container.documentEditor.open(ajax.responseText);
-        }
-        else {
-          alert('Ошибка соединения с сервером!');
-        }
-      }
-    };
-    const formData: FormData = new FormData();
-    formData.append('files', file);
-    ajax.send(formData);
-  }
-
-  onCreate(): any {
-    this.path = environment.apiUrl + 'api/WordToSDFT';
-    if (this.docx.length > 1) {
-      this.docxMergeService.merge(this.docx).subscribe((data: string) => {
-        this.container.documentEditor.open(data);
-      });
-    }
-    else {
-      this.loadFile(this.docx[0]);
-    }
-  }
-
-  public onPrint(): void {
-    this.container.documentEditor.print();
-  }
-
-  public saveAsDocx(): void {
-    this.container.documentEditor.save(this.trainingProgram.name + '(УТП)', 'Docx');
-  }
+export class DocumentEditorTranslateData {
 }

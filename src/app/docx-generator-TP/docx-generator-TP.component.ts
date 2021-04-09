@@ -228,41 +228,29 @@ export class DocxGeneratorTPComponent implements OnInit{
       empty
     ]);
 
-    const html =
-      '<html>\n' +
-      '     <head>\n' +
-      '          <title></title>\n' +
-      '     </head>\n' +
-      '     <body>\n' +
-      '          <p>\n' +
-      '               If you like it, add me a rating on <a href="https://github.com/onizet/html2openxml">github</a>\n' +
-      '          </p>\n' +
-      '          <hr>\n' +
-      '     </body>\n' +
-      '</html>';
-
     Packer.toBlob(docxTmp).then(blob => {
-      asBlob(this.trainingProgram.introduction).then(data => {
+      // asBlob(this.trainingProgram.introduction).then(data => {
         // saveAs(data, 'example.docx');
-        this.htmlToDocxService.convert(html, blob).subscribe((tmpData: string) => {
-          const byteCharacters = atob(tmpData);
-          const byteNumbers = new Array(byteCharacters.length);
-          for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-          }
-          const byteArray = new Uint8Array(byteNumbers);
-
-
-
-          const bloba = new Blob([byteArray], {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+        // this.htmlToDocxService.convert(html, blob).subscribe((tmpData: string) => {
+        //   const byteCharacters = atob(tmpData);
+        //   const byteNumbers = new Array(byteCharacters.length);
+        //   for (let i = 0; i < byteCharacters.length; i++) {
+        //     byteNumbers[i] = byteCharacters.charCodeAt(i);
+        //   }
+        //   const byteArray = new Uint8Array(byteNumbers);
+        //
+        //
+        //
+        //   const bloba = new Blob([byteArray], {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
           // saveAs(tmpData, 'ex.docx');
           // console.log(blob);
-          console.log(this.trainingProgram.introduction);
-          this.docx.push(bloba);
-        });
+          // console.log(this.trainingProgram.introduction);
+          console.log(blob.text());
+          // this.docx.push(bloba);
+        // });
         // this.docx.push(blob);
         // this.docx.push(blob);
-      });
+      // });
     });
   }
 }

@@ -50,7 +50,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import {CommonService} from './common-service/common-service.component';
 import {DocumentEditorAllModule, DocumentEditorContainerModule} from '@syncfusion/ej2-angular-documenteditor';
-import {DocumentEdComponent} from './document-ed/document-ed.component';
+import {DocumentEdComponent} from './document-editor/document-ed/document-ed.component';
 import { TrainingProgramAddForm2Component } from './training-program-add-form2/training-program-add-form2.component';
 import { TrainingProgramStepperComponent } from './training-program-stepper/training-program-stepper.component';
 import { TrainingProgramAddForm3Component } from './training-program-add-form3/training-program-add-form3.component';
@@ -73,6 +73,7 @@ import {Globals} from './globals';
 import { RichTextEditorFormComponent } from './rich-text-editor-form/rich-text-editor-form.component';
 import {RichTextEditorAllModule} from '@syncfusion/ej2-angular-richtexteditor';
 import { TrainingProgramAddFormIntroductionComponent } from './training-program-add-form-introduction/training-program-add-form-introduction.component';
+import { DocumentEditorFormComponent } from './document-editor/document-editor-form/document-editor-form.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -136,6 +137,7 @@ export function tokenGetter(): string {
     AuthorizationComponent,
     RichTextEditorFormComponent,
     TrainingProgramAddFormIntroductionComponent,
+    DocumentEditorFormComponent,
   ],
   imports: [
     BrowserModule,
