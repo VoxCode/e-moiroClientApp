@@ -16,7 +16,7 @@ import {
   ToolbarService, WordExportService
 } from '@syncfusion/ej2-angular-documenteditor';
 import {DocumentEditorTranslateData} from '../document-editor-translate-data';
-import {environment} from '../../../environments/environment';
+import {WordToSfdtService} from '../../services/word-to-sfdt.service';
 
 @Component({
   selector: 'app-document-editor-form',
@@ -28,7 +28,8 @@ import {environment} from '../../../environments/environment';
     SelectionService,
     SfdtExportService,
     WordExportService,
-    DocumentEditorTranslateData]
+    DocumentEditorTranslateData,
+    WordToSfdtService]
 })
 
 export class DocumentEditorFormComponent implements OnChanges, AfterViewInit {
@@ -40,9 +41,9 @@ export class DocumentEditorFormComponent implements OnChanges, AfterViewInit {
   public container: DocumentEditorContainerComponent;
   public path: string;
   public culture = 'ru';
-  public outputContent: string;
 
   constructor(
+    private wordToSfdtService: WordToSfdtService
   ) { }
 
   ngAfterViewInit(): void {
@@ -57,65 +58,90 @@ export class DocumentEditorFormComponent implements OnChanges, AfterViewInit {
     if (e.target.files[0]) {
       const file = e.target.files[0];
       if (file.name.substr(file.name.lastIndexOf('.')) !== '.sfdt') {
-        this.path = environment.apiUrl + 'api/WordToSDFT';
         this.loadFile(file);
       }
     }
   }
 
-// Ajax Converter to SFDT
   public loadFile(file: any): void {
-    const ajax: XMLHttpRequest = new XMLHttpRequest();
-    ajax.open('POST', this.path, true);
-    ajax.onreadystatechange = () => {
-      if (ajax.readyState === 4) {
-        if (ajax.status === 200 || ajax.status === 304) {
-          this.container.documentEditor.open(ajax.responseText);
-        }
-        else {
-          alert('Ошибка соединения с сервером!');
-        }
-      }
-    };
-    const formData: FormData = new FormData();
-    formData.append('files', file);
-    ajax.send(formData);
+    this.wordToSfdtService.convert(file).subscribe((data: string) => {
+      this.container.documentEditor.open(data);
+    });
   }
 
   onCreate(): any {
-    this.path = environment.apiUrl + 'api/WordToSDFT';
     if (this.content !== 'Empty') {
-
-      const byteCharacters = atob(this.content);
-      const sliceSize = 512;
-      const byteArrays = [];
-      for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-        const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-        const byteNumbers = new Array(slice.length);
-        for (let i = 0; i < slice.length; i++) {
-          byteNumbers[i] = slice.charCodeAt(i);
-        }
-
-        const bytes = new Uint8Array(byteNumbers);
-        byteArrays.push(bytes);
-      }
-      const blob = new Blob(byteArrays, {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+      const type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+      const blob = this.base64toBlob(this.content, type, 512);
       this.loadFile(blob);
     }
   }
 
   saveBlob(): void {
     this.container.documentEditor.saveAsBlob('Docx').then((blob: Blob) => {
-      blob.text().then(text => {
-        this.outputContent = text;
-        this.content = this.outputContent;
-        // this.saveButtonClicked.emit(this.outputContent);
-      });
+      const fileReader = new FileReader();
+
+      fileReader.onload = () => {
+        const base64Text = ';base64,';
+        if (typeof fileReader.result === 'string') {
+          this.content = fileReader.result.substring(fileReader.result.indexOf(base64Text) + base64Text.length);
+          this.saveButtonClicked.emit(this.content);
+        }
+      };
+      fileReader.readAsDataURL(blob);
     });
   }
 
-  reload(): void {
-    this.onCreate();
+  base64toBlob(base64Data, contentType, sliceSize): any {
+
+    let byteCharacters;
+    let byteArray;
+    let byteNumbers;
+    let blobData;
+    let blob;
+
+    contentType = contentType || '';
+
+    byteCharacters = atob(base64Data);
+
+    blobData = sliceSize ? getBlobDataSliced() : getBlobDataAtOnce();
+
+    blob = new Blob(blobData, { type: contentType });
+
+    return blob;
+
+    function getBlobDataAtOnce(): any {
+      byteNumbers = new Array(byteCharacters.length);
+
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+
+      byteArray = new Uint8Array(byteNumbers);
+
+      return [byteArray];
+    }
+
+    function getBlobDataSliced(): any {
+
+      let slice;
+      const byteArrays = [];
+
+      for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        byteNumbers = new Array(slice.length);
+
+        for (let i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+      }
+
+      return byteArrays;
+    }
   }
 }

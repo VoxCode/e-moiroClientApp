@@ -21,9 +21,8 @@ import {StudentCategoryService} from '../services/student-category.service';
 import {StudentCategory} from '../models/StudentCategory';
 import {CertificationTypeService} from '../services/certification-type.service';
 import {CertificationType} from '../models/CertificationType';
-import { asBlob } from 'html-docx-js-typescript';
 import { saveAs } from 'file-saver';
-import {HtmlToDocxService} from '../services/html-to-docx.service';
+import {WordToSfdtService} from '../services/word-to-sfdt.service';
 
 
 @Component({
@@ -40,7 +39,7 @@ import {HtmlToDocxService} from '../services/html-to-docx.service';
     CurriculumTopicTrainingProgramService,
     StudentCategoryService,
     CertificationTypeService,
-    HtmlToDocxService
+    WordToSfdtService
   ]
 })
 
@@ -68,7 +67,7 @@ export class DocxGeneratorTPComponent implements OnInit{
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private studentCategoryService: StudentCategoryService,
     private certificationTypeService: CertificationTypeService,
-    private htmlToDocxService: HtmlToDocxService,
+    private htmlToDocxService: WordToSfdtService,
     private route: ActivatedRoute
   ) { }
 
@@ -229,28 +228,7 @@ export class DocxGeneratorTPComponent implements OnInit{
     ]);
 
     Packer.toBlob(docxTmp).then(blob => {
-      // asBlob(this.trainingProgram.introduction).then(data => {
-        // saveAs(data, 'example.docx');
-        // this.htmlToDocxService.convert(html, blob).subscribe((tmpData: string) => {
-        //   const byteCharacters = atob(tmpData);
-        //   const byteNumbers = new Array(byteCharacters.length);
-        //   for (let i = 0; i < byteCharacters.length; i++) {
-        //     byteNumbers[i] = byteCharacters.charCodeAt(i);
-        //   }
-        //   const byteArray = new Uint8Array(byteNumbers);
-        //
-        //
-        //
-        //   const bloba = new Blob([byteArray], {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
-          // saveAs(tmpData, 'ex.docx');
-          // console.log(blob);
-          // console.log(this.trainingProgram.introduction);
-          console.log(blob.text());
-          // this.docx.push(bloba);
-        // });
-        // this.docx.push(blob);
-        // this.docx.push(blob);
-      // });
+      this.docx.push(blob);
     });
   }
 }
