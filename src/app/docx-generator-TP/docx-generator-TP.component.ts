@@ -21,7 +21,6 @@ import {StudentCategoryService} from '../services/student-category.service';
 import {StudentCategory} from '../models/StudentCategory';
 import {CertificationTypeService} from '../services/certification-type.service';
 import {CertificationType} from '../models/CertificationType';
-import { saveAs } from 'file-saver';
 import {WordToSfdtService} from '../services/word-to-sfdt.service';
 
 

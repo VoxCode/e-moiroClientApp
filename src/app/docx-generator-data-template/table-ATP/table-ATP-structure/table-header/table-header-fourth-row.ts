@@ -21,7 +21,7 @@ export class TableHeaderFourthRow {
     return new TableRow({
       children: this.child,
       tableHeader: true,
-      cantSplit: true
+
     });
   }
 }

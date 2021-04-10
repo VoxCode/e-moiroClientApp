@@ -33,7 +33,8 @@
       </div><br>
       <div id="hours">
         <label>Количество часов</label>
-        <input  (focusout)="updateSingleCurriculumTopicTrainingProgram(item)" min="0" max="10" [(ngModel)]="item.fourth" (change)= "item.fourth < 0 ? item.fourth = 0 : item.fourth;
+        <input  (focusout)="updateSingleCurriculumTopicTrainingProgram(item)" min="0" max="10"
+                [(ngModel)]="item.fourth" (change)= "item.fourth < 0 ? item.fourth = 0 : item.fourth;
          item.fourth > 10 ? item.fourth = 0 : item.fourth;" type="number" class="md-textarea form-control" mdbInput>
       </div><br>
       <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
@@ -62,8 +63,10 @@
         <h4 class="modal-title w-100" id="myModalLabel">Раздел учебной программы</h4>
       </div>
       <div class="modal-body">
-        <label>Название</label>
-        <textarea type="text" [(ngModel)]="this.curriculumSectionTmp.name" class="md-textarea form-control" mdbInput></textarea>
+        <div class="md-textarea">
+          <label for="first">Название</label>
+          <textarea id="first" type="text" [(ngModel)]="this.curriculumSectionTmp.name" class="md-textarea form-control" mdbInput></textarea>
+        </div>
         <br>
       </div>
       <div class="modal-footer">
@@ -81,20 +84,20 @@
   <div class="modal-dialog modal-fluid" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal2.hide()" (click)="cancel()">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="cancel(); basicModal2.hide()">
           <span aria-hidden="true">×</span>
         </button>
         <h4 class="modal-title w-100">Тема учебной программы</h4>
       </div>
       <div class="modal-body">
-        <label>Тема</label>
-        <textarea type="text" [(ngModel)]="this.curriculumTopicTmp.topicTitle" class="md-textarea form-control" mdbInput></textarea>
+        <label for="second">Тема</label>
+        <textarea id="second" type="text" [(ngModel)]="this.curriculumTopicTmp.topicTitle" class="md-textarea form-control" mdbInput></textarea>
         <br>
-        <label>Аннотация</label>
-        <textarea type="text" [(ngModel)]="this.curriculumTopicTmp.annotation" class="md-textarea form-control" mdbInput></textarea>
+        <label for="third">Аннотация</label>
+        <textarea id="third" type="text" [(ngModel)]="this.curriculumTopicTmp.annotation" class="md-textarea form-control" mdbInput></textarea>
         <br>
         <div class="modal-footer">
-          <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal2.hide()" (click)="addCurriculumTopic()"
+          <button type="button" mdbBtn color="primary" class="relative waves-light"  (click)="addCurriculumTopic(); basicModal2.hide()"
                   mdbWavesEffect>Сохранить</button>
         </div>
       </div>

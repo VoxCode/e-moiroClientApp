@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {CurriculumTopicService} from '../services/curriculum-topic.service';
 import {TrainingProgramService} from '../services/training-program.service';
 import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
@@ -8,7 +8,6 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 import {OccupationForm} from '../models/OccupationForm';
 import {CurriculumSection} from '../models/CurriculumSection';
 import {TrainingProgramCurriculumSectionService} from '../services/training-program-curriculum-section.service';
-import {CommonService} from '../common-service/common-service.component';
 import {SubscriptionLike} from 'rxjs';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
 import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
@@ -19,11 +18,10 @@ import {CurriculumTopicStudentCategory} from '../models/CurriculumTopicStudentCa
 import {CurriculumTopicDepartment} from '../models/СurriculumTopicDepartment';
 import {TrainingProgram} from '../models/TrainingProgram';
 
-
 @Component({
   selector: 'app-curriculum-section-child',
-  templateUrl: './curriculum-section-child.html',
-  styleUrls: ['./curriculum-section-child.scss'],
+  templateUrl: './curriculum-section-child.component.html',
+  styleUrls: ['./curriculum-section-child.component.scss'],
   providers: [
     CurriculumTopicService,
     TrainingProgramService,
@@ -36,8 +34,8 @@ import {TrainingProgram} from '../models/TrainingProgram';
   ]
 })
 
-// tslint:disable-next-line:component-class-suffix
-export class CurriculumSectionChild implements OnInit, OnDestroy{
+export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
+  @ViewChild ('basicModal') public modal: any;
   @Input() done: any[];
   @Input() curriculumSectionNumber: number;
   @Input() id: number;
@@ -61,18 +59,13 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
     private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private curriculumSectionService: CurriculumSectionService,
-    private commonService: CommonService,
     private occupationFormService: OccupationFormService,
     private curriculumTopicStudentCategoryService: CurriculumTopicStudentCategoryService,
     private curriculumTopicDepartmentService: CurriculumTopicDepartmentService
   ) { }
 
-  // tslint:disable-next-line:typedef use-lifecycle-interface
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadOccupationForm();
-    this.subscription = this.commonService.saveCurriculumSectionChild$.subscribe( idx => {
-      this.saveCurriculumTopicTrainingProgram();
-    });
   }
 
   // tslint:disable-next-line:typedef
@@ -120,7 +113,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   }
 
   // tslint:disable-next-line:typedef
-  loadCurriculumSection(){
+  loadCurriculumSection() {
     this.curriculumSectionService.getSelectValues(this.trainingProgram.departmentId)
       .subscribe((data: CurriculumSection[]) => {
         if (data !== null) {
@@ -140,12 +133,11 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
           if (this.curriculumSectionId !== 0 && this.trainingProgramCurriculumSectionId !== 0) {
             this.trainingProgramCurriculumSectionSelect = this.trainingProgramCurriculumSections
               .find(a => a.curriculumSectionId === this.curriculumSectionId);
-            if (this.trainingProgramCurriculumSectionSelect !== undefined){
+            if (this.trainingProgramCurriculumSectionSelect){
               this.loadCurriculumTopicTrainingProgram();
             }
           }
           else {
-
             this.crateTrainingProgramCurriculumSection();
           }
         }
@@ -158,11 +150,8 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
       .subscribe((data: CurriculumTopicTrainingProgram[]) => {
         if (data !== undefined){
           this.curriculumTopicTrainingPrograms = data;
-          // tslint:disable-next-line:only-arrow-functions typedef
-          this.curriculumTopicTrainingPrograms.sort(function(a, b) {
-            return a.serialNumber - b.serialNumber;
-          });
-          this.curriculumTopicTrainingPrograms.forEach((object, index) => {
+          this.curriculumTopicTrainingPrograms.sort((a, b) => a.serialNumber - b.serialNumber);
+          this.curriculumTopicTrainingPrograms.forEach((object) => {
             this.done.push({
               first: object.curriculumTopicId,
               second: object.topicTitle,
@@ -223,7 +212,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
   updateTrainingProgramCurriculumSection(){
     this.trainingProgramCurriculumSectionSelect.id = this.trainingProgramCurriculumSectionId;
     this.trainingProgramCurriculumSectionService.updateValue(this.trainingProgramCurriculumSectionSelect)
-      .subscribe((data: TrainingProgramCurriculumSection) => {
+      .subscribe(() => {
         console.log('Update was successful');
       });
   }
@@ -266,8 +255,7 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
     }
   }
 
-  // tslint:disable-next-line:typedef
-  cancel() {
+  cancel(): void {
     this.curriculumSectionTmp = new CurriculumSection();
     this.curriculumTopicTmp = new CurriculumTopic();
   }
@@ -279,9 +267,10 @@ export class CurriculumSectionChild implements OnInit, OnDestroy{
 
   // tslint:disable-next-line:typedef
   crateTrainingProgramCurriculumSection(){
+    this.modal.show();
     const model: TrainingProgramCurriculumSection = new TrainingProgramCurriculumSection();
     model.sectionNumber = this.curriculumSectionNumber;
-    model.curriculumSectionId = 1;
+    model.curriculumSectionId = 0;
     model.id = 0;
     model.trainingProgramId = this.id;
     this.trainingProgramCurriculumSectionService.createValue(model)

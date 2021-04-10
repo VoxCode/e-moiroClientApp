@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {MDBModalRef} from 'angular-bootstrap-md';
@@ -11,7 +11,7 @@ import {Role} from '../../models/Role';
   styleUrls: ['./user.component.scss'],
   providers: [RoleService]
 })
-export class UserEditComponent {
+export class UserEditComponent implements OnInit{
   public roles: Role[];
 
   public editableRow: { first: string, second: string, last: string, handle: string };
@@ -27,8 +27,8 @@ export class UserEditComponent {
     public modalRef: MDBModalRef,
     private roleService: RoleService) { }
 
-  // tslint:disable-next-line:typedef use-lifecycle-interface
-  ngOnInit() {
+
+  ngOnInit(): void {
     this.loadRole();
     this.form.controls.first.patchValue(this.editableRow.first);
     this.form.controls.second.patchValue(this.editableRow.second);

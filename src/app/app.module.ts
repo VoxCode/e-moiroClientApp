@@ -45,7 +45,7 @@ import {CertificationTypeEditComponent} from './certification-type/certification
 import {TrainingProgramEditComponent} from './training-program/training-program-edit.component';
 import {RegulationComponent} from './regulation/regulation.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-import {CurriculumSectionChild} from './training-program-add-form/curriculum-section-child';
+import {CurriculumSectionChildComponent} from './training-program-add-form/curriculum-section-child.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import {CommonService} from './common-service/common-service.component';
@@ -119,7 +119,7 @@ export function tokenGetter(): string {
     TestWorkComponent,
     TestWorkEditComponent,
     TrainingProgramAddFormComponent,
-    CurriculumSectionChild,
+    CurriculumSectionChildComponent,
     DocumentEdComponent,
     TrainingProgramAddForm2Component,
     TrainingProgramStepperComponent,

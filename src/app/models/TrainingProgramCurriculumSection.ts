@@ -4,5 +4,6 @@ export class TrainingProgramCurriculumSection {
     public trainingProgramId?: number,
     public curriculumSectionId?: number,
     public sectionNumber?: number,
+    public maxVariableTopicHours?: number,
     public name?: string){ }
 }

@@ -60,6 +60,7 @@ const adminRoutes: Routes = [
   { path: 'trainingProgram', component: TrainingProgramComponent },
   { path: 'trainingProgramAddForm/:id', component: TrainingProgramAddFormComponent },
   { path: 'testWork', component: TestWorkComponent },
+  { path: 'trainingProgramAddFormIntroduction/:id', component: TrainingProgramAddFormIntroductionComponent },
   { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent },
   { path: 'trainingProgramAddForm2/:id', component: TrainingProgramAddForm2Component },
   { path: 'trainingProgramAddForm3/:id', component: TrainingProgramAddForm3Component },

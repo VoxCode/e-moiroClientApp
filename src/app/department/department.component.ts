@@ -19,7 +19,7 @@ export class DepartmentComponent implements OnInit, AfterViewInit {
   @ViewChild('row', { static: true }) row: ElementRef;
 
   elements: any = [];
-  headElements = ['Номер', 'id', 'Содержание', 'Команда'];
+  headElements = ['Номер', 'id', 'Название', 'Заведующий', 'Команда'];
   searchText = '';
   previous: string;
   modalRef: MDBModalRef;
@@ -77,7 +77,11 @@ export class DepartmentComponent implements OnInit, AfterViewInit {
       .subscribe((data: Department[]) => {
         this.values = data;
         for (let i = 1; i <= this.values.length; i++) {
-          this.elements.push({id: i.toString(), first: this.values[i - 1].id, last: this.values[i - 1].name});
+          this.elements.push({
+            id: i.toString(),
+            first: this.values[i - 1].id,
+            second: this.values[i - 1].departmentHeadName,
+            last: this.values[i - 1].name});
         }
         this.mdbTable.setDataSource(this.elements);
         this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
@@ -95,6 +99,7 @@ export class DepartmentComponent implements OnInit, AfterViewInit {
         this.mdbTable.addRow({
           id: index.toString(),
           first: this.value.id,
+          second: this.value.departmentHeadName,
           last: this.value.name
         });
         this.mdbTable.setDataSource(this.elements);
@@ -106,6 +111,7 @@ export class DepartmentComponent implements OnInit, AfterViewInit {
   save(el: any) {
     this.cancel();
     this.value.id = el.first;
+    this.value.departmentHeadName = el.second;
     this.value.name = el.last;
     this.valueService.updateValue(this.value)
       .subscribe();
@@ -122,6 +128,7 @@ export class DepartmentComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   delete(p: any) {
     this.value.id = p.first;
+    this.value.departmentHeadName = p.second;
     this.value.name = p.last;
     this.valueService.deleteValue(this.value.id)
       .subscribe(data => {

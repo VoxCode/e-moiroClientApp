@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {MDBModalRef} from 'angular-bootstrap-md';
@@ -8,7 +8,7 @@ import {MDBModalRef} from 'angular-bootstrap-md';
   templateUrl: './additional-literature-edit.component.html',
   styleUrls: ['./additional-literature.component.scss']
 })
-export class AdditionalLiteratureEditComponent {
+export class AdditionalLiteratureEditComponent implements OnInit{
 
   public editableRow: { id: string, first: string, last: string, handle: string };
   public saveButtonClicked: Subject<any> = new Subject<any>();
@@ -21,8 +21,8 @@ export class AdditionalLiteratureEditComponent {
 
   constructor(public modalRef: MDBModalRef) { }
 
-  // tslint:disable-next-line:typedef use-lifecycle-interface
-  ngOnInit() {
+
+  ngOnInit(): void {
     this.form.controls.id.patchValue(this.editableRow.id);
     this.form.controls.first.patchValue(this.editableRow.first);
     this.form.controls.last.patchValue(this.editableRow.last);

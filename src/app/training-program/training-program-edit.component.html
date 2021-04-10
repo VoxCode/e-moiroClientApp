@@ -7,8 +7,8 @@
   </div>
   <div class="modal-body">
     <form [formGroup]="form">
-      <div class="md-form">
-        <p>Название</p>
+      <div class="md-textarea">
+        <label for="second">Название</label>
         <textarea id="second" type="text" class="form-control" formControlName="second" mdbInput mdbValidate
                   [validateSuccess]="false"></textarea>
 
@@ -16,7 +16,7 @@
       </div>
 
       <div class="md-form">
-        <p>Количество часов</p>
+        <label for="third">Количество часов</label>
         <input id="third" type="number" class="form-control" formControlName="third" mdbInput mdbValidate
                   [validateSuccess]="false">
 
@@ -35,8 +35,9 @@
         <mdb-checkbox *ngIf="this.isDistanceLearning == true" [default]="true" formControlName="sixth">Самостоятельная работа</mdb-checkbox>
       </div>
 
-      <div *ngIf="this.isDistanceLearning == true" class="md-form">
-        <p>Содержание контрольной работы</p>
+      <div *ngIf="this.isDistanceLearning == true" class="md-textarea">
+        <br>
+        <label for="seventh">Содержание контрольной работы</label>
         <textarea id="seventh" type="text" class="form-control" formControlName="seventh" mdbInput mdbValidate
                   [validateSuccess]="false"></textarea>
 
@@ -44,22 +45,22 @@
       </div>
       <br>
 
-      <label>Кафедра</label>
+      <label for="eight">Кафедра</label>
       <select class="browser-default custom-select" id="eight" formControlName="eight">
         <option *ngFor="let el of departments" [ngValue]="el.id">{{el.name}}</option>
       </select>
 
-      <label>Категория учащегося</label>
+      <label for="tenth">Категория учащегося</label>
       <select class="browser-default custom-select" id="tenth" formControlName="tenth">
         <option *ngFor="let el of studentCategories" [ngValue]="el.id">{{el.name}}</option>
       </select>
 
-      <label>Тип аттестации</label>
+      <label for="twelfth">Тип аттестации</label>
       <select class="browser-default custom-select" id="twelfth" formControlName="twelfth">
         <option *ngFor="let el of certificationTypes" [ngValue]="el.id">{{el.name}}</option>
       </select>
 
-      <label>Форма получения образования</label>
+      <label for="thirteenth">Форма получения образования</label>
       <select class="browser-default custom-select" id="thirteenth" formControlName="twelfth">
         <option *ngFor="let el of formOfEducations" [ngValue]="el.id">{{el.name}}</option>
       </select>

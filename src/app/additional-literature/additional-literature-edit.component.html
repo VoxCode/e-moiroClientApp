@@ -7,10 +7,10 @@
   </div>
   <div class="modal-body">
     <form [formGroup]="form">
-      <div class="md-form">
-        <p>Содержимое</p>
+      <div class="md-textarea">
+        <label for="last">Содержимое</label>
         <textarea id="last" type="text" class="form-control" formControlName="last" mdbInput mdbValidate
-                  [validateSuccess]="false"></textarea>
+                                            [validateSuccess]="false"></textarea>
 
         <mdb-error *ngIf="last.invalid && (last.dirty || last.touched)">Input is required</mdb-error>
       </div>

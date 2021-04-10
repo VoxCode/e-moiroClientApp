@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {MDBModalRef} from 'angular-bootstrap-md';
 import {DepartmentService} from '../services/department.service';
@@ -22,7 +22,7 @@ import {FormOfEducationService} from '../services/form-of-education.service';
     FormOfEducationService,
   ]
 })
-export class TrainingProgramEditComponent {
+export class TrainingProgramEditComponent implements OnInit{
   departments: Department[];
   studentCategories: StudentCategory[];
   certificationTypes: CertificationType[];
@@ -71,14 +71,13 @@ export class TrainingProgramEditComponent {
     private formOfEducationService: FormOfEducationService
   ) { }
 
-  // tslint:disable-next-line:typedef use-lifecycle-interface
-  ngOnInit() {
+
+  ngOnInit(): void {
     this.loadDepartment();
     this.loadStudentCategory();
     this.loadCertificationType();
     this.loadFormOfEducation();
     this.isDistanceLearning = this.editableRow.fourth;
-    console.log(this.isDistanceLearning);
     this.form.controls.id.patchValue(this.editableRow.id);
     this.form.controls.first.patchValue(this.editableRow.first);
     this.form.controls.second.patchValue(this.editableRow.second);
@@ -161,12 +160,6 @@ export class TrainingProgramEditComponent {
 
   // tslint:disable-next-line:typedef
   changeIsDistanceLearning(el: boolean) {
-    if (el) {
-      this.isDistanceLearning = true;
-    }
-    else {
-      this.isDistanceLearning = false;
-    }
-
+    this.isDistanceLearning = el;
   }
 }

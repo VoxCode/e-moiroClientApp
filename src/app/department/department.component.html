@@ -32,6 +32,7 @@
             <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{el.id}}</th>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" >{{el.first}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" >{{el.last}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" >{{el.second}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
               <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)" mdbWavesEffect> <mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
               <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)" mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
@@ -40,7 +41,7 @@
           </tbody>
           <tfoot class="grey lighten-5 w-100">
           <tr>
-            <td colspan="4">
+            <td colspan="5">
               <mdb-table-pagination [tableEl]="tableEl" paginationAlign="" [searchDataSource]="elements"></mdb-table-pagination>
             </td>
           </tr>
@@ -63,8 +64,11 @@
         <h4 class="modal-title w-100" id="myModalLabel">Кафедра</h4>
       </div>
       <div class="modal-body">
-        <label>Содержание</label>
+        <label>Название кафедры</label>
         <textarea type="text" [(ngModel)]="this.value.name" class="md-textarea form-control" mdbInput></textarea>
+        <br>
+        <label>Заведующий кафедрой</label>
+        <input type="text" [(ngModel)]="this.value.departmentHeadName" class="md-textarea form-control" mdbInput>
       </div>
       <div class="modal-footer">
         <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="crate()"  mdbWavesEffect>Сохранить</button>

@@ -15,6 +15,7 @@ export class DocumentCreator {
   teacher: number;
   isVariableOn = false;
   docxGeneratorDataTemplate: DocxGeneratorDataTemplate = new DocxGeneratorDataTemplate(28);
+  sections: any[] = [];
 
   constructor(
     private curriculumTopicsList: CurriculumTopicTrainingProgram[][],
@@ -30,29 +31,16 @@ export class DocumentCreator {
 
   // tslint:disable-next-line:no-shadowed-variable
   public create([model, internalParameter ]): Document {
-    const document = new Document({
-      creator: 'MOIRO',
-      title: 'Document of MOIRO',
-      styles: {
-        paragraphStyles: [ {
-          id: 'default',
-          name: 'My Standard style',
-          basedOn: 'Normal',
-          next: 'Normal',
-          quickFormat: true,
-          run: {
-            size: 28,
-          },
-        }],
-      },
-    });
-
-    document.addSection({
-      margins: {
-        top: convertMillimetersToTwip(20),
-        right: convertMillimetersToTwip(10),
-        bottom: convertMillimetersToTwip(20),
-        left: convertMillimetersToTwip(30)
+    this.sections.push({
+      properties: {
+        page: {
+          margin: {
+            left: convertMillimetersToTwip(30),
+            right: convertMillimetersToTwip(10),
+            top: convertMillimetersToTwip(20),
+            bottom: convertMillimetersToTwip(20)
+          }
+        }
       },
       footers: {
         default: new Footer({
@@ -69,31 +57,28 @@ export class DocumentCreator {
             this.docxGeneratorDataTemplate.mainNameDocumentTP('«' + this.trainingProgram.name + '»'),
             this.docxGeneratorDataTemplate.studentCategoryMain(this.studentCategory.name)
             //#endregion First page
-          ]
+          ],
         }),
       ],
     });
 
-    document.addSection( {
-      margins: {
-        top: convertMillimetersToTwip(20),
-        right: convertMillimetersToTwip(10),
-        bottom: convertMillimetersToTwip(20),
-        left: convertMillimetersToTwip(30),
+    this.sections.push( {
+      properties: {
+        page: {
+          margin: {
+            left: convertMillimetersToTwip(30),
+            right: convertMillimetersToTwip(10),
+            top: convertMillimetersToTwip(20),
+            bottom: convertMillimetersToTwip(20)
+          }
+        },
+        pageNumberStart: 2,
+        pageNumberFormatType: PageNumberFormat.DECIMAL,
       },
       headers: {
         default: new Header({
           children: [this.docxGeneratorDataTemplate.pageNumbers()],
         })
-      },
-      footers: {
-        default: new Footer({
-          children: [new Paragraph('')]
-        })
-      },
-      properties: {
-        pageNumberStart: 2,
-        pageNumberFormatType: PageNumberFormat.DECIMAL,
       },
       children: [
 
@@ -201,7 +186,7 @@ export class DocumentCreator {
                 if (obj.isVariable === false){
                   arr.push(this.docxGeneratorDataTemplate
                     .someTextCurriculumTopics((index + 1) + '.' + i + ' ' + obj.topicTitle, ' (' + obj.fullName.toLowerCase() + ',' +
-                    ' ' + obj.classHours + ' часа)', 0, true));
+                      ' ' + obj.classHours + ' часа)', 0, true));
                   arr.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
                   i++;
                 }
@@ -219,7 +204,7 @@ export class DocumentCreator {
                 if (obj.isVariable === true) {
                   arr.push(this.docxGeneratorDataTemplate
                     .someTextCurriculumTopics(obj.topicTitle, ' (' + obj.fullName.toLowerCase() + ', ' +
-                    ' ' + obj.classHours + ' часа)', 0, true));
+                      ' ' + obj.classHours + ' часа)', 0, true));
                   arr.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
                   j++;
                 }
@@ -324,13 +309,29 @@ export class DocumentCreator {
               arr.push(this.docxGeneratorDataTemplate.someText((indx) +
                 '. ' + object.content, 720));
             });
-            arr.push(this.docxGeneratorDataTemplate.pageBreak());
             return arr;
           })
           .reduce((prev, curr) => prev.concat(curr), []),
         // #endregion
       ],
     });
-    return document;
+
+    return new Document({
+      creator: 'MOIRO',
+      title: 'Document of MOIRO',
+      styles: {
+        paragraphStyles: [ {
+          id: 'default',
+          name: 'My Standard style',
+          basedOn: 'Normal',
+          next: 'Normal',
+          quickFormat: true,
+          run: {
+            size: 28,
+          },
+        }],
+      },
+      sections: this.sections,
+    });
   }
 }

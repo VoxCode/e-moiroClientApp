@@ -131,7 +131,7 @@ export class CurriculumSectionComponent implements OnInit, AfterViewInit {
     this.value.id = p.first;
     this.value.name = p.last;
     this.valueService.deleteValue(this.value.id)
-      .subscribe(data => {
+      .subscribe(() => {
         this.removeRow(p);
       });
   }

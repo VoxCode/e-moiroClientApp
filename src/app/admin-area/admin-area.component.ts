@@ -10,8 +10,7 @@ export class AdminAreaComponent {
   constructor(
     private authService: AuthService) { }
 
-  // tslint:disable-next-line:typedef
-  userLogout() {
+  userLogout(): void {
     this.authService.logout();
   }
 }

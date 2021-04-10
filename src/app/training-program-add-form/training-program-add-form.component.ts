@@ -164,20 +164,12 @@ export class TrainingProgramAddFormComponent implements OnInit{
 
   // tslint:disable-next-line:typedef
   addCurriculumSection(curriculumSectionId: number, trainingProgramCurriculumSectionId: number) {
-
     this.curriculumSectionContentList.push({
       done: [],
       curriculumSectionId,
       trainingProgramCurriculumSectionId
     });
 
-  }
-
-  // SAVE FULL
-
-  // tslint:disable-next-line:typedef
-  save() {
-    this.commonService.saveCurriculumSectionChild$.next(1);
   }
 
   // DELETE

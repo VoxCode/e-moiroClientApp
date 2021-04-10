@@ -325,6 +325,76 @@ export class DocxGeneratorDataTemplate {
       ]
     });
   }
+
+  public noteATP(): Paragraph {
+    return new Paragraph({
+      children: [
+        new TextRun({
+          text: 'Примечание:',
+          break: 1
+        }),
+        new TextRun({
+          // tslint:disable-next-line:max-line-length
+          text: '1. При проведении практических занятий группа может делиться на две подгруппы численностью слушателей не менее 12 человек.',
+          break: 1
+        }),
+        new TextRun({
+          // tslint:disable-next-line:max-line-length
+          text: '2. В проведении круглого стола, тематической дискуссии, конференции принимают участие 2 преподавателя, деловой игры – до 3 преподавателей.',
+          break: 1
+        }),
+      ]
+    });
+  }
+
+  public footerATPDean(): Paragraph
+  {
+    return new Paragraph({
+      children: [
+        new TextRun({
+          text: 'Декан факультета',
+          size : this.size,
+          break: 2
+        }),
+        new TextRun({
+          text: 'профессионального развития',
+          size : this.size,
+          break: 1
+        }),
+        new TextRun({
+          text: 'руководящих работников',
+          size : this.size,
+          break: 1
+        }),
+        new TextRun({
+          text: 'и специалистов образования                                                      Е.А.Ротмирова',
+          size : this.size,
+          break: 1
+        }),
+      ],
+
+    });
+  }
+
+  public footerATPDepartmentHead(department: string, departmentHeadName: string): Paragraph
+  {
+    return new Paragraph({
+      children: [
+        new TextRun({
+          text: 'Заведующий кафедрой',
+          size : this.size,
+          break: 1
+        }),
+        new TextRun({
+          text: department.substr(department.indexOf(' ') + 1),
+          size : this.size,
+          break: 1
+        }),
+      ],
+
+    });
+  }
+
   public getNowYear(): string
   {
     return new Date().getFullYear().toString();

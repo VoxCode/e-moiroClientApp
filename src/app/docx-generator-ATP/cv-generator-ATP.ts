@@ -19,6 +19,7 @@ export class DocumentCreatorRector {
   teacher: number;
   docxGeneratorDataTemplate: DocxGeneratorDataTemplate = new DocxGeneratorDataTemplate(28);
   tableATPGenerator: TableATPGenerator = new TableATPGenerator();
+  sections: any[] = [];
 
   constructor(
     private curriculumTopicsList: CurriculumTopicTrainingProgram[][],
@@ -36,40 +37,25 @@ export class DocumentCreatorRector {
     private department: Department
   ) { }
 
-  public create([]): Document {
-    const document = new Document({
-      creator: 'MOIRO',
-      title: 'Document of MOIRO',
-      styles: {
-        paragraphStyles: [ {
-          id: 'default',
-          name: 'My Standard style',
-          basedOn: 'Normal',
-          next: 'Normal',
-          quickFormat: true,
-          run: {
-            size: 28,
-          },
-        }],
-      },
-    });
-
-    document.addSection({
-      headers: {
-        default: new Header({
-          children: [this.docxGeneratorDataTemplate.pageNumbers()],
-        })
-      },
+  public create(): Document {
+    this.sections.push({
       properties: {
+        page: {
+          margin: {
+            left: convertMillimetersToTwip(30),
+            right: convertMillimetersToTwip(10),
+            top: convertMillimetersToTwip(20),
+            bottom: convertMillimetersToTwip(20)
+          }
+        },
         pageNumberStart: 2,
         pageNumberFormatType: PageNumberFormat.DECIMAL,
         titlePage: true
       },
-      margins: {
-        top: convertMillimetersToTwip(20),
-        right: convertMillimetersToTwip(10),
-        bottom: convertMillimetersToTwip(20),
-        left: convertMillimetersToTwip(30)
+      headers: {
+        default: new Header({
+          children: [this.docxGeneratorDataTemplate.pageNumbers()],
+        })
       },
       children: [
         this.docxGeneratorDataTemplate.titleMOIRO(),
@@ -86,9 +72,29 @@ export class DocumentCreatorRector {
           this.trainingProgram,
           this.department,
           this.certificationType
-        )
+        ),
+        this.docxGeneratorDataTemplate.noteATP(),
+        this.docxGeneratorDataTemplate.footerATPDean(),
+        this.docxGeneratorDataTemplate.footerATPDepartmentHead(this.department.name, this.department.departmentHeadName)
       ],
     });
-    return document;
+
+    return new Document({
+      creator: 'MOIRO',
+      title: 'Document of MOIRO',
+      styles: {
+        paragraphStyles: [ {
+          id: 'default',
+          name: 'My Standard style',
+          basedOn: 'Normal',
+          next: 'Normal',
+          quickFormat: true,
+          run: {
+            size: 28,
+          },
+        }],
+      },
+      sections: this.sections
+    });
   }
 }

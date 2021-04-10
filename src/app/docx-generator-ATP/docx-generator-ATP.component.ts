@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import { Packer } from 'docx';
-import { model, empty } from './cv-data-ATP';
 import {DocumentCreatorRector} from './cv-generator-ATP';
 import {TrainingProgramService} from '../services/training-program.service';
 import {TrainingProgram} from '../models/TrainingProgram';
@@ -270,14 +269,9 @@ export class DocxGeneratorATPComponent implements OnInit{
       this.isRector,
       this.department
     );
-    const docxTmp = documentCreator.create([
-      model,
-      empty
-    ]);
+    const docxTmp = documentCreator.create();
     Packer.toBlob(docxTmp).then(blob => {
       this.docx.push(blob);
-
-
     });
   }
 
