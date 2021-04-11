@@ -2,13 +2,23 @@
   <h4><strong>Раздел {{curriculumSectionNumber}}</strong></h4>
   <h5 *ngIf="trainingProgramCurriculumSectionSelect"><strong>{{trainingProgramCurriculumSectionSelect.name}}</strong></h5>
   <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal.show()"
-          mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Создать новое название раздела</button>
+          mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить название раздела</button>
   <ng-select [items]="trainingProgramCurriculumSections"
              (change)="updateTrainingProgramCurriculumSection()"
              bindValue=""
              bindLabel="name"
              [(ngModel)]="trainingProgramCurriculumSectionSelect">
   </ng-select>
+  <label for="maxVariableHours"><strong>Общее количество вариативных часов</strong></label>
+  <input id="maxVariableHours" type="number" class="md-textarea form-control" mdbInput style="width: 100px"
+         [(ngModel)]="trainingProgramCurriculumSectionSelect.maxVariableTopicHours"
+         (focusout)="updateTrainingProgramCurriculumSection()" min="0" max="20"
+         (change)= "trainingProgramCurriculumSectionSelect.maxVariableTopicHours < 0 ?
+          trainingProgramCurriculumSectionSelect.maxVariableTopicHours = 0 :
+          trainingProgramCurriculumSectionSelect.maxVariableTopicHours;
+           trainingProgramCurriculumSectionSelect.maxVariableTopicHours > 20 ?
+           trainingProgramCurriculumSectionSelect.maxVariableTopicHours = 0 :
+           trainingProgramCurriculumSectionSelect.maxVariableTopicHours;"><br>
   <div
     *ngIf="done"
     cdkDropList
@@ -26,14 +36,14 @@
         <mdb-checkbox (change)="updateSingleCurriculumTopicTrainingProgram(item)" [(ngModel)]="item.third" [default]="true">Вариативная</mdb-checkbox>
       </div><br>
       <div id="formOfEducation">
-        <label>Форма занятия</label>
-        <select (change)="updateSingleCurriculumTopicTrainingProgram(item)" [(ngModel)]="item.fifth" class="browser-default custom-select">
+        <label for="fifth">Форма занятия</label>
+        <select id="fifth" (change)="updateSingleCurriculumTopicTrainingProgram(item)" [(ngModel)]="item.fifth" class="browser-default custom-select">
           <option *ngFor="let el of occupationForms" [ngValue]="el.id">{{el.fullName}}</option>
         </select>
       </div><br>
       <div id="hours">
-        <label>Количество часов</label>
-        <input  (focusout)="updateSingleCurriculumTopicTrainingProgram(item)" min="0" max="10"
+        <label for="fourth">Количество часов</label>
+        <input id="fourth"  (focusout)="updateSingleCurriculumTopicTrainingProgram(item)" min="0" max="10"
                 [(ngModel)]="item.fourth" (change)= "item.fourth < 0 ? item.fourth = 0 : item.fourth;
          item.fourth > 10 ? item.fourth = 0 : item.fourth;" type="number" class="md-textarea form-control" mdbInput>
       </div><br>
@@ -71,8 +81,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" mdbBtn color="primary" class="relative waves-light"
-                (click)="basicModal.hide(); addCurriculumSection()"
-                mdbWavesEffect>Сохранить</button>
+                (click)="basicModal.hide(); addCurriculumSection()" mdbWavesEffect>Сохранить</button>
       </div>
     </div>
   </div>

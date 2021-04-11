@@ -367,12 +367,17 @@ export class DocxGeneratorDataTemplate {
           break: 1
         }),
         new TextRun({
-          text: 'и специалистов образования                                                      Е.А.Ротмирова',
+          text: 'и специалистов образования \tЕ.А.Ротмирова',
           size : this.size,
           break: 1
         }),
       ],
-
+      tabStops: [
+        {
+          type: TabStopType.LEFT,
+          position: 6000,
+        },
+      ]
     });
   }
 
@@ -386,12 +391,17 @@ export class DocxGeneratorDataTemplate {
           break: 1
         }),
         new TextRun({
-          text: department.substr(department.indexOf(' ') + 1),
+          text: department.substr(department.indexOf(' ') + 1) + '\t' + departmentHeadName,
           size : this.size,
           break: 1
         }),
       ],
-
+      tabStops: [
+        {
+          type: TabStopType.LEFT,
+          position: 6000,
+        },
+        ]
     });
   }
 

@@ -287,7 +287,7 @@ export class DocumentCreator {
           .map((nothing) => {
             let indx = 0;
             const arr: Paragraph[] = [];
-            arr.push(this.docxGeneratorDataTemplate.titleText('список используемой литературы'));
+            arr.push(this.docxGeneratorDataTemplate.titleText('список рекомендуемой литературы'));
             arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
             arr.push(this.docxGeneratorDataTemplate.someText('Основная', 720, true));
             this.trainingProgramMainLiteratures.forEach((object, i) => {

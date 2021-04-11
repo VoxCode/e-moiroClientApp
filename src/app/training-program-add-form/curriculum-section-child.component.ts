@@ -17,6 +17,7 @@ import {CurriculumTopicDepartmentService} from '../services/curriculum-topic-dep
 import {CurriculumTopicStudentCategory} from '../models/CurriculumTopicStudentCategory';
 import {CurriculumTopicDepartment} from '../models/СurriculumTopicDepartment';
 import {TrainingProgram} from '../models/TrainingProgram';
+import {CommonService} from '../common-service/common-service.component';
 
 @Component({
   selector: 'app-curriculum-section-child',
@@ -41,6 +42,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   @Input() id: number;
   @Input() curriculumSectionId: number;
   @Input() trainingProgramCurriculumSectionId: number;
+  @Input() maxVariableTopicHours: number;
   @Output() trainingProgramCurriculumSectionIdChange = new EventEmitter();
 
   occupationForms: OccupationForm[] = [];
@@ -59,12 +61,16 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
     private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private curriculumSectionService: CurriculumSectionService,
+    private commonService: CommonService,
     private occupationFormService: OccupationFormService,
     private curriculumTopicStudentCategoryService: CurriculumTopicStudentCategoryService,
     private curriculumTopicDepartmentService: CurriculumTopicDepartmentService
   ) { }
 
   ngOnInit(): void {
+    this.subscription = this.commonService.saveCurriculumSectionChild$.subscribe( () => {
+      this.saveCurriculumTopicTrainingProgram();
+    });
     this.loadOccupationForm();
   }
 
@@ -76,7 +82,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
 
   // tslint:disable-next-line:typedef
   drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
+    if (event.previousContainer === event.container && this.trainingProgramCurriculumSectionId) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       this.saveCurriculumTopicTrainingProgram();
     } else {
@@ -125,6 +131,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
                 trainingProgramId: this.id,
                 curriculumSectionId: tmp.id,
                 sectionNumber: this.curriculumSectionNumber,
+                maxVariableTopicHours: this.maxVariableTopicHours,
                 name: tmp.name
               });
             }
@@ -133,6 +140,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
           if (this.curriculumSectionId !== 0 && this.trainingProgramCurriculumSectionId !== 0) {
             this.trainingProgramCurriculumSectionSelect = this.trainingProgramCurriculumSections
               .find(a => a.curriculumSectionId === this.curriculumSectionId);
+            console.log(this.trainingProgramCurriculumSectionSelect);
             if (this.trainingProgramCurriculumSectionSelect){
               this.loadCurriculumTopicTrainingProgram();
             }
@@ -267,11 +275,12 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
 
   // tslint:disable-next-line:typedef
   crateTrainingProgramCurriculumSection(){
-    this.modal.show();
+    // this.modal.show();
     const model: TrainingProgramCurriculumSection = new TrainingProgramCurriculumSection();
     model.sectionNumber = this.curriculumSectionNumber;
-    model.curriculumSectionId = 0;
+    model.curriculumSectionId = 17;
     model.id = 0;
+    model.maxVariableTopicHours = this.maxVariableTopicHours;
     model.trainingProgramId = this.id;
     this.trainingProgramCurriculumSectionService.createValue(model)
       .subscribe((data: TrainingProgramCurriculumSection) => {

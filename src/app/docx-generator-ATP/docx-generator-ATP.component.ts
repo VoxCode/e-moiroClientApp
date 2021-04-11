@@ -271,6 +271,7 @@ export class DocxGeneratorATPComponent implements OnInit{
     );
     const docxTmp = documentCreator.create();
     Packer.toBlob(docxTmp).then(blob => {
+      this.docx = [];
       this.docx.push(blob);
     });
   }

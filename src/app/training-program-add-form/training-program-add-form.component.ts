@@ -79,11 +79,6 @@ export class TrainingProgramAddFormComponent implements OnInit{
     }
   }
 
-  // tslint:disable-next-line:typedef
-  noReturnPredicate() {
-    return false;
-  }
-
   // LOAD
 
   // tslint:disable-next-line:typedef
@@ -103,12 +98,10 @@ export class TrainingProgramAddFormComponent implements OnInit{
       .subscribe((data: TrainingProgramCurriculumSection[]) => {
         if (data !== undefined){
           this.trainingProgramCurriculumSectionList = data;
-          // tslint:disable-next-line:only-arrow-functions typedef
-          this.trainingProgramCurriculumSectionList.sort(function(a, b) {
-            return a.sectionNumber - b.sectionNumber;
-          });
+          this.trainingProgramCurriculumSectionList.sort((a, b) => a.sectionNumber - b.sectionNumber);
           this.trainingProgramCurriculumSectionList.forEach( object => {
-            this.addCurriculumSection(object.curriculumSectionId, object.id);
+            console.log(object.maxVariableTopicHours);
+            this.addCurriculumSection(object.curriculumSectionId, object.id, object.maxVariableTopicHours);
           });
           this.loadCurriculumTopicTrainingProgram();
         }
@@ -120,8 +113,7 @@ export class TrainingProgramAddFormComponent implements OnInit{
     this.curriculumTopicTrainingProgramService.getValue(this.id)
       .subscribe((data: CurriculumTopicTrainingProgram[]) => {
         if (data !== undefined && data !== null){
-          const curriculumTopicTrainingPrograms = data;
-          this.loadCurriculumTopic(curriculumTopicTrainingPrograms);
+          this.loadCurriculumTopic(data);
         }
       });
   }
@@ -163,13 +155,20 @@ export class TrainingProgramAddFormComponent implements OnInit{
   // ADD
 
   // tslint:disable-next-line:typedef
-  addCurriculumSection(curriculumSectionId: number, trainingProgramCurriculumSectionId: number) {
+  addCurriculumSection(curriculumSectionId: number, trainingProgramCurriculumSectionId: number, maxVariableTopicHours: number) {
     this.curriculumSectionContentList.push({
       done: [],
       curriculumSectionId,
-      trainingProgramCurriculumSectionId
+      trainingProgramCurriculumSectionId,
+      maxVariableTopicHours
     });
+  }
 
+  // SAVE FULL
+
+  // tslint:disable-next-line:typedef
+  save() {
+    this.commonService.saveCurriculumSectionChild$.next(1);
   }
 
   // DELETE

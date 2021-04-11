@@ -34,7 +34,7 @@
       <div class="col-sm-8">
         <div *ngIf="curriculumSectionContentList.length === 0">
           <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                  (click)="addCurriculumSection(0, 0)" mdbWavesEffect>
+                  (click)="addCurriculumSection(0, 0, 0)" mdbWavesEffect>
             <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел</button>
         </div>
         <div *ngFor="let item of curriculumSectionContentList; index as i ">
@@ -42,7 +42,8 @@
                                         [done]="item.done"
                                         [id]="id"
                                         [curriculumSectionId]="item.curriculumSectionId"
-                                        [(trainingProgramCurriculumSectionId)]="item.trainingProgramCurriculumSectionId">
+                                        [(trainingProgramCurriculumSectionId)]="item.trainingProgramCurriculumSectionId"
+                                        [maxVariableTopicHours]="item.maxVariableTopicHours">
           </app-curriculum-section-child>
           <button type="button" style="position: relative; margin-top: 20px;" mdbBtn color="danger" size="sm" class="relative waves-light"
                   (click)="deleteTrainingProgramCurriculumSection(i, item.trainingProgramCurriculumSectionId)" mdbWavesEffect>
@@ -51,7 +52,7 @@
 
           <button *ngIf="i === curriculumSectionContentList.length - 1"
                   style="position: relative; margin-top: 20px;" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                  (click)="addCurriculumSection(0, 0)" mdbWavesEffect>
+                  (click)="addCurriculumSection(0, 0, 0)" mdbWavesEffect>
             <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел
           </button>
         </div>
