@@ -22,6 +22,10 @@ import {StudentCategory} from '../models/StudentCategory';
 import {CertificationTypeService} from '../services/certification-type.service';
 import {CertificationType} from '../models/CertificationType';
 import {WordToSfdtService} from '../services/word-to-sfdt.service';
+import {FirstDocumentPart} from './first-document-part/first-document-part';
+import {DocxMergeService} from '../services/docx-merge.service';
+import {Base64ToBlob} from '../base64-to-blob/base64-to-blob';
+import {SecondDocumentPart} from './second-document-part/second-document-part';
 
 
 @Component({
@@ -38,7 +42,8 @@ import {WordToSfdtService} from '../services/word-to-sfdt.service';
     CurriculumTopicTrainingProgramService,
     StudentCategoryService,
     CertificationTypeService,
-    WordToSfdtService
+    WordToSfdtService,
+    DocxMergeService
   ]
 })
 
@@ -55,6 +60,7 @@ export class DocxGeneratorTPComponent implements OnInit{
   trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[];
   trainingProgramRegulations: TrainingProgramRegulation[];
   docx: any[] = [];
+  wordDocxType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
   constructor(
     private trainingProgramService: TrainingProgramService,
@@ -67,6 +73,7 @@ export class DocxGeneratorTPComponent implements OnInit{
     private studentCategoryService: StudentCategoryService,
     private certificationTypeService: CertificationTypeService,
     private htmlToDocxService: WordToSfdtService,
+    private docxMergeService: DocxMergeService,
     private route: ActivatedRoute
   ) { }
 
@@ -96,10 +103,7 @@ export class DocxGeneratorTPComponent implements OnInit{
       .subscribe((data: TrainingProgramCurriculumSection[]) => {
         if (data !== undefined){
           this.trainingProgramCurriculumSections = data;
-          // tslint:disable-next-line:only-arrow-functions typedef
-          this.trainingProgramCurriculumSections.sort(function(a, b) {
-            return a.sectionNumber - b.sectionNumber;
-          });
+          this.trainingProgramCurriculumSections.sort((a, b) => a.sectionNumber - b.sectionNumber);
           this.loadCurriculumTopicTrainingProgram();
         }
       });
@@ -112,10 +116,8 @@ export class DocxGeneratorTPComponent implements OnInit{
         .subscribe((data: CurriculumTopicTrainingProgram[]) => {
           if (data !== undefined){
             const curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = data;
-            // tslint:disable-next-line:only-arrow-functions typedef
-            curriculumTopicTrainingPrograms.sort(function(a, b) {
-              return a.serialNumber - b.serialNumber;
-            });
+            curriculumTopicTrainingPrograms
+              .sort((a, b) => a.serialNumber - b.serialNumber);
             this.curriculumTopicsList[index] = curriculumTopicTrainingPrograms;
             this.checkCurriculumTopicsList.push(index);
             if (this.checkCurriculumTopicsList.length === this.trainingProgramCurriculumSections.length) {
@@ -132,10 +134,7 @@ export class DocxGeneratorTPComponent implements OnInit{
       .subscribe((data: TrainingProgramFinalExamination[]) => {
         if (data !== undefined){
           this.trainingProgramFinalExaminations = data;
-          // tslint:disable-next-line:only-arrow-functions typedef
-          this.trainingProgramFinalExaminations.sort(function(a, b) {
-            return a.serialNumber - b.serialNumber;
-          });
+          this.trainingProgramFinalExaminations.sort((a, b) => a.serialNumber - b.serialNumber);
           this.loadTrainingProgramMainLiterature();
         }
       });
@@ -147,10 +146,8 @@ export class DocxGeneratorTPComponent implements OnInit{
       .subscribe((data: TrainingProgramMainLiterature[]) => {
         if (data !== undefined){
           this.trainingProgramMainLiteratures = data;
-          // tslint:disable-next-line:only-arrow-functions typedef
-          this.trainingProgramMainLiteratures.sort(function(a, b) {
-            return a.serialNumber - b.serialNumber;
-          });
+          this.trainingProgramMainLiteratures
+            .sort((a, b) => a.serialNumber - b.serialNumber);
           this.loadTrainingProgramAdditionalLiterature();
         }
       });
@@ -162,10 +159,8 @@ export class DocxGeneratorTPComponent implements OnInit{
       .subscribe((data: TrainingProgramAdditionalLiterature[]) => {
         if (data !== undefined){
           this.trainingProgramAdditionalLiteratures = data;
-          // tslint:disable-next-line:only-arrow-functions typedef
-          this.trainingProgramAdditionalLiteratures.sort(function(a, b) {
-            return a.serialNumber - b.serialNumber;
-          });
+          this.trainingProgramAdditionalLiteratures
+            .sort((a, b) => a.serialNumber - b.serialNumber);
           this.loadTrainingProgramRegulation();
         }
       });
@@ -177,10 +172,8 @@ export class DocxGeneratorTPComponent implements OnInit{
       .subscribe((data: TrainingProgramRegulation[]) => {
         if (data !== undefined){
           this.trainingProgramRegulations = data;
-          // tslint:disable-next-line:only-arrow-functions typedef
-          this.trainingProgramRegulations.sort(function(a, b) {
-            return a.serialNumber - b.serialNumber;
-          });
+          this.trainingProgramRegulations
+            .sort((a, b) => a.serialNumber - b.serialNumber);
           this.loadStudentCategory();
         }
       });
@@ -209,7 +202,12 @@ export class DocxGeneratorTPComponent implements OnInit{
   }
 
   public getDocument(): void {
-    const documentCreator = new DocumentCreator(
+    const firstDocumentPart = new FirstDocumentPart(
+      this.trainingProgram,
+      this.studentCategory
+    );
+
+    const secondDocumentPart = new SecondDocumentPart(
       this.curriculumTopicsList,
       this.trainingProgram,
       this.trainingProgramCurriculumSections,
@@ -217,17 +215,49 @@ export class DocxGeneratorTPComponent implements OnInit{
       this.trainingProgramMainLiteratures,
       this.trainingProgramAdditionalLiteratures,
       this.trainingProgramRegulations,
-      this.studentCategory,
-      this.certificationType
     );
 
-    const docxTmp = documentCreator.create([
-      model,
-      empty
-    ]);
+    const firstDocxTmp = firstDocumentPart.create();
+    const secondDocxTmp = secondDocumentPart.create([model, empty]);
+    Packer.toBlob(firstDocxTmp).then(blob => {
+      let blobArray: any[] = [];
+      const introductionBlob = new Base64ToBlob().generate(this.trainingProgram.introduction, this.wordDocxType, 512);
+      blobArray.push(introductionBlob);
+      blobArray.push(blob);
+      this.docxMergeService.merge(blobArray).subscribe((result) => {
+        const resultBlob = new Base64ToBlob().generate(result, this.wordDocxType, 512);
 
-    Packer.toBlob(docxTmp).then(blob => {
-      this.docx.push(blob);
+        Packer.toBlob(secondDocxTmp).then(blob2 => {
+          blobArray = [];
+          blobArray.push(blob2);
+          blobArray.push(resultBlob);
+          this.docxMergeService.merge(blobArray).subscribe((result2) => {
+            const resultBlob2 = new Base64ToBlob().generate(result2, this.wordDocxType, 512);
+            this.docx.push(resultBlob2);
+          });
+        });
+      });
     });
+
+    // const documentCreator = new DocumentCreator(
+    //   this.curriculumTopicsList,
+    //   this.trainingProgram,
+    //   this.trainingProgramCurriculumSections,
+    //   this.trainingProgramFinalExaminations,
+    //   this.trainingProgramMainLiteratures,
+    //   this.trainingProgramAdditionalLiteratures,
+    //   this.trainingProgramRegulations,
+    //   this.studentCategory,
+    //   this.certificationType
+    // );
+    //
+    // const docxTmp = documentCreator.create([
+    //   model,
+    //   empty
+    // ]);
+    //
+    // Packer.toBlob(docxTmp).then(blob => {
+    //   this.docx.push(blob);
+    // });
   }
 }

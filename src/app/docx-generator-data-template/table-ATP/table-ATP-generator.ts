@@ -94,8 +94,4 @@ export class TableATPGenerator {
       }
     });
   }
-
-
-
-
 }

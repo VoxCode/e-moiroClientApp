@@ -17,6 +17,7 @@ import {
 } from '@syncfusion/ej2-angular-documenteditor';
 import {DocumentEditorTranslateData} from '../document-editor-translate-data';
 import {WordToSfdtService} from '../../services/word-to-sfdt.service';
+import {Base64ToBlob} from '../../base64-to-blob/base64-to-blob';
 
 @Component({
   selector: 'app-document-editor-form',
@@ -72,7 +73,7 @@ export class DocumentEditorFormComponent implements OnChanges, AfterViewInit {
   onCreate(): any {
     if (this.content !== 'Empty') {
       const type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-      const blob = this.base64toBlob(this.content, type, 512);
+      const blob = new Base64ToBlob().generate(this.content, type, 512);
       this.loadFile(blob);
     }
   }
@@ -90,58 +91,5 @@ export class DocumentEditorFormComponent implements OnChanges, AfterViewInit {
       };
       fileReader.readAsDataURL(blob);
     });
-  }
-
-  base64toBlob(base64Data, contentType, sliceSize): any {
-
-    let byteCharacters;
-    let byteArray;
-    let byteNumbers;
-    let blobData;
-    let blob;
-
-    contentType = contentType || '';
-
-    byteCharacters = atob(base64Data);
-
-    blobData = sliceSize ? getBlobDataSliced() : getBlobDataAtOnce();
-
-    blob = new Blob(blobData, { type: contentType });
-
-    return blob;
-
-    function getBlobDataAtOnce(): any {
-      byteNumbers = new Array(byteCharacters.length);
-
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-
-      byteArray = new Uint8Array(byteNumbers);
-
-      return [byteArray];
-    }
-
-    function getBlobDataSliced(): any {
-
-      let slice;
-      const byteArrays = [];
-
-      for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-        slice = byteCharacters.slice(offset, offset + sliceSize);
-
-        byteNumbers = new Array(slice.length);
-
-        for (let i = 0; i < slice.length; i++) {
-          byteNumbers[i] = slice.charCodeAt(i);
-        }
-
-        byteArray = new Uint8Array(byteNumbers);
-
-        byteArrays.push(byteArray);
-      }
-
-      return byteArrays;
-    }
   }
 }
