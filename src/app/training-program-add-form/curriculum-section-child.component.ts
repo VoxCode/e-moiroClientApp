@@ -42,7 +42,6 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   @Input() id: number;
   @Input() curriculumSectionId: number;
   @Input() trainingProgramCurriculumSectionId: number;
-  @Input() maxVariableTopicHours: number;
   @Output() trainingProgramCurriculumSectionIdChange = new EventEmitter();
 
   occupationForms: OccupationForm[] = [];
@@ -74,14 +73,12 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
     this.loadOccupationForm();
   }
 
-  // tslint:disable-next-line:typedef
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscription.unsubscribe();
     this.subscription = null;
   }
 
-  // tslint:disable-next-line:typedef
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<string[]>): void {
     if (event.previousContainer === event.container && this.trainingProgramCurriculumSectionId) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       this.saveCurriculumTopicTrainingProgram();
@@ -95,9 +92,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   }
 
   // LOAD
-
-  // tslint:disable-next-line:typedef
-  loadOccupationForm() {
+  loadOccupationForm(): void {
     this.occupationFormService.getValues()
       .subscribe((data: OccupationForm[]) => {
         if (data.length !== 0){
@@ -107,8 +102,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadTrainingProgram() {
+  loadTrainingProgram(): void {
     this.trainingProgramService.getValue(this.id)
       .subscribe((data: TrainingProgram) => {
         if (data !== undefined){
@@ -118,29 +112,26 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadCurriculumSection() {
+  loadCurriculumSection(): void {
     this.curriculumSectionService.getSelectValues(this.trainingProgram.departmentId)
-      .subscribe((data: CurriculumSection[]) => {
-        if (data !== null) {
-          const model: TrainingProgramCurriculumSection[] = [];
-          data.forEach(tmp => {
-            if (this.curriculumSectionId === 1 || tmp.id !== 1) {
-              model.push({
+      .subscribe((curriculumSections: CurriculumSection[]) => {
+        if (curriculumSections !== null) {
+          const trainingProgramCurriculumSections: TrainingProgramCurriculumSection[] = [];
+          curriculumSections.forEach(curriculumSection => {
+            if (this.curriculumSectionId === 1 || curriculumSection.id !== 1) { // забыл зачем это!!!!
+              trainingProgramCurriculumSections.push({
                 id: 0,
                 trainingProgramId: this.id,
-                curriculumSectionId: tmp.id,
+                curriculumSectionId: curriculumSection.id,
                 sectionNumber: this.curriculumSectionNumber,
-                maxVariableTopicHours: this.maxVariableTopicHours,
-                name: tmp.name
+                name: curriculumSection.name
               });
             }
           });
-          this.trainingProgramCurriculumSections = model;
+          this.trainingProgramCurriculumSections = trainingProgramCurriculumSections;
           if (this.curriculumSectionId !== 0 && this.trainingProgramCurriculumSectionId !== 0) {
             this.trainingProgramCurriculumSectionSelect = this.trainingProgramCurriculumSections
               .find(a => a.curriculumSectionId === this.curriculumSectionId);
-            console.log(this.trainingProgramCurriculumSectionSelect);
             if (this.trainingProgramCurriculumSectionSelect){
               this.loadCurriculumTopicTrainingProgram();
             }
@@ -152,13 +143,13 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadCurriculumTopicTrainingProgram(){
+  loadCurriculumTopicTrainingProgram(): void {
     this.curriculumTopicTrainingProgramService.getValueList(this.trainingProgramCurriculumSectionId)
       .subscribe((data: CurriculumTopicTrainingProgram[]) => {
         if (data !== undefined){
           this.curriculumTopicTrainingPrograms = data;
-          this.curriculumTopicTrainingPrograms.sort((a, b) => a.serialNumber - b.serialNumber);
+          this.curriculumTopicTrainingPrograms
+            .sort((a, b) => a.serialNumber - b.serialNumber);
           this.curriculumTopicTrainingPrograms.forEach((object) => {
             this.done.push({
               first: object.curriculumTopicId,
@@ -177,9 +168,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   }
 
   // SAVE
-
-  // tslint:disable-next-line:typedef
-  saveCurriculumTopicTrainingProgram(){ // Сохранение списка тем учебных программ
+  saveCurriculumTopicTrainingProgram(): void { // Сохранение списка тем учебных программ
     let i = 0;
     if (this.trainingProgramCurriculumSectionSelect !== undefined){
       this.done.forEach((object, index) => {
@@ -215,9 +204,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   }
 
   // UPDATE
-
-  // tslint:disable-next-line:typedef
-  updateTrainingProgramCurriculumSection(){
+  updateTrainingProgramCurriculumSection(): void {
     this.trainingProgramCurriculumSectionSelect.id = this.trainingProgramCurriculumSectionId;
     this.trainingProgramCurriculumSectionService.updateValue(this.trainingProgramCurriculumSectionSelect)
       .subscribe(() => {
@@ -252,9 +239,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   }
 
   // DELETE
-
-  // tslint:disable-next-line:typedef
-  deleteCurriculumTopicTrainingProgram(id: any, indx: number){
+  deleteCurriculumTopicTrainingProgram(id: any, indx: number): void {
     this.done.splice(indx, 1);
     if (id !== 'undefined'){
       this.curriculumTopicTrainingProgramService.deleteValue(id).subscribe(() => {
@@ -280,7 +265,6 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
     model.sectionNumber = this.curriculumSectionNumber;
     model.curriculumSectionId = 17;
     model.id = 0;
-    model.maxVariableTopicHours = this.maxVariableTopicHours;
     model.trainingProgramId = this.id;
     this.trainingProgramCurriculumSectionService.createValue(model)
       .subscribe((data: TrainingProgramCurriculumSection) => {

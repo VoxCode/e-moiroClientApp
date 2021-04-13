@@ -9,16 +9,16 @@
              bindLabel="name"
              [(ngModel)]="trainingProgramCurriculumSectionSelect">
   </ng-select>
-  <label for="maxVariableHours"><strong>Общее количество вариативных часов</strong></label>
-  <input id="maxVariableHours" type="number" class="md-textarea form-control" mdbInput style="width: 100px"
-         [(ngModel)]="trainingProgramCurriculumSectionSelect.maxVariableTopicHours"
-         (focusout)="updateTrainingProgramCurriculumSection()" min="0" max="20"
-         (change)= "trainingProgramCurriculumSectionSelect.maxVariableTopicHours < 0 ?
-          trainingProgramCurriculumSectionSelect.maxVariableTopicHours = 0 :
-          trainingProgramCurriculumSectionSelect.maxVariableTopicHours;
-           trainingProgramCurriculumSectionSelect.maxVariableTopicHours > 20 ?
-           trainingProgramCurriculumSectionSelect.maxVariableTopicHours = 0 :
-           trainingProgramCurriculumSectionSelect.maxVariableTopicHours;"><br>
+<!--  <label for="maxVariableHours"><strong>Общее количество вариативных часов</strong></label>-->
+<!--  <input id="maxVariableHours" type="number" class="md-textarea form-control" mdbInput style="width: 100px"-->
+<!--         [(ngModel)]="trainingProgramCurriculumSectionSelect.maxVariableTopicHours"-->
+<!--         (focusout)="updateTrainingProgramCurriculumSection()" min="0" max="20"-->
+<!--         (change)= "trainingProgramCurriculumSectionSelect.maxVariableTopicHours < 0 ?-->
+<!--          trainingProgramCurriculumSectionSelect.maxVariableTopicHours = 0 :-->
+<!--          trainingProgramCurriculumSectionSelect.maxVariableTopicHours;-->
+<!--           trainingProgramCurriculumSectionSelect.maxVariableTopicHours > 20 ?-->
+<!--           trainingProgramCurriculumSectionSelect.maxVariableTopicHours = 0 :-->
+<!--           trainingProgramCurriculumSectionSelect.maxVariableTopicHours;"><br>-->
   <div
     *ngIf="done"
     cdkDropList

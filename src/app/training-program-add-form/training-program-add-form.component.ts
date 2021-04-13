@@ -62,7 +62,7 @@ export class TrainingProgramAddFormComponent implements OnInit{
 
   // tslint:disable-next-line:typedef
   ngOnInit() {
-    this.trainingProgram = new TrainingProgram();
+    this.trainingProgram = new TrainingProgram(); // Баг с удалением целого раздела, нужно сразу удалить все программы
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
   }
@@ -100,8 +100,7 @@ export class TrainingProgramAddFormComponent implements OnInit{
           this.trainingProgramCurriculumSectionList = data;
           this.trainingProgramCurriculumSectionList.sort((a, b) => a.sectionNumber - b.sectionNumber);
           this.trainingProgramCurriculumSectionList.forEach( object => {
-            console.log(object.maxVariableTopicHours);
-            this.addCurriculumSection(object.curriculumSectionId, object.id, object.maxVariableTopicHours);
+            this.addCurriculumSection(object.curriculumSectionId, object.id);
           });
           this.loadCurriculumTopicTrainingProgram();
         }
@@ -155,12 +154,11 @@ export class TrainingProgramAddFormComponent implements OnInit{
   // ADD
 
   // tslint:disable-next-line:typedef
-  addCurriculumSection(curriculumSectionId: number, trainingProgramCurriculumSectionId: number, maxVariableTopicHours: number) {
+  addCurriculumSection(curriculumSectionId: number, trainingProgramCurriculumSectionId: number) {
     this.curriculumSectionContentList.push({
       done: [],
       curriculumSectionId,
-      trainingProgramCurriculumSectionId,
-      maxVariableTopicHours
+      trainingProgramCurriculumSectionId
     });
   }
 
