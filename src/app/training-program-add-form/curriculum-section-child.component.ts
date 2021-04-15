@@ -132,6 +132,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
                 name: curriculumSection.name
               });
             }
+            this.occupationFormMaxVariableTopicHoursService.getValue(this.id); // тут остановился
           });
           this.trainingProgramCurriculumSections = trainingProgramCurriculumSections;
           if (this.curriculumSectionId !== 0 && this.trainingProgramCurriculumSectionId !== 0) {
@@ -226,7 +227,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   }
 
   // tslint:disable-next-line:typedef
-  updateSingleCurriculumTopicTrainingProgram(tmp: any){
+  updateSingleCurriculumTopicTrainingProgram(tmp: any) {
     const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
     curriculumTopicTrainingProgram.id = tmp.seventh;
     curriculumTopicTrainingProgram.isVariable = tmp.third;
@@ -264,7 +265,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   }
 
   // tslint:disable-next-line:typedef
-  crateTrainingProgramCurriculumSection(){
+  crateTrainingProgramCurriculumSection() {
     // this.modal.show();
     const model: TrainingProgramCurriculumSection = new TrainingProgramCurriculumSection();
     model.sectionNumber = this.curriculumSectionNumber;
@@ -282,7 +283,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   }
 
   // tslint:disable-next-line:typedef
-  crateCurriculumSection(){
+  crateCurriculumSection() {
     this.curriculumSectionService.createValue(this.curriculumSectionTmp)
       .subscribe((data: CurriculumSection) => {
         if (data !== undefined){
@@ -303,7 +304,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   }
 
   // tslint:disable-next-line:typedef
-  loadTrainingProgramCurriculumSectionAfter(){
+  loadTrainingProgramCurriculumSectionAfter() {
     this.curriculumSectionService.getSelectValues(this.trainingProgram.departmentId)
       .subscribe((data: CurriculumSection[]) => {
         if (data.length !== 0) {
@@ -332,7 +333,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   }
 
   // tslint:disable-next-line:typedef
-  crateCurriculumTopic(){
+  crateCurriculumTopic() {
     this.curriculumTopicService.createValue(this.curriculumTopicTmp)
       .subscribe((data: CurriculumTopic) => {
         if (data !== undefined){
@@ -352,7 +353,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   }
 
   // tslint:disable-next-line:typedef
-  crateCurriculumTopicStudentCategory(){
+  crateCurriculumTopicStudentCategory() {
     const tmp: CurriculumTopicStudentCategory = new CurriculumTopicStudentCategory();
     tmp.curriculumTopicId = this.curriculumTopicTmp.id;
     tmp.studentCategoryId = this.trainingProgram.studentCategoryId;
@@ -366,7 +367,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   }
 
   // tslint:disable-next-line:typedef
-  crateCurriculumTopicDepartment(){
+  crateCurriculumTopicDepartment() {
     const tmp: CurriculumTopicDepartment = new CurriculumTopicDepartment();
     tmp.curriculumTopicId = this.curriculumTopicTmp.id;
     tmp.departmentId = this.trainingProgram.departmentId;
