@@ -13,3 +13,32 @@
   z-index: 99999;
 }
 
+.logo {
+  width: 200px;
+  position: absolute;
+  top: 10px;
+  z-index: 99999
+}
+
+@media screen and (max-width: 767px) {
+  .logo {
+    width: 70px;
+  }
+
+  .log {
+    width: 200px;
+    right: 170px;
+  }
+  .reg {
+    width: 200px;
+    right: -8px;
+  }
+
+  a {
+    font-size: 8px;
+  }
+
+  button {
+    width: 170px;
+  }
+}

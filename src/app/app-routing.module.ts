@@ -87,6 +87,7 @@ const creatorRoutes: Routes = [
   { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
   { path: 'docxGeneratorATP/:id', component:  DocxGeneratorATPComponent },
   { path: 'richText', component:  RichTextEditorFormComponent },
+  { path: 'studentCategory', component: StudentCategoryComponent },
   { path: '**', redirectTo: 'trainingProgram'}
 ];
 

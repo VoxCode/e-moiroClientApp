@@ -30,16 +30,14 @@
     </div>
   </mdb-carousel-item>
 </mdb-carousel>
-<img src="assets/герб%20моиро%20(Синий).png" alt="thumbnail"
-     style="width: 200px; position: absolute; top: 10px; z-index: 99999">
+<img class="logo" src="assets/герб%20моиро%20(Синий).png" alt="thumbnail">
 <div class="log">
-  <button type="button" mdbBtn type="button" gradient="blue" rounded="true" data-toggle="modal" data-target="#basicExample"
-          (click)="login()" mdbWavesEffect>Войти в систему</button>
+  <button mdbBtn type="button" gradient="blue" rounded="true" data-toggle="modal" data-target="#basicExample"
+          (click)="login()" mdbWavesEffect><a>Войти в систему</a></button>
 </div>
 <div class="reg">
-  <button type="button" mdbBtn type="button" gradient="blue" rounded="true" data-toggle="modal" data-target="#basicExample"
-          (click)="register()" mdbWavesEffect>Зарегистрироваться
-  </button>
+  <button mdbBtn type="button" gradient="blue" rounded="true" data-toggle="modal" data-target="#basicExample"
+          (click)="register()" mdbWavesEffect><a>Зарегистрироваться</a></button>
 </div>
 
 <div mdbModal #successRegFrame="mdbModal" class="modal fade bottom" id="frameModalBottom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

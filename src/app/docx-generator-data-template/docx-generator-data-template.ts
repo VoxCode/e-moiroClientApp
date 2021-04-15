@@ -310,6 +310,11 @@ export class DocxGeneratorDataTemplate {
     if (isDistance){
       tmp = '(дистанционная)';
     }
+    else {
+      if (formOfEducation.toLowerCase() === 'очная') {
+        tmp = '(дневная)';
+      }
+    }
     return new Paragraph({
       children: [
         new TextRun({

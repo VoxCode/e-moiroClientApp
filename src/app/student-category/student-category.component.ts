@@ -3,6 +3,7 @@ import { StudentCategoryService } from '../services/student-category.service';
 import { StudentCategory } from '../models/StudentCategory';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {StudentCategoryEditComponent} from './student-category-edit.component';
+import {Globals} from '../globals';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class StudentCategoryComponent implements OnInit, AfterViewInit {
   modalRef: MDBModalRef;
 
   constructor(
+    public globals: Globals,
     private valueService: StudentCategoryService,
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService) { }

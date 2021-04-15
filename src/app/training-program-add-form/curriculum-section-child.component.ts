@@ -18,6 +18,8 @@ import {CurriculumTopicStudentCategory} from '../models/CurriculumTopicStudentCa
 import {CurriculumTopicDepartment} from '../models/СurriculumTopicDepartment';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {CommonService} from '../common-service/common-service.component';
+import {OccupationFormMaxVariableTopicHoursService} from '../services/occupation-form-max-variable-topic-hours.service';
+import {OccupationFormMaxVariableTopicHour} from '../models/OccupationFormMaxVariableTopicHour';
 
 @Component({
   selector: 'app-curriculum-section-child',
@@ -31,7 +33,8 @@ import {CommonService} from '../common-service/common-service.component';
     OccupationFormService,
     CurriculumSectionService,
     CurriculumTopicStudentCategoryService,
-    CurriculumTopicDepartmentService
+    CurriculumTopicDepartmentService,
+    OccupationFormMaxVariableTopicHoursService
   ]
 })
 
@@ -45,6 +48,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   @Output() trainingProgramCurriculumSectionIdChange = new EventEmitter();
 
   occupationForms: OccupationForm[] = [];
+  occupationFormMaxVariableTopicHours: OccupationFormMaxVariableTopicHour[] = [];
   curriculumSection: CurriculumSection = new CurriculumSection();
   trainingProgramCurriculumSections: TrainingProgramCurriculumSection[] = [];
   trainingProgramCurriculumSectionSelect: TrainingProgramCurriculumSection = new TrainingProgramCurriculumSection();
@@ -63,7 +67,8 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     private occupationFormService: OccupationFormService,
     private curriculumTopicStudentCategoryService: CurriculumTopicStudentCategoryService,
-    private curriculumTopicDepartmentService: CurriculumTopicDepartmentService
+    private curriculumTopicDepartmentService: CurriculumTopicDepartmentService,
+    private occupationFormMaxVariableTopicHoursService: OccupationFormMaxVariableTopicHoursService
   ) { }
 
   ngOnInit(): void {

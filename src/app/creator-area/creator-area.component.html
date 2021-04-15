@@ -9,8 +9,11 @@
 
     <!-- Links -->
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item" routerLinkActive="active" routerLink="/trainingProgram">
+      <li class="nav-item" routerLinkActive="active" [routerLink]="['/creator/trainingProgram']">
         <a class="nav-link waves-light" mdbWavesEffect>Программы учебных занятий</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" [routerLink]="['/creator/studentCategory']">
+        <a class="nav-link waves-light" mdbWavesEffect>Категория слушателей</a>
       </li>
     </ul>
 
