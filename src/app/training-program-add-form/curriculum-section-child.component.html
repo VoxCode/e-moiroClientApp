@@ -36,7 +36,7 @@
 
       <div id="curriculumTitle"><b>{{i+1}}. {{item.second}}</b></div><br>
       <div id="curriculumAnnotation">{{item.ninth}}</div><br>
-      <div id="isVariable" *ngIf="trainingProgram.isDistanceLearning === false">
+      <div id="isVariable" *ngIf="trainingProgram.isDistanceLearning === false && item.fifth">
         <mdb-checkbox (change)="updateSingleCurriculumTopicTrainingProgram(item)" [(ngModel)]="item.third" [default]="true">Вариативная</mdb-checkbox>
       </div><br>
       <div id="formOfEducation">

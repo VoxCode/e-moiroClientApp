@@ -182,20 +182,23 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:typedef
   save(el: any) {
     this.cancel();
-    this.value.id = el.first;
-    this.value.name = el.second;
-    this.value.numberOfHours = el.third;
-    this.value.isDistanceLearning = el.fourth;
-    this.value.isControlWork = el.fifth;
-    this.value.isTestWork = el.sixth;
-    this.value.controlWork = el.seventh;
-    this.value.departmentId = el.eight;
-    this.value.studentCategoryId = el.tenth;
-    this.value.certificationTypeId = el.twelfth;
-    this.value.formOfEducationId = el.thirteenth;
-    this.valueService.updateValue(this.value)
-      .subscribe();
-    this.cancel();
+    this.valueService.getValue(el.first).subscribe((data: TrainingProgram) => {
+      this.value.id = el.first;
+      this.value.name = el.second;
+      this.value.numberOfHours = el.third;
+      this.value.isDistanceLearning = el.fourth;
+      this.value.isControlWork = el.fifth;
+      this.value.isTestWork = el.sixth;
+      this.value.controlWork = el.seventh;
+      this.value.departmentId = el.eight;
+      this.value.studentCategoryId = el.tenth;
+      this.value.certificationTypeId = el.twelfth;
+      this.value.formOfEducationId = el.thirteenth;
+      this.value.introduction = data.introduction;
+      this.valueService.updateValue(this.value)
+        .subscribe();
+      this.cancel();
+    });
   }
   // tslint:disable-next-line:typedef
   editValue(p: TrainingProgram) {

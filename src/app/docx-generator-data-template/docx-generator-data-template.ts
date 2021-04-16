@@ -297,7 +297,7 @@ export class DocxGeneratorDataTemplate {
       alignment: AlignmentType.CENTER,
       children: [
         new TextRun({
-          text: 'учителей, ' + exactly,
+          text: 'учителей ' + exactly,
           size : this.size,
           bold : true,
         }),

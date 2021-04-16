@@ -13,8 +13,8 @@ export class OccupationFormMaxVariableTopicHoursService {
     return this.http.get(this.url);
   }
   // tslint:disable-next-line:typedef
-  getValue(trainingProgramId: number) {
-    return this.http.get(this.url + '/' + trainingProgramId);
+  getValue(trainingProgramId: number, curriculumTopicTrainingProgramId: number) {
+    return this.http.get(this.url + '/' + trainingProgramId + '/' + curriculumTopicTrainingProgramId);
   }
   // tslint:disable-next-line:typedef
   createValue(occupationForm: OccupationForm) {

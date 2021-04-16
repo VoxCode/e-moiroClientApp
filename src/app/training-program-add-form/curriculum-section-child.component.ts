@@ -132,7 +132,6 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
                 name: curriculumSection.name
               });
             }
-            this.occupationFormMaxVariableTopicHoursService.getValue(this.id); // тут остановился
           });
           this.trainingProgramCurriculumSections = trainingProgramCurriculumSections;
           if (this.curriculumSectionId !== 0 && this.trainingProgramCurriculumSectionId !== 0) {
@@ -157,6 +156,10 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
           this.curriculumTopicTrainingPrograms
             .sort((a, b) => a.serialNumber - b.serialNumber);
           this.curriculumTopicTrainingPrograms.forEach((object) => {
+            this.occupationFormMaxVariableTopicHoursService.getValue(this.id, object.id)
+              .subscribe((occupationFormMaxVariableTopicHours: OccupationFormMaxVariableTopicHour[]) => {
+
+              }); // тут остановился
             this.done.push({
               first: object.curriculumTopicId,
               second: object.topicTitle,
@@ -269,13 +272,13 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
     // this.modal.show();
     const model: TrainingProgramCurriculumSection = new TrainingProgramCurriculumSection();
     model.sectionNumber = this.curriculumSectionNumber;
-    model.curriculumSectionId = 17;
+    model.curriculumSectionId = 31;
     model.id = 0;
     model.trainingProgramId = this.id;
     this.trainingProgramCurriculumSectionService.createValue(model)
       .subscribe((data: TrainingProgramCurriculumSection) => {
         this.trainingProgramCurriculumSectionSelect = data;
-        this.trainingProgramCurriculumSectionSelect.name = 'Выбрать название раздела';
+        this.trainingProgramCurriculumSectionSelect.name = 'Выбрите раздел';
         this.trainingProgramCurriculumSectionId = data.id;
         this.trainingProgramCurriculumSectionIdChange.emit(data.id);
         console.log('Crate was successful');
