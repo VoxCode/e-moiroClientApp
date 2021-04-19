@@ -40,7 +40,7 @@
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
               <mdb-checkbox [disabled]="true" [(ngModel)]="el.seventh" [default]="true"></mdb-checkbox></td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-              <button type="button" mdbBtn color="success" size="sm" class="relative waves-light" (click)="addTeacherDepartment(el.first)"
+              <button *ngIf="el.seventh" type="button" mdbBtn color="success" size="sm" class="relative waves-light" (click)="addTeacherDepartment(el.first)"
                       mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
               <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
                       mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
@@ -74,16 +74,26 @@
         <h4 class="modal-title w-100" id="myModalLabel">Преподаватели</h4>
       </div>
       <div class="modal-body">
-        <label for="third">Фамилия</label>
-        <input id="third" type="text" [(ngModel)]="this.value.lastName" class="md-textarea form-control" mdbInput>
-        <label for="second">Имя</label>
-        <input id="second" type="text" [(ngModel)]="this.value.firstName" class="md-textarea form-control" mdbInput>
-        <label for="fourth">Отчество</label>
-        <input id="fourth" type="text" [(ngModel)]="this.value.patronymicName" class="md-textarea form-control" mdbInput>
-        <label for="fifth">Должность</label>
-        <input id="fifth" type="text" [(ngModel)]="this.value.position" class="md-textarea form-control" mdbInput>
-        <label for="sixth">Академическое звание</label>
-        <input id="sixth" type="text" [(ngModel)]="this.value.academicRank" class="md-textarea form-control" mdbInput>
+        <div class="md-form">
+          <label for="third">Фамилия</label>
+          <input id="third" type="text" [(ngModel)]="this.value.lastName" class="md-textarea form-control" mdbInput>
+        </div>
+        <div class="md-form">
+          <label for="second">Имя</label>
+          <input id="second" type="text" [(ngModel)]="this.value.firstName" class="md-textarea form-control" mdbInput>
+        </div>
+        <div class="md-form">
+          <label for="fourth">Отчество</label>
+          <input id="fourth" type="text" [(ngModel)]="this.value.patronymicName" class="md-textarea form-control" mdbInput>
+        </div>
+        <div class="md-form">
+          <label for="fifth">Должность</label>
+          <input id="fifth" type="text" [(ngModel)]="this.value.position" class="md-textarea form-control" mdbInput>
+        </div>
+        <div class="md-form">
+          <label for="sixth">Академическое звание</label>
+          <input id="sixth" type="text" [(ngModel)]="this.value.academicRank" class="md-textarea form-control" mdbInput>
+        </div>
         <br><br>
         <mdb-checkbox [(ngModel)]="this.value.isCathedral" [default]="true">Кафедрал</mdb-checkbox>
       </div>

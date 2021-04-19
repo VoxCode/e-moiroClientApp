@@ -20,6 +20,7 @@ export class TeacherEditComponent implements OnInit{
     seventh: string,
     handle: string
   };
+
   public saveButtonClicked: Subject<any> = new Subject<any>();
 
   public form: FormGroup = new FormGroup({
@@ -36,7 +37,6 @@ export class TeacherEditComponent implements OnInit{
   constructor(public modalRef: MDBModalRef) { }
 
   ngOnInit(): void {
-    console.log(this.editableRow);
     this.form.controls.id.patchValue(this.editableRow.id);
     this.form.controls.first.patchValue(this.editableRow.first);
     this.form.controls.second.patchValue(this.editableRow.second);

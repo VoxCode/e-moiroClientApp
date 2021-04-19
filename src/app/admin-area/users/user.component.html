@@ -19,9 +19,7 @@
           <thead class="sticky-top">
           <tr>
             <th *ngFor="let head of headElements; let i = index" [mdbTableSort]="elements"
-                [sortBy]="headElements[i]"
-                scope="col">{{head | titlecase}}
-              <mdb-icon fas icon="sort"></mdb-icon>
+                [sortBy]="headElements[i]" scope="col">{{head | titlecase}}<mdb-icon fas icon="sort"></mdb-icon>
             </th>
           </tr>
           </thead>
@@ -37,7 +35,8 @@
                       mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
               <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
                       *ngIf="el.second !== 'admin'" (click)="delete(el)"
-                      mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+                      mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon>
+              </button>
             </td>
           </tr>
           </tbody>

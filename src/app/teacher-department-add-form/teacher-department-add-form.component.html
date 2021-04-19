@@ -7,11 +7,28 @@
   </div>
   <div class="modal-body">
 
+    <div class="addButton">
+      <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+              (click)="addTeacherDepartment()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+    </div>
+    <br><br>
+
+    <div *ngFor="let el of teacherDepartments; let i = index" >
+      <select (change)="changeDepartment($event.target.value, el)" class="browser-default custom-select" label="Example label">
+        <option>Выберите категорию</option>
+        <option *ngFor="let p of departments" [selected]="p.id == el.departmentId" [value]="p.id">{{p.name}}</option>
+      </select>
+      <br>
+      <div class="delButton">
+        <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeDepartment(i, el.id)"
+                mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+      </div>
+      <br>
+    </div>
   </div>
   <div class="modal-footer">
     <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
-            (click)="save()">Сохранить
+            (click)="save()">Завершить
     </button>
   </div>
 </div>
-

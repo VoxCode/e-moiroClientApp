@@ -34,27 +34,22 @@ export class UserComponent implements OnInit, AfterViewInit {
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService) { }
 
-  // tslint:disable-next-line:typedef
-  @HostListener('input') oninput() {
+  @HostListener('input') oninput = () => {
     this.mdbTablePagination.searchText = this.searchText;
   }
 
-  // tslint:disable-next-line:typedef
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadValue();
   }
 
-  // tslint:disable-next-line:typedef use-lifecycle-interface
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
-
     this.mdbTablePagination.calculateFirstItemIndex();
     this.mdbTablePagination.calculateLastItemIndex();
     this.cdRef.detectChanges();
   }
 
-  // tslint:disable-next-line:typedef
-  searchItems() {
+  searchItems(): void {
     const prev = this.mdbTable.getDataSource();
 
     if (!this.searchText) {
@@ -76,8 +71,7 @@ export class UserComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // tslint:disable-next-line:typedef
-  loadValue() {
+  loadValue(): void {
     this.valueService.getValues()
       .subscribe((data: User[]) => {
         this.values = data;
@@ -96,49 +90,43 @@ export class UserComponent implements OnInit, AfterViewInit {
       });
   }
 
-  // tslint:disable-next-line:typedef
-  save(newEl: any, oldEl: any) {
+  save(newEl: any, oldEl: any): void {
     this.cancel();
     const roleChangeModel: RoleChangeModel = new RoleChangeModel(oldEl.second, oldEl.last, newEl.last);
-    console.log(roleChangeModel);
     this.authService.changeRole(roleChangeModel)
       .subscribe(() => {}, () => { location.reload(); alert('Ошибка изменения роли!'); });
-    this.cancel();
   }
-  // tslint:disable-next-line:typedef
-  editValue(p: User) {
+
+  editValue(p: User): void {
     this.value = p;
   }
-  // tslint:disable-next-line:typedef
-  cancel() {
+
+  cancel(): void {
     this.value = new User();
   }
-  // tslint:disable-next-line:typedef
-  delete(p: any) {
+
+  delete(p: any): void {
     this.valueService.deleteValue(p.third)
-      .subscribe(data => {
+      .subscribe(() => {
         this.removeRow(p);
       });
   }
-  // tslint:disable-next-line:typedef
-  add() {
+
+  add(): void {
     this.cancel();
   }
 
-  // tslint:disable-next-line:typedef
-  removeRow(el: any) {
+  removeRow(el: any): void {
     const elementIndex = this.elements.findIndex((elem: any) => el === elem);
     this.mdbTable.removeRow(elementIndex);
-    // tslint:disable-next-line:no-shadowed-variable
-    this.mdbTable.getDataSource().forEach((el: any, index: any) => {
-      el.id = (index + 1).toString();
+    this.mdbTable.getDataSource().forEach((value: any, index: any) => {
+      value.id = (index + 1).toString();
     });
     this.mdbTable.setDataSource(this.elements);
     this.cancel();
   }
 
-  // tslint:disable-next-line:typedef
-  editRow(el: any) {
+  editRow(el: any): void {
     const elementIndex = this.elements.findIndex((elem: any) => el === elem);
     const modalOptions = {
       backdrop: true,

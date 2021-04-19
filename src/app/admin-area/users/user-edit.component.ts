@@ -1,18 +1,28 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {MDBModalRef} from 'angular-bootstrap-md';
 import {RoleService} from '../../services/role.service';
 import {Role} from '../../models/Role';
+import {TeacherService} from '../../services/teacher.service';
+import {Teacher} from '../../models/Teacher';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-modal-edit',
   templateUrl: './user-edit.component.html',
   styleUrls: ['./user.component.scss'],
-  providers: [RoleService]
+  providers: [
+    RoleService,
+    TeacherService,
+    UserService
+  ]
 })
+
 export class UserEditComponent implements OnInit{
   public roles: Role[];
+  public teachers: Teacher[];
+  public teacherSelect: Teacher;
 
   public editableRow: { first: string, second: string, last: string, handle: string };
   public saveButtonClicked: Subject<any> = new Subject<any>();
@@ -25,8 +35,9 @@ export class UserEditComponent implements OnInit{
 
   constructor(
     public modalRef: MDBModalRef,
-    private roleService: RoleService) { }
-
+    private roleService: RoleService,
+    private teacherService: TeacherService,
+    private userService: UserService) { }
 
   ngOnInit(): void {
     this.loadRole();
@@ -35,28 +46,33 @@ export class UserEditComponent implements OnInit{
     this.form.controls.last.patchValue(this.editableRow.last);
   }
 
-  // tslint:disable-next-line:typedef
-  editRow() {
+  editRow(): void {
     this.editableRow = this.form.getRawValue();
     this.editableRow.last = this.roles.find(p => p.name === this.editableRow.last).name;
     this.saveButtonClicked.next(this.editableRow);
     this.modalRef.hide();
   }
 
-  // tslint:disable-next-line:typedef
-  get first() { return this.form.get('first'); }
+  get first(): AbstractControl { return this.form.get('first'); }
+  get second(): AbstractControl { return this.form.get('second'); }
+  get last(): AbstractControl { return this.form.get('last'); }
 
-  // tslint:disable-next-line:typedef
-  get second() { return this.form.get('second'); }
-
-  // tslint:disable-next-line:typedef
-  get last() { return this.form.get('last'); }
-
-  // tslint:disable-next-line:typedef
-  loadRole() {
+  loadRole(): void {
     this.roleService.getValues()
-      .subscribe((data: Role[]) => {
-        this.roles = data;
+      .subscribe((roles: Role[]) => {
+        this.roles = roles;
+        this.loadTeachers();
       });
+  }
+
+  loadTeachers(): void {
+    this.teacherService.getValues()
+      .subscribe((teachers: Teacher[]) => {
+        this.teachers = teachers;
+      });
+  }
+
+  updateUser(): void {
+    // this.userService.updateValue().subscribe();
   }
 }
