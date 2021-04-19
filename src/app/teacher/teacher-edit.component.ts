@@ -1,54 +1,63 @@
-import {Component} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {MDBModalRef} from 'angular-bootstrap-md';
-import {TeachingPositionService} from '../services/teaching-position.service';
-import {TeachingPosition} from '../models/TeachingPosition';
 
 @Component({
   selector: 'app-modal-edit',
   templateUrl: './teacher-edit.component.html',
-  styleUrls: ['./teacher.component.scss'],
-  providers: [TeachingPositionService]
+  styleUrls: ['./teacher.component.scss']
 })
-export class TeacherEditComponent {
-  teachingPositions: TeachingPosition[];
-  public editableRow: { id: string, first: string, second: string, third: string, fourth: string, last: string, handle: string };
+export class TeacherEditComponent implements OnInit{
+  public editableRow: {
+    id: string,
+    first: string,
+    second: string,
+    third: string,
+    fourth: string,
+    fifth: string,
+    sixth: string,
+    seventh: string,
+    handle: string
+  };
   public saveButtonClicked: Subject<any> = new Subject<any>();
 
   public form: FormGroup = new FormGroup({
     id: new FormControl({value: '', disabled: true}),
-    first: new FormControl({value: '', disabled: true}),
-    second: new FormControl(''),
-    third: new FormControl(''),
-    last: new FormControl('', Validators.required)
+    first: new FormControl('', Validators.required),
+    second: new FormControl('', Validators.required),
+    third: new FormControl('', Validators.required),
+    fourth: new FormControl('', Validators.required),
+    fifth: new FormControl('', Validators.required),
+    sixth: new FormControl('', Validators.required),
+    seventh: new FormControl('')
   });
 
-  constructor(public modalRef: MDBModalRef, private teachingPositionService: TeachingPositionService) { }
+  constructor(public modalRef: MDBModalRef) { }
 
-  // tslint:disable-next-line:typedef use-lifecycle-interface
-  ngOnInit() {
+  ngOnInit(): void {
+    console.log(this.editableRow);
     this.form.controls.id.patchValue(this.editableRow.id);
     this.form.controls.first.patchValue(this.editableRow.first);
     this.form.controls.second.patchValue(this.editableRow.second);
     this.form.controls.third.patchValue(this.editableRow.third);
-    this.form.controls.last.patchValue(this.editableRow.last);
+    this.form.controls.fourth.patchValue(this.editableRow.fourth);
+    this.form.controls.fifth.patchValue(this.editableRow.fifth);
+    this.form.controls.sixth.patchValue(this.editableRow.sixth);
+    this.form.controls.seventh.patchValue(this.editableRow.seventh);
   }
 
-  // tslint:disable-next-line:typedef
-  editRow() {
+  editRow(): void {
     this.editableRow = this.form.getRawValue();
-    this.editableRow.fourth = this.teachingPositions.find(p => p.id === +this.editableRow.second).name;
     this.saveButtonClicked.next(this.editableRow);
     this.modalRef.hide();
   }
 
-  // tslint:disable-next-line:typedef
-  get first() { return this.form.get('first'); }
-  // tslint:disable-next-line:typedef
-  get second() { return this.form.get('second'); }
-  // tslint:disable-next-line:typedef
-  get third() { return this.form.get('third'); }
-  // tslint:disable-next-line:typedef
-  get last() { return this.form.get('last'); }
+  get first(): AbstractControl { return this.form.get('first'); }
+  get second(): AbstractControl { return this.form.get('second'); }
+  get third(): AbstractControl { return this.form.get('third'); }
+  get fourth(): AbstractControl { return this.form.get('fourth'); }
+  get fifth(): AbstractControl { return this.form.get('fifth'); }
+  get sixth(): AbstractControl { return this.form.get('sixth'); }
+  get seventh(): AbstractControl { return this.form.get('seventh'); }
 }

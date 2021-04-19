@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
-import { TeachingPosition } from '../models/TeachingPosition';
 import { environment } from '../../environments/environment';
+import {TeacherDepartment} from '../models/TeacherDepartment';
 
 @Injectable()
-export class TeachingPositionService {
-  public url = environment.apiUrl + 'api/teachingPositions';
+export class TeacherDepartmentService {
+  public url = environment.apiUrl + 'api/teacherDepartments';
   constructor(private http: HttpClient) { }
 
   // tslint:disable-next-line:typedef
@@ -13,16 +13,16 @@ export class TeachingPositionService {
     return this.http.get(this.url);
   }
   // tslint:disable-next-line:typedef
-  getValue(id: number) {
-    return this.http.get(this.url + '/' + id);
+  getDepartmentsForCurrentTeacher(teacherId: number) {
+    return this.http.get(this.url + '/' + teacherId);
   }
   // tslint:disable-next-line:typedef
-  createValue(teachingPosition: TeachingPosition) {
-    return this.http.post(this.url, teachingPosition);
+  createValue(teacherDepartment: TeacherDepartment) {
+    return this.http.post(this.url, teacherDepartment);
   }
   // tslint:disable-next-line:typedef
-  updateValue(teachingPosition: TeachingPosition) {
-    return this.http.put(this.url, teachingPosition);
+  updateValue(teacherDepartment: TeacherDepartment) {
+    return this.http.put(this.url, teacherDepartment);
   }
   // tslint:disable-next-line:typedef
   deleteValue(id: number) {

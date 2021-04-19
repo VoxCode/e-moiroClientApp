@@ -1,8 +1,10 @@
 export class Teacher {
   constructor(
     public id?: number,
-    public name?: string,
-    public isCathedral?: boolean,
-    public teachingPositionId?: number,
-    public teachingPositionName?: string){ }
+    public firstName?: string,
+    public lastName?: string,
+    public patronymicName?: string,
+    public position?: string,
+    public academicRank?: string,
+    public isCathedral?: boolean){ }
 }

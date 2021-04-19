@@ -32,11 +32,16 @@
           <tr mdbTableCol *ngFor="let el of elements; let i = index">
             <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{el.id}}</th>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.first}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.third}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.second}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.fourth}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.fifth}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.sixth}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-              <mdb-checkbox [disabled]="true" [(ngModel)]="el.third" [default]="true"></mdb-checkbox></td>
-            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.last}}</td>
+              <mdb-checkbox [disabled]="true" [(ngModel)]="el.seventh" [default]="true"></mdb-checkbox></td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              <button type="button" mdbBtn color="success" size="sm" class="relative waves-light" (click)="addTeacherDepartment(el.first)"
+                      mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
               <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
                       mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
               <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)"
@@ -46,7 +51,7 @@
           </tbody>
           <tfoot class="grey lighten-5 w-100">
           <tr>
-            <td colspan="6">
+            <td colspan="9">
               <mdb-table-pagination [tableEl]="tableEl" paginationAlign="" [searchDataSource]="elements"></mdb-table-pagination>
             </td>
           </tr>
@@ -63,20 +68,28 @@
   <div class="modal-dialog modal-fluid" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()" (click)="cancel()">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide(); cancel()">
           <span aria-hidden="true">×</span>
         </button>
         <h4 class="modal-title w-100" id="myModalLabel">Преподаватели</h4>
       </div>
       <div class="modal-body">
-        <label>Имя</label>
-        <input type="text" [(ngModel)]="this.value.name" class="md-textarea form-control" mdbInput>
+        <label for="third">Фамилия</label>
+        <input id="third" type="text" [(ngModel)]="this.value.lastName" class="md-textarea form-control" mdbInput>
+        <label for="second">Имя</label>
+        <input id="second" type="text" [(ngModel)]="this.value.firstName" class="md-textarea form-control" mdbInput>
+        <label for="fourth">Отчество</label>
+        <input id="fourth" type="text" [(ngModel)]="this.value.patronymicName" class="md-textarea form-control" mdbInput>
+        <label for="fifth">Должность</label>
+        <input id="fifth" type="text" [(ngModel)]="this.value.position" class="md-textarea form-control" mdbInput>
+        <label for="sixth">Академическое звание</label>
+        <input id="sixth" type="text" [(ngModel)]="this.value.academicRank" class="md-textarea form-control" mdbInput>
         <br><br>
         <mdb-checkbox [(ngModel)]="this.value.isCathedral" [default]="true">Кафедрал</mdb-checkbox>
       </div>
       <div class="modal-footer">
-        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="crate()"
-                mdbWavesEffect>Сохранить</button>
+        <button type="button" mdbBtn color="primary" class="relative waves-light"
+                (click)="basicModal.hide(); crate()" mdbWavesEffect>Сохранить</button>
       </div>
     </div>
   </div>

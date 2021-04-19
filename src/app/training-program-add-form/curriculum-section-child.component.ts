@@ -156,10 +156,10 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
           this.curriculumTopicTrainingPrograms
             .sort((a, b) => a.serialNumber - b.serialNumber);
           this.curriculumTopicTrainingPrograms.forEach((object) => {
-            this.occupationFormMaxVariableTopicHoursService.getValue(this.id, object.id)
-              .subscribe((occupationFormMaxVariableTopicHours: OccupationFormMaxVariableTopicHour[]) => {
-
-              }); // тут остановился
+            // this.occupationFormMaxVariableTopicHoursService.getValue(this.id, object.id)
+            //   .subscribe((occupationFormMaxVariableTopicHours: OccupationFormMaxVariableTopicHour[]) => {
+            //
+            //   }); // тут остановился
             this.done.push({
               first: object.curriculumTopicId,
               second: object.topicTitle,
@@ -221,16 +221,14 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
       });
   }
 
-  // tslint:disable-next-line:typedef
-  updateCurriculumTopicTrainingProgram(tmp: CurriculumTopicTrainingProgram){
+  updateCurriculumTopicTrainingProgram(tmp: CurriculumTopicTrainingProgram): void {
     this.curriculumTopicTrainingProgramService.updateValue(tmp)
       .subscribe((data: CurriculumTopicTrainingProgram) => {
         console.log('Update was successful ' + data.serialNumber);
       });
   }
 
-  // tslint:disable-next-line:typedef
-  updateSingleCurriculumTopicTrainingProgram(tmp: any) {
+  updateSingleCurriculumTopicTrainingProgram(tmp: any): void {
     const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
     curriculumTopicTrainingProgram.id = tmp.seventh;
     curriculumTopicTrainingProgram.isVariable = tmp.third;
@@ -267,8 +265,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
     this.crateCurriculumSection();
   }
 
-  // tslint:disable-next-line:typedef
-  crateTrainingProgramCurriculumSection() {
+  crateTrainingProgramCurriculumSection(): void {
     // this.modal.show();
     const model: TrainingProgramCurriculumSection = new TrainingProgramCurriculumSection();
     model.sectionNumber = this.curriculumSectionNumber;
@@ -285,8 +282,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
       });
   }
 
-  // tslint:disable-next-line:typedef
-  crateCurriculumSection() {
+  crateCurriculumSection(): void {
     this.curriculumSectionService.createValue(this.curriculumSectionTmp)
       .subscribe((data: CurriculumSection) => {
         if (data !== undefined){
@@ -306,8 +302,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadTrainingProgramCurriculumSectionAfter() {
+  loadTrainingProgramCurriculumSectionAfter(): void {
     this.curriculumSectionService.getSelectValues(this.trainingProgram.departmentId)
       .subscribe((data: CurriculumSection[]) => {
         if (data.length !== 0) {
@@ -335,8 +330,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
     this.crateCurriculumTopic();
   }
 
-  // tslint:disable-next-line:typedef
-  crateCurriculumTopic() {
+  crateCurriculumTopic(): void {
     this.curriculumTopicService.createValue(this.curriculumTopicTmp)
       .subscribe((data: CurriculumTopic) => {
         if (data !== undefined){
@@ -355,8 +349,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
       });
   }
 
-  // tslint:disable-next-line:typedef
-  crateCurriculumTopicStudentCategory() {
+  crateCurriculumTopicStudentCategory(): void {
     const tmp: CurriculumTopicStudentCategory = new CurriculumTopicStudentCategory();
     tmp.curriculumTopicId = this.curriculumTopicTmp.id;
     tmp.studentCategoryId = this.trainingProgram.studentCategoryId;
@@ -369,8 +362,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
       });
   }
 
-  // tslint:disable-next-line:typedef
-  crateCurriculumTopicDepartment() {
+  crateCurriculumTopicDepartment(): void {
     const tmp: CurriculumTopicDepartment = new CurriculumTopicDepartment();
     tmp.curriculumTopicId = this.curriculumTopicTmp.id;
     tmp.departmentId = this.trainingProgram.departmentId;

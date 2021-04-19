@@ -1,9 +1,9 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import { TeacherService } from '../services/teacher.service';
 import { Teacher } from '../models/Teacher';
-import {TeachingPositionService} from '../services/teaching-position.service';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {TeacherEditComponent} from './teacher-edit.component';
+import {TeacherDepartmentAddFormComponent} from '../teacher-department-add-form/teacher-department-add-form.component';
 
 @Component({
   selector: 'app-teacher',
@@ -20,7 +20,7 @@ export class TeacherComponent implements OnInit, AfterViewInit {
   @ViewChild('row', { static: true }) row: ElementRef;
 
   elements: any = [];
-  headElements = ['Номер', 'id', 'Должность', 'Кафедрал', 'Имя', 'Команда'];
+  headElements = ['Номер', 'id', 'Фамилия', 'Имя', 'Отчество', 'Должность', 'Академическое звание', 'Кафедрал', 'Команда'];
   searchText = '';
   previous: string;
   modalRef: MDBModalRef;
@@ -30,18 +30,15 @@ export class TeacherComponent implements OnInit, AfterViewInit {
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService) { }
 
-  // tslint:disable-next-line:typedef
-  @HostListener('input') oninput() {
+  @HostListener('input') oninput = () => {
     this.mdbTablePagination.searchText = this.searchText;
   }
 
-  // tslint:disable-next-line:typedef
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadValue();
   }
 
-  // tslint:disable-next-line:typedef use-lifecycle-interface
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
 
     this.mdbTablePagination.calculateFirstItemIndex();
@@ -49,8 +46,7 @@ export class TeacherComponent implements OnInit, AfterViewInit {
     this.cdRef.detectChanges();
   }
 
-  // tslint:disable-next-line:typedef
-  searchItems() {
+  searchItems(): void {
     const prev = this.mdbTable.getDataSource();
 
     if (!this.searchText) {
@@ -72,24 +68,23 @@ export class TeacherComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // tslint:disable-next-line:typedef
-  loadValue() {
+  loadValue(): void {
     this.valueService.getValues()
       .subscribe((data: Teacher[]) => {
         this.values = data;
-        // tslint:disable-next-line:only-arrow-functions typedef
-        this.values.sort(function(a, b) {
-          return a.id - b.id;
-        });
-        for (let i = 1; i <= this.values.length; i++) {
+        this.values.sort((a, b) => a.id - b.id);
+        this.values.forEach((value, index) => {
           this.elements.push({
-            id: i.toString(),
-            first: this.values[i - 1].id,
-            second: this.values[i - 1].teachingPositionId,
-            third: this.values[i - 1].isCathedral,
-            fourth: this.values[i - 1].teachingPositionName,
-            last: this.values[i - 1].name});
-        }
+            id: (index + 1).toString(),
+            first: value.id,
+            second: value.firstName,
+            third: value.lastName,
+            fourth: value.patronymicName,
+            fifth: value.position,
+            sixth: value.academicRank,
+            seventh: value.isCathedral
+          });
+        });
         this.mdbTable.setDataSource(this.elements);
         this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
         this.elements = this.mdbTable.getDataSource();
@@ -97,8 +92,7 @@ export class TeacherComponent implements OnInit, AfterViewInit {
       });
   }
 
-  // tslint:disable-next-line:typedef
-  crate(){
+  crate(): void {
     this.valueService.createValue(this.value)
       .subscribe((data: Teacher) => {
         this.value = data;
@@ -106,66 +100,69 @@ export class TeacherComponent implements OnInit, AfterViewInit {
         this.mdbTable.addRow({
           id: index.toString(),
           first: this.value.id,
-          second: this.value.teachingPositionId,
-          third: this.value.isCathedral,
-          fourth: this.value.teachingPositionName,
-          last: this.value.name
+          second: this.value.firstName,
+          third: this.value.lastName,
+          fourth: this.value.patronymicName,
+          fifth: this.value.position,
+          sixth: this.value.academicRank,
+          seventh: this.value.isCathedral
         });
         this.mdbTable.setDataSource(this.elements);
         this.cancel();
       });
   }
 
-  // tslint:disable-next-line:typedef
-  save(el: any) {
-    this.cancel();
+  save(el: any): void {
     this.value.id = el.first;
-    this.value.teachingPositionId = el.second;
-    this.value.isCathedral = el.third;
-    this.value.name = el.last;
+    this.value.firstName = el.second;
+    this.value.lastName = el.third;
+    this.value.patronymicName = el.fourth;
+    this.value.position = el.fifth;
+    this.value.academicRank = el.sixth;
+    this.value.isCathedral = el.seventh;
     this.valueService.updateValue(this.value)
       .subscribe();
     this.cancel();
   }
-  // tslint:disable-next-line:typedef
-  editValue(p: Teacher) {
+
+  editValue(p: Teacher): void {
     this.value = p;
   }
-  // tslint:disable-next-line:typedef
-  cancel() {
+
+  cancel(): void {
     this.value = new Teacher();
   }
-  // tslint:disable-next-line:typedef
-  delete(p: any) {
-    this.value.id = p.first;
-    this.value.teachingPositionId = p.second;
-    this.value.isCathedral = p.third;
-    this.value.name = p.last;
+
+  delete(el: any): void {
+    this.value.id = el.first;
+    this.value.firstName = el.second;
+    this.value.lastName = el.third;
+    this.value.patronymicName = el.fourth;
+    this.value.position = el.fifth;
+    this.value.academicRank = el.sixth;
+    this.value.isCathedral = el.seventh;
     this.valueService.deleteValue(this.value.id)
-      .subscribe(data => {
-        this.removeRow(p);
+      .subscribe(() => {
+        this.removeRow(el);
       });
   }
-  // tslint:disable-next-line:typedef
-  add() {
+
+  add(): void {
     this.cancel();
   }
 
-  // tslint:disable-next-line:typedef
-  removeRow(el: any) {
+  removeRow(el: any): void {
     const elementIndex = this.elements.findIndex((elem: any) => el === elem);
     this.mdbTable.removeRow(elementIndex);
-    // tslint:disable-next-line:no-shadowed-variable
-    this.mdbTable.getDataSource().forEach((el: any, index: any) => {
-      el.id = (index + 1).toString();
+    this.mdbTable.getDataSource().forEach((value, index) => {
+      value.id = (index + 1).toString();
     });
     this.mdbTable.setDataSource(this.elements);
     this.cancel();
   }
 
-  // tslint:disable-next-line:typedef
-  editRow(el: any) {
-    const elementIndex = this.elements.findIndex((elem: any) => el === elem);
+  editRow(el: any): void {
+    const elementIndex = this.elements.findIndex(elem => el === elem);
     const modalOptions = {
       backdrop: true,
       keyboard: true,
@@ -186,6 +183,21 @@ export class TeacherComponent implements OnInit, AfterViewInit {
     });
     this.mdbTable.setDataSource(this.elements);
   }
+
+  addTeacherDepartment(teacherId: number): void {
+    const modalOptions = {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+      show: false,
+      ignoreBackdropClick: true,
+      class: 'modal-fluid',
+      containerClass: '',
+      animated: true,
+      data: {
+        editableRow: {id: teacherId}
+      }
+    };
+    this.modalRef = this.modalService.show(TeacherDepartmentAddFormComponent, modalOptions);
+  }
 }
-
-

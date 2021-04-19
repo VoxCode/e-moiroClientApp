@@ -8,15 +8,38 @@
   <div class="modal-body">
     <form [formGroup]="form">
       <div class="md-form">
-        <p>Содержимое</p>
-        <textarea id="last" type="text" class="form-control" formControlName="last" mdbInput mdbValidate
-                  [validateSuccess]="false"></textarea>
-
-        <mdb-error *ngIf="last.invalid && (last.dirty || last.touched)">Input is required</mdb-error>
+        <label for="third">Фамилия</label>
+        <input id="third" type="text" class="form-control" formControlName="third" mdbInput mdbValidate
+               [validateSuccess]="false">
+        <mdb-error *ngIf="third.invalid && (third.dirty || third.touched)">Input is required</mdb-error>
+      </div>
+      <div class="md-form">
+        <label for="second">Имя</label>
+        <input id="second" type="text" class="form-control" formControlName="second" mdbInput mdbValidate
+                  [validateSuccess]="false">
+        <mdb-error *ngIf="second.invalid && (second.dirty || second.touched)">Input is required</mdb-error>
+      </div>
+      <div class="md-form">
+        <label for="fourth">Отчество</label>
+        <input id="fourth" type="text" class="form-control" formControlName="fourth" mdbInput mdbValidate
+               [validateSuccess]="false">
+        <mdb-error *ngIf="fourth.invalid && (fourth.dirty || fourth.touched)">Input is required</mdb-error>
+      </div>
+      <div class="md-form">
+        <label for="fifth">Должность</label>
+        <input id="fifth" type="text" class="form-control" formControlName="fifth" mdbInput mdbValidate
+               [validateSuccess]="false">
+        <mdb-error *ngIf="fifth.invalid && (fifth.dirty || fifth.touched)">Input is required</mdb-error>
+      </div>
+      <div class="md-form">
+        <label for="sixth">Академическое звание</label>
+        <input id="sixth" type="text" class="form-control" formControlName="sixth" mdbInput mdbValidate
+               [validateSuccess]="false">
+        <mdb-error *ngIf="sixth.invalid && (sixth.dirty || sixth.touched)">Input is required</mdb-error>
       </div>
       <br><br>
       <div>
-        <mdb-checkbox [default]="true" formControlName="third">Кафедрал</mdb-checkbox>
+        <mdb-checkbox [default]="true" formControlName="seventh">Кафедрал</mdb-checkbox>
       </div>
 
     </form>

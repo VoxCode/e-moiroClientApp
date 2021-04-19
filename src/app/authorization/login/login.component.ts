@@ -31,7 +31,6 @@ export class LoginComponent{
       const role = this.authService.getRole();
       const redirectPath = this.authService.getRedirectPath(role);
       this.router.navigate([redirectPath]);
-
     }, () => {
       this.modal.show();
     });
