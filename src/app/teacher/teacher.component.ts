@@ -4,6 +4,7 @@ import { Teacher } from '../models/Teacher';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {TeacherEditComponent} from './teacher-edit.component';
 import {TeacherDepartmentAddFormComponent} from '../teacher-department-add-form/teacher-department-add-form.component';
+import {Globals} from '../globals';
 
 @Component({
   selector: 'app-teacher',
@@ -11,6 +12,7 @@ import {TeacherDepartmentAddFormComponent} from '../teacher-department-add-form/
   styleUrls: ['./teacher.component.scss'],
   providers: [TeacherService]
 })
+
 export class TeacherComponent implements OnInit, AfterViewInit {
   value: Teacher = new Teacher();
   values: Teacher[];
@@ -20,12 +22,14 @@ export class TeacherComponent implements OnInit, AfterViewInit {
   @ViewChild('row', { static: true }) row: ElementRef;
 
   elements: any = [];
-  headElements = ['Номер', 'id', 'Фамилия', 'Имя', 'Отчество', 'Должность', 'Академическое звание', 'Кафедрал', 'Команда'];
+  headElements = ['Номер', 'id', 'Фамилия', 'Имя', 'Отчество',
+    'Должность', 'Академическое звание', 'Кафедрал', 'Команда'];
   searchText = '';
   previous: string;
   modalRef: MDBModalRef;
 
   constructor(
+    public globals: Globals,
     private valueService: TeacherService,
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService) { }
@@ -40,7 +44,6 @@ export class TeacherComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
-
     this.mdbTablePagination.calculateFirstItemIndex();
     this.mdbTablePagination.calculateLastItemIndex();
     this.cdRef.detectChanges();

@@ -77,7 +77,7 @@
   <div class="modal-dialog modal-fluid" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()" (click)="cancel()">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide(); cancel()">
           <span aria-hidden="true">×</span>
         </button>
         <h4 class="modal-title w-100" id="myModalLabel">Учебная программа</h4>
@@ -121,7 +121,7 @@
         <br><br>
       </div>
       <div class="modal-footer">
-        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="crate()"
+        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide(); crate()"
                 mdbWavesEffect>Сохранить</button>
       </div>
     </div>

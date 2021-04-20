@@ -27,6 +27,7 @@ import {TeacherDepartment} from '../models/TeacherDepartment';
     FormOfEducationService
   ]
 })
+
 export class TrainingProgramComponent implements OnInit, AfterViewInit {
   value: TrainingProgram = new TrainingProgram();
   values: TrainingProgram[];
@@ -234,8 +235,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     this.value.studentCategoryId = p.tenth;
     this.value.certificationTypeId = p.twelfth;
     this.value.formOfEducationId = p.thirteenth;
-    this.valueService.deleteValue(this.value.id)
-      .subscribe(data => {
+    this.valueService.deleteValue(this.value.id).subscribe(() => {
         this.removeRow(p);
       });
   }

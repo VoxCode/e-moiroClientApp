@@ -18,7 +18,7 @@ export class DepartmentService {
   }
   // tslint:disable-next-line:typedef
   getDepartmentsForCurrentUser(userName: string, key: number) {
-    return this.http.get(this.url + '/' + userName + '/' + 1);
+    return this.http.get(this.url + '/' + userName + '/' + key);
   }
   // tslint:disable-next-line:typedef
   createValue(department: Department) {
