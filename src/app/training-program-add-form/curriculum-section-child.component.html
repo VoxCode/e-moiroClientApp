@@ -3,7 +3,7 @@
   <h5 *ngIf="trainingProgramCurriculumSectionSelect"><strong>{{trainingProgramCurriculumSectionSelect.name}}</strong></h5>
   <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="basicModal.show()"
           mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить название раздела</button>
-  <ng-select [items]="trainingProgramCurriculumSections"
+  <ng-select [items]="trainingProgramCurriculumSections" [clearable]="false"
              (change)="updateTrainingProgramCurriculumSection()"
              bindValue=""
              bindLabel="name"

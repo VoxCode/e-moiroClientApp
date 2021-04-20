@@ -21,8 +21,8 @@ export class UserService {
     return this.http.post(this.url, user);
   }
   // tslint:disable-next-line:typedef
-  updateValue(user: User) {
-    return this.http.put(this.url, user);
+  updateValue(userId: string, teacherId: number) {
+    return this.http.get(this.url + '/' + userId + '/' + teacherId);
   }
   // tslint:disable-next-line:typedef
   deleteValue(id: string) {

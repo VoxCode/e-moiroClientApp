@@ -13,7 +13,7 @@ import {FormOfEducation} from '../models/FormOfEducation';
 import {FormOfEducationService} from '../services/form-of-education.service';
 import {AuthService} from '../services/security/auth.service';
 import {Globals} from '../globals';
-
+import {TeacherDepartment} from '../models/TeacherDepartment';
 
 @Component({
   selector: 'app-training-program',
@@ -61,13 +61,11 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService) { }
 
-  // tslint:disable-next-line:typedef
-  @HostListener('input') oninput() {
+  @HostListener('input') oninput = () => {
     this.mdbTablePagination.searchText = this.searchText;
   }
 
-  // tslint:disable-next-line:typedef
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadValue();
     this.loadDepartment();
     this.loadStudentCategory();
@@ -75,17 +73,14 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     this.loadFormOfEducation();
   }
 
-  // tslint:disable-next-line:typedef use-lifecycle-interface
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
-
     this.mdbTablePagination.calculateFirstItemIndex();
     this.mdbTablePagination.calculateLastItemIndex();
     this.cdRef.detectChanges();
   }
 
-  // tslint:disable-next-line:typedef
-  searchItems() {
+  searchItems(): void {
     const prev = this.mdbTable.getDataSource();
 
     if (!this.searchText) {
@@ -100,50 +95,65 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
 
     this.mdbTablePagination.calculateFirstItemIndex();
     this.mdbTablePagination.calculateLastItemIndex();
-
     this.mdbTable.searchDataObservable(this.searchText).subscribe(() => {
       this.mdbTablePagination.calculateFirstItemIndex();
       this.mdbTablePagination.calculateLastItemIndex();
     });
   }
 
-  // tslint:disable-next-line:typedef
-  loadValue() {
+  loadValue(): void {
     this.valueService.getValues()
       .subscribe((data: TrainingProgram[]) => {
         this.values = data;
-        // tslint:disable-next-line:only-arrow-functions typedef
-        this.values.sort(function(a, b) {
-          return a.id - b.id;
-        });
-        for (let i = 1; i <= this.values.length; i++) {
-          this.elements.push({
-            id: i.toString(),
-            first: this.values[i - 1].id,
-            second: this.values[i - 1].name,
-            third: this.values[i - 1].numberOfHours,
-            fourth: this.values[i - 1].isDistanceLearning,
-            fifth: this.values[i - 1].isControlWork,
-            sixth: this.values[i - 1].isTestWork,
-            seventh: this.values[i - 1].controlWork,
-            eight: this.values[i - 1].departmentId,
-            ninth: this.values[i - 1].departmentName,
-            tenth: this.values[i - 1].studentCategoryId,
-            eleventh: this.values[i - 1].studentCategoryName,
-            twelfth: this.values[i - 1].certificationTypeId,
-            thirteenth: this.values[i - 1].formOfEducationId,
-            fourteenth: this.values[i - 1].formOfEducationName,
-            last: this.values[i - 1].certificationTypeName});
+        this.values.sort((a, b) => a.id - b.id);
+        if (this.globals.role !== 'admin') {
+          this.loadDepartmentsForCurrentUser();
         }
-        this.mdbTable.setDataSource(this.elements);
-        this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
-        this.elements = this.mdbTable.getDataSource();
-        this.previous = this.mdbTable.getDataSource();
+        else {
+          this.pushData();
+        }
       });
   }
 
-  // tslint:disable-next-line:typedef
-  crate(){
+  pushData(): void {
+    for (let i = 1; i <= this.values.length; i++) {
+      this.elements.push({
+        id: i.toString(),
+        first: this.values[i - 1].id,
+        second: this.values[i - 1].name,
+        third: this.values[i - 1].numberOfHours,
+        fourth: this.values[i - 1].isDistanceLearning,
+        fifth: this.values[i - 1].isControlWork,
+        sixth: this.values[i - 1].isTestWork,
+        seventh: this.values[i - 1].controlWork,
+        eight: this.values[i - 1].departmentId,
+        ninth: this.values[i - 1].departmentName,
+        tenth: this.values[i - 1].studentCategoryId,
+        eleventh: this.values[i - 1].studentCategoryName,
+        twelfth: this.values[i - 1].certificationTypeId,
+        thirteenth: this.values[i - 1].formOfEducationId,
+        fourteenth: this.values[i - 1].formOfEducationName,
+        last: this.values[i - 1].certificationTypeName});
+    }
+    this.mdbTable.setDataSource(this.elements);
+    this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
+    this.elements = this.mdbTable.getDataSource();
+    this.previous = this.mdbTable.getDataSource();
+  }
+
+  loadDepartmentsForCurrentUser(): void {
+    this.departmentService.getDepartmentsForCurrentUser(this.globals.name, 1)
+      .subscribe((teacherDepartments: TeacherDepartment[]) => {
+        let tmp: TrainingProgram[] = [];
+        teacherDepartments.forEach((teacherDepartment) => {
+          tmp = [...tmp, ...this.values.filter(a => a.departmentId === teacherDepartment.departmentId)];
+        });
+        this.values = tmp;
+        this.pushData();
+      });
+  }
+
+  crate(): void {
     this.value.departmentId = this.department.id;
     this.value.studentCategoryId = this.studentCategory.id;
     this.value.certificationTypeId = this.certificationType.id;
@@ -152,10 +162,14 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
       .subscribe((data: TrainingProgram) => {
         this.value = data;
         const index = this.elements.length + 1;
-        this.value.departmentName = this.departments.find(p => p.id === +this.value.departmentId).name;
-        this.value.studentCategoryName = this.studentCategories.find(p => p.id === +this.value.studentCategoryId).name;
-        this.value.certificationTypeName = this.certificationTypes.find(p => p.id === +this.value.certificationTypeId).name;
-        this.value.formOfEducationName = this.formOfEducations.find(p => p.id === +this.value.formOfEducationId).name;
+        this.value.departmentName = this.departments
+          .find(p => p.id === +this.value.departmentId).name;
+        this.value.studentCategoryName = this.studentCategories
+          .find(p => p.id === +this.value.studentCategoryId).name;
+        this.value.certificationTypeName = this.certificationTypes
+          .find(p => p.id === +this.value.certificationTypeId).name;
+        this.value.formOfEducationName = this.formOfEducations
+          .find(p => p.id === +this.value.formOfEducationId).name;
         this.mdbTable.addRow({
           id: index.toString(),
           first: this.value.id,
@@ -179,8 +193,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
       });
   }
 
-  // tslint:disable-next-line:typedef
-  save(el: any) {
+  save(el: any): void {
     this.cancel();
     this.valueService.getValue(el.first).subscribe((data: TrainingProgram) => {
       this.value.id = el.first;
@@ -200,16 +213,16 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
       this.cancel();
     });
   }
-  // tslint:disable-next-line:typedef
-  editValue(p: TrainingProgram) {
+
+  editValue(p: TrainingProgram): void {
     this.value = p;
   }
-  // tslint:disable-next-line:typedef
-  cancel() {
+
+  cancel(): void {
     this.value = new TrainingProgram();
   }
-  // tslint:disable-next-line:typedef
-  delete(p: any) {
+
+  delete(p: any): void {
     this.value.id = p.first;
     this.value.name = p.second;
     this.value.numberOfHours = p.third;
@@ -226,25 +239,22 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
         this.removeRow(p);
       });
   }
-  // tslint:disable-next-line:typedef
-  add() {
+
+  add(): void {
     this.cancel();
   }
 
-  // tslint:disable-next-line:typedef
-  removeRow(el: any) {
+  removeRow(el: any): void {
     const elementIndex = this.elements.findIndex((elem: any) => el === elem);
     this.mdbTable.removeRow(elementIndex);
-    // tslint:disable-next-line:no-shadowed-variable
-    this.mdbTable.getDataSource().forEach((el: any, index: any) => {
-      el.id = (index + 1).toString();
+    this.mdbTable.getDataSource().forEach((value: any, index: any) => {
+      value.id = (index + 1).toString();
     });
     this.mdbTable.setDataSource(this.elements);
     this.cancel();
   }
 
-  // tslint:disable-next-line:typedef
-  editRow(el: any) {
+  editRow(el: any): void {
     const elementIndex = this.elements.findIndex((elem: any) => el === elem);
     const modalOptions = {
       backdrop: true,
@@ -267,32 +277,28 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     this.mdbTable.setDataSource(this.elements);
   }
 
-  // tslint:disable-next-line:typedef
-  loadDepartment() {
+  loadDepartment(): void {
     this.departmentService.getValues()
       .subscribe((data: Department[]) => {
         this.departments = data;
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadStudentCategory() {
+  loadStudentCategory(): void {
     this.studentCategoryService.getValues()
       .subscribe((data: StudentCategory[]) => {
         this.studentCategories = data;
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadCertificationType() {
+  loadCertificationType(): void {
     this.certificationTypeService.getValues()
       .subscribe((data: CertificationType[]) => {
         this.certificationTypes = data;
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadFormOfEducation() {
+  loadFormOfEducation(): void {
     this.formOfEducationService.getValues()
       .subscribe((data: FormOfEducation[]) => {
         this.formOfEducations = data;

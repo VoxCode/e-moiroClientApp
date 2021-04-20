@@ -6,5 +6,6 @@ export class Teacher {
     public patronymicName?: string,
     public position?: string,
     public academicRank?: string,
-    public isCathedral?: boolean){ }
+    public isCathedral?: boolean,
+    public fullNameForm?: string){ }
 }

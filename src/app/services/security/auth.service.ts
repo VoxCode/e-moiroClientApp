@@ -28,6 +28,7 @@ export class AuthService {
     if (token) {
       const decodedToken = this.jwtHelper.decodeToken(token);
       this.globals.role = this.getRedirectPath(decodedToken.role);
+      this.globals.name = decodedToken.unique_name;
       return decodedToken.role;
     }
   }

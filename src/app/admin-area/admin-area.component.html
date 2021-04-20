@@ -2,14 +2,14 @@
 <mdb-navbar SideClass="navbar fixed-top navbar-expand-lg navbar-dark primary-color-dark scrolling-navbar intro-fixed-nav" [containerInside]="false">
 
   <!-- Navbar brand -->
-  <mdb-navbar-brand><a class="navbar-brand" routerLink="/curriculumTopic">Smart MOIRO</a></mdb-navbar-brand>
+  <mdb-navbar-brand><a class="navbar-brand" [routerLink]="['/admin/trainingProgram']">Smart MOIRO</a></mdb-navbar-brand>
 
   <!-- Collapsible content -->
   <links>
 
     <!-- Links -->
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item" routerLinkActive="active" routerLink="/trainingProgram">
+      <li class="nav-item" routerLinkActive="active" [routerLink]="['/admin/trainingProgram']">
         <a class="nav-link waves-light" mdbWavesEffect>Программы учебных занятий</a>
       </li>
     </ul>

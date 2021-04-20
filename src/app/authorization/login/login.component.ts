@@ -23,8 +23,7 @@ export class LoginComponent{
     });
   }
 
-  // tslint:disable-next-line:typedef
-  login() {
+  login(): void {
     this.authService.login(this.loginForm.value).subscribe(data => {
       this.modalRef.hide();
       this.authService.saveToken(data.token);

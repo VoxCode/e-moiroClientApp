@@ -81,6 +81,7 @@ export class UserComponent implements OnInit, AfterViewInit {
             first: this.values[i - 1].email,
             second: this.values[i - 1].userName,
             third: this.values[i - 1].id,
+            fourth: this.values[i - 1].teacherId,
             last: this.values[i - 1].role});
         }
         this.mdbTable.setDataSource(this.elements);

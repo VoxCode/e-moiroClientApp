@@ -29,11 +29,12 @@
       </div>
       <br><br>
     </form>
-    <ng-select [items]="teachers"
+    <ng-select *ngIf="teachers.length !== 0" [items]="this.teachers" [clearable]="false"
                (change)="updateUser()"
                bindValue=""
-               bindLabel="lastName"
-               [(ngModel)]="teacherSelect">
+               bindLabel="fullNameForm"
+               [(ngModel)]="teacherSelect"
+               placeholder="Связь учетной записи и преподавателя">
     </ng-select>
   </div>
   <div class="modal-footer">
