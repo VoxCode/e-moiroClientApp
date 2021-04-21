@@ -87,11 +87,11 @@ export class TrainingProgramExpertStepComponent implements OnInit {
     this.trainingProgramTeacherService.deleteValue(id).subscribe();
   }
 
-  saveDeveloper(event: number): void {
-    console.log(event);
+  saveDeveloper(event: number, i: number): void {
+    console.log(event, i);
   }
 
-  saveReviewer(event: number): void {
-    console.log(event);
+  saveReviewer(event: number, i: number): void {
+    console.log(event, i);
   }
 }

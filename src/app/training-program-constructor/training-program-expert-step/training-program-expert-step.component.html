@@ -18,7 +18,7 @@
       <br>
       <div *ngFor="let el of trainingProgramTeacherDeveloper let i = index" >
         <ng-select *ngIf="teachers.length !== 0" [items]="this.teachers" [clearable]="false"
-                   (change)="saveDeveloper($event.id)"
+                   (change)="saveDeveloper($event.id, i)"
                    bindValue="el.id"
                    bindLabel="fullNameForm"
                    placeholder="Выберите разработчика">
@@ -40,7 +40,7 @@
       <br>
       <div *ngFor="let el of trainingProgramTeacherReviewer; let i = index" >
         <ng-select *ngIf="teachers.length !== 0" [items]="this.teachers" [clearable]="false"
-                   (change)="saveReviewer($event.id)"
+                   (change)="saveReviewer($event.id, i)"
                    bindValue="el.id"
                    bindLabel="fullNameForm"
                    placeholder="Выберите рецензента">
