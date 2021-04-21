@@ -1,25 +1,25 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
-import {CurriculumTopicService} from '../services/curriculum-topic.service';
-import {TrainingProgramService} from '../services/training-program.service';
-import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
-import {OccupationFormService} from '../services/occupation-form.service';
-import {CurriculumSectionService} from '../services/curriculum-section.service';
+import {CurriculumTopicService} from '../../../services/curriculum-topic.service';
+import {TrainingProgramService} from '../../../services/training-program.service';
+import {CurriculumTopicTrainingProgramService} from '../../../services/curriculum-topic-training-program.service';
+import {OccupationFormService} from '../../../services/occupation-form.service';
+import {CurriculumSectionService} from '../../../services/curriculum-section.service';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import {OccupationForm} from '../models/OccupationForm';
-import {CurriculumSection} from '../models/CurriculumSection';
-import {TrainingProgramCurriculumSectionService} from '../services/training-program-curriculum-section.service';
+import {OccupationForm} from '../../../models/OccupationForm';
+import {CurriculumSection} from '../../../models/CurriculumSection';
+import {TrainingProgramCurriculumSectionService} from '../../../services/training-program-curriculum-section.service';
 import {SubscriptionLike} from 'rxjs';
-import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
-import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
-import {CurriculumTopic} from '../models/CurriculumTopic';
-import {CurriculumTopicStudentCategoryService} from '../services/curriculum-topic-student-category.service';
-import {CurriculumTopicDepartmentService} from '../services/curriculum-topic-department.service';
-import {CurriculumTopicStudentCategory} from '../models/CurriculumTopicStudentCategory';
-import {CurriculumTopicDepartment} from '../models/СurriculumTopicDepartment';
-import {TrainingProgram} from '../models/TrainingProgram';
-import {CommonService} from '../common-service/common-service.component';
-import {OccupationFormMaxVariableTopicHoursService} from '../services/occupation-form-max-variable-topic-hours.service';
-import {OccupationFormMaxVariableTopicHour} from '../models/OccupationFormMaxVariableTopicHour';
+import {CurriculumTopicTrainingProgram} from '../../../models/СurriculumTopicTrainingProgram';
+import {TrainingProgramCurriculumSection} from '../../../models/TrainingProgramCurriculumSection';
+import {CurriculumTopic} from '../../../models/CurriculumTopic';
+import {CurriculumTopicStudentCategoryService} from '../../../services/curriculum-topic-student-category.service';
+import {CurriculumTopicDepartmentService} from '../../../services/curriculum-topic-department.service';
+import {CurriculumTopicStudentCategory} from '../../../models/CurriculumTopicStudentCategory';
+import {CurriculumTopicDepartment} from '../../../models/СurriculumTopicDepartment';
+import {TrainingProgram} from '../../../models/TrainingProgram';
+import {CommonService} from '../../../common-service/common-service.component';
+import {OccupationFormMaxVariableTopicHoursService} from '../../../services/occupation-form-max-variable-topic-hours.service';
+import {OccupationFormMaxVariableTopicHour} from '../../../models/OccupationFormMaxVariableTopicHour';
 
 @Component({
   selector: 'app-curriculum-section-child',

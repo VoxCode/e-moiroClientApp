@@ -3,7 +3,7 @@ import { TeacherService } from '../services/teacher.service';
 import { Teacher } from '../models/Teacher';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {TeacherEditComponent} from './teacher-edit.component';
-import {TeacherDepartmentAddFormComponent} from '../teacher-department-add-form/teacher-department-add-form.component';
+import {TeacherDepartmentAddFormComponent} from './teacher-department-add-form/teacher-department-add-form.component';
 import {Globals} from '../globals';
 
 @Component({

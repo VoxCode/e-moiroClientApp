@@ -1,24 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {ActivatedRoute} from '@angular/router';
-import {TrainingProgram} from '../models/TrainingProgram';
-import {TrainingProgramService} from '../services/training-program.service';
-import {FinalExaminationService} from '../services/final-examination.service';
-import {FinalExamination} from '../models/FinalExamination';
-import {TrainingProgramFinalExaminationService} from '../services/training-program-final-examination.service';
-import {TrainingProgramFinalExamination} from '../models/TrainingProgramFinalExamination';
-import {CurriculumTopicFinalExamination} from '../models/CurriculumTopicFinalExamination';
-import {CurriculumTopicFinalExaminationService} from '../services/curriculum-topic-final-examination.service';
-import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
-import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
-import {CertificationTypeService} from '../services/certification-type.service';
-import {CertificationType} from '../models/CertificationType';
-import {Globals} from '../globals';
+import {TrainingProgram} from '../../models/TrainingProgram';
+import {TrainingProgramService} from '../../services/training-program.service';
+import {FinalExaminationService} from '../../services/final-examination.service';
+import {FinalExamination} from '../../models/FinalExamination';
+import {TrainingProgramFinalExaminationService} from '../../services/training-program-final-examination.service';
+import {TrainingProgramFinalExamination} from '../../models/TrainingProgramFinalExamination';
+import {CurriculumTopicFinalExamination} from '../../models/CurriculumTopicFinalExamination';
+import {CurriculumTopicFinalExaminationService} from '../../services/curriculum-topic-final-examination.service';
+import {CurriculumTopicTrainingProgram} from '../../models/СurriculumTopicTrainingProgram';
+import {CurriculumTopicTrainingProgramService} from '../../services/curriculum-topic-training-program.service';
+import {CertificationTypeService} from '../../services/certification-type.service';
+import {CertificationType} from '../../models/CertificationType';
+import {Globals} from '../../globals';
 
 @Component({
-  selector: 'app-training-program-add-form2',
-  templateUrl: './training-program-add-form2.component.html',
-  styleUrls: ['./training-program-add-form2.component.scss'],
+  selector: 'app-training-program-certification-step',
+  templateUrl: './training-program-certification-step.component.html',
+  styleUrls: ['./training-program-certification-step.component.scss'],
   providers: [
     TrainingProgramService,
     FinalExaminationService,
@@ -28,7 +28,7 @@ import {Globals} from '../globals';
     CertificationTypeService
   ]
 })
-export class TrainingProgramAddForm2Component implements OnInit {
+export class TrainingProgramCertificationStepComponent implements OnInit {
   todo = [];
   done = [];
   id: number;

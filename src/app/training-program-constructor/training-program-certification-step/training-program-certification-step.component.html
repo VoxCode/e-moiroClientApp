@@ -4,6 +4,7 @@
       <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon> Выход</button>
   </div><br>
   <h4 *ngIf="trainingProgram">Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
+  <h5 *ngIf="trainingProgram">Тип итоговой аттестации: <strong>{{certificationType.name}}</strong></h5>
 
   <app-training-program-stepper [id]="id"></app-training-program-stepper>
 
@@ -44,7 +45,7 @@
                   <mdb-icon fas icon="plus" size="lg"></mdb-icon>
                 </button>
                 <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
-                        (click)="deleteTrainingProgramRegulation(item.fourth, i)" mdbWavesEffect>
+                        (click)="deleteTrainingProgramFinalExamination(item.fourth, i)" mdbWavesEffect>
                   <mdb-icon fas icon="times" size="lg"></mdb-icon>
                 </button>
               </div>
@@ -57,14 +58,6 @@
   <br><br>
 
 
-  <button type="button" [routerLink]="['/' + globals.role +'/trainingProgramAddForm4', id]"
-          mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Назад</button>
-  <button type="button" [routerLink]="'/' + globals.role +'/trainingProgram'"
-          mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Завершить</button>
-  <button type="button" [routerLink]="['/' + globals.role +'/docxGeneratorTP', id]" mdbBtn color="success"
-          class="relative waves-light" mdbWavesEffect>Сгенерировать УП</button>
-  <button type="button" [routerLink]="['/' + globals.role +'/docxGeneratorATP', id]" mdbBtn color="success"
-          class="relative waves-light" mdbWavesEffect>Сгенерировать УТП</button>
 </div>
 
 <!--шаблон для добавления-->
@@ -76,19 +69,19 @@
         <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()" (click)="cancel()">
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel">Нормативно правовой акт</h4>
+        <h4 class="modal-title w-100" id="myModalLabel">Вопрос для итоговой аттестации</h4>
       </div>
       <div class="modal-body">
         <label>Содержание</label>
-        <textarea type="text" [(ngModel)]="this.regulation.content" class="md-textarea form-control" mdbInput></textarea>
+        <textarea type="text" [(ngModel)]="this.finalExamination.content" class="md-textarea form-control" mdbInput></textarea>
       </div>
       <br>
       <label style="color: red; margin-left: 15px;">Связь с темой учебной программы</label>
       <select style="margin-left: 15px; width: 98%" [(ngModel)]="curriculumTopicTrainingProgram" class="browser-default custom-select">
         <option *ngFor="let el of curriculumTopicTrainingPrograms" [ngValue]="el">{{el.topicTitle}}</option>
-      </select><br>
+      </select>
       <div class="modal-footer">
-        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="addRegulation()"
+        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="addFinalExamination()"
                 mdbWavesEffect>Сохранить</button>
       </div>
     </div>

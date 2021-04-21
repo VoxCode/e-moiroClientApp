@@ -1,7 +1,6 @@
 <div class="container-fluid">
   <div class="backButton">
-    <button [routerLink]="'/' + globals.role +'/trainingProgram'"
-            type="button" size="sm" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>
+    <button [routerLink]="'/' + globals.role +'/trainingProgram'" type="button" size="sm" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>
       <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon> Выход</button>
   </div><br>
   <h4 *ngIf="trainingProgram">Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
@@ -45,7 +44,7 @@
                   <mdb-icon fas icon="plus" size="lg"></mdb-icon>
                 </button>
                 <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
-                        (click)="deleteTrainingProgramAdditionalLiterature(item.fourth, i)" mdbWavesEffect>
+                        (click)="deleteTrainingProgramRegulation(item.fourth, i)" mdbWavesEffect>
                   <mdb-icon fas icon="times" size="lg"></mdb-icon>
                 </button>
               </div>
@@ -57,11 +56,12 @@
   </div>
   <br><br>
 
-
-  <button type="button" [routerLink]="['/' + globals.role +'/trainingProgramAddForm3', id]"
-          mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Назад</button>
-  <button type="button" [routerLink]="['/' + globals.role +'/trainingProgramAddForm5', id]"
-          mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Далее</button>
+  <button type="button" [routerLink]="'/' + globals.role +'/trainingProgram'"
+          mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Завершить</button>
+  <button type="button" [routerLink]="['/' + globals.role +'/docxGeneratorTP', id]" mdbBtn color="success"
+          class="relative waves-light" mdbWavesEffect>Сгенерировать УП</button>
+  <button type="button" [routerLink]="['/' + globals.role +'/docxGeneratorATP', id]" mdbBtn color="success"
+          class="relative waves-light" mdbWavesEffect>Сгенерировать УТП</button>
 </div>
 
 <!--шаблон для добавления-->
@@ -73,11 +73,11 @@
         <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()" (click)="cancel()">
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel">Дополнительная литература</h4>
+        <h4 class="modal-title w-100" id="myModalLabel">Нормативно правовой акт</h4>
       </div>
       <div class="modal-body">
         <label>Содержание</label>
-        <textarea type="text" [(ngModel)]="this.additionalLiterature.content" class="md-textarea form-control" mdbInput></textarea>
+        <textarea type="text" [(ngModel)]="this.regulation.content" class="md-textarea form-control" mdbInput></textarea>
       </div>
       <br>
       <label style="color: red; margin-left: 15px;">Связь с темой учебной программы</label>
@@ -85,7 +85,7 @@
         <option *ngFor="let el of curriculumTopicTrainingPrograms" [ngValue]="el">{{el.topicTitle}}</option>
       </select><br>
       <div class="modal-footer">
-        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="addAdditionalLiterature()"
+        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="addRegulation()"
                 mdbWavesEffect>Сохранить</button>
       </div>
     </div>

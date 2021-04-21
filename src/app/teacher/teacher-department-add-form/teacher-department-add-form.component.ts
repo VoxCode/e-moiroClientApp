@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {MDBModalRef} from 'angular-bootstrap-md';
-import {TeacherDepartmentService} from '../services/teacher-department.service';
-import {TeacherDepartment} from '../models/TeacherDepartment';
-import {DepartmentService} from '../services/department.service';
-import {Department} from '../models/Department';
+import {TeacherDepartmentService} from '../../services/teacher-department.service';
+import {TeacherDepartment} from '../../models/TeacherDepartment';
+import {DepartmentService} from '../../services/department.service';
+import {Department} from '../../models/Department';
 
 @Component({
   selector: 'app-teacher-department-add-form',

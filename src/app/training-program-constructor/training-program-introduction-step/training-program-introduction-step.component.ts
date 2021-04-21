@@ -1,18 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {TrainingProgram} from '../models/TrainingProgram';
-import {Globals} from '../globals';
-import {TrainingProgramService} from '../services/training-program.service';
+import {TrainingProgram} from '../../models/TrainingProgram';
+import {Globals} from '../../globals';
+import {TrainingProgramService} from '../../services/training-program.service';
 
 @Component({
-  selector: 'app-training-program-add-form-introduction',
-  templateUrl: './training-program-add-form-introduction.component.html',
-  styleUrls: ['./training-program-add-form-introduction.component.scss'],
+  selector: 'app-training-introduction-step',
+  templateUrl: './training-program-introduction-step.component.html',
+  styleUrls: ['./training-program-introduction-step.component.scss'],
   providers: [
     TrainingProgramService,
     ]
 })
-export class TrainingProgramAddFormIntroductionComponent implements OnInit {
+export class TrainingProgramIntroductionStepComponent implements OnInit {
 
   id: number;
   trainingProgram: TrainingProgram;

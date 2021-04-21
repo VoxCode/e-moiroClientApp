@@ -13,7 +13,7 @@ export class TrainingProgramTeacherService {
     return this.http.get(this.url);
   }
   // tslint:disable-next-line:typedef
-  getValue(id: number) {
+  getTrainingProgramTeachers(id: number) {
     return this.http.get(this.url + '/' + id);
   }
   // tslint:disable-next-line:typedef

@@ -21,11 +21,12 @@ import {DocxGeneratorATPComponent} from './docx-generator-ATP/docx-generator-ATP
 import {TestWorkComponent} from './test-work/test-work.component';
 import {CertificationTypeComponent} from './certification-type/certification-type.component';
 import {FinalExaminationComponent} from './final-examination/final-examination.component';
-import {TrainingProgramAddFormComponent} from './training-program-add-form/training-program-add-form.component';
-import {TrainingProgramAddForm2Component} from './training-program-add-form2/training-program-add-form2.component';
-import {TrainingProgramAddForm3Component} from './training-program-add-form3/training-program-add-form3.component';
-import {TrainingProgramAddForm4Component} from './training-program-add-form4/training-program-add-form4.component';
-import {TrainingProgramAddForm5Component} from './training-program-add-form5/training-program-add-form5.component';
+import {TrainingProgramMainStepComponent} from './training-program-constructor/training-program-main-step/training-program-main-step.component';
+import {TrainingProgramCertificationStepComponent} from './training-program-constructor/training-program-certification-step/training-program-certification-step.component';
+import {TrainingProgramMainLiteratureStepComponent} from './training-program-constructor/training-program-main-literature-step/training-program-main-literature-step.component';
+import {TrainingProgramAdditionalLiteratureStepComponent} from './training-program-constructor/training-program-additional-literature-step/training-program-additional-literature-step.component';
+import {TrainingProgramRegulationStepComponent} from './training-program-constructor/training-program-regulation-step/training-program-regulation-step.component';
+import {TrainingProgramIntroductionStepComponent} from './training-program-constructor/training-program-introduction-step/training-program-introduction-step.component';
 import {DocxGeneratorTPComponent} from './docx-generator-TP/docx-generator-TP.component';
 import {ViewerGuardService} from './services/security/guards/viewer-guard.service';
 import {AdminGuardService} from './services/security/guards/admin-guard.service';
@@ -39,8 +40,8 @@ import {ViewerAreaComponent} from './viewer-area/viewer-area.component';
 import {UserComponent} from './admin-area/users/user.component';
 import {AuthorizationComponent} from './authorization/authorization.component';
 import {RichTextEditorFormComponent} from './rich-text-editor-form/rich-text-editor-form.component';
-import {TrainingProgramAddFormIntroductionComponent} from './training-program-add-form-introduction/training-program-add-form-introduction.component';
 import {ExpertComponent} from './expert/expert.component';
+import {TrainingProgramExpertStepComponent} from "./training-program-constructor/training-program-expert-step/training-program-expert-step.component";
 
 const adminRoutes: Routes = [
   { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
@@ -59,14 +60,15 @@ const adminRoutes: Routes = [
   { path: 'teacher', component: TeacherComponent },
   { path: 'studentCategory', component: StudentCategoryComponent },
   { path: 'trainingProgram', component: TrainingProgramComponent },
-  { path: 'trainingProgramAddForm/:id', component: TrainingProgramAddFormComponent },
+  { path: 'trainingProgramMainStep/:id', component: TrainingProgramMainStepComponent },
   { path: 'testWork', component: TestWorkComponent },
-  { path: 'trainingProgramAddFormIntroduction/:id', component: TrainingProgramAddFormIntroductionComponent },
+  { path: 'trainingProgramAddFormIntroduction/:id', component: TrainingProgramIntroductionStepComponent },
   { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent },
-  { path: 'trainingProgramAddForm2/:id', component: TrainingProgramAddForm2Component },
-  { path: 'trainingProgramAddForm3/:id', component: TrainingProgramAddForm3Component },
-  { path: 'trainingProgramAddForm4/:id', component: TrainingProgramAddForm4Component },
-  { path: 'trainingProgramAddForm5/:id', component: TrainingProgramAddForm5Component },
+  { path: 'trainingProgramCertificationStep/:id', component: TrainingProgramCertificationStepComponent },
+  { path: 'trainingProgramMainLiteratureStep/:id', component: TrainingProgramMainLiteratureStepComponent },
+  { path: 'trainingProgramAdditionalLiteratureStep/:id', component: TrainingProgramAdditionalLiteratureStepComponent },
+  { path: 'trainingProgramRegulationStep/:id', component: TrainingProgramRegulationStepComponent },
+  { path: 'trainingProgramExpertStep/:id', component: TrainingProgramExpertStepComponent },
   { path: 'finalExamination', component: FinalExaminationComponent },
   { path: 'user', component: UserComponent },
   { path: 'expert', component: ExpertComponent },
@@ -80,12 +82,13 @@ const editorRoutes: Routes = [
 const creatorRoutes: Routes = [
   { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent },
   { path: 'trainingProgram', component: TrainingProgramComponent },
-  { path: 'trainingProgramAddFormIntroduction/:id', component: TrainingProgramAddFormIntroductionComponent },
-  { path: 'trainingProgramAddForm/:id', component: TrainingProgramAddFormComponent },
-  { path: 'trainingProgramAddForm2/:id', component: TrainingProgramAddForm2Component },
-  { path: 'trainingProgramAddForm3/:id', component: TrainingProgramAddForm3Component },
-  { path: 'trainingProgramAddForm4/:id', component: TrainingProgramAddForm4Component },
-  { path: 'trainingProgramAddForm5/:id', component: TrainingProgramAddForm5Component },
+  { path: 'trainingProgramIntroductionStep/:id', component: TrainingProgramIntroductionStepComponent },
+  { path: 'trainingProgramMainStep/:id', component: TrainingProgramMainStepComponent },
+  { path: 'trainingProgramCertificationStep/:id', component: TrainingProgramCertificationStepComponent },
+  { path: 'trainingProgramMainLiteratureStep/:id', component: TrainingProgramMainLiteratureStepComponent },
+  { path: 'trainingProgramAdditionalLiteratureStep/:id', component: TrainingProgramAdditionalLiteratureStepComponent },
+  { path: 'trainingProgramRegulationStep/:id', component: TrainingProgramRegulationStepComponent },
+  { path: 'trainingProgramExpertStep/:id', component: TrainingProgramExpertStepComponent },
   { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
   { path: 'docxGeneratorATP/:id', component:  DocxGeneratorATPComponent },
   { path: 'richText', component:  RichTextEditorFormComponent },

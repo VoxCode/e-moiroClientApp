@@ -1,0 +1,59 @@
+<!-- Horizontal Steppers -->
+<div class="row">
+  <div class="col-md-12">
+
+    <ul class="stepper stepper-horizontal">
+
+      <li [routerLink]="['/' + globals.role +'/trainingProgramAddFormIntroduction', id]" routerLinkActive="active">
+        <a>
+          <span class="circle">1</span>
+          <span class="label">Введение</span>
+        </a>
+      </li>
+
+      <li [routerLink]="['/' + globals.role +'/trainingProgramExpertStep', id]" routerLinkActive="active">
+        <a>
+          <span class="circle">2</span>
+          <span class="label">Эксперты</span>
+        </a>
+      </li>
+
+      <li [routerLink]="['/' + globals.role +'/trainingProgramMainStep', id]" routerLinkActive="active">
+        <a>
+          <span class="circle">3</span>
+          <span class="label">Темы учебной программы</span>
+        </a>
+      </li>
+
+      <li [routerLink]="['/' + globals.role +'/trainingProgramCertificationStep', id]" routerLinkActive="active">
+        <a>
+          <span class="circle">4</span>
+          <span class="label">Вопросы для итоговой аттестации</span>
+        </a>
+      </li>
+
+      <li [routerLink]="['/' + globals.role +'/trainingProgramMainLiteratureStep', id]" routerLinkActive="active">
+        <a>
+          <span class="circle">5</span>
+          <span class="label">Основная литература</span>
+        </a>
+      </li>
+
+      <li [routerLink]="['/' + globals.role +'/trainingProgramAdditionalLiteratureStep', id]" routerLinkActive="active">
+        <a>
+          <span class="circle">6</span>
+          <span class="label">Дополнительная литература</span>
+        </a>
+      </li>
+
+      <li [routerLink]="['/' + globals.role +'/trainingProgramRegulationStep', id]" routerLinkActive="active">
+        <a>
+          <span class="circle">7</span>
+          <span class="label">Нормативные правовые акты</span>
+        </a>
+      </li>
+
+    </ul>
+
+  </div>
+</div>

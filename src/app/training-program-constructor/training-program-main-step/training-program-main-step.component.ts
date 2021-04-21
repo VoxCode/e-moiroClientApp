@@ -1,23 +1,23 @@
 import {Component, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import {CurriculumTopic} from '../models/CurriculumTopic';
-import {CurriculumTopicService} from '../services/curriculum-topic.service';
+import {CurriculumTopic} from '../../models/CurriculumTopic';
+import {CurriculumTopicService} from '../../services/curriculum-topic.service';
 import {ActivatedRoute} from '@angular/router';
-import {TrainingProgramService} from '../services/training-program.service';
-import {TrainingProgram} from '../models/TrainingProgram';
-import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
-import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
-import {CurriculumSectionService} from '../services/curriculum-section.service';
-import {OccupationFormService} from '../services/occupation-form.service';
-import {CommonService} from '../common-service/common-service.component';
-import {TrainingProgramCurriculumSectionService} from '../services/training-program-curriculum-section.service';
-import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
-import {Globals} from '../globals';
+import {TrainingProgramService} from '../../services/training-program.service';
+import {TrainingProgram} from '../../models/TrainingProgram';
+import {CurriculumTopicTrainingProgramService} from '../../services/curriculum-topic-training-program.service';
+import {CurriculumTopicTrainingProgram} from '../../models/СurriculumTopicTrainingProgram';
+import {CurriculumSectionService} from '../../services/curriculum-section.service';
+import {OccupationFormService} from '../../services/occupation-form.service';
+import {CommonService} from '../../common-service/common-service.component';
+import {TrainingProgramCurriculumSectionService} from '../../services/training-program-curriculum-section.service';
+import {TrainingProgramCurriculumSection} from '../../models/TrainingProgramCurriculumSection';
+import {Globals} from '../../globals';
 
 @Component({
-  selector: 'app-training-program-add-form',
-  templateUrl: './training-program-add-form.component.html',
-  styleUrls: ['./training-program-add-form.component.scss'],
+  selector: 'app-training-program-main-step',
+  templateUrl: './training-program-main-step.component.html',
+  styleUrls: ['./training-program-main-step..component.scss'],
   providers: [
     CurriculumTopicService,
     TrainingProgramService,
@@ -28,7 +28,7 @@ import {Globals} from '../globals';
   ]
 })
 
-export class TrainingProgramAddFormComponent implements OnInit{
+export class TrainingProgramMainStepComponent implements OnInit{
   id: number;
   value: number;
   trainingProgram: TrainingProgram;

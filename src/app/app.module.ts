@@ -39,23 +39,30 @@ import {CertificationTypeComponent} from './certification-type/certification-typ
 import {FinalExaminationComponent} from './final-examination/final-examination.component';
 import {TestWorkComponent} from './test-work/test-work.component';
 import {TestWorkEditComponent} from './test-work/test-work-edit.component';
-import {TrainingProgramAddFormComponent} from './training-program-add-form/training-program-add-form.component';
+import {TrainingProgramMainStepComponent
+} from './training-program-constructor/training-program-main-step/training-program-main-step.component';
 import {FinalExaminationEditComponent} from './final-examination/final-examination-edit.component';
 import {CertificationTypeEditComponent} from './certification-type/certification-type-edit.component';
 import {TrainingProgramEditComponent} from './training-program/training-program-edit.component';
 import {RegulationComponent} from './regulation/regulation.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-import {CurriculumSectionChildComponent} from './training-program-add-form/curriculum-section-child.component';
+import {CurriculumSectionChildComponent
+} from './training-program-constructor/training-program-main-step/curriculum-section-child/curriculum-section-child.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import {CommonService} from './common-service/common-service.component';
 import {DocumentEditorAllModule, DocumentEditorContainerModule} from '@syncfusion/ej2-angular-documenteditor';
 import {DocumentEdComponent} from './document-editor/document-ed/document-ed.component';
-import { TrainingProgramAddForm2Component } from './training-program-add-form2/training-program-add-form2.component';
-import { TrainingProgramStepperComponent } from './training-program-stepper/training-program-stepper.component';
-import { TrainingProgramAddForm3Component } from './training-program-add-form3/training-program-add-form3.component';
-import { TrainingProgramAddForm4Component } from './training-program-add-form4/training-program-add-form4.component';
-import { TrainingProgramAddForm5Component } from './training-program-add-form5/training-program-add-form5.component';
+import {TrainingProgramCertificationStepComponent
+} from './training-program-constructor/training-program-certification-step/training-program-certification-step.component';
+import {TrainingProgramStepperComponent
+} from './training-program-constructor/training-program-stepper/training-program-stepper.component';
+import {TrainingProgramMainLiteratureStepComponent
+} from './training-program-constructor/training-program-main-literature-step/training-program-main-literature-step.component';
+import {TrainingProgramAdditionalLiteratureStepComponent
+} from './training-program-constructor/training-program-additional-literature-step/training-program-additional-literature-step.component';
+import {TrainingProgramRegulationStepComponent
+} from './training-program-constructor/training-program-regulation-step/training-program-regulation-step.component';
 import {DocxGeneratorTPComponent} from './docx-generator-TP/docx-generator-TP.component';
 import { FilterPipe } from './filter.pipe';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -72,11 +79,14 @@ import { AuthorizationComponent } from './authorization/authorization.component'
 import {Globals} from './globals';
 import { RichTextEditorFormComponent } from './rich-text-editor-form/rich-text-editor-form.component';
 import {RichTextEditorAllModule} from '@syncfusion/ej2-angular-richtexteditor';
-import { TrainingProgramAddFormIntroductionComponent } from './training-program-add-form-introduction/training-program-add-form-introduction.component';
+import {TrainingProgramIntroductionStepComponent
+} from './training-program-constructor/training-program-introduction-step/training-program-introduction-step.component';
 import { DocumentEditorFormComponent } from './document-editor/document-editor-form/document-editor-form.component';
-import { TeacherDepartmentAddFormComponent } from './teacher-department-add-form/teacher-department-add-form.component';
+import { TeacherDepartmentAddFormComponent } from './teacher/teacher-department-add-form/teacher-department-add-form.component';
 import { ExpertComponent } from './expert/expert.component';
 import {ExpertEditComponent} from './expert/expert-edit.component';
+import { TrainingProgramExpertStepComponent
+} from './training-program-constructor/training-program-expert-step/training-program-expert-step.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -121,14 +131,14 @@ export function tokenGetter(): string {
     FinalExaminationComponent,
     TestWorkComponent,
     TestWorkEditComponent,
-    TrainingProgramAddFormComponent,
+    TrainingProgramMainStepComponent,
     CurriculumSectionChildComponent,
     DocumentEdComponent,
-    TrainingProgramAddForm2Component,
+    TrainingProgramCertificationStepComponent,
     TrainingProgramStepperComponent,
-    TrainingProgramAddForm3Component,
-    TrainingProgramAddForm4Component,
-    TrainingProgramAddForm5Component,
+    TrainingProgramMainLiteratureStepComponent,
+    TrainingProgramAdditionalLiteratureStepComponent,
+    TrainingProgramRegulationStepComponent,
     FilterPipe,
     AdminAreaComponent,
     CreatorAreaComponent,
@@ -139,11 +149,12 @@ export function tokenGetter(): string {
     UserEditComponent,
     AuthorizationComponent,
     RichTextEditorFormComponent,
-    TrainingProgramAddFormIntroductionComponent,
+    TrainingProgramIntroductionStepComponent,
     DocumentEditorFormComponent,
     TeacherDepartmentAddFormComponent,
     ExpertComponent,
-    ExpertEditComponent
+    ExpertEditComponent,
+    TrainingProgramExpertStepComponent
   ],
   imports: [
     BrowserModule,

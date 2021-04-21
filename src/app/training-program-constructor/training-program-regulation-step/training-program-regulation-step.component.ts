@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import {TrainingProgram} from '../models/TrainingProgram';
-import {TrainingProgramService} from '../services/training-program.service';
+import {TrainingProgram} from '../../models/TrainingProgram';
+import {TrainingProgramService} from '../../services/training-program.service';
 import {ActivatedRoute} from '@angular/router';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import {RegulationService} from '../services/regulation.service';
-import {TrainingProgramRegulationService} from '../services/training-program-regulation.service';
-import {Regulation} from '../models/Regulation';
-import {TrainingProgramRegulation} from '../models/TrainingProgramRegulation';
-import {CurriculumTopicRegulation} from '../models/СurriculumTopicRegulation';
-import {CurriculumTopicRegulationService} from '../services/curriculum-topic-regulation.service';
-import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
-import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
-import {Globals} from '../globals';
+import {RegulationService} from '../../services/regulation.service';
+import {TrainingProgramRegulationService} from '../../services/training-program-regulation.service';
+import {Regulation} from '../../models/Regulation';
+import {TrainingProgramRegulation} from '../../models/TrainingProgramRegulation';
+import {CurriculumTopicRegulation} from '../../models/СurriculumTopicRegulation';
+import {CurriculumTopicRegulationService} from '../../services/curriculum-topic-regulation.service';
+import {CurriculumTopicTrainingProgram} from '../../models/СurriculumTopicTrainingProgram';
+import {CurriculumTopicTrainingProgramService} from '../../services/curriculum-topic-training-program.service';
+import {Globals} from '../../globals';
 
 @Component({
-  selector: 'app-training-program-add-form5',
-  templateUrl: './training-program-add-form5.component.html',
-  styleUrls: ['./training-program-add-form5.component.scss'],
+  selector: 'app-training-program-regulation-step',
+  templateUrl: './training-program-regulation-step.component.html',
+  styleUrls: ['./training-program-regulation-step.component.scss'],
   providers: [
     TrainingProgramService,
     RegulationService,
@@ -25,7 +25,7 @@ import {Globals} from '../globals';
     CurriculumTopicRegulationService
   ]
 })
-export class TrainingProgramAddForm5Component implements OnInit {
+export class TrainingProgramRegulationStepComponent implements OnInit {
 
   todo = [];
   done = [];

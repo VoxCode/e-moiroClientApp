@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import {TrainingProgram} from '../models/TrainingProgram';
-import {TrainingProgramService} from '../services/training-program.service';
+import {TrainingProgram} from '../../models/TrainingProgram';
+import {TrainingProgramService} from '../../services/training-program.service';
 import {ActivatedRoute} from '@angular/router';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import {MainLiteratureService} from '../services/main-literature.service';
-import {TrainingProgramMainLiterature} from '../models/TrainingProgramMainLiterature';
-import {TrainingProgramMainLiteratureService} from '../services/training-program-main-literature.service';
-import {MainLiterature} from '../models/MainLiterature';
-import {CurriculumTopicMainLiterature} from '../models/СurriculumTopicMainLiterature';
-import {CurriculumTopicMainLiteratureService} from '../services/curriculum-topic-main-literature.service';
-import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
-import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
-import {Globals} from '../globals';
+import {MainLiteratureService} from '../../services/main-literature.service';
+import {TrainingProgramMainLiterature} from '../../models/TrainingProgramMainLiterature';
+import {TrainingProgramMainLiteratureService} from '../../services/training-program-main-literature.service';
+import {MainLiterature} from '../../models/MainLiterature';
+import {CurriculumTopicMainLiterature} from '../../models/СurriculumTopicMainLiterature';
+import {CurriculumTopicMainLiteratureService} from '../../services/curriculum-topic-main-literature.service';
+import {CurriculumTopicTrainingProgramService} from '../../services/curriculum-topic-training-program.service';
+import {CurriculumTopicTrainingProgram} from '../../models/СurriculumTopicTrainingProgram';
+import {Globals} from '../../globals';
 
 @Component({
-  selector: 'app-training-program-add-form3',
-  templateUrl: './training-program-add-form3.component.html',
-  styleUrls: ['./training-program-add-form3.component.scss'],
+  selector: 'app-training-program-main-literature-step',
+  templateUrl: './training-program-main-literature-step.component.html',
+  styleUrls: ['./training-program-main-literature-step.component.scss'],
   providers: [
     TrainingProgramService,
     MainLiteratureService,
@@ -25,7 +25,7 @@ import {Globals} from '../globals';
     CurriculumTopicTrainingProgramService
   ]
 })
-export class TrainingProgramAddForm3Component implements OnInit {
+export class TrainingProgramMainLiteratureStepComponent implements OnInit {
 
   todo = [];
   done = [];

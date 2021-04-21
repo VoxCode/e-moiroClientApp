@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Globals} from '../globals';
+import {Globals} from '../../globals';
 
 @Component({
   selector: 'app-training-program-stepper',
