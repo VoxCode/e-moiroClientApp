@@ -75,6 +75,8 @@ import {RichTextEditorAllModule} from '@syncfusion/ej2-angular-richtexteditor';
 import { TrainingProgramAddFormIntroductionComponent } from './training-program-add-form-introduction/training-program-add-form-introduction.component';
 import { DocumentEditorFormComponent } from './document-editor/document-editor-form/document-editor-form.component';
 import { TeacherDepartmentAddFormComponent } from './teacher-department-add-form/teacher-department-add-form.component';
+import { ExpertComponent } from './expert/expert.component';
+import {ExpertEditComponent} from './expert/expert-edit.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -140,6 +142,8 @@ export function tokenGetter(): string {
     TrainingProgramAddFormIntroductionComponent,
     DocumentEditorFormComponent,
     TeacherDepartmentAddFormComponent,
+    ExpertComponent,
+    ExpertEditComponent
   ],
   imports: [
     BrowserModule,

@@ -40,6 +40,7 @@ import {UserComponent} from './admin-area/users/user.component';
 import {AuthorizationComponent} from './authorization/authorization.component';
 import {RichTextEditorFormComponent} from './rich-text-editor-form/rich-text-editor-form.component';
 import {TrainingProgramAddFormIntroductionComponent} from './training-program-add-form-introduction/training-program-add-form-introduction.component';
+import {ExpertComponent} from './expert/expert.component';
 
 const adminRoutes: Routes = [
   { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
@@ -68,6 +69,7 @@ const adminRoutes: Routes = [
   { path: 'trainingProgramAddForm5/:id', component: TrainingProgramAddForm5Component },
   { path: 'finalExamination', component: FinalExaminationComponent },
   { path: 'user', component: UserComponent },
+  { path: 'expert', component: ExpertComponent },
   { path: '**', redirectTo: 'trainingProgram'}
 ];
 

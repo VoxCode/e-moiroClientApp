@@ -1,0 +1,24 @@
+<div class="modal-content" >
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">×</span>
+    </button>
+    <h4 class="modal-title w-100" id="myModalLabel">Редактирование: {{editableRow.first}}</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form">
+      <div class="md-textarea">
+        <label for="last">Содержимое</label>
+        <textarea id="last" type="text" class="form-control" formControlName="last" mdbInput mdbValidate
+                  [validateSuccess]="false"></textarea>
+
+        <mdb-error *ngIf="last.invalid && (last.dirty || last.touched)">Input is required</mdb-error>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
+            [disabled]="form.invalid" (click)="editRow()">Сохранить
+    </button>
+  </div>
+</div>
