@@ -2,10 +2,11 @@ import {convertMillimetersToTwip, Document, Footer, Header, PageNumberFormat, Pa
 import {DocxGeneratorDataTemplate} from '../../docx-generator-data-template/docx-generator-data-template';
 import {StudentCategory} from '../../models/StudentCategory';
 import {TrainingProgram} from '../../models/TrainingProgram';
+import {TrainingProgramTeacher} from '../../models/TrainingProgramTeacher';
+import {Department} from '../../models/Department';
 
 export class FirstDocumentPart {
 
-  teacher: number;
   docxGeneratorDataTemplate: DocxGeneratorDataTemplate = new DocxGeneratorDataTemplate(28);
   sections: any[] = [];
   children: any[] = [];
@@ -13,6 +14,8 @@ export class FirstDocumentPart {
   constructor(
     private trainingProgram: TrainingProgram,
     private studentCategory: StudentCategory,
+    private trainingProgramTeachers: TrainingProgramTeacher[],
+    private department: Department
   ) { }
 
   public create(): Document {
@@ -47,50 +50,68 @@ export class FirstDocumentPart {
       ],
     });
 
-    this.teacher = 3; // logic of teachers
-    if (this.teacher >= 2) {
+    const teacherDevelopers = this.trainingProgramTeachers.filter(a => a.expertId === 1);
+    if (teacherDevelopers.length > 1) {
       this.children.push(this.docxGeneratorDataTemplate.someText('Разработчики учебной программы:'));
-      for (let i = 0; i < this.teacher; i++) {
+      teacherDevelopers.forEach((obj) => {
         this.children.push(
-          this.docxGeneratorDataTemplate.someText('Rector name' + i.toString() + ', ' + 'Доцент, три пяди во лбу и вообще мастер своего дела')
+          this.docxGeneratorDataTemplate
+            .someText(obj.firstName[0].toUpperCase() + '.' +
+              obj.patronymicName[0].toUpperCase() + '. ' +
+              obj.lastName + ', ' + obj.position)
         );
-      }
+      });
     }
     else
     {
-      this.children.push(this.docxGeneratorDataTemplate.someText( 'Разработчики учебной программы'));
-      this.children.push(this.docxGeneratorDataTemplate.someText( 'Rector name, ' + 'Доцент, три пяди во лбу и вообще мастер своего дела'));
+      this.children.push(this.docxGeneratorDataTemplate.someText( 'Разработчик учебной программы:'));
+      this.children.push(
+        this.docxGeneratorDataTemplate
+          .someText(teacherDevelopers[0].firstName[0].toUpperCase() + '.' +
+            teacherDevelopers[0].patronymicName[0].toUpperCase() + '. ' +
+            teacherDevelopers[0].lastName + ', ' + teacherDevelopers[0].position)
+      );
     }
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-    let coun: number;
-    coun = 2;
-    if (coun >= 2 ) // рецензенты
-    {
+
+    const teacherReviewers = this.trainingProgramTeachers.filter(a => a.expertId === 2);
+    if (teacherReviewers.length > 1) {
       this.children.push(this.docxGeneratorDataTemplate.someText('Рецензенты:'));
-      for (let i = 0; i < this.teacher; i++) {
-        this.children.push(this.docxGeneratorDataTemplate.someText('Рецензент name' + i.toString() + ', ' + 'Доцент, три пяди во лбу и вообще мастер своего дела'));
-      }
+      teacherReviewers.forEach((obj) => {
+        this.children.push(
+          this.docxGeneratorDataTemplate
+            .someText(obj.firstName[0].toUpperCase() + '.' +
+              obj.patronymicName[0].toUpperCase() + '. ' +
+              obj.lastName + ', ' + obj.position)
+        );
+      });
     }
     else
     {
       this.children.push(this.docxGeneratorDataTemplate.someText( 'Рецензент:'));
-      this.children.push(this.docxGeneratorDataTemplate
-        .someText( 'Рецензент name, ' + 'Доцент, три пяди во лбу и вообще мастер своего дела'));
+      this.children.push(
+        this.docxGeneratorDataTemplate
+          .someText(teacherReviewers[0].firstName[0].toUpperCase() + '.' +
+            teacherReviewers[0].patronymicName[0].toUpperCase() + '. ' +
+            teacherReviewers[0].lastName + ', ' + teacherReviewers[0].position)
+      );
     }
-    for (let i = 0; i < 20; i++)
+    for (let i = 0; i < 26; i++)
     {
       this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
     }
     this.children.push( this.docxGeneratorDataTemplate.someText('Рекомендовано к утверждению:'));
-    this.children.push(this.docxGeneratorDataTemplate.someText('кафедра частных методик общего среднего образования\n' +
-      'государственного учреждения образования\n' +
-      '«Минский областной институт развития образования»\n' +
-      'протокол заседания от ____________ ' + this.docxGeneratorDataTemplate.getNowYear() + ' № ______\n'));
+    this.children.push(this.docxGeneratorDataTemplate.someText(this.department.name));
+    this.children.push(this.docxGeneratorDataTemplate.someText('государственного учреждения образования'));
+    this.children.push(this.docxGeneratorDataTemplate.someText('«Минский областной институт развития образования»'));
+    this.children.push(this.docxGeneratorDataTemplate
+      .someText('Протокол заседания от ____________ ' + this.docxGeneratorDataTemplate.getNowYear() + ' № ______'));
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-    this.children.push(this.docxGeneratorDataTemplate.someText('научно-методический совет\n' +
-      'государственного учреждения образования \n' +
-      '«Минский областной институт развития образования»\n' +
-      'протокол заседания от ____________ ' + this.docxGeneratorDataTemplate.getNowYear() + ' № ______\n'));
+    this.children.push(this.docxGeneratorDataTemplate.someText('научно-методический совет'));
+    this.children.push(this.docxGeneratorDataTemplate.someText('государственного учреждения образования'));
+    this.children.push(this.docxGeneratorDataTemplate.someText('«Минский областной институт развития образования»'));
+    this.children.push(this.docxGeneratorDataTemplate
+      .someText('Протокол заседания от ____________ ' + this.docxGeneratorDataTemplate.getNowYear() + ' № ______'));
     this.children.push(this.docxGeneratorDataTemplate.pageBreak());
 
     this.sections.push( {

@@ -194,7 +194,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
           curriculumTopicTrainingProgram.occupationFormId = 1;
         }
         curriculumTopicTrainingProgram.serialNumber = i;
-        curriculumTopicTrainingProgram.trainingProgrmaCurriculumSectionId = this.trainingProgramCurriculumSectionId;
+        curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = this.trainingProgramCurriculumSectionId;
         curriculumTopicTrainingProgram.id = object.seventh;
         if (curriculumTopicTrainingProgram.id === undefined){
           this.curriculumTopicTrainingProgramService.createValue(curriculumTopicTrainingProgram)
@@ -237,7 +237,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
     curriculumTopicTrainingProgram.curriculumTopicId = tmp.first;
     curriculumTopicTrainingProgram.occupationFormId = tmp.fifth;
     curriculumTopicTrainingProgram.trainingProgramId = tmp.sixth;
-    curriculumTopicTrainingProgram.trainingProgrmaCurriculumSectionId = this.trainingProgramCurriculumSectionId;
+    curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = this.trainingProgramCurriculumSectionId;
 
     this.curriculumTopicTrainingProgramService.updateValue(curriculumTopicTrainingProgram)
       .subscribe((data: CurriculumTopicTrainingProgram) => {

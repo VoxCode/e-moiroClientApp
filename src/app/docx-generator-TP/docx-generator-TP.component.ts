@@ -26,6 +26,10 @@ import {FirstDocumentPart} from './first-document-part/first-document-part';
 import {DocxMergeService} from '../services/docx-merge.service';
 import {Base64ToBlob} from '../base64-to-blob/base64-to-blob';
 import {SecondDocumentPart} from './second-document-part/second-document-part';
+import {TrainingProgramTeacherService} from '../services/training-program-teacher.service';
+import {TrainingProgramTeacher} from '../models/TrainingProgramTeacher';
+import {Department} from '../models/Department';
+import {DepartmentService} from '../services/department.service';
 
 
 @Component({
@@ -39,9 +43,11 @@ import {SecondDocumentPart} from './second-document-part/second-document-part';
     TrainingProgramMainLiteratureService,
     TrainingProgramAdditionalLiteratureService,
     TrainingProgramRegulationService,
+    TrainingProgramTeacherService,
     CurriculumTopicTrainingProgramService,
     StudentCategoryService,
     CertificationTypeService,
+    DepartmentService,
     WordToSfdtService,
     DocxMergeService
   ]
@@ -59,6 +65,8 @@ export class DocxGeneratorTPComponent implements OnInit{
   trainingProgramMainLiteratures: TrainingProgramMainLiterature[];
   trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[];
   trainingProgramRegulations: TrainingProgramRegulation[];
+  trainingProgramTeachers: TrainingProgramTeacher[];
+  department: Department;
   docx: any[] = [];
   wordDocxType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
@@ -70,15 +78,16 @@ export class DocxGeneratorTPComponent implements OnInit{
     private trainingProgramAdditionalLiteratureService: TrainingProgramAdditionalLiteratureService,
     private trainingProgramRegulationService: TrainingProgramRegulationService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
+    private trainingProgramTeacherService: TrainingProgramTeacherService,
     private studentCategoryService: StudentCategoryService,
     private certificationTypeService: CertificationTypeService,
     private htmlToDocxService: WordToSfdtService,
     private docxMergeService: DocxMergeService,
+    private departmentService: DepartmentService,
     private route: ActivatedRoute
   ) { }
 
-  // tslint:disable-next-line:typedef
-  ngOnInit() {
+  ngOnInit(): void {
     this.curriculumTopicsList = [];
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
@@ -185,13 +194,32 @@ export class DocxGeneratorTPComponent implements OnInit{
       .subscribe((data: StudentCategory) => {
         if (data !== undefined){
           this.studentCategory = data;
+          this.loadTrainingProgramTeacher();
+        }
+      });
+  }
+
+  loadTrainingProgramTeacher(): void {
+    this.trainingProgramTeacherService.getTrainingProgramTeachers(this.id)
+      .subscribe((trainingProgramTeacher: TrainingProgramTeacher[]) => {
+        if (trainingProgramTeacher){
+          this.trainingProgramTeachers = trainingProgramTeacher;
+          this.loadDepartment();
+        }
+      });
+  }
+
+  loadDepartment(): void {
+    this.departmentService.getValue(this.trainingProgram.departmentId)
+      .subscribe((department: Department) => {
+        if (department){
+          this.department = department;
           this.loadCertificationType();
         }
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadCertificationType() {
+  loadCertificationType(): void {
     this.certificationTypeService.getValue(this.trainingProgram.certificationTypeId)
       .subscribe((data: CertificationType) => {
         if (data !== undefined){
@@ -204,7 +232,9 @@ export class DocxGeneratorTPComponent implements OnInit{
   public getDocument(): void {
     const firstDocumentPart = new FirstDocumentPart(
       this.trainingProgram,
-      this.studentCategory
+      this.studentCategory,
+      this.trainingProgramTeachers,
+      this.department
     );
 
     const secondDocumentPart = new SecondDocumentPart(

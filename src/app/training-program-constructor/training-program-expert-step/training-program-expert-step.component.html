@@ -17,9 +17,10 @@
       </div>
       <br>
       <div *ngFor="let el of trainingProgramTeacherDeveloper let i = index" >
-        <ng-select *ngIf="teachers.length !== 0" [items]="this.teachers" [clearable]="false"
+        <ng-select *ngIf="teachers.length !== 0 && trainingProgramTeacherDeveloper.length !== 0" [items]="this.teachers" [clearable]="false"
                    (change)="saveDeveloper($event.id, i)"
-                   bindValue="el.id"
+                   bindValue=""
+                   [(ngModel)]="teacherDevelopers[i]"
                    bindLabel="fullNameForm"
                    placeholder="Выберите разработчика">
         </ng-select>
@@ -41,14 +42,15 @@
       <div *ngFor="let el of trainingProgramTeacherReviewer; let i = index" >
         <ng-select *ngIf="teachers.length !== 0" [items]="this.teachers" [clearable]="false"
                    (change)="saveReviewer($event.id, i)"
-                   bindValue="el.id"
+                   bindValue=""
+                   [(ngModel)]="teacherReviewers[i]"
                    bindLabel="fullNameForm"
                    placeholder="Выберите рецензента">
         </ng-select>
         <br>
         <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeReviewer(i, el.id)"
-                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
+                  (click)="removeReviewer(i, el.id)" mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
         </div>
         <br>
       </div>

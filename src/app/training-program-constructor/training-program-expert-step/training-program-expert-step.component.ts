@@ -18,12 +18,15 @@ import {TeacherService} from '../../services/teacher.service';
     TeacherService,
   ]
 })
+
 export class TrainingProgramExpertStepComponent implements OnInit {
 
   id: number;
   trainingProgram: TrainingProgram;
   trainingProgramTeacherDeveloper: TrainingProgramTeacher[] = [{}];
   trainingProgramTeacherReviewer: TrainingProgramTeacher[] = [{}];
+  teacherDevelopers: Teacher[] = [];
+  teacherReviewers: Teacher[] = [];
   teachers: Teacher[] = [];
 
   constructor(
@@ -62,9 +65,26 @@ export class TrainingProgramExpertStepComponent implements OnInit {
   loadTrainingProgramTeacher(): void {
     this.trainingProgramTeacherService.getTrainingProgramTeachers(this.id)
       .subscribe((data: TrainingProgramTeacher[]) => {
-        if (data.length !== 0){
+        if (data.length !== 0) {
           this.trainingProgramTeacherDeveloper = data.filter(a => a.expertId === 1);
           this.trainingProgramTeacherReviewer = data.filter(a => a.expertId === 2);
+
+          if (this.trainingProgramTeacherDeveloper.length !== 0) {
+            this.trainingProgramTeacherDeveloper.forEach((obj) => {
+              this.teacherDevelopers.push(this.teachers.find(a => a.id === obj.teacherId));
+            });
+          }
+          else {
+            this.trainingProgramTeacherDeveloper = [{}];
+          }
+          if (this.trainingProgramTeacherReviewer.length !== 0) {
+            this.trainingProgramTeacherReviewer.forEach((obj) => {
+              this.teacherReviewers.push(this.teachers.find(a => a.id === obj.teacherId));
+            });
+          }
+          else {
+            this.trainingProgramTeacherReviewer = [{}];
+          }
         }
       });
   }
@@ -87,11 +107,57 @@ export class TrainingProgramExpertStepComponent implements OnInit {
     this.trainingProgramTeacherService.deleteValue(id).subscribe();
   }
 
-  saveDeveloper(event: number, i: number): void {
-    console.log(event, i);
+  saveDeveloper(teacherId: number, index: number): void {
+    const expertId = 1;
+    if (!this.trainingProgramTeacherDeveloper[index].id) {
+      this.create(teacherId, expertId, index);
+    }
+    else {
+      this.update(teacherId, expertId, index);
+    }
   }
 
-  saveReviewer(event: number, i: number): void {
-    console.log(event, i);
+  saveReviewer(teacherId: number, index: number): void {
+    const expertId = 2;
+    if (!this.trainingProgramTeacherReviewer[index].id) {
+      this.create(teacherId, expertId, index);
+    }
+    else {
+      this.update(teacherId, expertId, index);
+    }
+  }
+
+  create(teacherId: number, expertId: number, index: number): void {
+    const trainingProgramTeacher = new TrainingProgramTeacher();
+    trainingProgramTeacher.expertId = expertId;
+    trainingProgramTeacher.trainingProgramId = this.id;
+    trainingProgramTeacher.teacherId = teacherId;
+    this.trainingProgramTeacherService.createValue(trainingProgramTeacher)
+      .subscribe((trainingProgramTeacherResponse: TrainingProgramTeacher) => {
+        console.log('Create was successful!');
+        if (expertId === 1) {
+        this.trainingProgramTeacherDeveloper[index] = trainingProgramTeacherResponse;
+      }
+      else if (expertId === 2) {
+        this.trainingProgramTeacherReviewer[index] = trainingProgramTeacherResponse;
+      }
+    });
+  }
+
+  update(teacherId: number, expertId: number, index: number): void {
+    let trainingProgramTeacher: TrainingProgramTeacher;
+    if (expertId === 1) {
+      trainingProgramTeacher = this.trainingProgramTeacherDeveloper[index];
+      trainingProgramTeacher.teacherId = teacherId;
+    }
+    else if (expertId === 2) {
+      trainingProgramTeacher = this.trainingProgramTeacherReviewer[index];
+      trainingProgramTeacher.teacherId = teacherId;
+    }
+    if (trainingProgramTeacher) {
+      this.trainingProgramTeacherService.updateValue(trainingProgramTeacher).subscribe(() => {
+        console.log('Update was successful!');
+      });
+    }
   }
 }
