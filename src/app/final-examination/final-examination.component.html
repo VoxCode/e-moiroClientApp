@@ -15,7 +15,7 @@
           </div>
         </div>
         <div class="addButton">
-          <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.show()"
+          <button type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="addRow()"
                   mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
         </div>
         <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" class="z-depth-1">
@@ -24,16 +24,14 @@
             <th *ngFor="let head of headElements; let i = index" [mdbTableSort]="elements"
                 [sortBy]="headElements[i]"
                 scope="col">{{head | titlecase}}
-              <mdb-icon fas icon="sort"></mdb-icon>
             </th>
           </tr>
           </thead>
           <tbody #row>
           <tr mdbTableCol *ngFor="let el of elements; let i = index">
             <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{el.id}}</th>
-            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.first}}</td>
-            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.third}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.last}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.third}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
               <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
                       mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
@@ -54,33 +52,3 @@
     </div>
   </div>
 </div>
-
-<!--шаблон для добавления-->
-<div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-fluid" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()" (click)="cancel()">
-          <span aria-hidden="true">×</span>
-        </button>
-        <h4 class="modal-title w-100" id="myModalLabel">Итоговая аттестация</h4>
-      </div>
-      <div class="modal-body">
-        <label>Вопрос</label>
-        <textarea type="text" [(ngModel)]="this.value.content" class="md-textarea form-control" mdbInput></textarea>
-        <br>
-        <label>Тип аттестации</label>
-        <select [(ngModel)]="certificationType" class="browser-default custom-select">
-          <option *ngFor="let el of certificationTypes" [ngValue]="el">{{el.name}}</option>
-        </select>
-        <br><br>
-      </div>
-      <div class="modal-footer">
-        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" (click)="crate()"
-                mdbWavesEffect>Сохранить</button>
-      </div>
-    </div>
-  </div>
-</div>
-

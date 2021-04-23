@@ -3,16 +3,16 @@
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">×</span>
     </button>
-    <h4 class="modal-title w-100" id="myModalLabel">Редактирование: {{editableRow.first}}</h4>
+    <h4 class="modal-title w-100" id="myModalLabel">Форма получения образования</h4>
   </div>
   <div class="modal-body">
     <form [formGroup]="form">
       <div class="md-form">
-        <p>Содержимое</p>
-        <textarea id="last" type="text" class="form-control" formControlName="last" mdbInput mdbValidate
-                  [validateSuccess]="false"></textarea>
+        <label for="last">Содержимое</label>
+        <input id="last" type="text" class="form-control" formControlName="last" mdbInput mdbValidate
+                  [validateSuccess]="false">
 
-        <mdb-error *ngIf="last.invalid && (last.dirty || last.touched)">Input is required</mdb-error>
+        <mdb-error *ngIf="last.invalid && (last.dirty || last.touched)">Обязательно для заполнения</mdb-error>
       </div>
     </form>
   </div>

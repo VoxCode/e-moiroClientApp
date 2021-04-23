@@ -2,6 +2,14 @@
   margin-right: 25px;
 };
 
+th{
+  word-wrap: break-word;
+}
+
+td{
+  word-wrap: break-word;
+}
+
 .addButton{
   position: relative;
   float: right;
@@ -9,17 +17,5 @@
 
 button{
   border-radius: 5px;
-}
-
-th{
-  word-wrap: break-word;
-}
-
-td{
-  max-width: 150px;
-  word-wrap: break-word;
-}
-.modal-body {
-  max-height: 70vh;
-  overflow-y: scroll;
+  width: 70px;
 }

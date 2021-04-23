@@ -15,8 +15,8 @@
           </div>
         </div>
         <div class="addButton">
-          <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.show()"
-                  mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+          <button type="button" mdbBtn color="primary" class="relative waves-light" size="sm"
+                  (click)="addRow()" mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
         </div>
         <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" class="z-depth-1">
           <thead class="sticky-top">
@@ -24,14 +24,12 @@
             <th *ngFor="let head of headElements; let i = index" [mdbTableSort]="elements"
                 [sortBy]="headElements[i]"
                 scope="col">{{head | titlecase}}
-              <mdb-icon fas icon="sort"></mdb-icon>
             </th>
           </tr>
           </thead>
           <tbody #row>
           <tr mdbTableCol *ngFor="let el of elements; let i = index">
             <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{el.id}}</th>
-            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.first}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.third}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.second}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.fourth}}</td>
@@ -54,55 +52,12 @@
           </tbody>
           <tfoot class="grey lighten-5 w-100">
           <tr>
-            <td colspan="9">
+            <td colspan="8">
               <mdb-table-pagination [tableEl]="tableEl" paginationAlign="" [searchDataSource]="elements"></mdb-table-pagination>
             </td>
           </tr>
           </tfoot>
         </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!--шаблон для добавления-->
-<div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-fluid" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide(); cancel()">
-          <span aria-hidden="true">×</span>
-        </button>
-        <h4 class="modal-title w-100" id="myModalLabel">Преподаватели</h4>
-      </div>
-      <div class="modal-body">
-        <div class="md-form">
-          <label for="third">Фамилия</label>
-          <input id="third" type="text" [(ngModel)]="this.value.lastName" class="md-textarea form-control" mdbInput>
-        </div>
-        <div class="md-form">
-          <label for="second">Имя</label>
-          <input id="second" type="text" [(ngModel)]="this.value.firstName" class="md-textarea form-control" mdbInput>
-        </div>
-        <div class="md-form">
-          <label for="fourth">Отчество</label>
-          <input id="fourth" type="text" [(ngModel)]="this.value.patronymicName" class="md-textarea form-control" mdbInput>
-        </div>
-        <div class="md-form">
-          <label for="fifth">Должность</label>
-          <input id="fifth" type="text" [(ngModel)]="this.value.position" class="md-textarea form-control" mdbInput>
-        </div>
-        <div class="md-form">
-          <label for="sixth">Академическое звание</label>
-          <input id="sixth" type="text" [(ngModel)]="this.value.academicRank" class="md-textarea form-control" mdbInput>
-        </div>
-        <br><br>
-        <mdb-checkbox [(ngModel)]="this.value.isCathedral" [default]="true">Кафедрал</mdb-checkbox>
-      </div>
-      <div class="modal-footer">
-        <button type="button" mdbBtn color="primary" class="relative waves-light"
-                (click)="basicModal.hide(); crate()" mdbWavesEffect>Сохранить</button>
       </div>
     </div>
   </div>

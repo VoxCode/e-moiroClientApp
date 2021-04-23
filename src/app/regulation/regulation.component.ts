@@ -149,5 +149,3 @@ export class RegulationComponent implements OnInit, AfterViewInit {
     };
   }
 }
-
-

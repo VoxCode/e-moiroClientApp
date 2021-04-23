@@ -3,7 +3,7 @@
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">×</span>
     </button>
-    <h4 class="modal-title w-100" id="myModalLabel">Редактирование: {{editableRow.first}}</h4>
+    <h4 class="modal-title w-100" id="myModalLabel">Преподаватели</h4>
   </div>
   <div class="modal-body">
     <form [formGroup]="form">
@@ -11,32 +11,33 @@
         <label for="third">Фамилия</label>
         <input id="third" type="text" class="form-control" formControlName="third" mdbInput mdbValidate
                [validateSuccess]="false">
-        <mdb-error *ngIf="third.invalid && (third.dirty || third.touched)">Input is required</mdb-error>
+        <mdb-error *ngIf="third.invalid && (third.dirty || third.touched)">Обязательно для заполнения</mdb-error>
       </div>
       <div class="md-form">
         <label for="second">Имя</label>
         <input id="second" type="text" class="form-control" formControlName="second" mdbInput mdbValidate
                   [validateSuccess]="false">
-        <mdb-error *ngIf="second.invalid && (second.dirty || second.touched)">Input is required</mdb-error>
+        <mdb-error *ngIf="second.invalid && (second.dirty || second.touched)">Обязательно для заполнения</mdb-error>
       </div>
       <div class="md-form">
         <label for="fourth">Отчество</label>
         <input id="fourth" type="text" class="form-control" formControlName="fourth" mdbInput mdbValidate
                [validateSuccess]="false">
-        <mdb-error *ngIf="fourth.invalid && (fourth.dirty || fourth.touched)">Input is required</mdb-error>
+        <mdb-error *ngIf="fourth.invalid && (fourth.dirty || fourth.touched)">Обязательно для заполнения</mdb-error>
       </div>
-      <div class="md-form">
+      <div class="md-textarea">
         <label for="fifth">Должность</label>
-        <input id="fifth" type="text" class="form-control" formControlName="fifth" mdbInput mdbValidate
-               [validateSuccess]="false">
-        <mdb-error *ngIf="fifth.invalid && (fifth.dirty || fifth.touched)">Input is required</mdb-error>
+        <textarea id="fifth" type="text" class="md-textarea md-textarea-auto form-control"
+                  formControlName="fifth" mdbInput mdbValidate [validateSuccess]="false"></textarea>
+        <mdb-error *ngIf="fifth.invalid && (fifth.dirty || fifth.touched)"></mdb-error>
       </div>
-      <div class="md-form">
+      <div class="md-textarea">
         <label for="sixth">Академическое звание</label>
-        <input id="sixth" type="text" class="form-control" formControlName="sixth" mdbInput mdbValidate
-               [validateSuccess]="false">
-        <mdb-error *ngIf="sixth.invalid && (sixth.dirty || sixth.touched)">Input is required</mdb-error>
+        <textarea id="sixth" type="text" class="md-textarea md-textarea-auto form-control"
+                  formControlName="sixth" mdbInput mdbValidate [validateSuccess]="false"></textarea>
+        <mdb-error *ngIf="sixth.invalid && (sixth.dirty || sixth.touched)"></mdb-error>
       </div>
+      <br>
       <div>
         <mdb-checkbox [default]="true" formControlName="seventh">Кафедрал</mdb-checkbox>
       </div>

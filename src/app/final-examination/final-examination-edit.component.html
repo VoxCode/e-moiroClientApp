@@ -3,22 +3,23 @@
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">×</span>
     </button>
-    <h4 class="modal-title w-100" id="myModalLabel">Редактирование: {{editableRow.first}}</h4>
+    <h4 class="modal-title w-100" id="myModalLabel">Итоговая аттестация</h4>
   </div>
   <div class="modal-body">
     <form [formGroup]="form">
-      <div class="md-form">
-        <p>Содержимое</p>
-        <textarea id="last" type="text" class="form-control" formControlName="last" mdbInput mdbValidate
-                  [validateSuccess]="false"></textarea>
-
-        <mdb-error *ngIf="last.invalid && (last.dirty || last.touched)">Input is required</mdb-error>
+      <div class="md-textarea">
+        <label for="last">Содержимое</label>
+        <textarea id="last" type="text" class="md-textarea md-textarea-auto form-control"
+                  formControlName="last" mdbInput mdbValidate [validateSuccess]="false"></textarea>
+        <mdb-error *ngIf="last.invalid && (last.dirty || last.touched)"></mdb-error>
       </div>
-
-      <label>Должность</label>
-      <select class="browser-default custom-select" id="second" formControlName="second">
+      <br>
+      <label for="second">Тип аттестации</label>
+      <select class="browser-default custom-select" id="second" formControlName="second" mdbValidate [validateSuccess]="false">
+        <option value="" disabled>Выберите тип аттестации</option>
         <option *ngFor="let el of certificationTypes" [ngValue]="el.id">{{el.name}}</option>
       </select>
+      <mdb-error *ngIf="second.invalid && (second.dirty || second.touched)"></mdb-error>
       <br><br>
 
     </form>

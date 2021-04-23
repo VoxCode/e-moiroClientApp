@@ -5,8 +5,7 @@ import {MDBModalRef} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-modal-edit',
-  templateUrl: './teacher-edit.component.html',
-  styleUrls: ['./teacher.component.scss']
+  templateUrl: './teacher-edit.component.html'
 })
 export class TeacherEditComponent implements OnInit{
   public editableRow: {
@@ -25,7 +24,7 @@ export class TeacherEditComponent implements OnInit{
 
   public form: FormGroup = new FormGroup({
     id: new FormControl({value: '', disabled: true}),
-    first: new FormControl('', Validators.required),
+    first: new FormControl({value: '', disabled: true}),
     second: new FormControl('', Validators.required),
     third: new FormControl('', Validators.required),
     fourth: new FormControl('', Validators.required),

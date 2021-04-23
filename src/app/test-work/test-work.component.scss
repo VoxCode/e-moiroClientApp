@@ -7,7 +7,6 @@ th{
 }
 
 td{
-  max-width: 150px;
   word-wrap: break-word;
 }
 
@@ -18,9 +17,5 @@ td{
 
 button{
   border-radius: 5px;
-}
-
-.modal-body {
-  max-height: 70vh;
-  overflow-y: scroll;
+  width: 70px;
 }

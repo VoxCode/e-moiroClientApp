@@ -11,15 +11,13 @@ import {OccupationFormEditComponent} from './occupation-form-edit.component';
   providers: [OccupationFormService]
 })
 export class OccupationFormComponent implements OnInit, AfterViewInit {
-  value: OccupationForm = new OccupationForm();
-  values: OccupationForm[];
 
   @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
   @ViewChild('row', { static: true }) row: ElementRef;
 
   elements: any = [];
-  headElements = ['Номер', 'id', 'Полное название', 'Краткое название', 'Команда'];
+  headElements = ['Номер', 'Название', 'Множественная форма', 'Команда'];
   searchText = '';
   previous: string;
   modalRef: MDBModalRef;
@@ -29,27 +27,22 @@ export class OccupationFormComponent implements OnInit, AfterViewInit {
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService) { }
 
-  // tslint:disable-next-line:typedef
-  @HostListener('input') oninput() {
+  @HostListener('input') oninput = () => {
     this.mdbTablePagination.searchText = this.searchText;
   }
 
-  // tslint:disable-next-line:typedef
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadValue();
   }
 
-  // tslint:disable-next-line:typedef use-lifecycle-interface
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
-
     this.mdbTablePagination.calculateFirstItemIndex();
     this.mdbTablePagination.calculateLastItemIndex();
     this.cdRef.detectChanges();
   }
 
-  // tslint:disable-next-line:typedef
-  searchItems() {
+  searchItems(): void {
     const prev = this.mdbTable.getDataSource();
 
     if (!this.searchText) {
@@ -71,18 +64,17 @@ export class OccupationFormComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // tslint:disable-next-line:typedef
-  loadValue() {
+  loadValue(): void {
     this.valueService.getValues()
       .subscribe((data: OccupationForm[]) => {
-        this.values = data;
-        for (let i = 1; i <= this.values.length; i++) {
+        data.sort((a, b) => a.id - b.id);
+        data.forEach((obj, index) => {
           this.elements.push({
-            id: i.toString(),
-            first: this.values[i - 1].id,
-            second: this.values[i - 1].shortName,
-            last: this.values[i - 1].fullName});
-        }
+            id: (++index).toString(),
+            first: obj.id,
+            second: obj.fullName,
+            last: obj.pluralName});
+        });
         this.mdbTable.setDataSource(this.elements);
         this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
         this.elements = this.mdbTable.getDataSource();
@@ -90,73 +82,65 @@ export class OccupationFormComponent implements OnInit, AfterViewInit {
       });
   }
 
-  // tslint:disable-next-line:typedef
-  crate(){
-    this.valueService.createValue(this.value)
-      .subscribe((data: OccupationForm) => {
-        // this.values.push(data);
-        this.value = data;
+  crate(el: any): void {
+    const occupationForm = new OccupationForm(0, el.second, el.last);
+    this.valueService.createValue(occupationForm)
+      .subscribe((occupationFormResponse: OccupationForm) => {
         const index = this.elements.length + 1;
         this.mdbTable.addRow({
           id: index.toString(),
-          first: this.value.id,
-          second: this.value.shortName,
-          last: this.value.fullName
+          first: occupationFormResponse.id,
+          second: occupationFormResponse.fullName,
+          last: occupationFormResponse.pluralName
         });
         this.mdbTable.setDataSource(this.elements);
-        this.cancel();
       });
   }
 
-  // tslint:disable-next-line:typedef
-  save(el: any) {
-    this.cancel();
-    this.value.id = el.first;
-    this.value.shortName = el.second;
-    this.value.fullName = el.last;
-    this.valueService.updateValue(this.value)
-      .subscribe();
-    this.cancel();
-  }
-  // tslint:disable-next-line:typedef
-  editValue(p: OccupationForm) {
-    this.value = p;
-  }
-  // tslint:disable-next-line:typedef
-  cancel() {
-    this.value = new OccupationForm();
-  }
-  // tslint:disable-next-line:typedef
-  delete(p: any) {
-    this.value.id = p.first;
-    this.value.shortName = p.second;
-    this.value.fullName = p.last;
-    this.valueService.deleteValue(this.value.id)
-      .subscribe(data => {
-        this.removeRow(p);
-      });
-  }
-  // tslint:disable-next-line:typedef
-  add() {
-    this.cancel();
+  save(el: any): void {
+    const occupationForm = new OccupationForm(el.first, el.second, el.last);
+    this.valueService.updateValue(occupationForm).subscribe();
   }
 
-  // tslint:disable-next-line:typedef
-  removeRow(el: any) {
+  delete(el: any): void {
+    this.valueService.deleteValue(el.first)
+      .subscribe(() => {
+        this.removeRow(el);
+      });
+  }
+
+  removeRow(el: any): void {
     const elementIndex = this.elements.findIndex((elem: any) => el === elem);
     this.mdbTable.removeRow(elementIndex);
-    // tslint:disable-next-line:no-shadowed-variable
-    this.mdbTable.getDataSource().forEach((el: any, index: any) => {
-      el.id = (index + 1).toString();
+    this.mdbTable.getDataSource().forEach((value: any, index: any) => {
+      value.id = (index + 1).toString();
     });
     this.mdbTable.setDataSource(this.elements);
-    this.cancel();
   }
 
-  // tslint:disable-next-line:typedef
-  editRow(el: any) {
+  addRow(): void {
+    this.modalRef = this.modalService.show(OccupationFormEditComponent, this.modalOption(this.emptyEl()));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      this.crate(newElement);
+    });
+  }
+
+  editRow(el: any): void {
     const elementIndex = this.elements.findIndex((elem: any) => el === elem);
-    const modalOptions = {
+    this.modalRef = this.modalService.show(OccupationFormEditComponent, this.modalOption(el));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      this.elements[elementIndex] = newElement;
+      this.save(newElement);
+    });
+    this.mdbTable.setDataSource(this.elements);
+  }
+
+  emptyEl(): any {
+    return {id: 0, first: '', second: '', last: ''};
+  }
+
+  modalOption(el: any): any {
+    return {
       backdrop: true,
       keyboard: true,
       focus: true,
@@ -169,11 +153,5 @@ export class OccupationFormComponent implements OnInit, AfterViewInit {
         editableRow: el
       }
     };
-    this.modalRef = this.modalService.show(OccupationFormEditComponent, modalOptions);
-    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
-      this.elements[elementIndex] = newElement;
-      this.save(newElement);
-    });
-    this.mdbTable.setDataSource(this.elements);
   }
 }
