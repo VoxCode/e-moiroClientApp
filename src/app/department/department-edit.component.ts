@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {MDBModalRef} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-modal-edit',
-  templateUrl: './department-edit.component.html',
-  styleUrls: ['./department.component.scss']
+  templateUrl: './department-edit.component.html'
 })
 export class DepartmentEditComponent implements OnInit{
 
@@ -15,7 +14,7 @@ export class DepartmentEditComponent implements OnInit{
 
   public form: FormGroup = new FormGroup({
     id: new FormControl({value: '', disabled: true}),
-    first: new FormControl('', Validators.required),
+    first: new FormControl({value: '', disabled: true}),
     second: new FormControl('', Validators.required),
     last: new FormControl('', Validators.required)
   });
@@ -29,20 +28,13 @@ export class DepartmentEditComponent implements OnInit{
     this.form.controls.last.patchValue(this.editableRow.last);
   }
 
-  // tslint:disable-next-line:typedef
-  editRow() {
+  editRow(): void {
     this.editableRow = this.form.getRawValue();
     this.saveButtonClicked.next(this.editableRow);
     this.modalRef.hide();
   }
 
-  // tslint:disable-next-line:typedef
-  get first() { return this.form.get('first'); }
-
-  // tslint:disable-next-line:typedef
-  get second() { return this.form.get('second'); }
-
-  // tslint:disable-next-line:typedef
-  get last() { return this.form.get('last'); }
-
+  get first(): AbstractControl { return this.form.get('first'); }
+  get second(): AbstractControl { return this.form.get('second'); }
+  get last(): AbstractControl { return this.form.get('last'); }
 }

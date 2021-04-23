@@ -3,7 +3,6 @@ import { RegulationService } from '../services/regulation.service';
 import { Regulation } from '../models/Regulation';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {RegulationEditComponent} from './regulation-edit.component';
-import {MainLiteratureEditComponent} from '../main-literature/main-literature-edit.component';
 
 @Component({
   selector: 'app-regulation',
@@ -68,6 +67,7 @@ export class RegulationComponent implements OnInit, AfterViewInit {
   loadValue(): void {
     this.valueService.getValues()
       .subscribe((data: Regulation[]) => {
+        data.sort((a, b) => a.id - b.id);
         data.forEach((obj, index) => {
           this.elements.push({id: (++index).toString(), first: obj.id, last: obj.content});
         });
@@ -113,7 +113,7 @@ export class RegulationComponent implements OnInit, AfterViewInit {
   }
 
   addRow(): void {
-    this.modalRef = this.modalService.show(MainLiteratureEditComponent, this.modalOption(this.emptyEl()));
+    this.modalRef = this.modalService.show(RegulationEditComponent, this.modalOption(this.emptyEl()));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       this.crate(newElement);
     });

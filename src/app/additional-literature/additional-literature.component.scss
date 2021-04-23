@@ -2,11 +2,12 @@
   margin-right: 25px;
 };
 
+th{
+  word-wrap: break-word;
+}
+
 td{
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  word-wrap: break-word;
 }
 
 .addButton{
@@ -16,10 +17,10 @@ td{
 
 button{
   border-radius: 5px;
+  width: 70px;
 }
 
 .modal-body {
   max-height: 70vh;
   overflow-y: scroll;
 }
-

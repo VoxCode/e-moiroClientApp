@@ -5,8 +5,7 @@ import {MDBModalRef} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-modal-edit',
-  templateUrl: './regulation-edit.component.html',
-  styleUrls: ['./regulation.component.scss']
+  templateUrl: './regulation-edit.component.html'
 })
 export class RegulationEditComponent implements OnInit{
 

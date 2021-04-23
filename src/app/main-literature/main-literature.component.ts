@@ -67,6 +67,7 @@ export class MainLiteratureComponent implements OnInit, AfterViewInit {
   loadValue(): void {
     this.valueService.getValues()
       .subscribe((data: MainLiterature[]) => {
+        data.sort((a, b) => a.id - b.id);
         data.forEach((obj, index) => {
           this.elements.push({id: (++index).toString(), first: obj.id, last: obj.content});
         });

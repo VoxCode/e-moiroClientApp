@@ -25,8 +25,7 @@ export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
   constructor(
     private valueService: AdditionalLiteratureService,
     private cdRef: ChangeDetectorRef,
-    private modalService: MDBModalService) {
-  }
+    private modalService: MDBModalService) { }
 
   @HostListener('input') oninput = () => {
     this.mdbTablePagination.searchText = this.searchText;

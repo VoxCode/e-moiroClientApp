@@ -11,15 +11,13 @@ import {CurriculumSectionEditComponent} from './curriculum-section-edit.componen
   providers: [CurriculumSectionService]
 })
 export class CurriculumSectionComponent implements OnInit, AfterViewInit {
-  value: CurriculumSection = new CurriculumSection();
-  values: CurriculumSection[];
 
   @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
   @ViewChild('row', { static: true }) row: ElementRef;
 
   elements: any = [];
-  headElements = ['Номер', 'id', 'Название', 'Команда'];
+  headElements = ['Номер', 'Название', 'Команда'];
   searchText = '';
   previous: string;
   modalRef: MDBModalRef;
@@ -29,27 +27,22 @@ export class CurriculumSectionComponent implements OnInit, AfterViewInit {
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService) { }
 
-  // tslint:disable-next-line:typedef
-  @HostListener('input') oninput() {
+  @HostListener('input') oninput = () => {
     this.mdbTablePagination.searchText = this.searchText;
   }
 
-  // tslint:disable-next-line:typedef
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadValue();
   }
 
-  // tslint:disable-next-line:typedef use-lifecycle-interface
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
-
     this.mdbTablePagination.calculateFirstItemIndex();
     this.mdbTablePagination.calculateLastItemIndex();
     this.cdRef.detectChanges();
   }
 
-  // tslint:disable-next-line:typedef
-  searchItems() {
+  searchItems(): void {
     const prev = this.mdbTable.getDataSource();
 
     if (!this.searchText) {
@@ -71,21 +64,16 @@ export class CurriculumSectionComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // tslint:disable-next-line:typedef
-  loadValue() {
+  loadValue(): void {
     this.valueService.getValues()
       .subscribe((data: CurriculumSection[]) => {
-        this.values = data;
-        // tslint:disable-next-line:only-arrow-functions typedef
-        this.values.sort(function(a, b) {
-          return a.id - b.id;
-        });
-        for (let i = 1; i <= this.values.length; i++) {
+        data.sort((a, b) => a.id - b.id);
+        data.forEach((obj, index) => {
           this.elements.push({
-            id: i.toString(),
-            first: this.values[i - 1].id,
-            last: this.values[i - 1].name});
-        }
+            id: (++index).toString(),
+            first: obj.id,
+            last: obj.name});
+        });
         this.mdbTable.setDataSource(this.elements);
         this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
         this.elements = this.mdbTable.getDataSource();
@@ -93,69 +81,64 @@ export class CurriculumSectionComponent implements OnInit, AfterViewInit {
       });
   }
 
-  // tslint:disable-next-line:typedef
-  crate(){
-    this.valueService.createValue(this.value)
-      .subscribe((data: CurriculumSection) => {
-        this.value = data;
+  crate(el: any): void {
+    const curriculumSection = new CurriculumSection(0, el.last);
+    this.valueService.createValue(curriculumSection)
+      .subscribe((curriculumSectionResponse: CurriculumSection) => {
         const index = this.elements.length + 1;
         this.mdbTable.addRow({
           id: index.toString(),
-          first: this.value.id,
-          last: this.value.name
+          first: curriculumSectionResponse.id,
+          last: curriculumSectionResponse.name
         });
         this.mdbTable.setDataSource(this.elements);
-        this.cancel();
       });
   }
 
-  // tslint:disable-next-line:typedef
-  save(el: any) {
-    this.cancel();
-    this.value.id = el.first;
-    this.value.name = el.last;
-    this.valueService.updateValue(this.value)
-      .subscribe();
-    this.cancel();
+  save(el: any): void {
+    const curriculumSection = new CurriculumSection(el.first, el.last);
+    this.valueService.updateValue(curriculumSection).subscribe();
   }
-  // tslint:disable-next-line:typedef
-  editValue(p: CurriculumSection) {
-    this.value = p;
-  }
-  // tslint:disable-next-line:typedef
-  cancel() {
-    this.value = new CurriculumSection();
-  }
-  // tslint:disable-next-line:typedef
-  delete(p: any) {
-    this.value.id = p.first;
-    this.value.name = p.last;
-    this.valueService.deleteValue(this.value.id)
+
+  delete(el: any): void {
+    this.valueService.deleteValue(el.first)
       .subscribe(() => {
-        this.removeRow(p);
+        this.removeRow(el);
       });
   }
-  // tslint:disable-next-line:typedef
-  add() {
-    this.cancel();
-  }
 
-  // tslint:disable-next-line:typedef
-  removeRow(el: any) {
+  removeRow(el: any): void {
     const elementIndex = this.elements.findIndex((elem: any) => el === elem);
     this.mdbTable.removeRow(elementIndex);
-    // tslint:disable-next-line:no-shadowed-variable
-    this.mdbTable.getDataSource().forEach((el: any, index: any) => {
-      el.id = (index + 1).toString();
+    this.mdbTable.getDataSource().forEach((value: any, index: any) => {
+      value.id = (index + 1).toString();
     });
     this.mdbTable.setDataSource(this.elements);
-    this.cancel();
   }
 
-  // tslint:disable-next-line:typedef
-  editRow(el: any) {
+  addRow(): void {
+    this.modalRef = this.modalService.show(CurriculumSectionEditComponent, this.modalOption(this.emptyEl()));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      this.crate(newElement);
+    });
+  }
+
+  editRow(el: any): void {
     const elementIndex = this.elements.findIndex((elem: any) => el === elem);
-    const modalOptions = {
+    this.modalRef = this.modalService.show(CurriculumSectionEditComponent, this.modalOption(el));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      this.elements[elementIndex] = newElement;
+      this.save(newElement);
+    });
+    this.mdbTable.setDataSource(this.elements);
+  }
+
+  emptyEl(): any {
+    return {id: 0, first: '', last: ''};
+  }
+
+  modalOption(el: any): any {
+    return {
       backdrop: true,
       keyboard: true,
       focus: true,
@@ -168,12 +151,6 @@ export class CurriculumSectionComponent implements OnInit, AfterViewInit {
         editableRow: el
       }
     };
-    this.modalRef = this.modalService.show(CurriculumSectionEditComponent, modalOptions);
-    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
-      this.elements[elementIndex] = newElement;
-      this.save(newElement);
-    });
-    this.mdbTable.setDataSource(this.elements);
   }
 }
 

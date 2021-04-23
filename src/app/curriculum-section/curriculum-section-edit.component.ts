@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {MDBModalRef} from 'angular-bootstrap-md';
 
@@ -8,7 +8,8 @@ import {MDBModalRef} from 'angular-bootstrap-md';
   templateUrl: './curriculum-section-edit.component.html',
   styleUrls: ['./curriculum-section.component.scss']
 })
-export class CurriculumSectionEditComponent {
+export class CurriculumSectionEditComponent implements OnInit{
+
   public editableRow: { id: string, first: string, last: string, handle: string };
   public saveButtonClicked: Subject<any> = new Subject<any>();
 
@@ -20,24 +21,18 @@ export class CurriculumSectionEditComponent {
 
   constructor(public modalRef: MDBModalRef) { }
 
-  // tslint:disable-next-line:typedef use-lifecycle-interface
-  ngOnInit() {
+  ngOnInit(): void {
     this.form.controls.id.patchValue(this.editableRow.id);
     this.form.controls.first.patchValue(this.editableRow.first);
     this.form.controls.last.patchValue(this.editableRow.last);
   }
 
-  // tslint:disable-next-line:typedef
-  editRow() {
+  editRow(): void {
     this.editableRow = this.form.getRawValue();
     this.saveButtonClicked.next(this.editableRow);
     this.modalRef.hide();
   }
 
-  // tslint:disable-next-line:typedef
-  get first() { return this.form.get('first'); }
-  // tslint:disable-next-line:typedef
-  get last() { return this.form.get('last'); }
-
-
+  get first(): AbstractControl { return this.form.get('first'); }
+  get last(): AbstractControl { return this.form.get('last'); }
 }
