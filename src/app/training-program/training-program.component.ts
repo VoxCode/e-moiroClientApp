@@ -35,6 +35,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   studentCategories: StudentCategory[];
   certificationTypes: CertificationType[];
   formOfEducations: FormOfEducation[];
+  teacherDepartments: TeacherDepartment[] = [];
   department: Department = new Department();
   studentCategory: StudentCategory = new StudentCategory();
   certificationType: CertificationType = new CertificationType();
@@ -68,10 +69,6 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.loadValue();
-    this.loadDepartment();
-    this.loadStudentCategory();
-    this.loadCertificationType();
-    this.loadFormOfEducation();
   }
 
   ngAfterViewInit(): void {
@@ -140,11 +137,16 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
     this.elements = this.mdbTable.getDataSource();
     this.previous = this.mdbTable.getDataSource();
+    this.loadDepartment();
+    this.loadStudentCategory();
+    this.loadCertificationType();
+    this.loadFormOfEducation();
   }
 
   loadDepartmentsForCurrentUser(): void {
     this.departmentService.getDepartmentsForCurrentUser(this.globals.name, 1)
       .subscribe((teacherDepartments: TeacherDepartment[]) => {
+        this.teacherDepartments = teacherDepartments;
         let tmp: TrainingProgram[] = [];
         teacherDepartments.forEach((teacherDepartment) => {
           tmp = [...tmp, ...this.values.filter(a => a.departmentId === teacherDepartment.departmentId)];
@@ -281,6 +283,15 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     this.departmentService.getValues()
       .subscribe((data: Department[]) => {
         this.departments = data;
+        if (this.globals.role === 'admin') {
+          return;
+        }
+        const departmentsTmp = [];
+        this.teacherDepartments.forEach((obj) => {
+          const departmentTmp = this.departments.find(a => a.id === obj.departmentId);
+          departmentsTmp.push(departmentTmp);
+        });
+        this.departments = departmentsTmp;
       });
   }
 

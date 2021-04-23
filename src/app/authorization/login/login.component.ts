@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {FormGroup, FormBuilder, Validators, AbstractControl} from '@angular/forms';
 import { AuthService } from '../../services/security/auth.service';
 import { Router } from '@angular/router';
 import {MDBModalRef} from 'angular-bootstrap-md';
@@ -29,19 +29,12 @@ export class LoginComponent{
       this.authService.saveToken(data.token);
       const role = this.authService.getRole();
       const redirectPath = this.authService.getRedirectPath(role);
-      this.router.navigate([redirectPath]);
+      this.router.navigate([redirectPath]).then();
     }, () => {
       this.modal.show();
     });
   }
 
-  // tslint:disable-next-line:typedef
-  get username() {
-    return this.loginForm.get('username');
-  }
-
-  // tslint:disable-next-line:typedef
-  get password() {
-    return this.loginForm.get('password');
-  }
+  get username(): AbstractControl { return this.loginForm.get('username'); }
+  get password(): AbstractControl { return this.loginForm.get('password'); }
 }

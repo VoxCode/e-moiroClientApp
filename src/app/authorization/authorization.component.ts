@@ -20,7 +20,7 @@ export class AuthorizationComponent implements OnInit {
     const role = this.authService.getRole();
     if (role) {
       const redirectPath = this.authService.getRedirectPath(role);
-      this.router.navigate([redirectPath]);
+      this.router.navigate([redirectPath]).then();
     }
   }
 

@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {FormGroup, FormBuilder, Validators, AbstractControl} from '@angular/forms';
 import { AuthService } from '../../services/security/auth.service';
 import {MDBModalRef} from 'angular-bootstrap-md';
 import {Subject} from 'rxjs';
@@ -24,8 +24,7 @@ export class RegisterComponent {
     });
    }
 
-  // tslint:disable-next-line:typedef
-  register() {
+  register(): void {
     this.authService.register(this.registerForm.value).subscribe(() => {
       this.modalRef.hide();
       this.closeForm.next();
@@ -34,18 +33,7 @@ export class RegisterComponent {
     });
   }
 
-  // tslint:disable-next-line:typedef
-  get username() {
-    return this.registerForm.get('username');
-  }
-
-  // tslint:disable-next-line:typedef
-  get email() {
-    return this.registerForm.get('email');
-  }
-
-  // tslint:disable-next-line:typedef
-  get password() {
-    return this.registerForm.get('password');
-  }
+  get username(): AbstractControl { return this.registerForm.get('username'); }
+  get email(): AbstractControl { return this.registerForm.get('email'); }
+  get password(): AbstractControl { return this.registerForm.get('password'); }
 }

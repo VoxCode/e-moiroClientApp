@@ -9,7 +9,7 @@
     <div class="modal-body mx-3">
       <div class="md-form mb-5">
         <mdb-icon fas icon="user" class="prefix grey-text"></mdb-icon>
-        <input type="text" id="defaultForm-name" [formControl]="username" class="form-control"
+        <input type="text" id="defaultForm-name" [formControl]="$any(username)" class="form-control"
                mdbInput mdbValidate>
         <label for="defaultForm-name">Ваш логин</label>
         <mdb-error
@@ -24,7 +24,7 @@
 
       <div class="md-form mb-4">
         <mdb-icon fas icon="lock" class="prefix grey-text"></mdb-icon>
-        <input type="password" id="defaultForm-pass" [formControl]="password" class="form-control"
+        <input type="password" id="defaultForm-pass" [formControl]="$any(password)" class="form-control"
                mdbInput mdbValidate>
         <label for="defaultForm-pass">Ваш пароль</label>
         <mdb-error
@@ -40,12 +40,10 @@
     </div>
     <div class="modal-footer d-flex justify-content-center">
       <button [disabled]="username.invalid || password.invalid"
-              mdbBtn gradient="blue" rounded="true" name="submit" mdbWavesEffect>Войти</button>
+              mdbBtn gradient="blue" rounded="true" type="submit" mdbWavesEffect>Войти</button>
     </div>
   </form>
 </div>
-
-
 
 
 <div mdbModal #errorFrame="mdbModal" class="modal fade top" id="frameModalBottom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
