@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {MDBModalRef} from 'angular-bootstrap-md';
 import {DepartmentService} from '../services/department.service';
@@ -14,7 +14,6 @@ import {FormOfEducationService} from '../services/form-of-education.service';
 @Component({
   selector: 'app-modal-edit',
   templateUrl: './training-program-edit.component.html',
-  styleUrls: ['./training-program.component.scss'],
   providers: [
     DepartmentService,
     StudentCategoryService,
@@ -33,34 +32,32 @@ export class TrainingProgramEditComponent implements OnInit{
     first: string,
     second: string,
     third: string,
-    fourth: string,
-    fifth: string,
-    sixth: string,
+    fourth: boolean,
+    fifth: boolean,
+    sixth: boolean,
     seventh: string,
     eight: string,
     ninth: string,
     tenth: string,
     eleventh: string,
     twelfth: string,
-    last: string,
     thirteenth: string,
     fourteenth: string,
     handle: string };
   public saveButtonClicked: Subject<any> = new Subject<any>();
 
   public form: FormGroup = new FormGroup({
-    id: new FormControl({value: '', disabled: true}),
-    first: new FormControl({value: '', disabled: true}),
-    second: new FormControl(''),
-    third: new FormControl(''),
-    fourth: new FormControl(''),
-    fifth: new FormControl(''),
-    sixth: new FormControl(''),
-    seventh: new FormControl(''),
-    eight: new FormControl(''),
-    tenth: new FormControl(''),
-    twelfth: new FormControl(''),
-    thirteenth: new FormControl('')
+    id: new FormControl({value: '', disabled: true}),      // index
+    first: new FormControl({value: '', disabled: true}),   // id
+    second: new FormControl('', Validators.required),      // name
+    third: new FormControl('', Validators.required),       // numberOfHours
+    fourth: new FormControl(''),                           // isDistanceLearning
+    fifth: new FormControl(''),                            // isControlWork
+    sixth: new FormControl(''),                            // isTestWork
+    seventh: new FormControl('', Validators.required),     // departmentId
+    ninth: new FormControl('', Validators.required),       // studentCategoryId
+    eleventh: new FormControl('', Validators.required),    // certificationTypeId
+    thirteenth: new FormControl('', Validators.required)   // formOfEducationId
   });
 
   constructor(
@@ -86,80 +83,61 @@ export class TrainingProgramEditComponent implements OnInit{
     this.form.controls.fifth.patchValue(this.editableRow.fifth);
     this.form.controls.sixth.patchValue(this.editableRow.sixth);
     this.form.controls.seventh.patchValue(this.editableRow.seventh);
-    this.form.controls.eight.patchValue(this.editableRow.eight);
-    this.form.controls.tenth.patchValue(this.editableRow.tenth);
-    this.form.controls.twelfth.patchValue(this.editableRow.twelfth);
+    this.form.controls.ninth.patchValue(this.editableRow.ninth);
+    this.form.controls.eleventh.patchValue(this.editableRow.eleventh);
     this.form.controls.thirteenth.patchValue(this.editableRow.thirteenth);
   }
 
-  // tslint:disable-next-line:typedef
-  editRow() {
+  editRow(): void {
     this.editableRow = this.form.getRawValue();
-    this.editableRow.ninth = this.departments.find(p => p.id === +this.editableRow.eight).name;
-    this.editableRow.eleventh = this.studentCategories.find(p => p.id === +this.editableRow.tenth).name;
-    this.editableRow.last = this.certificationTypes.find(p => p.id === +this.editableRow.twelfth).name;
+    this.editableRow.eight = this.departments.find(p => p.id === +this.editableRow.seventh).name;
+    this.editableRow.tenth = this.studentCategories.find(p => p.id === +this.editableRow.ninth).name;
+    this.editableRow.twelfth = this.certificationTypes.find(p => p.id === +this.editableRow.eleventh).name;
     this.editableRow.fourteenth = this.formOfEducations.find(p => p.id === +this.editableRow.thirteenth).name;
     this.saveButtonClicked.next(this.editableRow);
     this.modalRef.hide();
   }
 
-  // tslint:disable-next-line:typedef
-  get first() { return this.form.get('first'); }
-  // tslint:disable-next-line:typedef
-  get second() { return this.form.get('second'); }
-  // tslint:disable-next-line:typedef
-  get third() { return this.form.get('third'); }
-  // tslint:disable-next-line:typedef
-  get fourth() { return this.form.get('fourth'); }
-  // tslint:disable-next-line:typedef
-  get fifth() { return this.form.get('fifth'); }
-  // tslint:disable-next-line:typedef
-  get sixth() { return this.form.get('sixth'); }
-  // tslint:disable-next-line:typedef
-  get seventh() { return this.form.get('seventh'); }
-  // tslint:disable-next-line:typedef
-  get eight() { return this.form.get('eight'); }
-  // tslint:disable-next-line:typedef
-  get tenth() { return this.form.get('tenth'); }
-  // tslint:disable-next-line:typedef
-  get twelfth() { return this.form.get('twelfth'); }
-  // tslint:disable-next-line:typedef
-  get thirteenth() { return this.form.get('thirteenth'); }
+  get first(): AbstractControl { return this.form.get('first'); }
+  get second(): AbstractControl  { return this.form.get('second'); }
+  get third(): AbstractControl  { return this.form.get('third'); }
+  get fourth(): AbstractControl  { return this.form.get('fourth'); }
+  get fifth(): AbstractControl  { return this.form.get('fifth'); }
+  get sixth(): AbstractControl  { return this.form.get('sixth'); }
+  get seventh(): AbstractControl  { return this.form.get('seventh'); }
+  get ninth(): AbstractControl  { return this.form.get('ninth'); }
+  get eleventh(): AbstractControl  { return this.form.get('eleventh'); }
+  get thirteenth(): AbstractControl  { return this.form.get('thirteenth'); }
 
-  // tslint:disable-next-line:typedef
-  loadDepartment() {
+  loadDepartment(): void {
     this.departmentService.getValues()
       .subscribe((data: Department[]) => {
         this.departments = data;
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadStudentCategory() {
+  loadStudentCategory(): void {
     this.studentCategoryService.getValues()
       .subscribe((data: StudentCategory[]) => {
         this.studentCategories = data;
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadCertificationType() {
+  loadCertificationType(): void {
     this.certificationTypeService.getValues()
       .subscribe((data: CertificationType[]) => {
         this.certificationTypes = data;
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadFormOfEducation() {
+  loadFormOfEducation(): void {
     this.formOfEducationService.getValues()
       .subscribe((data: FormOfEducation[]) => {
         this.formOfEducations = data;
       });
   }
 
-  // tslint:disable-next-line:typedef
-  changeIsDistanceLearning(el: boolean) {
+  changeIsDistanceLearning(el: boolean): void {
     this.isDistanceLearning = el;
   }
 }

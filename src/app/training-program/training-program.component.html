@@ -7,7 +7,7 @@
   <div class="col-sm">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-6 mx-auto">
+        <div class="col-md-9 mx-auto">
           <div class="md-form">
             <input type="text" class="form-control" [(ngModel)]="searchText" (keyup)="searchItems()" id="search-input"
                    mdbInput>
@@ -15,7 +15,7 @@
           </div>
         </div>
         <div class="addButton">
-          <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.show()"
+          <button type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="addRow()"
                   mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
         </div>
           <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" class="z-depth-1">
@@ -24,29 +24,27 @@
               <th *ngFor="let head of headElements; let i = index" [mdbTableSort]="elements"
                   [sortBy]="headElements[i]"
                   scope="col">{{head | titlecase}}
-                <mdb-icon fas icon="sort"></mdb-icon>
               </th>
             </tr>
             </thead>
             <tbody #row>
             <tr mdbTableCol *ngFor="let el of elements; let i = index">
               <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{el.id}}</th>
-              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.first}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.second}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.third}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
                 <mdb-checkbox [disabled]="true" [(ngModel)]="el.fourth" [default]="true"></mdb-checkbox></td>
-              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.ninth}}</td>
-              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.eleventh}}</td>
-              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.last}}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.eight}}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.tenth}}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.twelfth}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.fourteenth}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
                 <button type="button" mdbBtn color="yellow" size="sm" class="relative waves-light"
                         [routerLink]="['/' + globals.role +'/docxGeneratorTP', el.first]"
-                        mdbWavesEffect><mdb-icon fas icon="file-alt" size="sm"></mdb-icon> УП</button>
+                        mdbWavesEffect><mdb-icon fas icon="file-alt" size="sm"></mdb-icon><a class="btn-text"> УП</a></button>
                 <button type="button" mdbBtn color="gray" size="sm" class="relative waves-light"
                         [routerLink]="['/' + globals.role +'/docxGeneratorATP', el.first]"
-                        mdbWavesEffect><mdb-icon fas icon="file-alt" size="sm"></mdb-icon> УТП</button>
+                        mdbWavesEffect><mdb-icon fas icon="file-alt" size="sm"></mdb-icon><a class="btn-text"> УТП</a></button>
                 <button type="button" mdbBtn color="success" size="sm" class="relative waves-light"
                         [routerLink]="['/' + globals.role +'/trainingProgramAddFormIntroduction', el.first]"
                         mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
@@ -60,70 +58,13 @@
             </tbody>
             <tfoot class="grey lighten-5 w-100">
             <tr>
-              <td colspan="10">
+              <td colspan="9">
                 <mdb-table-pagination [tableEl]="tableEl" paginationAlign="" [searchDataSource]="elements"></mdb-table-pagination>
               </td>
             </tr>
             </tfoot>
           </table>
         </div>
-    </div>
-  </div>
-</div>
-
-<!--шаблон для добавления-->
-<div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-fluid" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide(); cancel()">
-          <span aria-hidden="true">×</span>
-        </button>
-        <h4 class="modal-title w-100" id="myModalLabel">Учебная программа</h4>
-      </div>
-      <div class="modal-body">
-        <label>Название</label>
-        <textarea type="text" [(ngModel)]="this.value.name" class="md-textarea form-control" mdbInput></textarea>
-        <br>
-        <label>Количество часов</label>
-        <input type="number" [(ngModel)]="this.value.numberOfHours" class="md-textarea form-control" mdbInput>
-        <br>
-        <mdb-checkbox [(ngModel)]="this.value.isDistanceLearning" [default]="true">Дистанционное обучение</mdb-checkbox>
-        <mdb-checkbox *ngIf="this.value.isDistanceLearning == true"
-                      [(ngModel)]="this.value.isControlWork" [default]="true">Контрольная работа</mdb-checkbox>
-        <mdb-checkbox *ngIf="this.value.isDistanceLearning == true"
-                      [(ngModel)]="this.value.isTestWork" [default]="true">Самостоятельная работа</mdb-checkbox>
-        <br>
-        <label *ngIf="this.value.isDistanceLearning == true">Содержание контрольной работы</label>
-        <textarea *ngIf="this.value.isDistanceLearning == true" type="text"
-                  [(ngModel)]="this.value.controlWork" class="md-textarea form-control" mdbInput></textarea>
-        <br>
-        <label>Кафедра</label>
-        <select [(ngModel)]="department" class="browser-default custom-select">
-          <option *ngFor="let el of departments" [ngValue]="el">{{el.name}}</option>
-        </select>
-        <br><br>
-        <label>Категория учащихся</label>
-        <select [(ngModel)]="studentCategory" class="browser-default custom-select">
-          <option *ngFor="let el of studentCategories" [ngValue]="el">{{el.name}}</option>
-        </select>
-        <br><br>
-        <label>Тип аттестации</label>
-        <select [(ngModel)]="certificationType" class="browser-default custom-select">
-          <option *ngFor="let el of certificationTypes" [ngValue]="el">{{el.name}}</option>
-        </select>
-        <br><br>
-        <label>Форма получения образования</label>
-        <select [(ngModel)]="formOfEducation" class="browser-default custom-select">
-          <option *ngFor="let el of formOfEducations" [ngValue]="el">{{el.name}}</option>
-        </select>
-        <br><br>
-      </div>
-      <div class="modal-footer">
-        <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide(); crate()"
-                mdbWavesEffect>Сохранить</button>
-      </div>
     </div>
   </div>
 </div>
