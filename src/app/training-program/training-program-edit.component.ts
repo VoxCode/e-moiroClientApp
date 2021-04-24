@@ -14,6 +14,7 @@ import {FormOfEducationService} from '../services/form-of-education.service';
 @Component({
   selector: 'app-modal-edit',
   templateUrl: './training-program-edit.component.html',
+  styleUrls: ['../styles/modal-form-style.scss'],
   providers: [
     DepartmentService,
     StudentCategoryService,

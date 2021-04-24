@@ -5,7 +5,8 @@ import {MDBModalRef} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-modal-edit',
-  templateUrl: './teacher-edit.component.html'
+  templateUrl: './teacher-edit.component.html',
+  styleUrls: ['../styles/modal-form-style.scss']
 })
 export class TeacherEditComponent implements OnInit{
   public editableRow: {

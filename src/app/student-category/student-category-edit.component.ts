@@ -5,7 +5,8 @@ import {MDBModalRef} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-modal-edit',
-  templateUrl: './student-category-edit.component.html'
+  templateUrl: './student-category-edit.component.html',
+  styleUrls: ['../styles/modal-form-style.scss']
 })
 export class StudentCategoryEditComponent implements OnInit{
 

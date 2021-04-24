@@ -25,8 +25,8 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   @ViewChild('row', { static: true }) row: ElementRef;
 
   elements: any = [];
-  headElements = ['Номер', 'Название', 'Количество часов', 'Дистанционное обучение', 'Кафедра',
-    'Категория обучающихся', 'Тип аттестации', 'Форма получения образования', 'Команда'];
+  headElements = ['Номер', 'Название', 'Часы', 'Дист.', 'Кафедра',
+    'Категория слушателей', 'Тип аттестации', 'Форма образования', 'Команда'];
   searchText = '';
   previous: string;
   modalRef: MDBModalRef;
@@ -128,7 +128,6 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   crate(el: any): void {
     const trainingProgram = new TrainingProgram(0, el.second, el.third, 'empty', el.fourth, el.fifth, el.sixth, '',
       el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
-    console.log(trainingProgram);
     this.valueService.createValue(trainingProgram)
       .subscribe((trainingProgramResponse: TrainingProgram) => {
         const index = this.elements.length + 1;

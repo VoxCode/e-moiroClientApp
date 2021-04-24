@@ -8,6 +8,7 @@ import {CertificationType} from '../models/CertificationType';
 @Component({
   selector: 'app-modal-edit',
   templateUrl: './final-examination-edit.component.html',
+  styleUrls: ['../styles/modal-form-style.scss'],
   providers: [CertificationTypeService]
 })
 export class FinalExaminationEditComponent implements OnInit{

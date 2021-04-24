@@ -17,11 +17,6 @@ body{
   width: 100%;
 };
 
-.modal-body {
-  max-height: 70vh;
-  overflow-y: scroll;
-}
-
 @import "~@ng-select/ng-select/themes/material.theme.css";
 @import '../node_modules/@syncfusion/ej2-base/styles/material.css';
 @import '../node_modules/@syncfusion/ej2-buttons/styles/material.css';

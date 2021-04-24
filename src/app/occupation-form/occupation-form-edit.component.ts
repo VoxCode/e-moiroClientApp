@@ -5,7 +5,8 @@ import {MDBModalRef} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-modal-edit',
-  templateUrl: './occupation-form-edit.component.html'
+  templateUrl: './occupation-form-edit.component.html',
+  styleUrls: ['../styles/modal-form-style.scss']
 })
 export class OccupationFormEditComponent implements OnInit{
 
