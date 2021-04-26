@@ -126,10 +126,11 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   }
 
   crate(el: any): void {
-    const trainingProgram = new TrainingProgram(0, el.second, el.third, 'empty', el.fourth, el.fifth, el.sixth, '',
+    const trainingProgram = new TrainingProgram(0, el.second, el.third, null, el.fourth, el.fifth, el.sixth, null,
       el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
     this.valueService.createValue(trainingProgram)
       .subscribe((trainingProgramResponse: TrainingProgram) => {
+        console.log(trainingProgram);
         const index = this.elements.length + 1;
         this.mdbTable.addRow({
           id: index.toString(),
@@ -154,8 +155,8 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
 
   save(el: any): void {
     this.valueService.getValue(el.first).subscribe((data: TrainingProgram) => {
-      const trainingProgram = new TrainingProgram(el.first, el.second, el.third, data.introduction, el.fourth, el.fifth, el.sixth, '',
-        el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
+      const trainingProgram = new TrainingProgram(el.first, el.second, el.third, data.introduction, el.fourth, el.fifth,
+        el.sixth, '', el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
       this.valueService.updateValue(trainingProgram).subscribe();
     });
   }

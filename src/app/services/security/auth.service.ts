@@ -29,6 +29,7 @@ export class AuthService {
       const decodedToken = this.jwtHelper.decodeToken(token);
       this.globals.role = this.getRedirectPath(decodedToken.role);
       this.globals.name = decodedToken.unique_name;
+      this.globals.userId = decodedToken.nameid;
       return decodedToken.role;
     }
   }
@@ -65,18 +66,15 @@ export class AuthService {
     return this.http.post(this.changeRolePath, roleChangeModel);
   }
 
-  // tslint:disable-next-line:typedef
-  saveToken(token) {
+  saveToken(token): void {
     localStorage.setItem('token', token);
   }
 
-  // tslint:disable-next-line:typedef
-  logout() {
+  logout(): void {
     localStorage.removeItem('token');
   }
 
-  // tslint:disable-next-line:typedef
-  getToken() {
+  getToken(): any {
     return localStorage.getItem('token');
   }
 }

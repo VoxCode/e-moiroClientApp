@@ -13,7 +13,7 @@ export class EditorGuardService implements CanActivate {
     if (this.authService.isUserAuthenticated('Editor')) {
       return true;
     } else {
-      this.router.navigate(['authorization']);
+      this.router.navigate(['authorization']).then();
       return false;
     }
   }

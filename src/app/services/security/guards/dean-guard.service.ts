@@ -13,7 +13,7 @@ export class DeanGuardService implements CanActivate {
     if (this.authService.isUserAuthenticated('Dean')) {
       return true;
     } else {
-      this.router.navigate(['authorization']);
+      this.router.navigate(['authorization']).then();
       return false;
     }
   }
