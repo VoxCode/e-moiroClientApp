@@ -60,15 +60,13 @@ export class TrainingProgramMainStepComponent implements OnInit{
     private route: ActivatedRoute
   ) { }
 
-  // tslint:disable-next-line:typedef
-  ngOnInit() {
-    this.trainingProgram = new TrainingProgram(); // Баг с удалением целого раздела, нужно сразу удалить все программы
+  ngOnInit(): void {
+    this.trainingProgram = new TrainingProgram();
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
   }
 
-  // tslint:disable-next-line:typedef
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<string[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -80,20 +78,17 @@ export class TrainingProgramMainStepComponent implements OnInit{
   }
 
   // LOAD
-
-  // tslint:disable-next-line:typedef
-  loadTrainingProgram() {
+  loadTrainingProgram(): void {
     this.trainingProgramService.getValue(this.id)
       .subscribe((data: TrainingProgram) => {
-        if (data !== undefined){
+        if (data){
           this.trainingProgram = data;
           this.loadTrainingProgramCurriculumSection();
         }
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadTrainingProgramCurriculumSection() {
+  loadTrainingProgramCurriculumSection(): void {
     this.trainingProgramCurriculumSectionService.getValue(this.id)
       .subscribe((data: TrainingProgramCurriculumSection[]) => {
         if (data !== undefined){
@@ -107,8 +102,7 @@ export class TrainingProgramMainStepComponent implements OnInit{
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadCurriculumTopicTrainingProgram(){
+  loadCurriculumTopicTrainingProgram(): void {
     this.curriculumTopicTrainingProgramService.getValue(this.id)
       .subscribe((data: CurriculumTopicTrainingProgram[]) => {
         if (data !== undefined && data !== null){
@@ -117,18 +111,13 @@ export class TrainingProgramMainStepComponent implements OnInit{
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadCurriculumTopic(curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[]) {
+  loadCurriculumTopic(curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[]): void {
     this.curriculumTopicService.getValue(this.trainingProgram.studentCategoryId, this.trainingProgram.departmentId)
       .subscribe((data: CurriculumTopic[]) => {
         if (data.length !== 0){
           this.curriculumTopicList = data;
           this.todo = [];
-          // tslint:disable-next-line:only-arrow-functions typedef
-          this.curriculumTopicList.sort(function(a, b) {
-            return b.id - a.id;
-          });
-
+          this.curriculumTopicList.sort((a, b) => b.id - a.id);
           this.curriculumTopicList.forEach((object, index) => {
             const tmp2 = curriculumTopicTrainingPrograms.find(a => a.curriculumTopicId === object.id);
             if (tmp2 === undefined) {
@@ -143,18 +132,13 @@ export class TrainingProgramMainStepComponent implements OnInit{
               });
             }
           });
-          // tslint:disable-next-line:only-arrow-functions typedef
-          this.curriculumTopicList.sort(function(a, b) {
-            return a.id - b.id;
-          });
+          this.curriculumTopicList.sort((a, b) => a.id - b.id);
         }
       });
   }
 
   // ADD
-
-  // tslint:disable-next-line:typedef
-  addCurriculumSection(curriculumSectionId: number, trainingProgramCurriculumSectionId: number) {
+  addCurriculumSection(curriculumSectionId: number, trainingProgramCurriculumSectionId: number): void {
     this.curriculumSectionContentList.push({
       done: [],
       curriculumSectionId,
@@ -163,19 +147,13 @@ export class TrainingProgramMainStepComponent implements OnInit{
   }
 
   // SAVE FULL
-
-  // tslint:disable-next-line:typedef
-  save() {
+  save(): void {
     this.commonService.saveCurriculumSectionChild$.next(1);
   }
 
   // DELETE
-
-  // tslint:disable-next-line:typedef
-  deleteTrainingProgramCurriculumSection(index: number, id: number) {
-    console.log(index, id);
+  deleteTrainingProgramCurriculumSection(index: number, id: number): void {
     this.curriculumSectionContentList.splice(index, 1);
-    this.trainingProgramCurriculumSectionService.deleteValue(id)
-      .subscribe();
+    this.trainingProgramCurriculumSectionService.deleteValue(id).subscribe();
   }
 }

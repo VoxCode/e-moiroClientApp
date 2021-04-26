@@ -153,5 +153,3 @@ export class CurriculumSectionComponent implements OnInit, AfterViewInit {
     };
   }
 }
-
-

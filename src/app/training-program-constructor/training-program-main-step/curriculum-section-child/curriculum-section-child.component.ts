@@ -44,6 +44,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   @Input() curriculumSectionNumber: number;
   @Input() id: number;
   @Input() curriculumSectionId: number;
+  @Input() trainingProgram: TrainingProgram;
   @Input() trainingProgramCurriculumSectionId: number;
   @Output() trainingProgramCurriculumSectionIdChange = new EventEmitter();
 
@@ -56,7 +57,6 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   subscription: SubscriptionLike;
   curriculumSectionTmp: CurriculumSection = new CurriculumSection();
   curriculumTopicTmp: CurriculumTopic = new CurriculumTopic();
-  trainingProgram: TrainingProgram;
 
   constructor(
     private curriculumTopicService: CurriculumTopicService,
@@ -102,23 +102,13 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
       .subscribe((data: OccupationForm[]) => {
         if (data.length !== 0){
           this.occupationForms = data;
-          this.loadTrainingProgram();
-        }
-      });
-  }
-
-  loadTrainingProgram(): void {
-    this.trainingProgramService.getValue(this.id)
-      .subscribe((data: TrainingProgram) => {
-        if (data !== undefined){
-          this.trainingProgram = data;
           this.loadCurriculumSection();
         }
       });
   }
 
   loadCurriculumSection(): void {
-    this.curriculumSectionService.getSelectValues(this.trainingProgram.departmentId)
+    this.curriculumSectionService.getValues()
       .subscribe((curriculumSections: CurriculumSection[]) => {
         if (curriculumSections !== null) {
           const trainingProgramCurriculumSections: TrainingProgramCurriculumSection[] = [];
@@ -260,8 +250,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
     this.curriculumTopicTmp = new CurriculumTopic();
   }
 
-  // tslint:disable-next-line:typedef
-  addCurriculumSection() {
+  addCurriculumSection(): void {
     this.crateCurriculumSection();
   }
 
@@ -324,9 +313,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
 
 
   // CurriculumTopic
-
-  // tslint:disable-next-line:typedef
-  addCurriculumTopic() {
+  addCurriculumTopic(): void {
     this.crateCurriculumTopic();
   }
 

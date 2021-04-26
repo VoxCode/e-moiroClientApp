@@ -39,10 +39,11 @@
         </div>
         <div *ngFor="let item of curriculumSectionContentList; index as i ">
           <app-curriculum-section-child [curriculumSectionNumber]="i+1"
-                                        [done]="item.done"
+                                        [done]="$any(item.done)"
                                         [id]="id"
                                         [curriculumSectionId]="item.curriculumSectionId"
-                                        [(trainingProgramCurriculumSectionId)]="item.trainingProgramCurriculumSectionId">
+                                        [(trainingProgramCurriculumSectionId)]="item.trainingProgramCurriculumSectionId"
+                                        [trainingProgram]="trainingProgram">
           </app-curriculum-section-child>
           <button type="button" style="position: relative; margin-top: 20px;" mdbBtn color="danger" size="sm" class="relative waves-light"
                   (click)="deleteTrainingProgramCurriculumSection(i, item.trainingProgramCurriculumSectionId)" mdbWavesEffect>
