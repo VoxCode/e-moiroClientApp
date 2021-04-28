@@ -32,27 +32,28 @@
         </div>
       </div>
       <div class="col-sm-8">
-        <div *ngIf="curriculumSectionContentList.length === 0">
+        <div *ngIf="curriculumSectionChildren.length === 0">
           <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                  (click)="addCurriculumSection(0, 0)" mdbWavesEffect>
+                  (click)="addCurriculumSectionChild(0, 0)" mdbWavesEffect>
             <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел</button>
         </div>
-        <div *ngFor="let item of curriculumSectionContentList; index as i ">
+        <div *ngFor="let item of curriculumSectionChildren; index as i ">
           <app-curriculum-section-child [curriculumSectionNumber]="i+1"
                                         [done]="$any(item.done)"
                                         [id]="id"
                                         [curriculumSectionId]="item.curriculumSectionId"
                                         [(trainingProgramCurriculumSectionId)]="item.trainingProgramCurriculumSectionId"
-                                        [trainingProgram]="trainingProgram">
+                                        [trainingProgram]="trainingProgram"
+                                        [occupationForms]="occupationForms">
           </app-curriculum-section-child>
           <button type="button" style="position: relative; margin-top: 20px;" mdbBtn color="danger" size="sm" class="relative waves-light"
                   (click)="deleteTrainingProgramCurriculumSection(i, item.trainingProgramCurriculumSectionId)" mdbWavesEffect>
             <mdb-icon fas icon="trash-alt" size="sm"></mdb-icon> Удалить Раздел {{i + 1}}
           </button>
 
-          <button *ngIf="i === curriculumSectionContentList.length - 1"
+          <button *ngIf="i === curriculumSectionChildren.length - 1"
                   style="position: relative; margin-top: 20px;" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                  (click)="addCurriculumSection(0, 0)" mdbWavesEffect>
+                  (click)="addCurriculumSectionChild(0, 0)" mdbWavesEffect>
             <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел
           </button>
         </div>

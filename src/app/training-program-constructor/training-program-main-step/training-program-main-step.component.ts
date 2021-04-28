@@ -13,6 +13,7 @@ import {CommonService} from '../../common-service/common-service.component';
 import {TrainingProgramCurriculumSectionService} from '../../services/training-program-curriculum-section.service';
 import {TrainingProgramCurriculumSection} from '../../models/TrainingProgramCurriculumSection';
 import {Globals} from '../../globals';
+import {OccupationForm} from '../../models/OccupationForm';
 
 @Component({
   selector: 'app-training-program-main-step',
@@ -41,12 +42,10 @@ export class TrainingProgramMainStepComponent implements OnInit{
     occupationFormId: 0
   };
 
-  curriculumTopicList: CurriculumTopic[] = [];
-  trainingProgramCurriculumSectionList: TrainingProgramCurriculumSection[] = [];
-  curriculumSectionContentList = [];
+  curriculumSectionChildren: any = [];
+  occupationForms: OccupationForm[];
   todo = [];
   name: string;
-
 
   constructor(
     public globals: Globals,
@@ -81,8 +80,18 @@ export class TrainingProgramMainStepComponent implements OnInit{
   loadTrainingProgram(): void {
     this.trainingProgramService.getValue(this.id)
       .subscribe((data: TrainingProgram) => {
-        if (data){
+        if (data) {
           this.trainingProgram = data;
+          this.loadOccupationForm();
+        }
+      });
+  }
+
+  loadOccupationForm(): void {
+    this.occupationFormService.getValues()
+      .subscribe((data: OccupationForm[]) => {
+        if (data.length !== 0){
+          this.occupationForms = data;
           this.loadTrainingProgramCurriculumSection();
         }
       });
@@ -91,11 +100,10 @@ export class TrainingProgramMainStepComponent implements OnInit{
   loadTrainingProgramCurriculumSection(): void {
     this.trainingProgramCurriculumSectionService.getValue(this.id)
       .subscribe((data: TrainingProgramCurriculumSection[]) => {
-        if (data !== undefined){
-          this.trainingProgramCurriculumSectionList = data;
-          this.trainingProgramCurriculumSectionList.sort((a, b) => a.sectionNumber - b.sectionNumber);
-          this.trainingProgramCurriculumSectionList.forEach( object => {
-            this.addCurriculumSection(object.curriculumSectionId, object.id);
+        if (data) {
+          data.sort((a, b) => a.sectionNumber - b.sectionNumber);
+          data.forEach( object => {
+            this.addCurriculumSectionChild(object.curriculumSectionId, object.id);
           });
           this.loadCurriculumTopicTrainingProgram();
         }
@@ -104,9 +112,9 @@ export class TrainingProgramMainStepComponent implements OnInit{
 
   loadCurriculumTopicTrainingProgram(): void {
     this.curriculumTopicTrainingProgramService.getValue(this.id)
-      .subscribe((data: CurriculumTopicTrainingProgram[]) => {
-        if (data !== undefined && data !== null){
-          this.loadCurriculumTopic(data);
+      .subscribe((curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[]) => {
+        if (curriculumTopicTrainingPrograms.length !== 0) {
+          this.loadCurriculumTopic(curriculumTopicTrainingPrograms);
         }
       });
   }
@@ -114,16 +122,15 @@ export class TrainingProgramMainStepComponent implements OnInit{
   loadCurriculumTopic(curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[]): void {
     this.curriculumTopicService.getValue(this.trainingProgram.studentCategoryId, this.trainingProgram.departmentId)
       .subscribe((data: CurriculumTopic[]) => {
-        if (data.length !== 0){
-          this.curriculumTopicList = data;
+        if (data.length !== 0) {
           this.todo = [];
-          this.curriculumTopicList.sort((a, b) => b.id - a.id);
-          this.curriculumTopicList.forEach((object, index) => {
-            const tmp2 = curriculumTopicTrainingPrograms.find(a => a.curriculumTopicId === object.id);
-            if (tmp2 === undefined) {
+          data.sort((a, b) => b.id - a.id);
+          data.forEach((object) => {
+            const curriculumTopicTrainingProgram = curriculumTopicTrainingPrograms.find(a => a.curriculumTopicId === object.id);
+            if (!curriculumTopicTrainingProgram) {
               this.todo.push({
-                first: this.curriculumTopicList[index].id,
-                second: this.curriculumTopicList[index].topicTitle,
+                first: object.id,
+                second: object.topicTitle,
                 third: this.curriculumTopicTrainingProgram.isVariable,
                 fourth: 0,
                 fifth: 1,
@@ -132,14 +139,13 @@ export class TrainingProgramMainStepComponent implements OnInit{
               });
             }
           });
-          this.curriculumTopicList.sort((a, b) => a.id - b.id);
         }
       });
   }
 
   // ADD
-  addCurriculumSection(curriculumSectionId: number, trainingProgramCurriculumSectionId: number): void {
-    this.curriculumSectionContentList.push({
+  addCurriculumSectionChild(curriculumSectionId: number, trainingProgramCurriculumSectionId: number): void {
+    this.curriculumSectionChildren.push({
       done: [],
       curriculumSectionId,
       trainingProgramCurriculumSectionId
@@ -153,7 +159,7 @@ export class TrainingProgramMainStepComponent implements OnInit{
 
   // DELETE
   deleteTrainingProgramCurriculumSection(index: number, id: number): void {
-    this.curriculumSectionContentList.splice(index, 1);
+    this.curriculumSectionChildren.splice(index, 1);
     this.trainingProgramCurriculumSectionService.deleteValue(id).subscribe();
   }
 }
