@@ -6,7 +6,6 @@ import {DepartmentService} from '../services/department.service';
 import {TrainingProgramEditComponent} from './training-program-edit.component';
 import {AuthService} from '../services/security/auth.service';
 import {Globals} from '../globals';
-import {TeacherDepartment} from '../models/TeacherDepartment';
 
 @Component({
   selector: 'app-training-program',
@@ -114,23 +113,22 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   }
 
   loadDepartmentsForCurrentUser(data: TrainingProgram[]): void {
-    this.departmentService.getDepartmentsForCurrentUser(this.globals.name, 1)
-      .subscribe((teacherDepartments: TeacherDepartment[]) => {
-        let tmp: TrainingProgram[] = [];
-        teacherDepartments.forEach((teacherDepartment) => {
-          tmp = [...tmp, ...data.filter(a => a.departmentId === teacherDepartment.departmentId)];
-        });
-        data = tmp;
-        this.pushData(data);
-      });
+    // this.departmentService.getDepartmentsForCurrentUser(this.globals.name, 1)
+    //   .subscribe((teacherDepartments: TeacherDepartment[]) => {
+    //     let tmp: TrainingProgram[] = [];
+    //     teacherDepartments.forEach((teacherDepartment) => {
+    //       tmp = [...tmp, ...data.filter(a => a.departmentId === teacherDepartment.departmentId)];
+    //     });
+    //     data = tmp;
+    //     this.pushData(data);
+    //   });
   }
 
   crate(el: any): void {
-    const trainingProgram = new TrainingProgram(0, el.second, el.third, null, el.fourth, el.fifth, el.sixth, null,
+    const trainingProgram = new TrainingProgram(0, el.second, el.third, null, el.fourth, el.fifth, el.sixth,
       el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
     this.valueService.createValue(trainingProgram)
       .subscribe((trainingProgramResponse: TrainingProgram) => {
-        console.log(trainingProgram);
         const index = this.elements.length + 1;
         this.mdbTable.addRow({
           id: index.toString(),
@@ -156,7 +154,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   save(el: any): void {
     this.valueService.getValue(el.first).subscribe((data: TrainingProgram) => {
       const trainingProgram = new TrainingProgram(el.first, el.second, el.third, data.introduction, el.fourth, el.fifth,
-        el.sixth, '', el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
+        el.sixth, el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
       this.valueService.updateValue(trainingProgram).subscribe();
     });
   }

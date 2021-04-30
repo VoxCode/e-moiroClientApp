@@ -7,7 +7,6 @@ export class TrainingProgram {
     public isDistanceLearning?: boolean,
     public isControlWork?: boolean,
     public isTestWork?: boolean,
-    public controlWork?: string,
     public departmentId?: number,
     public departmentName?: string,
     public studentCategoryId?: number,

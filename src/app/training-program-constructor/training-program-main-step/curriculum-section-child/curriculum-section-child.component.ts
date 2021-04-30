@@ -11,10 +11,6 @@ import {SubscriptionLike} from 'rxjs';
 import {CurriculumTopicTrainingProgram} from '../../../models/СurriculumTopicTrainingProgram';
 import {TrainingProgramCurriculumSection} from '../../../models/TrainingProgramCurriculumSection';
 import {CurriculumTopic} from '../../../models/CurriculumTopic';
-import {CurriculumTopicStudentCategoryService} from '../../../services/curriculum-topic-student-category.service';
-import {CurriculumTopicDepartmentService} from '../../../services/curriculum-topic-department.service';
-import {CurriculumTopicStudentCategory} from '../../../models/CurriculumTopicStudentCategory';
-import {CurriculumTopicDepartment} from '../../../models/СurriculumTopicDepartment';
 import {TrainingProgram} from '../../../models/TrainingProgram';
 import {CommonService} from '../../../common-service/common-service.component';
 import {OccupationFormMaxVariableTopicHoursService} from '../../../services/occupation-form-max-variable-topic-hours.service';
@@ -30,8 +26,6 @@ import {OccupationFormMaxVariableTopicHour} from '../../../models/OccupationForm
     TrainingProgramCurriculumSectionService,
     CurriculumTopicTrainingProgramService,
     CurriculumSectionService,
-    CurriculumTopicStudentCategoryService,
-    CurriculumTopicDepartmentService,
     OccupationFormMaxVariableTopicHoursService
   ]
 })
@@ -63,8 +57,6 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private curriculumSectionService: CurriculumSectionService,
     private commonService: CommonService,
-    private curriculumTopicStudentCategoryService: CurriculumTopicStudentCategoryService,
-    private curriculumTopicDepartmentService: CurriculumTopicDepartmentService,
     private occupationFormMaxVariableTopicHoursService: OccupationFormMaxVariableTopicHoursService
   ) { }
 
@@ -322,29 +314,29 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   }
 
   crateCurriculumTopicStudentCategory(): void {
-    const tmp: CurriculumTopicStudentCategory = new CurriculumTopicStudentCategory();
-    tmp.curriculumTopicId = this.curriculumTopicTmp.id;
-    tmp.studentCategoryId = this.trainingProgram.studentCategoryId;
-    this.curriculumTopicStudentCategoryService.createValue(tmp)
-      .subscribe((data: CurriculumTopicStudentCategory) => {
-        if (data){
-          console.log('Success StudentCategory');
-          this.crateCurriculumTopicDepartment();
-        }
-      });
+    // const tmp: CurriculumTopicStudentCategory = new CurriculumTopicStudentCategory();
+    // tmp.curriculumTopicId = this.curriculumTopicTmp.id;
+    // tmp.studentCategoryId = this.trainingProgram.studentCategoryId;
+    // this.curriculumTopicStudentCategoryService.createValue(tmp)
+    //   .subscribe((data: CurriculumTopicStudentCategory) => {
+    //     if (data){
+    //       console.log('Success StudentCategory');
+    //       this.crateCurriculumTopicDepartment();
+    //     }
+    //   });
   }
 
   crateCurriculumTopicDepartment(): void {
-    const tmp: CurriculumTopicDepartment = new CurriculumTopicDepartment();
-    tmp.curriculumTopicId = this.curriculumTopicTmp.id;
-    tmp.departmentId = this.trainingProgram.departmentId;
-    this.curriculumTopicDepartmentService.createValue(tmp)
-      .subscribe((data: CurriculumTopicDepartment) => {
-        if (data){
-          console.log('Success Department');
-          this.cancel();
-          this.saveCurriculumTopicTrainingProgram();
-        }
-      });
+    // const tmp: CurriculumTopicDepartment = new CurriculumTopicDepartment();
+    // tmp.curriculumTopicId = this.curriculumTopicTmp.id;
+    // tmp.departmentId = this.trainingProgram.departmentId;
+    // this.curriculumTopicDepartmentService.createValue(tmp)
+    //   .subscribe((data: CurriculumTopicDepartment) => {
+    //     if (data){
+    //       console.log('Success Department');
+    //       this.cancel();
+    //       this.saveCurriculumTopicTrainingProgram();
+    //     }
+    //   });
   }
 }

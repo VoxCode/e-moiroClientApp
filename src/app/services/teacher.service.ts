@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { Teacher } from '../models/Teacher';
 import { environment } from '../../environments/environment';
+import {Department} from '../models/Department';
 
 @Injectable()
 export class TeacherService {
@@ -27,5 +28,13 @@ export class TeacherService {
   // tslint:disable-next-line:typedef
   deleteValue(id: number) {
     return this.http.delete(this.url + '/' + id);
+  }
+  // tslint:disable-next-line:typedef
+  addTeacherDepartment(teacherId: number, departments: Department[]) {
+    return this.http.post(this.url + '/' + teacherId, departments);
+  }
+  // tslint:disable-next-line:typedef
+  getTeacherDepartment(teacherId: number) {
+    return this.http.get(this.url + '/GetTeacherDepartment/' + teacherId);
   }
 }

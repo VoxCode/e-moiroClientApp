@@ -7,8 +7,6 @@ import {AdditionalLiterature} from '../../models/AdditionalLiterature';
 import {AdditionalLiteratureService} from '../../services/additional-literature.service';
 import {TrainingProgramAdditionalLiteratureService} from '../../services/training-program-additional-literature.service';
 import {TrainingProgramAdditionalLiterature} from '../../models/TrainingProgramAdditionalLiterature';
-import {CurriculumTopicAdditionalLiteratureService} from '../../services/curriculum-topic-additional-literature.service';
-import {CurriculumTopicAdditionalLiterature} from '../../models/СurriculumTopicAdditionalLiterature';
 import {CurriculumTopicTrainingProgram} from '../../models/СurriculumTopicTrainingProgram';
 import {CurriculumTopicTrainingProgramService} from '../../services/curriculum-topic-training-program.service';
 import {Globals} from '../../globals';
@@ -21,7 +19,6 @@ import {Globals} from '../../globals';
     TrainingProgramService,
     AdditionalLiteratureService,
     TrainingProgramAdditionalLiteratureService,
-    CurriculumTopicAdditionalLiteratureService,
     CurriculumTopicTrainingProgramService
   ]
 })
@@ -34,14 +31,12 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
   curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram;
   additionalLiterature: AdditionalLiterature = new AdditionalLiterature();
-  curriculumTopicAdditionalLiterature: CurriculumTopicAdditionalLiterature = new CurriculumTopicAdditionalLiterature();
 
   constructor(
     public globals: Globals,
     private trainingProgramService: TrainingProgramService,
     private additionalLiteratureService: AdditionalLiteratureService,
     private trainingProgramAdditionalLiteratureService: TrainingProgramAdditionalLiteratureService,
-    private curriculumTopicAdditionalLiteratureService: CurriculumTopicAdditionalLiteratureService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private route: ActivatedRoute
   ) { }
@@ -123,59 +118,59 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
 
   // tslint:disable-next-line:typedef
   loadTrainingProgramAdditionalLiterature() {
-    this.trainingProgramAdditionalLiteratureService.getValue(this.id)
-      .subscribe((data: TrainingProgramAdditionalLiterature[]) => {
-        this.loadTrainingProgram();
-        if (data !== undefined && data !== null){
-          // tslint:disable-next-line:only-arrow-functions typedef
-          data.sort(function(a, b) {
-            return a.serialNumber - b.serialNumber;
-          });
-          data.forEach((tmp) => {
-            this.done.push({
-              fourth: tmp.id,
-              fifth: tmp.trainingProgramId,
-              third: tmp.content,
-              seventh: tmp.additionalLiteratureId,
-              eight: tmp.serialNumber
-            });
-          });
-        }
-      });
+    // this.trainingProgramAdditionalLiteratureService.getValue(this.id)
+    //   .subscribe((data: TrainingProgramAdditionalLiterature[]) => {
+    //     this.loadTrainingProgram();
+    //     if (data !== undefined && data !== null){
+    //       // tslint:disable-next-line:only-arrow-functions typedef
+    //       data.sort(function(a, b) {
+    //         return a.serialNumber - b.serialNumber;
+    //       });
+    //       data.forEach((tmp) => {
+    //         this.done.push({
+    //           fourth: tmp.id,
+    //           fifth: tmp.trainingProgramId,
+    //           third: tmp.content,
+    //           seventh: tmp.additionalLiteratureId,
+    //           eight: tmp.serialNumber
+    //         });
+    //       });
+    //     }
+    //   });
   }
 
   // SAVE FULL
 
   // tslint:disable-next-line:typedef
   save() {
-    let i = 0;
-    this.done.forEach((object, index) => {
-      let trainingProgramAdditionalLiterature: TrainingProgramAdditionalLiterature = new TrainingProgramAdditionalLiterature();
-      i = index + 1;
-      if (object.fourth !== undefined){
-        trainingProgramAdditionalLiterature.id = +object.fourth;
-        trainingProgramAdditionalLiterature.trainingProgramId = +object.fifth;
-        trainingProgramAdditionalLiterature.additionalLiteratureId = +object.seventh;
-      }
-      else {
-        trainingProgramAdditionalLiterature.additionalLiteratureId = +object.first;
-        trainingProgramAdditionalLiterature.trainingProgramId = +this.id;
-      }
-      trainingProgramAdditionalLiterature.serialNumber = +i;
-
-      if (trainingProgramAdditionalLiterature.id === undefined){
-        this.trainingProgramAdditionalLiteratureService.createValue(trainingProgramAdditionalLiterature)
-          .subscribe((data: TrainingProgramAdditionalLiterature) => {
-            object.fourth = data.id;
-            console.log('Save was successful');
-            trainingProgramAdditionalLiterature = null;
-          });
-      }
-      else {
-        this.update(trainingProgramAdditionalLiterature);
-        trainingProgramAdditionalLiterature = null;
-      }
-    });
+    // let i = 0;
+    // this.done.forEach((object, index) => {
+    //   let trainingProgramAdditionalLiterature: TrainingProgramAdditionalLiterature = new TrainingProgramAdditionalLiterature();
+    //   i = index + 1;
+    //   if (object.fourth !== undefined){
+    //     trainingProgramAdditionalLiterature.id = +object.fourth;
+    //     trainingProgramAdditionalLiterature.trainingProgramId = +object.fifth;
+    //     trainingProgramAdditionalLiterature.additionalLiteratureId = +object.seventh;
+    //   }
+    //   else {
+    //     trainingProgramAdditionalLiterature.additionalLiteratureId = +object.first;
+    //     trainingProgramAdditionalLiterature.trainingProgramId = +this.id;
+    //   }
+    //   trainingProgramAdditionalLiterature.serialNumber = +i;
+    //
+    //   if (trainingProgramAdditionalLiterature.id === undefined){
+    //     this.trainingProgramAdditionalLiteratureService.createValue(trainingProgramAdditionalLiterature)
+    //       .subscribe((data: TrainingProgramAdditionalLiterature) => {
+    //         object.fourth = data.id;
+    //         console.log('Save was successful');
+    //         trainingProgramAdditionalLiterature = null;
+    //       });
+    //   }
+    //   else {
+    //     this.update(trainingProgramAdditionalLiterature);
+    //     trainingProgramAdditionalLiterature = null;
+    //   }
+    // });
   }
 
   // UPDATE
@@ -190,9 +185,9 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
 
   // tslint:disable-next-line:typedef
   cancel() {
-    this.additionalLiterature = new AdditionalLiterature();
-    this.curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
-    this.curriculumTopicAdditionalLiterature = new CurriculumTopicAdditionalLiterature();
+    // this.additionalLiterature = new AdditionalLiterature();
+    // this.curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
+    // this.curriculumTopicAdditionalLiterature = new CurriculumTopicAdditionalLiterature();
   }
 
   // tslint:disable-next-line:typedef
@@ -202,33 +197,33 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
 
   // tslint:disable-next-line:typedef
   crateAdditionalLiterature(){
-    this.additionalLiteratureService.createValue(this.additionalLiterature)
-      .subscribe((data: AdditionalLiterature) => {
-        if (data !== undefined){
-          this.additionalLiterature = data;
-          console.log('Success');
-          this.done.push({
-            first: this.additionalLiterature.id,
-            third: this.additionalLiterature.content
-          });
-          this.curriculumTopicAdditionalLiterature.additionalLiteratureId = this.additionalLiterature.id;
-          this.curriculumTopicAdditionalLiterature.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
-          this.crateCurriculumTopicAdditionalLiterature();
-        }
-      });
+    // this.additionalLiteratureService.createValue(this.additionalLiterature)
+    //   .subscribe((data: AdditionalLiterature) => {
+    //     if (data !== undefined){
+    //       this.additionalLiterature = data;
+    //       console.log('Success');
+    //       this.done.push({
+    //         first: this.additionalLiterature.id,
+    //         third: this.additionalLiterature.content
+    //       });
+    //       this.curriculumTopicAdditionalLiterature.additionalLiteratureId = this.additionalLiterature.id;
+    //       this.curriculumTopicAdditionalLiterature.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
+    //       this.crateCurriculumTopicAdditionalLiterature();
+    //     }
+    //   });
   }
 
   // tslint:disable-next-line:typedef
   crateCurriculumTopicAdditionalLiterature(){
-    this.curriculumTopicAdditionalLiteratureService.createValue(this.curriculumTopicAdditionalLiterature)
-      .subscribe((data: CurriculumTopicAdditionalLiterature) => {
-        if (data !== undefined){
-          this.curriculumTopicAdditionalLiterature = data;
-          console.log('Success');
-          this.save();
-        }
-        this.cancel();
-      });
+    // this.curriculumTopicAdditionalLiteratureService.createValue(this.curriculumTopicAdditionalLiterature)
+    //   .subscribe((data: CurriculumTopicAdditionalLiterature) => {
+    //     if (data !== undefined){
+    //       this.curriculumTopicAdditionalLiterature = data;
+    //       console.log('Success');
+    //       this.save();
+    //     }
+    //     this.cancel();
+    //   });
   }
 
   // tslint:disable-next-line:typedef

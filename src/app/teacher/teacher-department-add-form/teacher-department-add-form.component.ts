@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {MDBModalRef} from 'angular-bootstrap-md';
-import {TeacherDepartmentService} from '../../services/teacher-department.service';
-import {TeacherDepartment} from '../../models/TeacherDepartment';
 import {DepartmentService} from '../../services/department.service';
 import {Department} from '../../models/Department';
+import {TeacherService} from '../../services/teacher.service';
 
 @Component({
   selector: 'app-teacher-department-add-form',
   templateUrl: './teacher-department-add-form.component.html',
   styleUrls: ['./teacher-department-add-form.component.scss'],
   providers: [
-    TeacherDepartmentService,
-    DepartmentService
+    DepartmentService,
+    TeacherService
   ]
 })
 export class TeacherDepartmentAddFormComponent implements OnInit {
@@ -19,11 +18,11 @@ export class TeacherDepartmentAddFormComponent implements OnInit {
     id: number
     handle: string
   };
-  teacherDepartments: TeacherDepartment[] = [{}];
   departments: Department[] = [];
+  selectedDepartments: Department[] = [];
   constructor(
     public modalRef: MDBModalRef,
-    private teacherDepartmentService: TeacherDepartmentService,
+    private teacherService: TeacherService,
     private departmentService: DepartmentService) { }
 
   ngOnInit(): void {
@@ -34,56 +33,26 @@ export class TeacherDepartmentAddFormComponent implements OnInit {
     this.departmentService.getValues()
       .subscribe((departments: Department[]) => {
         this.departments = departments;
-        this.loadTeacherDepartments();
+        this.loadsSelectedDepartments();
       });
   }
 
-  loadTeacherDepartments(): void {
-    this.teacherDepartmentService.getDepartmentsForCurrentTeacher(this.editableRow.id)
-      .subscribe((teacherDepartments: TeacherDepartment[]) => {
-        if (teacherDepartments.length !== 0) {
-          this.teacherDepartments = teacherDepartments;
+  loadsSelectedDepartments(): void {
+    this.teacherService.getTeacherDepartment(this.editableRow.id)
+      .subscribe((departmentsResponse: Department[]) => {
+        if (departmentsResponse.length !== 0) {
+          this.selectedDepartments = departmentsResponse;
         }
       });
   }
 
   save(): void {
+    this.changeDepartment();
     this.modalRef.hide();
   }
 
-  addTeacherDepartment(): void {
-    this.teacherDepartments.push({});
-  }
-
-  changeDepartment(value: any, el: TeacherDepartment): void {
-    const teacherDepartment = new TeacherDepartment();
-    teacherDepartment.departmentId = +value;
-    teacherDepartment.teacherId = +this.editableRow.id;
-    if (el.id){
-      teacherDepartment.id = el.id;
-      this.updateCurriculumTopicDepartment(teacherDepartment);
-    }
-    else {
-      this.postCurriculumTopicDepartment(teacherDepartment);
-    }
-  }
-
-  removeDepartment(i: number, id: number): void {
-    this.teacherDepartments.splice(i, 1);
-    this.teacherDepartmentService.deleteValue(id).subscribe();
-  }
-
-  postCurriculumTopicDepartment(teacherDepartment: TeacherDepartment): void {
-    this.teacherDepartmentService.createValue(teacherDepartment)
-      .subscribe((teacherDepartmentResponse: TeacherDepartment) => {
-        const tmpTeacherDepartment = this.teacherDepartments.find(a => !a.departmentId);
-        const index = this.teacherDepartments.indexOf(tmpTeacherDepartment);
-        this.teacherDepartments[index].id = teacherDepartmentResponse.id;
-      });
-  }
-
-  updateCurriculumTopicDepartment(teacherDepartment: TeacherDepartment): void {
-    this.teacherDepartmentService.updateValue(teacherDepartment)
-      .subscribe();
+  changeDepartment(): void {
+    this.teacherService.addTeacherDepartment(this.editableRow.id, this.selectedDepartments)
+      .subscribe(() => { console.log('Success'); });
   }
 }

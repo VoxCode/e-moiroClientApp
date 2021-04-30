@@ -7,8 +7,6 @@ import {RegulationService} from '../../services/regulation.service';
 import {TrainingProgramRegulationService} from '../../services/training-program-regulation.service';
 import {Regulation} from '../../models/Regulation';
 import {TrainingProgramRegulation} from '../../models/TrainingProgramRegulation';
-import {CurriculumTopicRegulation} from '../../models/СurriculumTopicRegulation';
-import {CurriculumTopicRegulationService} from '../../services/curriculum-topic-regulation.service';
 import {CurriculumTopicTrainingProgram} from '../../models/СurriculumTopicTrainingProgram';
 import {CurriculumTopicTrainingProgramService} from '../../services/curriculum-topic-training-program.service';
 import {Globals} from '../../globals';
@@ -21,8 +19,7 @@ import {Globals} from '../../globals';
     TrainingProgramService,
     RegulationService,
     TrainingProgramRegulationService,
-    CurriculumTopicTrainingProgramService,
-    CurriculumTopicRegulationService
+    CurriculumTopicTrainingProgramService
   ]
 })
 export class TrainingProgramRegulationStepComponent implements OnInit {
@@ -34,14 +31,12 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
   curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram;
   regulation: Regulation = new Regulation();
-  curriculumTopicRegulation: CurriculumTopicRegulation = new CurriculumTopicRegulation();
 
   constructor(
     public globals: Globals,
     private trainingProgramService: TrainingProgramService,
     private regulationService: RegulationService,
     private trainingProgramRegulationService: TrainingProgramRegulationService,
-    private curriculumTopicRegulationService: CurriculumTopicRegulationService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private route: ActivatedRoute
   ) { }
@@ -193,9 +188,9 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   cancel() {
-    this.regulation = new Regulation();
-    this.curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
-    this.curriculumTopicRegulation = new CurriculumTopicRegulation();
+    // this.regulation = new Regulation();
+    // this.curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
+    // this.curriculumTopicRegulation = new CurriculumTopicRegulation();
   }
 
   // tslint:disable-next-line:typedef
@@ -205,33 +200,33 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   crateRegulation(){
-    this.regulationService.createValue(this.regulation)
-      .subscribe((data: Regulation) => {
-        if (data !== undefined){
-          this.regulation = data;
-          console.log('Success');
-          this.done.push({
-            first: this.regulation.id,
-            third: this.regulation.content
-          });
-          this.curriculumTopicRegulation.regulationId = this.regulation.id;
-          this.curriculumTopicRegulation.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
-          this.crateCurriculumTopicRegulation();
-        }
-      });
+    // this.regulationService.createValue(this.regulation)
+    //   .subscribe((data: Regulation) => {
+    //     if (data !== undefined){
+    //       this.regulation = data;
+    //       console.log('Success');
+    //       this.done.push({
+    //         first: this.regulation.id,
+    //         third: this.regulation.content
+    //       });
+    //       this.curriculumTopicRegulation.regulationId = this.regulation.id;
+    //       this.curriculumTopicRegulation.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
+    //       this.crateCurriculumTopicRegulation();
+    //     }
+    //   });
   }
 
   // tslint:disable-next-line:typedef
   crateCurriculumTopicRegulation(){
-    this.curriculumTopicRegulationService.createValue(this.curriculumTopicRegulation)
-      .subscribe((data: CurriculumTopicRegulation) => {
-        if (data !== undefined){
-          this.curriculumTopicRegulation = data;
-          console.log('Success');
-          this.save();
-        }
-        this.cancel();
-      });
+    // this.curriculumTopicRegulationService.createValue(this.curriculumTopicRegulation)
+    //   .subscribe((data: CurriculumTopicRegulation) => {
+    //     if (data !== undefined){
+    //       this.curriculumTopicRegulation = data;
+    //       console.log('Success');
+    //       this.save();
+    //     }
+    //     this.cancel();
+    //   });
   }
 
   // tslint:disable-next-line:typedef

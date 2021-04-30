@@ -98,10 +98,6 @@ export class UserComponent implements OnInit, AfterViewInit {
       .subscribe(() => {}, () => { location.reload(); alert('Ошибка изменения роли!'); });
   }
 
-  editValue(p: User): void {
-    this.value = p;
-  }
-
   cancel(): void {
     this.value = new User();
   }
@@ -111,10 +107,6 @@ export class UserComponent implements OnInit, AfterViewInit {
       .subscribe(() => {
         this.removeRow(p);
       });
-  }
-
-  add(): void {
-    this.cancel();
   }
 
   removeRow(el: any): void {

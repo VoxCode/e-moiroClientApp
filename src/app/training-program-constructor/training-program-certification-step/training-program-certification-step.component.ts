@@ -7,8 +7,6 @@ import {FinalExaminationService} from '../../services/final-examination.service'
 import {FinalExamination} from '../../models/FinalExamination';
 import {TrainingProgramFinalExaminationService} from '../../services/training-program-final-examination.service';
 import {TrainingProgramFinalExamination} from '../../models/TrainingProgramFinalExamination';
-import {CurriculumTopicFinalExamination} from '../../models/CurriculumTopicFinalExamination';
-import {CurriculumTopicFinalExaminationService} from '../../services/curriculum-topic-final-examination.service';
 import {CurriculumTopicTrainingProgram} from '../../models/СurriculumTopicTrainingProgram';
 import {CurriculumTopicTrainingProgramService} from '../../services/curriculum-topic-training-program.service';
 import {CertificationTypeService} from '../../services/certification-type.service';
@@ -24,7 +22,6 @@ import {Globals} from '../../globals';
     FinalExaminationService,
     TrainingProgramFinalExaminationService,
     CurriculumTopicTrainingProgramService,
-    CurriculumTopicFinalExaminationService,
     CertificationTypeService
   ]
 })
@@ -36,7 +33,6 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
   curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram;
   finalExamination: FinalExamination = new FinalExamination();
-  curriculumTopicFinalExamination: CurriculumTopicFinalExamination = new CurriculumTopicFinalExamination();
   certificationType: CertificationType = new CertificationType();
 
   constructor(
@@ -44,7 +40,6 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
     private trainingProgramService: TrainingProgramService,
     private finalExaminationService: FinalExaminationService,
     private trainingProgramFinalExaminationService: TrainingProgramFinalExaminationService,
-    private curriculumTopicFinalExaminationService: CurriculumTopicFinalExaminationService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private certificationTypeService: CertificationTypeService,
     private route: ActivatedRoute
@@ -204,9 +199,9 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   cancel() {
-    this.finalExamination = new FinalExamination();
-    this.curriculumTopicFinalExamination = new CurriculumTopicFinalExamination();
-    this.curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
+    // this.finalExamination = new FinalExamination();
+    // this.curriculumTopicFinalExamination = new CurriculumTopicFinalExamination();
+    // this.curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
   }
 
   // tslint:disable-next-line:typedef
@@ -216,34 +211,34 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   crateFinalExamination(){
-    this.finalExamination.certificationTypeId = this.trainingProgram.certificationTypeId;
-    this.finalExaminationService.createValue(this.finalExamination)
-      .subscribe((data: FinalExamination) => {
-        if (data !== undefined){
-          this.finalExamination = data;
-          console.log('Success');
-          this.done.push({
-            first: this.finalExamination.id,
-            third: this.finalExamination.content
-          });
-          this.curriculumTopicFinalExamination.finalExaminationId = this.finalExamination.id;
-          this.curriculumTopicFinalExamination.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
-          this.crateCurriculumTopicFinalExamination();
-        }
-      });
+    // this.finalExamination.certificationTypeId = this.trainingProgram.certificationTypeId;
+    // this.finalExaminationService.createValue(this.finalExamination)
+    //   .subscribe((data: FinalExamination) => {
+    //     if (data !== undefined){
+    //       this.finalExamination = data;
+    //       console.log('Success');
+    //       this.done.push({
+    //         first: this.finalExamination.id,
+    //         third: this.finalExamination.content
+    //       });
+    //       this.curriculumTopicFinalExamination.finalExaminationId = this.finalExamination.id;
+    //       this.curriculumTopicFinalExamination.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
+    //       this.crateCurriculumTopicFinalExamination();
+    //     }
+    //   });
   }
 
   // tslint:disable-next-line:typedef
   crateCurriculumTopicFinalExamination(){
-    this.curriculumTopicFinalExaminationService.createValue(this.curriculumTopicFinalExamination)
-      .subscribe((data: CurriculumTopicFinalExamination) => {
-        if (data !== undefined){
-          this.curriculumTopicFinalExamination = data;
-          console.log('Success');
-          this.save();
-        }
-        this.cancel();
-      });
+    // this.curriculumTopicFinalExaminationService.createValue(this.curriculumTopicFinalExamination)
+    //   .subscribe((data: CurriculumTopicFinalExamination) => {
+    //     if (data !== undefined){
+    //       this.curriculumTopicFinalExamination = data;
+    //       console.log('Success');
+    //       this.save();
+    //     }
+    //     this.cancel();
+    //   });
   }
 
   // tslint:disable-next-line:typedef

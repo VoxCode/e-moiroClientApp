@@ -1,182 +1,182 @@
-<div class="container-fluid">
-  <br>
-  <div class="backButton">
-    <button [routerLink]="['/admin/curriculumTopic']" type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>
-      <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon></button>
-  </div>
+<!--<div class="container-fluid">-->
+<!--  <br>-->
+<!--  <div class="backButton">-->
+<!--    <button [routerLink]="['/admin/curriculumTopic']" type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>-->
+<!--      <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon></button>-->
+<!--  </div>-->
 
-  <div class="row">
+<!--  <div class="row">-->
 
-    <div class="col-sm">
-      <h4><b>Кафедра</b></h4>
+<!--    <div class="col-sm">-->
+<!--      <h4><b>Кафедра</b></h4>-->
 
-      <div class="addButton">
-        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="addDepartment()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
-      </div>
-      <br><br>
+<!--      <div class="addButton">-->
+<!--        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"-->
+<!--                (click)="addDepartment()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>-->
+<!--      </div>-->
+<!--      <br><br>-->
 
-      <div *ngFor="let el of departmentsList; let i = index" >
-        <select (change)="changeDepartment($event.target.value, el)" class="browser-default custom-select" label="Example label">
-          <option>Выберите категорию</option>
-          <option *ngFor="let p of departments" [selected]="p.id == el.departmentId" [value]="p.id">{{p.name}}</option>
-        </select>
-        <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeDepartment(i, el.id)"
-                mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
-        </div>
-        <br><br>
-      </div>
-    </div>
+<!--      <div *ngFor="let el of departmentsList; let i = index" >-->
+<!--        <select (change)="changeDepartment($event.target.value, el)" class="browser-default custom-select" label="Example label">-->
+<!--          <option>Выберите категорию</option>-->
+<!--          <option *ngFor="let p of departments" [selected]="p.id == el.departmentId" [value]="p.id">{{p.name}}</option>-->
+<!--        </select>-->
+<!--        <div class="delButton">-->
+<!--          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeDepartment(i, el.id)"-->
+<!--                mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>-->
+<!--        </div>-->
+<!--        <br><br>-->
+<!--      </div>-->
+<!--    </div>-->
 
-    <div class="col-sm">
-      <h4><b>Итоговая атестация</b></h4>
-      <div class="btn-group" role="group" aria-label="Basic example">
-        <button mdbBtn type="button" size="sm" color="primary" class="waves-light" (click)="finalExaminationFirst(1)" mdbWavesEffect>Выпуск.раб.</button>
-        <button mdbBtn type="button" size="sm" color="primary" class="waves-light" (click)="finalExaminationSecond(2)" mdbWavesEffect>Зач.</button>
-        <button mdbBtn type="button" size="sm" color="primary" class="waves-light" (click)="finalExaminationThird(3)" mdbWavesEffect>Экз.</button>
-        <button mdbBtn type="button" size="sm" color="primary" class="waves-light" (click)="finalExaminationFourth(4)" mdbWavesEffect>Соб.(зач.)</button>
-        <button mdbBtn type="button" size="sm" color="primary" class="waves-light" (click)="finalExaminationFifth(5)" mdbWavesEffect>Соб.(дел.игр.)</button>
-      </div>
-      <br><br>
-      <div class="addButton">
-        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="addFinalExamination()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
-      </div>
-      <br><br>
+<!--    <div class="col-sm">-->
+<!--      <h4><b>Итоговая атестация</b></h4>-->
+<!--      <div class="btn-group" role="group" aria-label="Basic example">-->
+<!--        <button mdbBtn type="button" size="sm" color="primary" class="waves-light" (click)="finalExaminationFirst(1)" mdbWavesEffect>Выпуск.раб.</button>-->
+<!--        <button mdbBtn type="button" size="sm" color="primary" class="waves-light" (click)="finalExaminationSecond(2)" mdbWavesEffect>Зач.</button>-->
+<!--        <button mdbBtn type="button" size="sm" color="primary" class="waves-light" (click)="finalExaminationThird(3)" mdbWavesEffect>Экз.</button>-->
+<!--        <button mdbBtn type="button" size="sm" color="primary" class="waves-light" (click)="finalExaminationFourth(4)" mdbWavesEffect>Соб.(зач.)</button>-->
+<!--        <button mdbBtn type="button" size="sm" color="primary" class="waves-light" (click)="finalExaminationFifth(5)" mdbWavesEffect>Соб.(дел.игр.)</button>-->
+<!--      </div>-->
+<!--      <br><br>-->
+<!--      <div class="addButton">-->
+<!--        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"-->
+<!--                (click)="addFinalExamination()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>-->
+<!--      </div>-->
+<!--      <br><br>-->
 
-      <div *ngFor="let el of finalExaminationsList; let i = index" >
-        <select (change)="changeFinalExamination($event.target.value, el)" class="browser-default custom-select">
-          <option>Выберите вопрос</option>
-          <option *ngFor="let p of finalExaminations" [selected]="p.id == el.finalExaminationId" [value]="p.id">{{p.content}}</option>
-        </select>
-        <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeFinalExamination(i, el.id)"
-                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
-        </div>
-        <br><br>
-      </div>
-    </div>
+<!--      <div *ngFor="let el of finalExaminationsList; let i = index" >-->
+<!--        <select (change)="changeFinalExamination($event.target.value, el)" class="browser-default custom-select">-->
+<!--          <option>Выберите вопрос</option>-->
+<!--          <option *ngFor="let p of finalExaminations" [selected]="p.id == el.finalExaminationId" [value]="p.id">{{p.content}}</option>-->
+<!--        </select>-->
+<!--        <div class="delButton">-->
+<!--          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeFinalExamination(i, el.id)"-->
+<!--                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>-->
+<!--        </div>-->
+<!--        <br><br>-->
+<!--      </div>-->
+<!--    </div>-->
 
-    <div class="col-sm">
-      <h4><b>Категория учащихся</b></h4>
+<!--    <div class="col-sm">-->
+<!--      <h4><b>Категория учащихся</b></h4>-->
 
-      <div class="addButton">
-        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="addStudentCategory()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
-      </div>
-      <br><br>
+<!--      <div class="addButton">-->
+<!--        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"-->
+<!--                (click)="addStudentCategory()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>-->
+<!--      </div>-->
+<!--      <br><br>-->
 
-      <div *ngFor="let el of studentCategoriesList; let i = index" >
-        <select (change)="changeStudentCategory($event.target.value, el)" class="browser-default custom-select">
-          <option>Выберите категорию педагога</option>
-          <option *ngFor="let p of studentCategories" [selected]="p.id == el.studentCategoryId" [value]="p.id">{{p.name}}</option>
-        </select>
-        <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeStudentCategory(i, el.id)"
-                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
-        </div>
-        <br><br>
-      </div>
-    </div>
+<!--      <div *ngFor="let el of studentCategoriesList; let i = index" >-->
+<!--        <select (change)="changeStudentCategory($event.target.value, el)" class="browser-default custom-select">-->
+<!--          <option>Выберите категорию педагога</option>-->
+<!--          <option *ngFor="let p of studentCategories" [selected]="p.id == el.studentCategoryId" [value]="p.id">{{p.name}}</option>-->
+<!--        </select>-->
+<!--        <div class="delButton">-->
+<!--          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeStudentCategory(i, el.id)"-->
+<!--                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>-->
+<!--        </div>-->
+<!--        <br><br>-->
+<!--      </div>-->
+<!--    </div>-->
 
-  </div>
+<!--  </div>-->
 
-  <br>
-  <div class="row">
+<!--  <br>-->
+<!--  <div class="row">-->
 
-    <div class="col-sm">
-      <h4><b>Нормативно-правовые акты</b></h4>
+<!--    <div class="col-sm">-->
+<!--      <h4><b>Нормативно-правовые акты</b></h4>-->
 
-      <div class="addButton">
-        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="addRegulation()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
-      </div>
-      <br><br>
+<!--      <div class="addButton">-->
+<!--        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"-->
+<!--                (click)="addRegulation()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>-->
+<!--      </div>-->
+<!--      <br><br>-->
 
-      <div *ngFor="let el of regulationsList; let i = index" >
-        <select (change)="changeRegulation($event.target.value, el)" class="browser-default custom-select">
-          <option>Выберите вопрос</option>
-          <option *ngFor="let p of regulations" [selected]="p.id == el.regulationId" [value]="p.id">{{p.content}}</option>
-        </select>
-        <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeRegulation(i, el.id)"
-                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
-        </div>
-        <br><br>
-      </div>
-    </div>
+<!--      <div *ngFor="let el of regulationsList; let i = index" >-->
+<!--        <select (change)="changeRegulation($event.target.value, el)" class="browser-default custom-select">-->
+<!--          <option>Выберите вопрос</option>-->
+<!--          <option *ngFor="let p of regulations" [selected]="p.id == el.regulationId" [value]="p.id">{{p.content}}</option>-->
+<!--        </select>-->
+<!--        <div class="delButton">-->
+<!--          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeRegulation(i, el.id)"-->
+<!--                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>-->
+<!--        </div>-->
+<!--        <br><br>-->
+<!--      </div>-->
+<!--    </div>-->
 
-    <div class="col-sm">
-      <h4><b>Вопросы самостоятельной работы</b></h4>
+<!--    <div class="col-sm">-->
+<!--      <h4><b>Вопросы самостоятельной работы</b></h4>-->
 
-      <div class="addButton">
-        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="addTestWork()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
-      </div>
-      <br><br>
+<!--      <div class="addButton">-->
+<!--        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"-->
+<!--                (click)="addTestWork()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>-->
+<!--      </div>-->
+<!--      <br><br>-->
 
-      <div *ngFor="let el of testWorksList; let i = index" >
-        <select (change)="changeTestWork($event.target.value, el)" class="browser-default custom-select">
-          <option>Выберите вопрос</option>
-          <option *ngFor="let p of testWorks" [selected]="p.id == el.testWorkId" [value]="p.id">{{p.content}}</option>
-        </select>
-        <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTestWork(i, el.id)"
-                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
-        </div>
-        <br><br>
-      </div>
-    </div>
+<!--      <div *ngFor="let el of testWorksList; let i = index" >-->
+<!--        <select (change)="changeTestWork($event.target.value, el)" class="browser-default custom-select">-->
+<!--          <option>Выберите вопрос</option>-->
+<!--          <option *ngFor="let p of testWorks" [selected]="p.id == el.testWorkId" [value]="p.id">{{p.content}}</option>-->
+<!--        </select>-->
+<!--        <div class="delButton">-->
+<!--          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeTestWork(i, el.id)"-->
+<!--                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>-->
+<!--        </div>-->
+<!--        <br><br>-->
+<!--      </div>-->
+<!--    </div>-->
 
-  </div>
+<!--  </div>-->
 
-  <br>
-  <div class="row">
+<!--  <br>-->
+<!--  <div class="row">-->
 
-    <div class="col-sm">
-      <h4><b>Основная литература</b></h4>
+<!--    <div class="col-sm">-->
+<!--      <h4><b>Основная литература</b></h4>-->
 
-      <div class="addButton">
-        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="addMainLiterature()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
-      </div>
-      <br><br>
+<!--      <div class="addButton">-->
+<!--        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"-->
+<!--                (click)="addMainLiterature()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>-->
+<!--      </div>-->
+<!--      <br><br>-->
 
-      <div *ngFor="let el of mainLiteraturesList; let i = index" >
-        <select (change)="changeMainLiterature($event.target.value, el)" class="browser-default custom-select">
-          <option>Выберите литературу</option>
-          <option *ngFor="let p of mainLiteratures" [selected]="p.id == el.mainLiteratureId" [value]="p.id">{{p.content}}</option>
-        </select>
-        <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeMainLiterature(i, el.id)"
-                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
-        </div>
-        <br><br>
-      </div>
-    </div>
+<!--      <div *ngFor="let el of mainLiteraturesList; let i = index" >-->
+<!--        <select (change)="changeMainLiterature($event.target.value, el)" class="browser-default custom-select">-->
+<!--          <option>Выберите литературу</option>-->
+<!--          <option *ngFor="let p of mainLiteratures" [selected]="p.id == el.mainLiteratureId" [value]="p.id">{{p.content}}</option>-->
+<!--        </select>-->
+<!--        <div class="delButton">-->
+<!--          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeMainLiterature(i, el.id)"-->
+<!--                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>-->
+<!--        </div>-->
+<!--        <br><br>-->
+<!--      </div>-->
+<!--    </div>-->
 
-    <div class="col-sm">
-      <h4><b>Дополнительная литература</b></h4>
+<!--    <div class="col-sm">-->
+<!--      <h4><b>Дополнительная литература</b></h4>-->
 
-      <div class="addButton">
-        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="addAdditionalLiterature()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
-      </div>
-      <br><br>
+<!--      <div class="addButton">-->
+<!--        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"-->
+<!--                (click)="addAdditionalLiterature()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>-->
+<!--      </div>-->
+<!--      <br><br>-->
 
-      <div *ngFor="let el of additionalLiteraturesList; let i = index" >
-        <select (change)="changeAdditionalLiterature($event.target.value, el)" class="browser-default custom-select" >
-          <option>Выберите литературу</option>
-          <option *ngFor="let p of additionalLiteratures" [selected]="p.id == el.additionalLiteratureId" [value]="p.id" >{{p.content}}</option>
-        </select>
-        <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeAdditionalLiterature(i, el.id)"
-                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
-        </div>
-        <br><br>
-      </div>
-    </div>
+<!--      <div *ngFor="let el of additionalLiteraturesList; let i = index" >-->
+<!--        <select (change)="changeAdditionalLiterature($event.target.value, el)" class="browser-default custom-select" >-->
+<!--          <option>Выберите литературу</option>-->
+<!--          <option *ngFor="let p of additionalLiteratures" [selected]="p.id == el.additionalLiteratureId" [value]="p.id" >{{p.content}}</option>-->
+<!--        </select>-->
+<!--        <div class="delButton">-->
+<!--          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeAdditionalLiterature(i, el.id)"-->
+<!--                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>-->
+<!--        </div>-->
+<!--        <br><br>-->
+<!--      </div>-->
+<!--    </div>-->
 
-  </div>
-</div>
+<!--  </div>-->
+<!--</div>-->
