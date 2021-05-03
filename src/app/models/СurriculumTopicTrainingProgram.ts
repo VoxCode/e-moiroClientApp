@@ -4,13 +4,7 @@ export class CurriculumTopicTrainingProgram {
     public isVariable?: boolean,
     public classHours?: number,
     public serialNumber?: number,
-    public curriculumTopicId?: number,
-    public trainingProgramId?: number,
     public trainingProgramCurriculumSectionId?: number,
     public topicTitle?: string,
-    public testWork?: string,
-    public annotation?: string,
-    public shortName?: string,
-    public fullName?: string,
-    public occupationFormId?: number){ }
+    public annotation?: string){ }
 }

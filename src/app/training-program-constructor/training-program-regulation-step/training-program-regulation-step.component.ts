@@ -28,8 +28,6 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   done = [];
   id: number;
   trainingProgram: TrainingProgram;
-  curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
-  curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram;
   regulation: Regulation = new Regulation();
 
   constructor(
@@ -47,8 +45,7 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
 
   }
 
-  // tslint:disable-next-line:typedef
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<string[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       this.save();
@@ -61,51 +58,41 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
     }
   }
 
-  // tslint:disable-next-line:typedef
-  noReturnPredicate() {
+  noReturnPredicate(): boolean {
     return false;
   }
 
-  // LOAD
-
-  // tslint:disable-next-line:typedef
-  loadTrainingProgram() {
+  loadTrainingProgram(): void {
     this.trainingProgramService.getValue(this.id)
-      .subscribe((data: TrainingProgram) => {
-        if (data !== undefined){
-          this.trainingProgram = data;
+      .subscribe((trainingProgram: TrainingProgram) => {
+        if (trainingProgram){
+          this.trainingProgram = trainingProgram;
           this.loadCurriculumTopicTrainingProgram();
         }
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadCurriculumTopicTrainingProgram() {
-    this.curriculumTopicTrainingProgramService.getValue(this.id).subscribe((data: CurriculumTopicTrainingProgram[]) => {
-      if (data !== undefined && data !== null) {
-        this.curriculumTopicTrainingPrograms = data;
-        this.loadRegulation();
+  loadCurriculumTopicTrainingProgram(): void {
+    this.curriculumTopicTrainingProgramService.getValue(this.id)
+      .subscribe((curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[]) => {
+      if (curriculumTopicTrainingPrograms.length !== 0) {
+        this.loadRegulation(curriculumTopicTrainingPrograms);
       }
     });
   }
 
-  // tslint:disable-next-line:typedef
-  loadRegulation() {
-    // tslint:disable-next-line:prefer-const
-    const curriculumTopicIdArray: number[] = [this.curriculumTopicTrainingPrograms.length];
-    this.curriculumTopicTrainingPrograms.forEach(i => {
+  loadRegulation(curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[]): void {
+    const curriculumTopicIdArray: number[] = [curriculumTopicTrainingPrograms.length];
+    curriculumTopicTrainingPrograms.forEach(i => {
       curriculumTopicIdArray.push(i.curriculumTopicId);
     });
     this.regulationService.getRegulation(curriculumTopicIdArray)
       .subscribe((data: Regulation[]) => {
-        if (data !== undefined && data !== null){
-          // tslint:disable-next-line:only-arrow-functions typedef
-          data.sort(function(a, b) {
-            return b.id - a.id;
-          });
+        if (data.length !== 0) {
+          data.sort((a, b) => b.id - a.id);
           data.forEach((tmp) => {
             const tmp2 = this.done.find(a => a.seventh === tmp.id);
-            if (tmp2 === undefined) {
+            if (!tmp2) {
               this.todo.push({
                 first: tmp.id,
                 third: tmp.content
@@ -116,33 +103,25 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadTrainingProgramRegulation() {
+  loadTrainingProgramRegulation(): void {
     this.trainingProgramRegulationService.getValue(this.id)
       .subscribe((data: TrainingProgramRegulation[]) => {
         this.loadTrainingProgram();
-        if (data !== undefined && data !== null){
-          // tslint:disable-next-line:only-arrow-functions typedef
-          data.sort(function(a, b) {
-            return a.serialNumber - b.serialNumber;
-          });
+        if (data.length !== 0){
+          data.sort((a, b) => a.serialNumber - b.serialNumber);
           data.forEach((tmp) => {
             this.done.push({
               fourth: tmp.id,
               fifth: tmp.trainingProgramId,
               third: tmp.content,
-              seventh: tmp.regulationId,
-              eight: tmp.serialNumber
+              seventh: tmp.serialNumber
             });
           });
         }
       });
   }
 
-  // SAVE FULL
-
-  // tslint:disable-next-line:typedef
-  save() {
+  save(): void {
     let i = 0;
     this.done.forEach((object, index) => {
       let trainingProgramRegulation: TrainingProgramRegulation = new TrainingProgramRegulation();
@@ -176,61 +155,47 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
     });
   }
 
-  // UPDATE
-
-  // tslint:disable-next-line:typedef
-  update(tmp: TrainingProgramRegulation){
+  update(tmp: TrainingProgramRegulation): void {
     this.trainingProgramRegulationService.updateValue(tmp)
       .subscribe((data: TrainingProgramRegulation) => {
         console.log('Update was successful ' + data.serialNumber);
       });
   }
 
-  // tslint:disable-next-line:typedef
-  cancel() {
-    // this.regulation = new Regulation();
-    // this.curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
-    // this.curriculumTopicRegulation = new CurriculumTopicRegulation();
-  }
-
-  // tslint:disable-next-line:typedef
-  addRegulation() {
+  addRegulation(): void {
     this.crateRegulation();
   }
 
-  // tslint:disable-next-line:typedef
-  crateRegulation(){
-    // this.regulationService.createValue(this.regulation)
-    //   .subscribe((data: Regulation) => {
-    //     if (data !== undefined){
-    //       this.regulation = data;
-    //       console.log('Success');
-    //       this.done.push({
-    //         first: this.regulation.id,
-    //         third: this.regulation.content
-    //       });
-    //       this.curriculumTopicRegulation.regulationId = this.regulation.id;
-    //       this.curriculumTopicRegulation.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
-    //       this.crateCurriculumTopicRegulation();
-    //     }
-    //   });
+  crateRegulation(): void {
+    this.regulationService.createValue(this.regulation)
+      .subscribe((data: Regulation) => {
+        if (data !== undefined){
+          this.regulation = data;
+          console.log('Success');
+          this.done.push({
+            first: this.regulation.id,
+            third: this.regulation.content
+          });
+          this.curriculumTopicRegulation.regulationId = this.regulation.id;
+          this.curriculumTopicRegulation.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
+          this.crateCurriculumTopicRegulation();
+        }
+      });
   }
 
-  // tslint:disable-next-line:typedef
-  crateCurriculumTopicRegulation(){
-    // this.curriculumTopicRegulationService.createValue(this.curriculumTopicRegulation)
-    //   .subscribe((data: CurriculumTopicRegulation) => {
-    //     if (data !== undefined){
-    //       this.curriculumTopicRegulation = data;
-    //       console.log('Success');
-    //       this.save();
-    //     }
-    //     this.cancel();
-    //   });
+  crateCurriculumTopicRegulation(): void {
+    this.curriculumTopicRegulationService.createValue(this.curriculumTopicRegulation)
+      .subscribe((data: CurriculumTopicRegulation) => {
+        if (data !== undefined){
+          this.curriculumTopicRegulation = data;
+          console.log('Success');
+          this.save();
+        }
+        this.cancel();
+      });
   }
 
-  // tslint:disable-next-line:typedef
-  deleteTrainingProgramRegulation(id: number, indx: number){
+  deleteTrainingProgramRegulation(id: number, indx: number): void {
     this.done.splice(indx, 1);
     if (id !== undefined){
       this.trainingProgramRegulationService.deleteValue(id).subscribe(() => {

@@ -3,5 +3,6 @@ export class FinalExamination {
     public id?: number,
     public content?: string,
     public certificationTypeId?: number,
-    public certificationTypeName?: string){ }
+    public certificationTypeName?: string,
+    public authorIndex?: string){ }
 }
