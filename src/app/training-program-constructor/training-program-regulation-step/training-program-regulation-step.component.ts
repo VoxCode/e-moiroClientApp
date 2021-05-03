@@ -7,9 +7,9 @@ import {RegulationService} from '../../services/regulation.service';
 import {TrainingProgramRegulationService} from '../../services/training-program-regulation.service';
 import {Regulation} from '../../models/Regulation';
 import {TrainingProgramRegulation} from '../../models/TrainingProgramRegulation';
-import {CurriculumTopicTrainingProgram} from '../../models/СurriculumTopicTrainingProgram';
-import {CurriculumTopicTrainingProgramService} from '../../services/curriculum-topic-training-program.service';
 import {Globals} from '../../globals';
+import {CurriculumTopicService} from '../../services/curriculum-topic.service';
+import {CurriculumTopic} from '../../models/CurriculumTopic';
 
 @Component({
   selector: 'app-training-program-regulation-step',
@@ -19,7 +19,7 @@ import {Globals} from '../../globals';
     TrainingProgramService,
     RegulationService,
     TrainingProgramRegulationService,
-    CurriculumTopicTrainingProgramService
+    CurriculumTopicService
   ]
 })
 export class TrainingProgramRegulationStepComponent implements OnInit {
@@ -35,7 +35,7 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
     private trainingProgramService: TrainingProgramService,
     private regulationService: RegulationService,
     private trainingProgramRegulationService: TrainingProgramRegulationService,
-    private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
+    private curriculumTopicService: CurriculumTopicService,
     private route: ActivatedRoute
   ) { }
 
@@ -67,26 +67,24 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
       .subscribe((trainingProgram: TrainingProgram) => {
         if (trainingProgram){
           this.trainingProgram = trainingProgram;
-          this.loadCurriculumTopicTrainingProgram();
+          this.loadCurriculumTopicTemplates();
         }
       });
   }
 
-  loadCurriculumTopicTrainingProgram(): void {
-    this.curriculumTopicTrainingProgramService.getValue(this.id)
-      .subscribe((curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[]) => {
-      if (curriculumTopicTrainingPrograms.length !== 0) {
-        this.loadRegulation(curriculumTopicTrainingPrograms);
-      }
+  loadCurriculumTopicTemplates(): void {
+    this.curriculumTopicService.getByTrainingProgram(this.id).subscribe((curriculumTopics: CurriculumTopic[]) => {
+      this.loadRegulationTemplates(curriculumTopics);
+
     });
   }
 
-  loadRegulation(curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[]): void {
-    const curriculumTopicIdArray: number[] = [curriculumTopicTrainingPrograms.length];
-    curriculumTopicTrainingPrograms.forEach(i => {
-      curriculumTopicIdArray.push(i.curriculumTopicId);
+  loadRegulationTemplates(curriculumTopics: CurriculumTopic[]): void {
+    const curriculumTopicIdArray: number[] = [curriculumTopics.length];
+    curriculumTopics.forEach(curriculumTopic => {
+      curriculumTopicIdArray.push(curriculumTopic.id);
     });
-    this.regulationService.getRegulation(curriculumTopicIdArray)
+    this.regulationService.getByCurriculumTopics(curriculumTopicIdArray)
       .subscribe((data: Regulation[]) => {
         if (data.length !== 0) {
           data.sort((a, b) => b.id - a.id);
@@ -180,18 +178,6 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
           this.curriculumTopicRegulation.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
           this.crateCurriculumTopicRegulation();
         }
-      });
-  }
-
-  crateCurriculumTopicRegulation(): void {
-    this.curriculumTopicRegulationService.createValue(this.curriculumTopicRegulation)
-      .subscribe((data: CurriculumTopicRegulation) => {
-        if (data !== undefined){
-          this.curriculumTopicRegulation = data;
-          console.log('Success');
-          this.save();
-        }
-        this.cancel();
       });
   }
 

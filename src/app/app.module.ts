@@ -87,6 +87,7 @@ import { ExpertComponent } from './expert/expert.component';
 import {ExpertEditComponent} from './expert/expert-edit.component';
 import { TrainingProgramExpertStepComponent
 } from './training-program-constructor/training-program-expert-step/training-program-expert-step.component';
+import {TrainingProgramRegulationEditComponent} from './training-program-constructor/training-program-regulation-step/training-program-regulation-edit.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -139,6 +140,7 @@ export function tokenGetter(): string {
     TrainingProgramMainLiteratureStepComponent,
     TrainingProgramAdditionalLiteratureStepComponent,
     TrainingProgramRegulationStepComponent,
+    TrainingProgramRegulationEditComponent,
     FilterPipe,
     AdminAreaComponent,
     CreatorAreaComponent,

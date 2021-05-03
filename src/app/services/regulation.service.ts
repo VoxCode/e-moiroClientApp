@@ -2,35 +2,29 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { Regulation } from '../models/Regulation';
 import { environment } from '../../environments/environment';
-import {timeout} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class RegulationService {
   public url = environment.apiUrl + 'api/Regulations';
   constructor(private http: HttpClient) { }
 
-  // tslint:disable-next-line:typedef
-  getValues() {
+  getValues(): Observable<any> {
     return this.http.get(this.url);
   }
-  // tslint:disable-next-line:typedef
-  getValue(id: number) {
+  getValue(id: number): Observable<any>{
     return this.http.get(this.url + '/' + id);
   }
-  // tslint:disable-next-line:typedef
-  getRegulation(curriculumTopicIdArray: number[]) {
-    return this.http.post(this.url + '/' + 1, curriculumTopicIdArray);
+  getByCurriculumTopics(curriculumTopicIdArray: number[]): Observable<any> {
+    return this.http.post(this.url + '/CurriculumTopics', curriculumTopicIdArray);
   }
-  // tslint:disable-next-line:typedef
-  createValue(regulation: Regulation) {
+  createValue(regulation: Regulation): Observable<any> {
     return this.http.post(this.url, regulation);
   }
-  // tslint:disable-next-line:typedef
-  updateValue(regulation: Regulation) {
+  updateValue(regulation: Regulation): Observable<any> {
     return this.http.put(this.url, regulation);
   }
-  // tslint:disable-next-line:typedef
-  deleteValue(id: number) {
+  deleteValue(id: number): Observable<any> {
     return this.http.delete(this.url + '/' + id);
   }
 }

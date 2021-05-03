@@ -2,31 +2,29 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { CurriculumTopic } from '../models/CurriculumTopic';
 import { environment } from '../../environments/environment';
-import {CurriculumSection} from '../models/CurriculumSection';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class CurriculumTopicService {
   public url = environment.apiUrl + 'api/curriculumTopics';
   constructor(private http: HttpClient) { }
 
-  // tslint:disable-next-line:typedef
-  getValues() {
+  getValues(): Observable<any> {
     return this.http.get(this.url);
   }
-  // tslint:disable-next-line:typedef
-  getValue(studentCategoryId: number, departmentId: number) {
+  getValue(studentCategoryId: number, departmentId: number): Observable<any> {
     return this.http.get(this.url + '/' + studentCategoryId + '/' + departmentId);
   }
-  // tslint:disable-next-line:typedef
-  createValue(curriculumTopic: CurriculumTopic) {
+  getByTrainingProgram(trainingProgramId: number): Observable<any> {
+    return this.http.get(this.url + '/TrainingProgram' + '/' + trainingProgramId);
+  }
+  createValue(curriculumTopic: CurriculumTopic): Observable<any> {
     return this.http.post(this.url, curriculumTopic);
   }
-  // tslint:disable-next-line:typedef
-  updateValue(curriculumTopic: CurriculumTopic) {
+  updateValue(curriculumTopic: CurriculumTopic): Observable<any> {
     return this.http.put(this.url, curriculumTopic);
   }
-  // tslint:disable-next-line:typedef
-  deleteValue(id: number) {
+  deleteValue(id: number): Observable<any> {
     return this.http.delete(this.url + '/' + id);
   }
 }
