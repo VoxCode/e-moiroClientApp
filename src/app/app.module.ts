@@ -33,7 +33,6 @@ import {CurriculumTopicAddFormComponent} from './curriculum-topic-add-form/curri
 import {StudentCategoryEditComponent} from './student-category/student-category-edit.component';
 import {CurriculumTopicEditComponent} from './curriculum-topic/curriculum-topic-edit.component';
 import {OccupationFormEditComponent} from './occupation-form/occupation-form-edit.component';
-import {GroupAddComponent} from './group/group-add.component';
 import {DocxGeneratorATPComponent} from './docx-generator-ATP/docx-generator-ATP.component';
 import {CertificationTypeComponent} from './certification-type/certification-type.component';
 import {FinalExaminationComponent} from './final-examination/final-examination.component';
@@ -109,7 +108,6 @@ export function tokenGetter(): string {
     FormOfEducationComponent,
     FormOfEducationEditComponent,
     GroupComponent,
-    GroupAddComponent,
     MainLiteratureComponent,
     MainLiteratureEditComponent,
     OccupationFormComponent,

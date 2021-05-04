@@ -38,8 +38,7 @@ export class TrainingProgramMainStepComponent implements OnInit{
 
   curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram = {
     isVariable: false,
-    classHours: 0,
-    occupationFormId: 0
+    classHours: 0
   };
 
   curriculumSectionChildren: any = [];
@@ -68,7 +67,8 @@ export class TrainingProgramMainStepComponent implements OnInit{
   drop(event: CdkDragDrop<string[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
+    }
+    else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
@@ -82,60 +82,59 @@ export class TrainingProgramMainStepComponent implements OnInit{
       .subscribe((data: TrainingProgram) => {
         if (data) {
           this.trainingProgram = data;
-          this.loadOccupationForm();
+          this.loadOccupationForms();
         }
       });
   }
 
-  loadOccupationForm(): void {
+  loadOccupationForms(): void {
     this.occupationFormService.getValues()
       .subscribe((data: OccupationForm[]) => {
         if (data.length !== 0){
           this.occupationForms = data;
-          this.loadTrainingProgramCurriculumSection();
+          this.loadTrainingProgramCurriculumSections();
         }
       });
   }
 
-  loadTrainingProgramCurriculumSection(): void {
+  loadTrainingProgramCurriculumSections(): void {
     this.trainingProgramCurriculumSectionService.getValue(this.id)
-      .subscribe((data: TrainingProgramCurriculumSection[]) => {
-        if (data) {
-          data.sort((a, b) => a.sectionNumber - b.sectionNumber);
-          data.forEach( object => {
-            this.addCurriculumSectionChild(object.curriculumSectionId, object.id);
+      .subscribe((trainingProgramCurriculumSections: TrainingProgramCurriculumSection[]) => {
+        if (trainingProgramCurriculumSections) {
+          trainingProgramCurriculumSections.sort((a, b) => a.sectionNumber - b.sectionNumber);
+          trainingProgramCurriculumSections.forEach( trainingProgramCurriculumSection => {
+            this.addCurriculumSectionChild(trainingProgramCurriculumSection.curriculumSectionId, trainingProgramCurriculumSection.id);
           });
-          this.loadCurriculumTopicTrainingProgram();
+          this.loadCurriculumTopicsFromTrainingProgram();
         }
       });
   }
 
-  loadCurriculumTopicTrainingProgram(): void {
-    this.curriculumTopicTrainingProgramService.getValue(this.id)
-      .subscribe((curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[]) => {
-        if (curriculumTopicTrainingPrograms.length !== 0) {
-          this.loadCurriculumTopic(curriculumTopicTrainingPrograms);
+  loadCurriculumTopicsFromTrainingProgram(): void {
+    this.curriculumTopicService.getFromTrainingProgram(this.id)
+      .subscribe((curriculumTopics: CurriculumTopic[]) => {
+        if (curriculumTopics.length !== 0) {
+          this.loadCurriculumTopic(curriculumTopics);
         }
       });
   }
 
-  loadCurriculumTopic(curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[]): void {
+  loadCurriculumTopic(curriculumTopicsAdded: CurriculumTopic[]): void {
     this.curriculumTopicService.getValue(this.trainingProgram.studentCategoryId, this.trainingProgram.departmentId)
-      .subscribe((data: CurriculumTopic[]) => {
-        if (data.length !== 0) {
-          this.todo = [];
-          data.sort((a, b) => b.id - a.id);
-          data.forEach((object) => {
-            const curriculumTopicTrainingProgram = curriculumTopicTrainingPrograms.find(a => a.curriculumTopicId === object.id);
+      .subscribe((curriculumTopics: CurriculumTopic[]) => {
+        if (curriculumTopics.length !== 0) {
+          curriculumTopics.sort((a, b) => b.id - a.id);
+          curriculumTopics.forEach((curriculumTopic) => {
+            const curriculumTopicTrainingProgram = curriculumTopicsAdded.find(a => a.id === curriculumTopic.id);
             if (!curriculumTopicTrainingProgram) {
               this.todo.push({
-                first: object.id,
-                second: object.topicTitle,
+                first: curriculumTopic.id,
+                second: curriculumTopic.topicTitle,
                 third: this.curriculumTopicTrainingProgram.isVariable,
                 fourth: 0,
                 fifth: 1,
                 sixth: this.id,
-                ninth: object.annotation
+                ninth: curriculumTopic.annotation
               });
             }
           });

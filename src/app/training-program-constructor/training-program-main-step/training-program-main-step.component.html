@@ -39,7 +39,6 @@
         </div>
         <div *ngFor="let item of curriculumSectionChildren; index as i ">
           <app-curriculum-section-child [curriculumSectionNumber]="i+1"
-                                        [done]="$any(item.done)"
                                         [id]="id"
                                         [curriculumSectionId]="item.curriculumSectionId"
                                         [(trainingProgramCurriculumSectionId)]="item.trainingProgramCurriculumSectionId"

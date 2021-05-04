@@ -105,86 +105,86 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   loadFinalExamination() {
-    // tslint:disable-next-line:prefer-const
-    let curriculumTopicIdArray: number[] = [this.curriculumTopicTrainingPrograms.length];
-    this.curriculumTopicTrainingPrograms.forEach(i => {
-      curriculumTopicIdArray.push(i.curriculumTopicId);
-    });
-    this.finalExaminationService.getFinalExamination(this.trainingProgram.certificationTypeId, curriculumTopicIdArray)
-      .subscribe((data: FinalExamination[]) => {
-        if (data !== undefined && data !== null){
-          // tslint:disable-next-line:only-arrow-functions typedef
-          data.sort(function(a, b) {
-            return b.id - a.id;
-          });
-          data.forEach((tmp) => {
-            const tmp2 = this.done.find(a => a.seventh === tmp.id);
-            if (tmp2 === undefined){
-              this.todo.push({
-                first: tmp.id,
-                third: tmp.content
-              });
-            }
-          });
-        }
-      });
+    // // tslint:disable-next-line:prefer-const
+    // let curriculumTopicIdArray: number[] = [this.curriculumTopicTrainingPrograms.length];
+    // this.curriculumTopicTrainingPrograms.forEach(i => {
+    //   curriculumTopicIdArray.push(i.curriculumTopicId);
+    // });
+    // this.finalExaminationService.getFinalExamination(this.trainingProgram.certificationTypeId, curriculumTopicIdArray)
+    //   .subscribe((data: FinalExamination[]) => {
+    //     if (data !== undefined && data !== null){
+    //       // tslint:disable-next-line:only-arrow-functions typedef
+    //       data.sort(function(a, b) {
+    //         return b.id - a.id;
+    //       });
+    //       data.forEach((tmp) => {
+    //         const tmp2 = this.done.find(a => a.seventh === tmp.id);
+    //         if (tmp2 === undefined){
+    //           this.todo.push({
+    //             first: tmp.id,
+    //             third: tmp.content
+    //           });
+    //         }
+    //       });
+    //     }
+    //   });
   }
 
   // tslint:disable-next-line:typedef
   loadTrainingProgramFinalExamination() {
-    this.trainingProgramFinalExaminationService.getValue(this.id)
-      .subscribe((data: TrainingProgramFinalExamination[]) => {
-        this.loadTrainingProgram();
-        if (data !== undefined && data !== null){
-          // tslint:disable-next-line:only-arrow-functions typedef
-          data.sort(function(a, b) {
-            return a.serialNumber - b.serialNumber;
-          });
-          data.forEach((tmp) => {
-            this.done.push({
-              fourth: tmp.id,
-              fifth: tmp.trainingProgramId,
-              third: tmp.content,
-              seventh: tmp.finalExaminationId,
-              eight: tmp.serialNumber
-            });
-          });
-        }
-      });
+    // this.trainingProgramFinalExaminationService.getValue(this.id)
+    //   .subscribe((data: TrainingProgramFinalExamination[]) => {
+    //     this.loadTrainingProgram();
+    //     if (data !== undefined && data !== null){
+    //       // tslint:disable-next-line:only-arrow-functions typedef
+    //       data.sort(function(a, b) {
+    //         return a.serialNumber - b.serialNumber;
+    //       });
+    //       data.forEach((tmp) => {
+    //         this.done.push({
+    //           fourth: tmp.id,
+    //           fifth: tmp.trainingProgramId,
+    //           third: tmp.content,
+    //           seventh: tmp.finalExaminationId,
+    //           eight: tmp.serialNumber
+    //         });
+    //       });
+    //     }
+    //   });
   }
 
   // SAVE FULL
 
   // tslint:disable-next-line:typedef
   save() {
-    let i = 0;
-    this.done.forEach((object, index) => {
-      let trainingProgramFinalExamination: TrainingProgramFinalExamination = new TrainingProgramFinalExamination();
-      i = index + 1;
-      if (object.fourth !== undefined){
-        trainingProgramFinalExamination.id = +object.fourth;
-        trainingProgramFinalExamination.trainingProgramId = +object.fifth;
-        trainingProgramFinalExamination.finalExaminationId = +object.seventh;
-      }
-      else {
-        trainingProgramFinalExamination.finalExaminationId = +object.first;
-        trainingProgramFinalExamination.trainingProgramId = +this.id;
-      }
-      trainingProgramFinalExamination.serialNumber = +i;
-
-      if (trainingProgramFinalExamination.id === undefined){
-        this.trainingProgramFinalExaminationService.createValue(trainingProgramFinalExamination)
-          .subscribe((data: TrainingProgramFinalExamination) => {
-            object.fourth = data.id;
-            console.log('Save was successful');
-            trainingProgramFinalExamination = null;
-          });
-      }
-      else {
-        this.update(trainingProgramFinalExamination);
-        trainingProgramFinalExamination = null;
-      }
-    });
+    // let i = 0;
+    // this.done.forEach((object, index) => {
+    //   let trainingProgramFinalExamination: TrainingProgramFinalExamination = new TrainingProgramFinalExamination();
+    //   i = index + 1;
+    //   if (object.fourth !== undefined){
+    //     trainingProgramFinalExamination.id = +object.fourth;
+    //     trainingProgramFinalExamination.trainingProgramId = +object.fifth;
+    //     trainingProgramFinalExamination.finalExaminationId = +object.seventh;
+    //   }
+    //   else {
+    //     trainingProgramFinalExamination.finalExaminationId = +object.first;
+    //     trainingProgramFinalExamination.trainingProgramId = +this.id;
+    //   }
+    //   trainingProgramFinalExamination.serialNumber = +i;
+    //
+    //   if (trainingProgramFinalExamination.id === undefined){
+    //     this.trainingProgramFinalExaminationService.createValue(trainingProgramFinalExamination)
+    //       .subscribe((data: TrainingProgramFinalExamination) => {
+    //         object.fourth = data.id;
+    //         console.log('Save was successful');
+    //         trainingProgramFinalExamination = null;
+    //       });
+    //   }
+    //   else {
+    //     this.update(trainingProgramFinalExamination);
+    //     trainingProgramFinalExamination = null;
+    //   }
+    // });
   }
 
   // UPDATE

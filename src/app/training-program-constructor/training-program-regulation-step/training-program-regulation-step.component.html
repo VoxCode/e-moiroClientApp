@@ -19,31 +19,31 @@
             cdkDropList
             [cdkDropListData]="todo"
             class="example-list"
-            (cdkDropListDropped)="drop($event)"
+            (cdkDropListDropped)="drop($any($event))"
             [cdkDropListEnterPredicate]="noReturnPredicate">
-            <div class="example-box" *ngFor="let item of todo; index as i" cdkDrag>{{i+1}}. {{item.third}}</div>
+            <div class="example-box" *ngFor="let item of todo; index as i" cdkDrag>{{i+1}}. {{item.regulationContent}}</div>
           </div>
         </div>
       </div>
       <div class="col-sm-6">
         <div class="example-container">
           <h2>Выбрано</h2>
-          <button *ngIf="done.length === 0" type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)=""
+          <button *ngIf="done.length === 0" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
                   mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить</button>
 
           <div
             cdkDropList
             [cdkDropListData]="done"
             class="example-list"
-            (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let item of done; index as i" cdkDrag>{{i+1}}. {{item.third}}
+            (cdkDropListDropped)="drop($any($event))">
+            <div class="example-box" *ngFor="let item of done; index as i" cdkDrag>{{i+1}}. {{item.trainingProgramRegulationContent}}
               <br><br>
               <div class="buttons">
-                <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="" mdbWavesEffect>
+                <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="addTrainingProgramRegulation()" mdbWavesEffect>
                   <mdb-icon fas icon="plus" size="lg"></mdb-icon>
                 </button>
                 <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
-                        (click)="deleteTrainingProgramRegulation(item.fourth, i)" mdbWavesEffect>
+                        (click)="deleteTrainingProgramRegulation(item.trainingProgramRegulationId, i)" mdbWavesEffect>
                   <mdb-icon fas icon="times" size="lg"></mdb-icon>
                 </button>
               </div>

@@ -92,28 +92,28 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
   // tslint:disable-next-line:typedef
   loadAdditionalLiterature() {
     // tslint:disable-next-line:prefer-const
-    let curriculumTopicIdArray: number[] = [this.curriculumTopicTrainingPrograms.length];
-    this.curriculumTopicTrainingPrograms.forEach(i => {
-      curriculumTopicIdArray.push(i.curriculumTopicId);
-    });
-    this.additionalLiteratureService.getAdditionalLiterature(curriculumTopicIdArray)
-      .subscribe((data: AdditionalLiterature[]) => {
-        if (data !== undefined && data !== null){
-          // tslint:disable-next-line:only-arrow-functions typedef
-          data.sort(function(a, b) {
-            return b.id - a.id;
-          });
-          data.forEach((tmp) => {
-            const tmp2 = this.done.find(a => a.seventh === tmp.id);
-            if (tmp2 === undefined) {
-              this.todo.push({
-                first: tmp.id,
-                third: tmp.content
-              });
-            }
-          });
-        }
-      });
+    // let curriculumTopicIdArray: number[] = [this.curriculumTopicTrainingPrograms.length];
+    // this.curriculumTopicTrainingPrograms.forEach(i => {
+    //   curriculumTopicIdArray.push(i.curriculumTopicId);
+    // });
+    // this.additionalLiteratureService.getAdditionalLiterature(curriculumTopicIdArray)
+    //   .subscribe((data: AdditionalLiterature[]) => {
+    //     if (data !== undefined && data !== null){
+    //       // tslint:disable-next-line:only-arrow-functions typedef
+    //       data.sort(function(a, b) {
+    //         return b.id - a.id;
+    //       });
+    //       data.forEach((tmp) => {
+    //         const tmp2 = this.done.find(a => a.seventh === tmp.id);
+    //         if (tmp2 === undefined) {
+    //           this.todo.push({
+    //             first: tmp.id,
+    //             third: tmp.content
+    //           });
+    //         }
+    //       });
+    //     }
+    //   });
   }
 
   // tslint:disable-next-line:typedef

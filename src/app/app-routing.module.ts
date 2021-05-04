@@ -16,7 +16,6 @@ import {TrainingProgramComponent} from './training-program/training-program.comp
 import {MainLiteratureComponent} from './main-literature/main-literature.component';
 import {FormOfEducationComponent} from './form-of-education/form-of-education.component';
 import {CurriculumTopicAddFormComponent} from './curriculum-topic-add-form/curriculum-topic-add-form.component';
-import {GroupAddComponent} from './group/group-add.component';
 import {DocxGeneratorATPComponent} from './docx-generator-ATP/docx-generator-ATP.component';
 import {TestWorkComponent} from './test-work/test-work.component';
 import {CertificationTypeComponent} from './certification-type/certification-type.component';
@@ -41,7 +40,7 @@ import {UserComponent} from './admin-area/users/user.component';
 import {AuthorizationComponent} from './authorization/authorization.component';
 import {RichTextEditorFormComponent} from './rich-text-editor-form/rich-text-editor-form.component';
 import {ExpertComponent} from './expert/expert.component';
-import {TrainingProgramExpertStepComponent} from "./training-program-constructor/training-program-expert-step/training-program-expert-step.component";
+import {TrainingProgramExpertStepComponent} from './training-program-constructor/training-program-expert-step/training-program-expert-step.component';
 
 const adminRoutes: Routes = [
   { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
@@ -54,7 +53,6 @@ const adminRoutes: Routes = [
   { path: 'department', component: DepartmentComponent },
   { path: 'formOfEducation', component: FormOfEducationComponent },
   { path: 'group', component: GroupComponent },
-  { path: 'groupAdd', component: GroupAddComponent },
   { path: 'mainLiterature', component: MainLiteratureComponent },
   { path: 'occupationForm', component: OccupationFormComponent },
   { path: 'teacher', component: TeacherComponent },

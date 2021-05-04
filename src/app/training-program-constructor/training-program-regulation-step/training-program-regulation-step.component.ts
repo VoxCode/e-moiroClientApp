@@ -10,6 +10,7 @@ import {TrainingProgramRegulation} from '../../models/TrainingProgramRegulation'
 import {Globals} from '../../globals';
 import {CurriculumTopicService} from '../../services/curriculum-topic.service';
 import {CurriculumTopic} from '../../models/CurriculumTopic';
+import {RegulationDragAndDrop} from '../../models/drag-and-drop-models/RegulationDragAndDrop';
 
 @Component({
   selector: 'app-training-program-regulation-step',
@@ -24,8 +25,8 @@ import {CurriculumTopic} from '../../models/CurriculumTopic';
 })
 export class TrainingProgramRegulationStepComponent implements OnInit {
 
-  todo = [];
-  done = [];
+  todo: RegulationDragAndDrop[] = [];
+  done: RegulationDragAndDrop[] = [];
   id: number;
   trainingProgram: TrainingProgram;
   regulation: Regulation = new Regulation();
@@ -72,10 +73,27 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
       });
   }
 
-  loadCurriculumTopicTemplates(): void {
-    this.curriculumTopicService.getByTrainingProgram(this.id).subscribe((curriculumTopics: CurriculumTopic[]) => {
-      this.loadRegulationTemplates(curriculumTopics);
+  loadTrainingProgramRegulation(): void {
+    this.trainingProgramRegulationService.getValue(this.id)
+      .subscribe((trainingProgramRegulations: TrainingProgramRegulation[]) => {
+        this.loadTrainingProgram();
+        if (trainingProgramRegulations.length !== 0){
+          trainingProgramRegulations.sort((a, b) => a.serialNumber - b.serialNumber);
+          trainingProgramRegulations.forEach((trainingProgramRegulation ) => {
+            this.done.push({
+              trainingProgramRegulationId: trainingProgramRegulation.id,
+              trainingProgramId: trainingProgramRegulation.trainingProgramId,
+              trainingProgramRegulationContent: trainingProgramRegulation.content,
+              trainingProgramRegulationSerialNumber: trainingProgramRegulation.serialNumber
+            });
+          });
+        }
+      });
+  }
 
+  loadCurriculumTopicTemplates(): void {
+    this.curriculumTopicService.getFromTrainingProgram(this.id).subscribe((curriculumTopics: CurriculumTopic[]) => {
+      this.loadRegulationTemplates(curriculumTopics);
     });
   }
 
@@ -85,15 +103,15 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
       curriculumTopicIdArray.push(curriculumTopic.id);
     });
     this.regulationService.getByCurriculumTopics(curriculumTopicIdArray)
-      .subscribe((data: Regulation[]) => {
-        if (data.length !== 0) {
-          data.sort((a, b) => b.id - a.id);
-          data.forEach((tmp) => {
-            const tmp2 = this.done.find(a => a.seventh === tmp.id);
-            if (!tmp2) {
+      .subscribe((regulations: Regulation[]) => {
+        if (regulations.length !== 0) {
+          regulations.sort((a, b) => b.id - a.id);
+          regulations.forEach((regulation) => {
+            const regulationFound = this.done.find(a => a.regulationId === regulation.id);
+            if (!regulationFound) {
               this.todo.push({
-                first: tmp.id,
-                third: tmp.content
+                regulationId: regulation.id,
+                regulationContent: regulation.content
               });
             }
           });
@@ -101,56 +119,38 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
       });
   }
 
-  loadTrainingProgramRegulation(): void {
-    this.trainingProgramRegulationService.getValue(this.id)
-      .subscribe((data: TrainingProgramRegulation[]) => {
-        this.loadTrainingProgram();
-        if (data.length !== 0){
-          data.sort((a, b) => a.serialNumber - b.serialNumber);
-          data.forEach((tmp) => {
-            this.done.push({
-              fourth: tmp.id,
-              fifth: tmp.trainingProgramId,
-              third: tmp.content,
-              seventh: tmp.serialNumber
-            });
-          });
-        }
-      });
-  }
-
   save(): void {
-    let i = 0;
-    this.done.forEach((object, index) => {
-      let trainingProgramRegulation: TrainingProgramRegulation = new TrainingProgramRegulation();
-      i = index + 1;
-      if (object.fourth !== undefined){
-        trainingProgramRegulation.id = +object.fourth;
-        trainingProgramRegulation.trainingProgramId = +object.fifth;
-        trainingProgramRegulation.regulationId = +object.seventh;
-      }
-      else {
-        trainingProgramRegulation.regulationId = +object.first;
-        trainingProgramRegulation.trainingProgramId = +this.id;
-      }
-      trainingProgramRegulation.serialNumber = +i;
-
-      if (trainingProgramRegulation.id === undefined){
-        this.trainingProgramRegulationService.createValue(trainingProgramRegulation)
-          .subscribe((data: TrainingProgramRegulation) => {
-            object.fourth = data.id;
-            object.fifth = data.trainingProgramId;
-            object.seventh = data.regulationId;
-            object.eight = data.serialNumber;
-            console.log('Save was successful');
-            trainingProgramRegulation = null;
-          });
-      }
-      else {
-        this.update(trainingProgramRegulation);
-        trainingProgramRegulation = null;
-      }
-    });
+    // let i = 0;
+    // this.done.forEach((regulationDragAndDrop, index) => {
+    //   let trainingProgramRegulation: TrainingProgramRegulation = new TrainingProgramRegulation();
+    //   i = index + 1;
+    //   if (regulationDragAndDrop.fourth){
+    //     trainingProgramRegulation.id = +regulationDragAndDrop.fourth;
+    //     trainingProgramRegulation.trainingProgramId = +regulationDragAndDrop.fifth;
+    //     trainingProgramRegulation.regulationId = +regulationDragAndDrop.seventh;
+    //   }
+    //   else {
+    //     trainingProgramRegulation.regulationId = +regulationDragAndDrop.first;
+    //     trainingProgramRegulation.trainingProgramId = +this.id;
+    //   }
+    //   trainingProgramRegulation.serialNumber = +i;
+    //
+    //   if (!trainingProgramRegulation.id) {
+    //     this.trainingProgramRegulationService.createValue(trainingProgramRegulation)
+    //       .subscribe((data: TrainingProgramRegulation) => {
+    //         object.fourth = data.id;
+    //         object.fifth = data.trainingProgramId;
+    //         object.seventh = data.regulationId;
+    //         object.eight = data.serialNumber;
+    //         console.log('Save was successful');
+    //         trainingProgramRegulation = null;
+    //       });
+    //   }
+    //   else {
+    //     this.update(trainingProgramRegulation);
+    //     trainingProgramRegulation = null;
+    //   }
+    // });
   }
 
   update(tmp: TrainingProgramRegulation): void {
@@ -160,30 +160,30 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
       });
   }
 
-  addRegulation(): void {
+  addTrainingProgramRegulation(): void {
     this.crateRegulation();
   }
 
   crateRegulation(): void {
-    this.regulationService.createValue(this.regulation)
-      .subscribe((data: Regulation) => {
-        if (data !== undefined){
-          this.regulation = data;
-          console.log('Success');
-          this.done.push({
-            first: this.regulation.id,
-            third: this.regulation.content
-          });
-          this.curriculumTopicRegulation.regulationId = this.regulation.id;
-          this.curriculumTopicRegulation.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
-          this.crateCurriculumTopicRegulation();
-        }
-      });
+    // this.regulationService.createValue(this.regulation)
+    //   .subscribe((data: Regulation) => {
+    //     if (data !== undefined){
+    //       this.regulation = data;
+    //       console.log('Success');
+    //       this.done.push({
+    //         first: this.regulation.id,
+    //         third: this.regulation.content
+    //       });
+    //       this.curriculumTopicRegulation.regulationId = this.regulation.id;
+    //       this.curriculumTopicRegulation.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
+    //       this.crateCurriculumTopicRegulation();
+    //     }
+    //   });
   }
 
-  deleteTrainingProgramRegulation(id: number, indx: number): void {
-    this.done.splice(indx, 1);
-    if (id !== undefined){
+  deleteTrainingProgramRegulation(id: number, index: number): void {
+    this.done.splice(index, 1);
+    if (id){
       this.trainingProgramRegulationService.deleteValue(id).subscribe(() => {
         console.log('Delete was successful ' + id);
       });

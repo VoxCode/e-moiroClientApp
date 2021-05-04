@@ -7,16 +7,16 @@ export class CurriculumTopicTotalClassHours {
   constructor(
     private occupationForms: OccupationForm[],
     private curriculumTopic: CurriculumTopicTrainingProgram) {
-    let j = 0;
-    occupationForms.forEach(obj => {
-        let tmp: string;
-        tmp = this.curriculumTopicClassHours(obj.id, curriculumTopic);
-        if (tmp !== '') {
-          this.totalClassHours = j;
-        }
-        this.classHours.push(tmp);
-        j++;
-    });
+    // let j = 0;
+    // occupationForms.forEach(obj => {
+    //     let tmp: string;
+    //     tmp = this.curriculumTopicClassHours(obj.id, curriculumTopic);
+    //     if (tmp !== '') {
+    //       this.totalClassHours = j;
+    //     }
+    //     this.classHours.push(tmp);
+    //     j++;
+    // });
   }
 
   public get getTotalClassHours(): number {
@@ -27,13 +27,14 @@ export class CurriculumTopicTotalClassHours {
     return this.classHours;
   }
 
+  // tslint:disable-next-line:typedef
   private curriculumTopicClassHours(
-    occupationFormId: number, curriculumTopic: CurriculumTopicTrainingProgram): string {
-    if (occupationFormId === curriculumTopic.occupationFormId) {
-      return curriculumTopic.classHours.toString();
-    }
-    else {
-      return '';
-    }
+    occupationFormId: number, curriculumTopic: CurriculumTopicTrainingProgram) {
+  //   if (occupationFormId === curriculumTopic.occupationFormId) {
+  //     return curriculumTopic.classHours.toString();
+  //   }
+  //   else {
+  //     return '';
+  //   }
   }
 }

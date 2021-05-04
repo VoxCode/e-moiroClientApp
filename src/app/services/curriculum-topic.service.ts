@@ -15,8 +15,8 @@ export class CurriculumTopicService {
   getValue(studentCategoryId: number, departmentId: number): Observable<any> {
     return this.http.get(this.url + '/' + studentCategoryId + '/' + departmentId);
   }
-  getByTrainingProgram(trainingProgramId: number): Observable<any> {
-    return this.http.get(this.url + '/TrainingProgram' + '/' + trainingProgramId);
+  getFromTrainingProgram(trainingProgramId: number): Observable<any> {
+    return this.http.get(this.url + '/TrainingProgram/' + trainingProgramId);
   }
   createValue(curriculumTopic: CurriculumTopic): Observable<any> {
     return this.http.post(this.url, curriculumTopic);
