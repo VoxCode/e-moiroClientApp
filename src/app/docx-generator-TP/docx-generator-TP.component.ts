@@ -120,21 +120,21 @@ export class DocxGeneratorTPComponent implements OnInit{
 
   // tslint:disable-next-line:typedef
   loadCurriculumTopicTrainingProgram() {
-    this.trainingProgramCurriculumSections.forEach((object, index) => {
-      this.curriculumTopicTrainingProgramService.getValueList(object.id)
-        .subscribe((data: CurriculumTopicTrainingProgram[]) => {
-          if (data !== undefined){
-            const curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = data;
-            curriculumTopicTrainingPrograms
-              .sort((a, b) => a.serialNumber - b.serialNumber);
-            this.curriculumTopicsList[index] = curriculumTopicTrainingPrograms;
-            this.checkCurriculumTopicsList.push(index);
-            if (this.checkCurriculumTopicsList.length === this.trainingProgramCurriculumSections.length) {
-              this.loadTrainingProgramFinalExamination();
-            }
-          }
-        });
-    });
+    // this.trainingProgramCurriculumSections.forEach((object, index) => {
+    //   this.curriculumTopicTrainingProgramService.getValueList(object.id)
+    //     .subscribe((data: CurriculumTopicTrainingProgram[]) => {
+    //       if (data !== undefined){
+    //         const curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = data;
+    //         curriculumTopicTrainingPrograms
+    //           .sort((a, b) => a.serialNumber - b.serialNumber);
+    //         this.curriculumTopicsList[index] = curriculumTopicTrainingPrograms;
+    //         this.checkCurriculumTopicsList.push(index);
+    //         if (this.checkCurriculumTopicsList.length === this.trainingProgramCurriculumSections.length) {
+    //           this.loadTrainingProgramFinalExamination();
+    //         }
+    //       }
+    //     });
+    // });
   }
 
   // tslint:disable-next-line:typedef

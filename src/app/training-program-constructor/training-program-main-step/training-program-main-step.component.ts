@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {CurriculumTopic} from '../../models/CurriculumTopic';
 import {CurriculumTopicService} from '../../services/curriculum-topic.service';
 import {ActivatedRoute} from '@angular/router';
@@ -64,21 +63,9 @@ export class TrainingProgramMainStepComponent implements OnInit{
     this.loadTrainingProgram();
   }
 
-  drop(event: CdkDragDrop<string[]>): void {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    }
-    else {
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
-    }
-  }
-
   // LOAD
   loadTrainingProgram(): void {
-    this.trainingProgramService.getValue(this.id)
+    this.trainingProgramService.getValue(this.id)  // Загружаю учебную программу
       .subscribe((data: TrainingProgram) => {
         if (data) {
           this.trainingProgram = data;
@@ -87,7 +74,7 @@ export class TrainingProgramMainStepComponent implements OnInit{
       });
   }
 
-  loadOccupationForms(): void {
+  loadOccupationForms(): void {  // Загружаю формы занятия для всех потомков (нужно закинуть в общий класс)
     this.occupationFormService.getValues()
       .subscribe((data: OccupationForm[]) => {
         if (data.length !== 0){
@@ -145,7 +132,6 @@ export class TrainingProgramMainStepComponent implements OnInit{
   // ADD
   addCurriculumSectionChild(curriculumSectionId: number, trainingProgramCurriculumSectionId: number): void {
     this.curriculumSectionChildren.push({
-      done: [],
       curriculumSectionId,
       trainingProgramCurriculumSectionId
     });

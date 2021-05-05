@@ -115,7 +115,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   }
 
   loadCurriculumTopicTrainingProgram(): void {
-    this.curriculumTopicTrainingProgramService.getFromTrainingProgram(this.trainingProgramCurriculumSectionId)
+    this.curriculumTopicTrainingProgramService.getFromTrainingProgramCurriculumSection(this.trainingProgramCurriculumSectionId)
       .subscribe((curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[]) => {
         if (curriculumTopicTrainingPrograms) {
           curriculumTopicTrainingPrograms
@@ -246,7 +246,7 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
   crateCurriculumSection(): void {
     this.curriculumSectionService.createValue(this.curriculumSectionTmp)
       .subscribe((data: CurriculumSection) => {
-        if (data){
+        if (data) {
           this.curriculumSectionTmp.id = data.id;
           const model: TrainingProgramCurriculumSection = new TrainingProgramCurriculumSection();
           model.id = this.trainingProgramCurriculumSectionId;

@@ -25,8 +25,8 @@ import {RegulationDragAndDrop} from '../../models/drag-and-drop-models/Regulatio
 })
 export class TrainingProgramRegulationStepComponent implements OnInit {
 
-  todo: RegulationDragAndDrop[] = [];
-  done: RegulationDragAndDrop[] = [];
+  todo: any = [];
+  done: any = [];
   id: number;
   trainingProgram: TrainingProgram;
   regulation: Regulation = new Regulation();
@@ -110,8 +110,8 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
             const regulationFound = this.done.find(a => a.regulationId === regulation.id);
             if (!regulationFound) {
               this.todo.push({
-                regulationId: regulation.id,
-                regulationContent: regulation.content
+                first: regulation.id,
+                second: regulation.content
               });
             }
           });

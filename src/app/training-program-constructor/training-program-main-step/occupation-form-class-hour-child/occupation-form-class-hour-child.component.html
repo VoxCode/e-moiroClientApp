@@ -1,0 +1,12 @@
+<div id="formOfEducation">
+  <label for="fifth">Форма занятия</label>
+  <select id="fifth" [(ngModel)]="item.fifth" class="browser-default custom-select">
+    <option *ngFor="let el of occupationForms" [ngValue]="el.id">{{el.fullName}}</option>
+  </select>
+</div><br>
+<div id="hours">
+  <label for="fourth">Количество часов</label>
+  <input id="fourth" min="0" max="10"
+         [(ngModel)]="item.fourth" (change)= "item.fourth < 0 ? item.fourth = 0 : item.fourth;
+         item.fourth > 10 ? item.fourth = 0 : item.fourth;" type="number" class="md-textarea form-control" mdbInput>
+</div><br>

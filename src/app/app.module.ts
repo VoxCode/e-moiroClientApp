@@ -87,6 +87,10 @@ import {ExpertEditComponent} from './expert/expert-edit.component';
 import { TrainingProgramExpertStepComponent
 } from './training-program-constructor/training-program-expert-step/training-program-expert-step.component';
 import {TrainingProgramRegulationEditComponent} from './training-program-constructor/training-program-regulation-step/training-program-regulation-edit.component';
+import { TemplateOfferComponent } from './training-program-constructor/template-offer/template-offer.component';
+import { CurriculumTopicChildComponent } from './training-program-constructor/training-program-main-step/curriculum-topic-child/curriculum-topic-child.component';
+import { OccupationFormClassHourChildComponent } from './training-program-constructor/training-program-main-step/occupation-form-class-hour-child/occupation-form-class-hour-child.component';
+import { MaxVariableTopicHoursComponent } from './training-program-constructor/training-program-main-step/max-variable-topic-hours/max-variable-topic-hours.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -154,7 +158,11 @@ export function tokenGetter(): string {
     TeacherDepartmentAddFormComponent,
     ExpertComponent,
     ExpertEditComponent,
-    TrainingProgramExpertStepComponent
+    TrainingProgramExpertStepComponent,
+    TemplateOfferComponent,
+    CurriculumTopicChildComponent,
+    OccupationFormClassHourChildComponent,
+    MaxVariableTopicHoursComponent
   ],
   imports: [
     BrowserModule,
