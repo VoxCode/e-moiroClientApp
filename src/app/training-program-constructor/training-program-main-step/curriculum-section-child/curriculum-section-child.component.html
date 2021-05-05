@@ -1,22 +1,22 @@
-<div *ngIf="curriculumSectionChildren.length === 0">
+<div *ngIf="trainingProgramCurriculumSections.length === 0">
   <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-          (click)="addCurriculumSectionChild(0, 0)" mdbWavesEffect>
+          (click)="addCurriculumSection()" mdbWavesEffect>
     <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел</button>
 </div>
 
-<div *ngFor="let item of curriculumSectionChildren; index as i ">
+<div *ngFor="let item of trainingProgramCurriculumSections; index as i ">
 
   <div class="example-container">
-    <h4><strong>Раздел {{curriculumSectionNumber}}</strong></h4>
+    <h4><strong>Раздел {{i}}</strong></h4>
     <h5 *ngIf="trainingProgramCurriculumSectionSelect"><strong>{{trainingProgramCurriculumSectionSelect.name}}</strong></h5>
     <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
             mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить название раздела</button>
-    <ng-select [items]="trainingProgramCurriculumSections" [clearable]="false"
+    <ng-select [items]="curriculumSections" [clearable]="false"
                (change)="updateTrainingProgramCurriculumSection()"
                bindValue=""
                bindLabel="name"
-               placeholder="Выберите рездел">
-      [(ngModel)]="trainingProgramCurriculumSectionSelect">
+               placeholder="Выберите рездел"
+               [(ngModel)]="curriculumSectionSelect">
     </ng-select>
 
 
@@ -32,9 +32,9 @@
     <mdb-icon fas icon="trash-alt" size="sm"></mdb-icon> Удалить Раздел {{i + 1}}
   </button>
 
-  <button *ngIf="i === curriculumSectionChildren.length - 1"
+  <button *ngIf="i === trainingProgramCurriculumSections.length - 1"
           style="position: relative; margin-top: 20px;" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-          (click)="addCurriculumSectionChild(0, 0)" mdbWavesEffect>
+          (click)="addCurriculumSection()" mdbWavesEffect>
     <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел
   </button>
 </div>
