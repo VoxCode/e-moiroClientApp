@@ -1,30 +1,40 @@
-<div class="example-container">
-  <h4><strong>Раздел {{curriculumSectionNumber}}</strong></h4>
-  <h5 *ngIf="trainingProgramCurriculumSectionSelect"><strong>{{trainingProgramCurriculumSectionSelect.name}}</strong></h5>
+<div *ngIf="curriculumSectionChildren.length === 0">
   <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-          mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить название раздела</button>
-  <ng-select [items]="trainingProgramCurriculumSections" [clearable]="false"
-             (change)="updateTrainingProgramCurriculumSection()"
-             bindValue=""
-             bindLabel="name"
-             placeholder="Выберите рездел">
-             [(ngModel)]="trainingProgramCurriculumSectionSelect">
-  </ng-select>
+          (click)="addCurriculumSectionChild(0, 0)" mdbWavesEffect>
+    <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел</button>
+</div>
+
+<div *ngFor="let item of curriculumSectionChildren; index as i ">
+
+  <div class="example-container">
+    <h4><strong>Раздел {{curriculumSectionNumber}}</strong></h4>
+    <h5 *ngIf="trainingProgramCurriculumSectionSelect"><strong>{{trainingProgramCurriculumSectionSelect.name}}</strong></h5>
+    <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+            mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить название раздела</button>
+    <ng-select [items]="trainingProgramCurriculumSections" [clearable]="false"
+               (change)="updateTrainingProgramCurriculumSection()"
+               bindValue=""
+               bindLabel="name"
+               placeholder="Выберите рездел">
+      [(ngModel)]="trainingProgramCurriculumSectionSelect">
+    </ng-select>
 
 
-  <app-max-variable-topic-hours></app-max-variable-topic-hours>
+    <app-max-variable-topic-hours></app-max-variable-topic-hours>
 
-  <div
-    *ngIf="done"
-    cdkDropList
-    [cdkDropListData]="done"
-    class="example-list"
-    (cdkDropListDropped)="drop($event)">
-    <button *ngIf="done.length === 0" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-            mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить тему</button>
-    <br>
-    <div class="example-box"  *ngFor="let item of done; index as i" cdkDrag>
-      <app-curriculum-topic-child [i]="i" [item]="item"></app-curriculum-topic-child>
-    </div>
+    <app-curriculum-topic-child></app-curriculum-topic-child>
+
+
   </div>
+
+  <button type="button" style="position: relative; margin-top: 20px;" mdbBtn color="danger" size="sm" class="relative waves-light"
+          (click)="deleteTrainingProgramCurriculumSection(i, item.trainingProgramCurriculumSectionId)" mdbWavesEffect>
+    <mdb-icon fas icon="trash-alt" size="sm"></mdb-icon> Удалить Раздел {{i + 1}}
+  </button>
+
+  <button *ngIf="i === curriculumSectionChildren.length - 1"
+          style="position: relative; margin-top: 20px;" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+          (click)="addCurriculumSectionChild(0, 0)" mdbWavesEffect>
+    <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел
+  </button>
 </div>

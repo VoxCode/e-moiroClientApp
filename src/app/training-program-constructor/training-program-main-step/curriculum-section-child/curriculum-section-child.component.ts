@@ -1,18 +1,15 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CurriculumTopicService} from '../../../services/curriculum-topic.service';
 import {TrainingProgramService} from '../../../services/training-program.service';
 import {CurriculumTopicTrainingProgramService} from '../../../services/curriculum-topic-training-program.service';
 import {CurriculumSectionService} from '../../../services/curriculum-section.service';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {OccupationForm} from '../../../models/OccupationForm';
 import {CurriculumSection} from '../../../models/CurriculumSection';
 import {TrainingProgramCurriculumSectionService} from '../../../services/training-program-curriculum-section.service';
-import {SubscriptionLike} from 'rxjs';
 import {CurriculumTopicTrainingProgram} from '../../../models/СurriculumTopicTrainingProgram';
 import {TrainingProgramCurriculumSection} from '../../../models/TrainingProgramCurriculumSection';
 import {CurriculumTopic} from '../../../models/CurriculumTopic';
 import {TrainingProgram} from '../../../models/TrainingProgram';
-import {CommonService} from '../../../common-service/common-service.component';
 import {OccupationFormMaxVariableTopicHoursService} from '../../../services/occupation-form-max-variable-topic-hours.service';
 import {OccupationFormMaxVariableTopicHour} from '../../../models/OccupationFormMaxVariableTopicHour';
 
@@ -30,24 +27,17 @@ import {OccupationFormMaxVariableTopicHour} from '../../../models/OccupationForm
   ]
 })
 
-export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
-  @ViewChild ('basicModal') public modal: any;
-  @Input() curriculumSectionNumber: number;
-  @Input() id: number;
-  @Input() curriculumSectionId: number;
+export class CurriculumSectionChildComponent implements OnInit {
   @Input() trainingProgram: TrainingProgram;
   @Input() occupationForms: OccupationForm[];
-  @Input() trainingProgramCurriculumSectionId: number;
-  @Output() trainingProgramCurriculumSectionIdChange = new EventEmitter();
 
   occupationFormMaxVariableTopicHours: OccupationFormMaxVariableTopicHour[] = [];
   curriculumSection: CurriculumSection = new CurriculumSection();
   trainingProgramCurriculumSections: TrainingProgramCurriculumSection[] = [];
   trainingProgramCurriculumSectionSelect: TrainingProgramCurriculumSection = new TrainingProgramCurriculumSection();
-  subscription: SubscriptionLike;
   curriculumSectionTmp: CurriculumSection = new CurriculumSection();
   curriculumTopicTmp: CurriculumTopic = new CurriculumTopic();
-  done = [];
+  curriculumSectionChildren: any = [];
 
   constructor(
     private curriculumTopicService: CurriculumTopicService,
@@ -55,33 +45,11 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
     private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private curriculumSectionService: CurriculumSectionService,
-    private commonService: CommonService,
     private occupationFormMaxVariableTopicHoursService: OccupationFormMaxVariableTopicHoursService
   ) { }
 
   ngOnInit(): void {
-    this.subscription = this.commonService.saveCurriculumSectionChild$.subscribe( () => {
-      this.saveCurriculumTopicTrainingProgram();
-    });
     this.loadCurriculumSection();
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-    this.subscription = null;
-  }
-
-  drop(event: CdkDragDrop<string[]>): void {
-    if (event.previousContainer === event.container && this.trainingProgramCurriculumSectionId) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      this.saveCurriculumTopicTrainingProgram();
-    } else {
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
-      this.saveCurriculumTopicTrainingProgram();
-    }
   }
 
   // LOAD
@@ -136,6 +104,33 @@ export class CurriculumSectionChildComponent implements OnInit, OnDestroy {
           });
         }
       });
+  }
+
+  loadTrainingProgramCurriculumSections(): void {
+    this.trainingProgramCurriculumSectionService.getValue(this.id)
+      .subscribe((trainingProgramCurriculumSections: TrainingProgramCurriculumSection[]) => {
+        if (trainingProgramCurriculumSections) {
+          trainingProgramCurriculumSections.sort((a, b) => a.sectionNumber - b.sectionNumber);
+          trainingProgramCurriculumSections.forEach( trainingProgramCurriculumSection => {
+            this.addCurriculumSectionChild(trainingProgramCurriculumSection.curriculumSectionId, trainingProgramCurriculumSection.id);
+          });
+          this.loadCurriculumTopicsFromTrainingProgram();
+        }
+      });
+  }
+
+  // ADD
+  addCurriculumSectionChild(curriculumSectionId: number, trainingProgramCurriculumSectionId: number): void {
+    this.curriculumSectionChildren.push({
+      curriculumSectionId,
+      trainingProgramCurriculumSectionId
+    });
+  }
+
+  // DELETE
+  deleteTrainingProgramCurriculumSection(index: number, id: number): void {
+    this.curriculumSectionChildren.splice(index, 1);
+    this.trainingProgramCurriculumSectionService.deleteValue(id).subscribe();
   }
 
   // SAVE
