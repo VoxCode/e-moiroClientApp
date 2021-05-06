@@ -1,40 +1,37 @@
 <div *ngIf="trainingProgramCurriculumSections.length === 0">
   <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-          (click)="addCurriculumSection()" mdbWavesEffect>
+          (click)="curriculumSectionAddForm()" mdbWavesEffect>
     <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел</button>
 </div>
 
 <div *ngFor="let item of trainingProgramCurriculumSections; index as i ">
 
   <div class="example-container">
-    <h4><strong>Раздел {{i}}</strong></h4>
-    <h5 *ngIf="trainingProgramCurriculumSectionSelect"><strong>{{trainingProgramCurriculumSectionSelect.name}}</strong></h5>
-    <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-            mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить название раздела</button>
-    <ng-select [items]="curriculumSections" [clearable]="false"
-               (change)="updateTrainingProgramCurriculumSection()"
-               bindValue=""
-               bindLabel="name"
-               placeholder="Выберите рездел"
-               [(ngModel)]="curriculumSectionSelect">
-    </ng-select>
+    <h4><strong>Раздел {{(i+1)}}</strong></h4>
+    <h5><strong>{{item.name}}</strong></h5>
+    <button  type="button" mdbBtn color="gray" size="sm" class="relative waves-light"
+            (click)="curriculumSectionEditForm(item)" mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon>
+    </button>
 
 
     <app-max-variable-topic-hours></app-max-variable-topic-hours>
 
-    <app-curriculum-topic-child></app-curriculum-topic-child>
+    <app-curriculum-topic-child
+      [trainingProgram]="trainingProgram"
+      [trainingProgramCurriculumSection]="item">
+    </app-curriculum-topic-child>
 
 
   </div>
 
   <button type="button" style="position: relative; margin-top: 20px;" mdbBtn color="danger" size="sm" class="relative waves-light"
-          (click)="deleteTrainingProgramCurriculumSection(i, item.trainingProgramCurriculumSectionId)" mdbWavesEffect>
+          (click)="deleteTrainingProgramCurriculumSection(i, item.id)" mdbWavesEffect>
     <mdb-icon fas icon="trash-alt" size="sm"></mdb-icon> Удалить Раздел {{i + 1}}
   </button>
 
   <button *ngIf="i === trainingProgramCurriculumSections.length - 1"
-          style="position: relative; margin-top: 20px;" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-          (click)="addCurriculumSection()" mdbWavesEffect>
+          style="position: relative; margin-top: 20px;" type="button" mdbBtn color="primary"
+          size="sm" class="relative waves-light" (click)="curriculumSectionAddForm()" mdbWavesEffect>
     <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел
   </button>
 </div>

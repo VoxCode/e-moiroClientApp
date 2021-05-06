@@ -19,6 +19,7 @@
       <div class="col-sm-8">
 
         <app-curriculum-section-child
+          *ngIf="trainingProgram"
           [trainingProgram]="trainingProgram"
           [occupationForms]="occupationForms">
         </app-curriculum-section-child>

@@ -1,18 +1,17 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CurriculumSectionService} from '../../../services/curriculum-section.service';
 import {OccupationForm} from '../../../models/OccupationForm';
-import {CurriculumSection} from '../../../models/CurriculumSection';
 import {TrainingProgramCurriculumSectionService} from '../../../services/training-program-curriculum-section.service';
 import {TrainingProgramCurriculumSection} from '../../../models/TrainingProgramCurriculumSection';
 import {TrainingProgram} from '../../../models/TrainingProgram';
+import {CurriculumSectionEditComponent} from '../../../curriculum-section/curriculum-section-edit.component';
+import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-curriculum-section-child',
   templateUrl: './curriculum-section-child.component.html',
   styleUrls: ['./curriculum-section-child.component.scss'],
   providers: [
-    TrainingProgramCurriculumSectionService,
-    CurriculumSectionService,
+    TrainingProgramCurriculumSectionService
   ]
 })
 
@@ -20,111 +19,94 @@ export class CurriculumSectionChildComponent implements OnInit {
   @Input() trainingProgram: TrainingProgram;
   @Input() occupationForms: OccupationForm[];
   trainingProgramCurriculumSections: TrainingProgramCurriculumSection[] = [];
-  curriculumSections: CurriculumSection[];
+  trainingProgramCurriculumSectionSelectList: TrainingProgramCurriculumSection[] = [];
+  modalRef: MDBModalRef;
 
   constructor(
     private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
-    private curriculumSectionService: CurriculumSectionService,
-  ) { }
+    private modalService: MDBModalService) { }
 
   ngOnInit(): void {
     this.loadTrainingProgramCurriculumSections();
   }
 
   loadTrainingProgramCurriculumSections(): void {
-    this.trainingProgramCurriculumSectionService.getValue(this.trainingProgram.id)
-      .subscribe((trainingProgramCurriculumSections: TrainingProgramCurriculumSection[]) => {
-        if (trainingProgramCurriculumSections.length !== 0) {
-          trainingProgramCurriculumSections.sort((a, b) => a.sectionNumber - b.sectionNumber);
-          this.trainingProgramCurriculumSections = trainingProgramCurriculumSections;
-          this.loadCurriculumSections();
-        }
+      this.trainingProgramCurriculumSectionService.GetFromTrainingProgram(this.trainingProgram.id)
+        .subscribe((trainingProgramCurriculumSections: TrainingProgramCurriculumSection[]) => {
+          if (trainingProgramCurriculumSections.length !== 0) {
+            trainingProgramCurriculumSections.sort((a, b) => a.sectionNumber - b.sectionNumber);
+            this.trainingProgramCurriculumSections = trainingProgramCurriculumSections;
+            this.trainingProgramCurriculumSectionSelectList = trainingProgramCurriculumSections;
+          }
+        });
+  }
+
+  crateTrainingProgramCurriculumSection(trainingProgramCurriculumSection: TrainingProgramCurriculumSection): void {
+    this.trainingProgramCurriculumSectionService.createValue(trainingProgramCurriculumSection)
+      .subscribe((trainingProgramCurriculumSectionResponse: TrainingProgramCurriculumSection) => {
+        this.trainingProgramCurriculumSections.push(trainingProgramCurriculumSectionResponse);
+        console.log('Crate was successful');
       });
   }
 
-  loadCurriculumSections(): void {
-    this.curriculumSectionService.getValues()
-      .subscribe((curriculumSections: CurriculumSection[]) => {
-        if (curriculumSections.length !== 0) {
-          this.curriculumSections = curriculumSections;
-        }
-      });
-  }
-
-
-
-  // DELETE
-  deleteTrainingProgramCurriculumSection(index: number, id: number): void {
-    this.curriculumSectionChildren.splice(index, 1);
-    this.trainingProgramCurriculumSectionService.deleteValue(id).subscribe();
-  }
-
-  // UPDATE
-  updateTrainingProgramCurriculumSection(): void {
-    this.trainingProgramCurriculumSectionSelect.id = this.trainingProgramCurriculumSectionId;
-    this.trainingProgramCurriculumSectionService.updateValue(this.trainingProgramCurriculumSectionSelect)
+  updateTrainingProgramCurriculumSection(trainingProgramCurriculumSection: TrainingProgramCurriculumSection): void {
+    this.trainingProgramCurriculumSectionService.updateValue(trainingProgramCurriculumSection)
       .subscribe(() => {
         console.log('Update was successful');
       });
   }
 
-  addCurriculumSection(): void {  // тут остановился
-    this.crateCurriculumSection();
+  deleteTrainingProgramCurriculumSection(index: number, id: number): void {
+    this.trainingProgramCurriculumSectionService.deleteValue(id).subscribe(() => {
+      this.trainingProgramCurriculumSections.splice(index, 1);
+      console.log('Delete was successful');
+    });
   }
 
-  crateTrainingProgramCurriculumSection(): void {
-    // this.modal.show();
-    const model: TrainingProgramCurriculumSection = new TrainingProgramCurriculumSection();
-    model.sectionNumber = this.curriculumSectionNumber;
-    // model.curriculumSectionId = 31;
-    model.id = 0;
-    model.trainingProgramId = this.id;
-    this.trainingProgramCurriculumSectionService.createValue(model)
-      .subscribe((data: TrainingProgramCurriculumSection) => {
-        this.trainingProgramCurriculumSectionSelect = data;
-        this.trainingProgramCurriculumSectionSelect.name = 'Выбрите раздел';
-        this.trainingProgramCurriculumSectionId = data.id;
-        this.trainingProgramCurriculumSectionIdChange.emit(data.id);
-        console.log('Crate was successful');
-      });
+  swapTrainingProgramCurriculumSection(index: number): void {
+    const trainingProgramCurriculumSection = this.trainingProgramCurriculumSectionSelectList[index];
+    console.log(trainingProgramCurriculumSection);
+
   }
 
-  crateCurriculumSection(): void {
-    this.curriculumSectionService.createValue(this.curriculumSectionTmp)
-      .subscribe((data: CurriculumSection) => {
-        if (data) {
-          this.curriculumSectionTmp.id = data.id;
-          const model: TrainingProgramCurriculumSection = new TrainingProgramCurriculumSection();
-          model.id = this.trainingProgramCurriculumSectionId;
-          model.curriculumSectionId = this.curriculumSectionTmp.id;
-          model.name = this.curriculumSectionTmp.name;
-          model.sectionNumber = this.curriculumSectionNumber;
-          model.trainingProgramId = this.id;
-          this.trainingProgramCurriculumSectionSelect = model;
-          console.log('Success');
-          this.updateTrainingProgramCurriculumSection();
-          this.cancel();
-          this.loadTrainingProgramCurriculumSectionAfter();
-        }
-      });
+  curriculumSectionAddForm(): void {
+    this.modalRef = this.modalService.show(CurriculumSectionEditComponent, this.modalOption(this.emptyEl()));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      const trainingProgramCurriculumSection = new TrainingProgramCurriculumSection(
+        0,
+        this.trainingProgram.id,
+        this.trainingProgramCurriculumSections.length + 1,
+        newElement.last);
+      this.crateTrainingProgramCurriculumSection(trainingProgramCurriculumSection);
+    });
   }
 
-  loadTrainingProgramCurriculumSectionAfter(): void {
-    this.curriculumSectionService.getSelectValues(this.trainingProgram.departmentId)
-      .subscribe((data: CurriculumSection[]) => {
-        if (data.length !== 0) {
-          const model: TrainingProgramCurriculumSection[] = [];
-          data.forEach(tmp => {
-            model.push({
-              id: 0,
-              trainingProgramId: this.id,
-              curriculumSectionId: tmp.id,
-              sectionNumber: this.curriculumSectionNumber,
-              name: tmp.name
-            });
-          });
-          this.trainingProgramCurriculumSections = model;
-        }
-      });
+  curriculumSectionEditForm(trainingProgramCurriculumSection: TrainingProgramCurriculumSection): void {
+    const el = {id: 0, first: '', last: trainingProgramCurriculumSection.name};
+    this.modalRef = this.modalService.show(CurriculumSectionEditComponent, this.modalOption(el));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      trainingProgramCurriculumSection.name = newElement.last;
+      this.updateTrainingProgramCurriculumSection(trainingProgramCurriculumSection);
+    });
+  }
+
+  emptyEl(): any {
+    return {id: 0, first: '', last: ''};
+  }
+
+  modalOption(el: any): any {
+    return {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+      show: false,
+      ignoreBackdropClick: true,
+      class: 'modal-fluid',
+      containerClass: '',
+      animated: true,
+      data: {
+        editableRow: el
+      }
+    };
   }
 }
