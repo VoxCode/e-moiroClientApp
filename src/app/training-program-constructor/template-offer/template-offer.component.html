@@ -10,8 +10,9 @@
       cdkDropList
       [cdkDropListData]="todo"
       class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of todo | filter: searchText; index as i" cdkDrag>{{i+1}}. {{item.second}}</div>
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListEnterPredicate]="noReturnPredicate">
+      <div class="example-box" *ngFor="let item of todo | filter: searchText; index as i" cdkDrag>{{i+1}}. {{item.topicTitle}}</div>
     </div>
   </div>
 </div>

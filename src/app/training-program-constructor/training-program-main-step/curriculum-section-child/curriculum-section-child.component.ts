@@ -33,25 +33,24 @@ export class CurriculumSectionChildComponent implements OnInit {
   loadTrainingProgramCurriculumSections(): void {
       this.trainingProgramCurriculumSectionService.GetFromTrainingProgram(this.trainingProgram.id)
         .subscribe((trainingProgramCurriculumSections: TrainingProgramCurriculumSection[]) => {
-          if (trainingProgramCurriculumSections.length !== 0) {
-            trainingProgramCurriculumSections.sort((a, b) => a.sectionNumber - b.sectionNumber);
-            this.trainingProgramCurriculumSections = trainingProgramCurriculumSections;
-            this.trainingProgramCurriculumSectionSelectList = trainingProgramCurriculumSections;
-          }
+          if (!trainingProgramCurriculumSections || trainingProgramCurriculumSections.length === 0) { return; }
+          trainingProgramCurriculumSections.sort((a, b) => a.sectionNumber - b.sectionNumber);
+          this.trainingProgramCurriculumSections = trainingProgramCurriculumSections;
+          this.trainingProgramCurriculumSectionSelectList = trainingProgramCurriculumSections;
         });
   }
 
   crateTrainingProgramCurriculumSection(trainingProgramCurriculumSection: TrainingProgramCurriculumSection): void {
     this.trainingProgramCurriculumSectionService.createValue(trainingProgramCurriculumSection)
       .subscribe((trainingProgramCurriculumSectionResponse: TrainingProgramCurriculumSection) => {
+        if (!trainingProgramCurriculumSectionResponse) { return; }
         this.trainingProgramCurriculumSections.push(trainingProgramCurriculumSectionResponse);
         console.log('Crate was successful');
       });
   }
 
   updateTrainingProgramCurriculumSection(trainingProgramCurriculumSection: TrainingProgramCurriculumSection): void {
-    this.trainingProgramCurriculumSectionService.updateValue(trainingProgramCurriculumSection)
-      .subscribe(() => {
+    this.trainingProgramCurriculumSectionService.updateValue(trainingProgramCurriculumSection).subscribe(() => {
         console.log('Update was successful');
       });
   }
@@ -66,7 +65,6 @@ export class CurriculumSectionChildComponent implements OnInit {
   swapTrainingProgramCurriculumSection(index: number): void {
     const trainingProgramCurriculumSection = this.trainingProgramCurriculumSectionSelectList[index];
     console.log(trainingProgramCurriculumSection);
-
   }
 
   curriculumSectionAddForm(): void {

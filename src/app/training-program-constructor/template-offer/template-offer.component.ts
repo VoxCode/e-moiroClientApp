@@ -24,4 +24,8 @@ export class TemplateOfferComponent {
         event.currentIndex);
     }
   }
+
+  noReturnPredicate(): boolean {
+    return false;
+  }
 }

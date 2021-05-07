@@ -76,13 +76,10 @@ export class TrainingProgramMainStepComponent implements OnInit{
             const used = curriculumTopicsUsed.find(a => a.id === curriculumTopic.id);
             if (!used) {
               this.todo.push({
-                first: curriculumTopic.id,
-                second: curriculumTopic.topicTitle,
-                third: false,
-                fourth: 0,
-                fifth: 1,
-                sixth: this.id,
-                ninth: curriculumTopic.annotation
+                curriculumTopicId: curriculumTopic.id,
+                topicTitle: curriculumTopic.topicTitle,
+                isVariable: false,
+                annotation: curriculumTopic.annotation
               });
             }
           });

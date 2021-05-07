@@ -1,4 +1,4 @@
-<div *ngIf="trainingProgramCurriculumSections.length === 0">
+<div *ngIf="trainingProgramCurriculumSections && trainingProgramCurriculumSections.length === 0">
   <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
           (click)="curriculumSectionAddForm()" mdbWavesEffect>
     <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел</button>
@@ -11,16 +11,16 @@
     <h5><strong>{{item.name}}</strong></h5>
     <button  type="button" mdbBtn color="gray" size="sm" class="relative waves-light"
             (click)="curriculumSectionEditForm(item)" mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon>
-    </button>
+    </button><br><br>
 
 
     <app-max-variable-topic-hours></app-max-variable-topic-hours>
 
     <app-curriculum-topic-child
       [trainingProgram]="trainingProgram"
-      [trainingProgramCurriculumSection]="item">
+      [trainingProgramCurriculumSection]="item"
+      [occupationForms]="occupationForms">
     </app-curriculum-topic-child>
-
 
   </div>
 
@@ -29,7 +29,7 @@
     <mdb-icon fas icon="trash-alt" size="sm"></mdb-icon> Удалить Раздел {{i + 1}}
   </button>
 
-  <button *ngIf="i === trainingProgramCurriculumSections.length - 1"
+  <button *ngIf="trainingProgramCurriculumSections && i === trainingProgramCurriculumSections.length - 1"
           style="position: relative; margin-top: 20px;" type="button" mdbBtn color="primary"
           size="sm" class="relative waves-light" (click)="curriculumSectionAddForm()" mdbWavesEffect>
     <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить раздел
