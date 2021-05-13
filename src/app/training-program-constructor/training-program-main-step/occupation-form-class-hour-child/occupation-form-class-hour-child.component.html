@@ -1,12 +1,26 @@
-<!--<div id="formOfEducation">-->
-<!--  <label for="fifth">Форма занятия</label>-->
-<!--  <select id="fifth" [(ngModel)]="item.fifth" class="browser-default custom-select">-->
-<!--    <option *ngFor="let el of occupationForms" [ngValue]="el.id">{{el.fullName}}</option>-->
-<!--  </select>-->
-<!--</div><br>-->
-<!--<div id="hours">-->
-<!--  <label for="fourth">Количество часов</label>-->
-<!--  <input id="fourth" min="0" max="10"-->
-<!--         [(ngModel)]="item.fourth" (change)= "item.fourth < 0 ? item.fourth = 0 : item.fourth;-->
-<!--         item.fourth > 10 ? item.fourth = 0 : item.fourth;" type="number" class="md-textarea form-control" mdbInput>-->
-<!--</div><br>-->
+<div class="occupationFormClassHour" *ngFor="let item of occupationFormClassHours; index as i">
+  <div id="formOfEducation">
+    <label for="fifth">Форма занятия</label>
+    <select id="fifth" [(ngModel)]="item.occupationFormId" class="browser-default custom-select">
+      <option *ngFor="let el of occupationForms" [ngValue]="el.id">{{el.fullName}}</option>
+    </select>
+  </div><br>
+  <div id="hours">
+    <label for="fourth">Количество часов</label>
+    <input id="fourth" min="0" max="10"
+           [(ngModel)]="item.classHours" (change)= "item.classHours < 0 ? item.classHours = 0 : item.classHours;
+         item.classHours > 10 ? item.classHours = 0 : item.classHours;" type="number" class="md-textarea form-control" mdbInput>
+  </div><br>
+  <button type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
+          (click)="crateOccupationFormClassHours(item, i)" mdbWavesEffect>
+    <mdb-icon fas icon="save" size="lg"></mdb-icon>
+  </button>
+  <button type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
+          (click)="addOccupationFormClassHours()" mdbWavesEffect>
+    <mdb-icon fas icon="plus" size="lg"></mdb-icon>
+  </button>
+  <button type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
+          (click)="addOccupationFormClassHours()" mdbWavesEffect>
+    <mdb-icon fas icon="trash" size="lg"></mdb-icon>
+  </button>
+</div>

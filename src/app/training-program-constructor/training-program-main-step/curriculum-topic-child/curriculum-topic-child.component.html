@@ -5,7 +5,8 @@
   class="example-list"
   (cdkDropListDropped)="drop($event)">
   <button *ngIf="done.length === 0" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-          (click)="curriculumTopicAddForm()" mdbWavesEffect><mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить тему
+          (click)="curriculumTopicAddForm()" mdbWavesEffect>
+    <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить тему
   </button>
   <br>
 
@@ -18,19 +19,17 @@
       </mdb-checkbox>
     </div><br>
 
-
     <app-occupation-form-class-hour-child
     [curriculumTopicTrainingProgramId]="item.curriculumTopicTrainingProgramId"
     [occupationForms]="occupationForms">
     </app-occupation-form-class-hour-child>
 
-
-    <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="curriculumTopicAddForm()"
-            mdbWavesEffect>
+    <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+            (click)="curriculumTopicAddForm()" mdbWavesEffect>
       <mdb-icon fas icon="plus" size="lg"></mdb-icon>
     </button>
-    <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="curriculumTopicEditForm(item)"
-            mdbWavesEffect>
+    <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+            (click)="curriculumTopicEditForm(item)" mdbWavesEffect>
       <mdb-icon fas icon="edit" size="lg"></mdb-icon>
     </button>
     <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"

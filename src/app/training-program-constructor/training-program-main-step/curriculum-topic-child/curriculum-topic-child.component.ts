@@ -47,6 +47,7 @@ export class CurriculumTopicChildComponent implements OnInit {
   loadCurriculumTopicTrainingPrograms(): void {
     this.curriculumTopicTrainingProgramService.getFromTrainingProgramCurriculumSection(this.trainingProgramCurriculumSection.id)
       .subscribe((curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[]) => {
+        console.log(curriculumTopicTrainingPrograms);
         if (!curriculumTopicTrainingPrograms || curriculumTopicTrainingPrograms.length === 0) { return; }
         curriculumTopicTrainingPrograms
           .sort((a, b) => a.serialNumber - b.serialNumber);
