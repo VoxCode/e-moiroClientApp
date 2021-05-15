@@ -28,7 +28,6 @@ export class OccupationFormClassHourChildComponent implements OnInit {
     if (!this.curriculumTopicTrainingProgramId) { return; }
     this.occupationFormClassHourService.getValues(this.curriculumTopicTrainingProgramId)
       .subscribe((occupationFormClassHours: OccupationFormClassHour[]) => {
-      console.log(occupationFormClassHours);
       if (occupationFormClassHours.length !== 0) {
         this.occupationFormClassHours = occupationFormClassHours;
       }
@@ -36,13 +35,33 @@ export class OccupationFormClassHourChildComponent implements OnInit {
   }
 
   crateOccupationFormClassHours(occupationFormClassHour: OccupationFormClassHour, index): void {
-
+    if (occupationFormClassHour.curriculumTopicTrainingProgramId) {
+      this.updateOccupationFormClassHours(occupationFormClassHour);
+      return;
+    }
     occupationFormClassHour.curriculumTopicTrainingProgramId = this.curriculumTopicTrainingProgramId;
     occupationFormClassHour.serialNumber = ++index;
-    console.log(occupationFormClassHour);
-    this.occupationFormClassHourService.createValue(this.curriculumTopicTrainingProgramId, occupationFormClassHour)
-      .subscribe((occupationFormClassHours: OccupationFormClassHour[]) => {
-        console.log(occupationFormClassHours);
+    this.occupationFormClassHourService.createValue(occupationFormClassHour)
+      .subscribe(() => {
+        console.log('Create was successful');
+      });
+  }
+
+  updateOccupationFormClassHours(occupationFormClassHour: OccupationFormClassHour): void {
+    this.occupationFormClassHourService.updateValue(occupationFormClassHour)
+      .subscribe(() => {
+        console.log('Update was successful');
+      });
+  }
+
+  deleteOccupationFormClassHours(occupationFormClassHour: OccupationFormClassHour, index): void {
+    if (!occupationFormClassHour.curriculumTopicTrainingProgramId) {
+      this.occupationFormClassHours.splice(index, 1);
+      return;
+    }
+    this.occupationFormClassHourService.deleteValue(occupationFormClassHour)
+      .subscribe(() => {
+        this.occupationFormClassHours.splice(index, 1);
       });
   }
 

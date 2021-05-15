@@ -11,16 +11,18 @@
            [(ngModel)]="item.classHours" (change)= "item.classHours < 0 ? item.classHours = 0 : item.classHours;
          item.classHours > 10 ? item.classHours = 0 : item.classHours;" type="number" class="md-textarea form-control" mdbInput>
   </div><br>
+  <button *ngIf="i === occupationFormClassHours.length - 1" type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
+          (click)="addOccupationFormClassHours()" mdbWavesEffect>
+    <mdb-icon fas icon="plus" size="lg"></mdb-icon>
+  </button>
+
   <button type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
           (click)="crateOccupationFormClassHours(item, i)" mdbWavesEffect>
     <mdb-icon fas icon="save" size="lg"></mdb-icon>
   </button>
+
   <button type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
-          (click)="addOccupationFormClassHours()" mdbWavesEffect>
-    <mdb-icon fas icon="plus" size="lg"></mdb-icon>
-  </button>
-  <button type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
-          (click)="addOccupationFormClassHours()" mdbWavesEffect>
+          (click)="deleteOccupationFormClassHours(item, i)" mdbWavesEffect>
     <mdb-icon fas icon="trash" size="lg"></mdb-icon>
   </button>
 </div>

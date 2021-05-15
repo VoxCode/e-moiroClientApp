@@ -24,7 +24,7 @@
     [occupationForms]="occupationForms">
     </app-occupation-form-class-hour-child>
 
-    <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+    <button *ngIf="i == done.length - 1" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
             (click)="curriculumTopicAddForm()" mdbWavesEffect>
       <mdb-icon fas icon="plus" size="lg"></mdb-icon>
     </button>

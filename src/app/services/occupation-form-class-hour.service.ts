@@ -13,15 +13,15 @@ export class OccupationFormClassHourService {
     return this.http.get(this.url + '/' + curriculumTopicTrainingProgramId);
   }
 
-  createValue(curriculumTopicTrainingProgramId: number, occupationFormClassHour: OccupationFormClassHour): Observable<any> {
-    return this.http.post(this.url + '/' + curriculumTopicTrainingProgramId, occupationFormClassHour);
+  createValue(occupationFormClassHour: OccupationFormClassHour): Observable<any> {
+    return this.http.post(this.url, occupationFormClassHour);
   }
 
   updateValue(occupationFormClassHour: OccupationFormClassHour): Observable<any> {
     return this.http.put(this.url, occupationFormClassHour);
   }
 
-  deleteValue(id: number): Observable<any> {
-    return this.http.delete(this.url + '/' + id);
+  deleteValue(occupationFormClassHour: OccupationFormClassHour): Observable<any> {
+    return this.http.post(this.url + '/Delete', occupationFormClassHour);
   }
 }
