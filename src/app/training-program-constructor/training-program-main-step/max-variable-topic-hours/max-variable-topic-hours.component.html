@@ -1,12 +1,8 @@
-<!--  <div *ngFor="let el of occupationForms" [ngValue]="el.id">-->
-<!--      <label for="maxVariableHours"><strong>Общее количество вариативных часов</strong></label>-->
-<!--      <input id="maxVariableHours" type="number" class="md-textarea form-control" mdbInput style="width: 100px"-->
-<!--             [(ngModel)]="trainingProgramCurriculumSectionSelect.maxVariableTopicHours"-->
-<!--             (focusout)="updateTrainingProgramCurriculumSection()" min="0" max="20"-->
-<!--             (change)= "trainingProgramCurriculumSectionSelect.maxVariableTopicHours < 0 ?-->
-<!--              trainingProgramCurriculumSectionSelect.maxVariableTopicHours = 0 :-->
-<!--              trainingProgramCurriculumSectionSelect.maxVariableTopicHours;-->
-<!--               trainingProgramCurriculumSectionSelect.maxVariableTopicHours > 20 ?-->
-<!--               trainingProgramCurriculumSectionSelect.maxVariableTopicHours = 0 :-->
-<!--               trainingProgramCurriculumSectionSelect.maxVariableTopicHours;"><br>-->
-<!--  </div>-->
+
+<h6><b>Максимальное количество вариативных часов:</b></h6>
+<div style="display: inline-block; margin-right: 20px; text-align: center;" *ngFor="let el of occupationForms">
+
+  <label style="font-size: small" for="maxVariableHours">{{el.fullName.slice(0,2)}}.</label>
+  <input id="maxVariableHours" type="number" class="md-textarea form-control" [(ngModel)]="el.maxVariableTopicHours"
+         (change)="crateMaxVariableTopicHours(el)" mdbInput style="width: 60px"><br>
+</div>

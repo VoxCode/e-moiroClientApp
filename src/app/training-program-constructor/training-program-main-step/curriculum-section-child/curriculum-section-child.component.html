@@ -8,13 +8,16 @@
 
   <div class="example-container">
     <h4><strong>Раздел {{(i+1)}}</strong></h4>
-    <h5><strong>{{item.name}}</strong></h5>
+    <h5><strong>«{{item.name.toUpperCase()}}»‎</strong></h5>
+
     <button  type="button" mdbBtn color="gray" size="sm" class="relative waves-light"
             (click)="curriculumSectionEditForm(item)" mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon>
     </button><br><br>
-
-
-    <app-max-variable-topic-hours></app-max-variable-topic-hours>
+    <app-max-variable-topic-hours
+      [occupationForms]="occupationForms"
+      [trainingProgramCurriculumSectionId]="item.id">
+    </app-max-variable-topic-hours>
+    <br>
 
     <app-curriculum-topic-child
       [trainingProgram]="trainingProgram"
