@@ -25,20 +25,37 @@ export class MaxVariableTopicHoursComponent implements OnInit {
       .subscribe((maxVariableTopicTimeList: MaxVariableTopicTime[]) => {
         maxVariableTopicTimeList.forEach(obj => {
           const tmpIndex = this.occupationForms.findIndex(a => a.id === obj.occupationFormId);
+          this.occupationForms[tmpIndex].occupationFormId = obj.occupationFormId;
+          this.occupationForms[tmpIndex].trainingProgramCurriculumSectionId = obj.trainingProgramCurriculumSectionId;
           this.occupationForms[tmpIndex].maxVariableTopicHours = obj.maxVariableTopicHours;
         });
-        console.log(maxVariableTopicTimeList);
       });
   }
 
   crateMaxVariableTopicHours(occupationForm: OccupationForm): void {
-    console.log(occupationForm);
-    // maxVariableTopicTime.maxVariableTopicHours = occupationForm.maxVariableTopicHours;
-    // maxVariableTopicTime.occupationFormId = occupationForm.id;
-    // maxVariableTopicTime.trainingProgramCurriculumSectionId = this.trainingProgramCurriculumSectionId;
-    // this.maxVariableTopicTimeService.createValue(maxVariableTopicTime).subscribe(() => {
-    //   console.log('Crate was successful!');
-    //
-    // });
+    const maxVariableTopicTime = new MaxVariableTopicTime(
+      occupationForm.id,
+      this.trainingProgramCurriculumSectionId,
+      occupationForm.maxVariableTopicHours);
+    if (occupationForm.maxVariableTopicHours === 0 && occupationForm.trainingProgramCurriculumSectionId) {
+      this.deleteMaxVariableTopicHours(maxVariableTopicTime);
+      return;
+    }
+    if (occupationForm.trainingProgramCurriculumSectionId) { this.updateMaxVariableTopicHours(maxVariableTopicTime); return; }
+    this.maxVariableTopicTimeService.createValue(maxVariableTopicTime).subscribe(() => {
+      console.log('Crate was successful!');
+    });
+  }
+
+  updateMaxVariableTopicHours(maxVariableTopicTime: MaxVariableTopicTime): void {
+    this.maxVariableTopicTimeService.updateValue(maxVariableTopicTime).subscribe(() => {
+      console.log('Update was successful!');
+    });
+  }
+
+  deleteMaxVariableTopicHours(maxVariableTopicTime: MaxVariableTopicTime): void {
+    this.maxVariableTopicTimeService.deleteValue(maxVariableTopicTime).subscribe(() => {
+      console.log('Delete was successful!');
+    });
   }
 }

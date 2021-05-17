@@ -4,5 +4,5 @@
 
   <label style="font-size: small" for="maxVariableHours">{{el.fullName.slice(0,2)}}.</label>
   <input id="maxVariableHours" type="number" class="md-textarea form-control" [(ngModel)]="el.maxVariableTopicHours"
-         (change)="crateMaxVariableTopicHours(el)" mdbInput style="width: 60px"><br>
+         (focusout)="crateMaxVariableTopicHours(el)" mdbInput style="width: 60px"><br>
 </div>
