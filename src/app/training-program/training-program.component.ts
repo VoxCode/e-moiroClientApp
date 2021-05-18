@@ -125,8 +125,8 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   }
 
   crate(el: any): void {
-    const trainingProgram = new TrainingProgram(0, el.second, el.third, null, el.fourth, el.fifth, el.sixth,
-      el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
+    const trainingProgram = new TrainingProgram(0, el.second, el.third, el.fourth, el.fifth,
+      el.sixth, el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
     this.valueService.createValue(trainingProgram)
       .subscribe((trainingProgramResponse: TrainingProgram) => {
         const index = this.elements.length + 1;
@@ -152,8 +152,8 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   }
 
   save(el: any): void {
-    this.valueService.getValue(el.first).subscribe((data: TrainingProgram) => {
-      const trainingProgram = new TrainingProgram(el.first, el.second, el.third, data.introduction, el.fourth, el.fifth,
+    this.valueService.getValue(el.first).subscribe(() => {
+      const trainingProgram = new TrainingProgram(el.first, el.second, el.third, el.fourth, el.fifth,
         el.sixth, el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
       this.valueService.updateValue(trainingProgram).subscribe();
     });
@@ -192,8 +192,8 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   }
 
   emptyEl(): any {
-    return { id: 0, first: '', second: '', third: '', fourth: false, fifth: false, sixth: false, seventh: '', eight: '', ninth: '', tenth: '',
-      eleventh: '', twelfth: '', thirteenth: '', fourteenth: '' };
+    return { id: 0, first: '', second: '', third: '', fourth: false, fifth: false, sixth: false, seventh: '',
+      eight: '', ninth: '', tenth: '', eleventh: '', twelfth: '', thirteenth: '', fourteenth: '' };
   }
 
   modalOption(el: any): any {

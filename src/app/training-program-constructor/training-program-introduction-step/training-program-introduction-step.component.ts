@@ -3,6 +3,8 @@ import {ActivatedRoute} from '@angular/router';
 import {TrainingProgram} from '../../models/TrainingProgram';
 import {Globals} from '../../globals';
 import {TrainingProgramService} from '../../services/training-program.service';
+import {TrainingProgramIntroductionService} from '../../services/training-program-introduction.service';
+import {TrainingProgramIntroduction} from "../../models/TrainingProgramIntroduction";
 
 @Component({
   selector: 'app-training-introduction-step',
@@ -10,7 +12,8 @@ import {TrainingProgramService} from '../../services/training-program.service';
   styleUrls: ['./training-program-introduction-step.component.scss'],
   providers: [
     TrainingProgramService,
-    ]
+    TrainingProgramIntroductionService
+  ]
 })
 export class TrainingProgramIntroductionStepComponent implements OnInit {
 
@@ -21,6 +24,7 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
   constructor(
     public globals: Globals,
     private trainingProgramService: TrainingProgramService,
+    private trainingProgramIntroductionService: TrainingProgramIntroductionService,
     private route: ActivatedRoute
   ) { }
 
@@ -29,20 +33,24 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
     this.loadTrainingProgram();
   }
 
-  // LOAD
-
-  // tslint:disable-next-line:typedef
-  loadTrainingProgram() {
+  loadTrainingProgram(): void {
     this.trainingProgramService.getValue(this.id)
-      .subscribe((data: TrainingProgram) => {
-        if (data){
-          this.trainingProgram = data;
-          if (this.trainingProgram.introduction) {
-            this.introductionContent = this.trainingProgram.introduction;
-          }
-          else {
-            this.introductionContent = 'Empty';
-          }
+      .subscribe((trainingProgram: TrainingProgram) => {
+        if (!trainingProgram) { return; }
+        this.trainingProgram = trainingProgram;
+        this.loadTrainingProgramIntroduction();
+      });
+  }
+
+  loadTrainingProgramIntroduction(): void {
+    this.trainingProgramIntroductionService.getValueFromTrainingProgram(this.id)
+      .subscribe((trainingProgramIntroduction: TrainingProgramIntroduction) => {
+        if (!trainingProgramIntroduction) { return; } // Остановился тут
+        if (trainingProgramIntroduction.introduction) {
+          this.introductionContent = trainingProgramIntroduction.introduction;
+        }
+        else {
+          this.introductionContent = 'Empty';
         }
       });
   }
@@ -54,8 +62,7 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
   }
 
   saveChanges(content: string): void {
-    this.trainingProgram.introduction = content;
-    console.log(content);
+    // this.trainingProgram.introduction = content;
     this.editTrainingProgram();
   }
 }

@@ -1,6 +1,6 @@
-export class TrainingProgramTestWork {
+export class TrainingProgramIntroduction {
   constructor(
     public id?: number,
     public trainingProgramId?: number,
-    public content?: string){ }
+    public introduction?: string){ }
 }

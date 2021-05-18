@@ -2,30 +2,34 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { TrainingProgramAdditionalLiterature } from '../models/TrainingProgramAdditionalLiterature';
 import { environment } from '../../environments/environment';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class TrainingProgramAdditionalLiteratureService {
   public url = environment.apiUrl + 'api/TrainingProgramAdditionalLiteratures';
   constructor(private http: HttpClient) { }
 
-  // tslint:disable-next-line:typedef
-  getValues() {
+  getValues(): Observable<any> {
     return this.http.get(this.url);
   }
-  // tslint:disable-next-line:typedef
-  getValue(id: number) {
+
+  getValue(id: number): Observable<any> {
     return this.http.get(this.url + '/' + id);
   }
-  // tslint:disable-next-line:typedef
-  createValue(trainingProgramAdditionalLiterature: TrainingProgramAdditionalLiterature) {
+
+  getValuesFromTrainingProgram(trainingProgramId: number): Observable<any> {
+    return this.http.get(this.url + '/FromTrainingProgram/' + trainingProgramId);
+  }
+
+  createValue(trainingProgramAdditionalLiterature: TrainingProgramAdditionalLiterature): Observable<any> {
     return this.http.post(this.url, trainingProgramAdditionalLiterature);
   }
-  // tslint:disable-next-line:typedef
-  updateValue(trainingProgramAdditionalLiterature: TrainingProgramAdditionalLiterature) {
+
+  updateValue(trainingProgramAdditionalLiterature: TrainingProgramAdditionalLiterature): Observable<any> {
     return this.http.put(this.url, trainingProgramAdditionalLiterature);
   }
-  // tslint:disable-next-line:typedef
-  deleteValue(id: number) {
+
+  deleteValue(id: number): Observable<any> {
     return this.http.delete(this.url + '/' + id);
   }
 }

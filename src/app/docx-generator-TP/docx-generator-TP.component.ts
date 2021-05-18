@@ -247,27 +247,27 @@ export class DocxGeneratorTPComponent implements OnInit{
       this.trainingProgramRegulations,
     );
 
-    const firstDocxTmp = firstDocumentPart.create();
-    const secondDocxTmp = secondDocumentPart.create([model, empty]);
-    Packer.toBlob(firstDocxTmp).then(blob => {
-      let blobArray: any[] = [];
-      const introductionBlob = new Base64ToBlob().generate(this.trainingProgram.introduction, this.wordDocxType, 512);
-      blobArray.push(introductionBlob);
-      blobArray.push(blob);
-      this.docxMergeService.merge(blobArray).subscribe((result) => {
-        const resultBlob = new Base64ToBlob().generate(result, this.wordDocxType, 512);
-
-        Packer.toBlob(secondDocxTmp).then(blob2 => {
-          blobArray = [];
-          blobArray.push(blob2);
-          blobArray.push(resultBlob);
-          this.docxMergeService.merge(blobArray).subscribe((result2) => {
-            const resultBlob2 = new Base64ToBlob().generate(result2, this.wordDocxType, 512);
-            this.docx.push(resultBlob2);
-          });
-        });
-      });
-    });
+    // const firstDocxTmp = firstDocumentPart.create();
+    // const secondDocxTmp = secondDocumentPart.create([model, empty]);
+    // Packer.toBlob(firstDocxTmp).then(blob => {
+    //   let blobArray: any[] = [];
+    //   const introductionBlob = new Base64ToBlob().generate(this.trainingProgram.introduction, this.wordDocxType, 512);
+    //   blobArray.push(introductionBlob);
+    //   blobArray.push(blob);
+    //   this.docxMergeService.merge(blobArray).subscribe((result) => {
+    //     const resultBlob = new Base64ToBlob().generate(result, this.wordDocxType, 512);
+    //
+    //     Packer.toBlob(secondDocxTmp).then(blob2 => {
+    //       blobArray = [];
+    //       blobArray.push(blob2);
+    //       blobArray.push(resultBlob);
+    //       this.docxMergeService.merge(blobArray).subscribe((result2) => {
+    //         const resultBlob2 = new Base64ToBlob().generate(result2, this.wordDocxType, 512);
+    //         this.docx.push(resultBlob2);
+    //       });
+    //     });
+    //   });
+    // });
 
     // const documentCreator = new DocumentCreator(
     //   this.curriculumTopicsList,

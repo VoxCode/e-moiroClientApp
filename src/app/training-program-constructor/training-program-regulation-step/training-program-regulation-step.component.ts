@@ -10,7 +10,6 @@ import {TrainingProgramRegulation} from '../../models/TrainingProgramRegulation'
 import {Globals} from '../../globals';
 import {CurriculumTopicService} from '../../services/curriculum-topic.service';
 import {CurriculumTopic} from '../../models/CurriculumTopic';
-import {RegulationDragAndDrop} from '../../models/drag-and-drop-models/RegulationDragAndDrop';
 
 @Component({
   selector: 'app-training-program-regulation-step',
@@ -74,7 +73,7 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   }
 
   loadTrainingProgramRegulation(): void {
-    this.trainingProgramRegulationService.getValue(this.id)
+    this.trainingProgramRegulationService.getValuesFromTrainingProgram(this.id)
       .subscribe((trainingProgramRegulations: TrainingProgramRegulation[]) => {
         this.loadTrainingProgram();
         if (trainingProgramRegulations.length !== 0){
