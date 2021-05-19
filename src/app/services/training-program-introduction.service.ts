@@ -6,7 +6,7 @@ import {Observable} from 'rxjs';
 
 @Injectable()
 export class TrainingProgramIntroductionService {
-  public url = environment.apiUrl + 'api/TrainingProgramIntroduction';
+  public url = environment.apiUrl + 'api/TrainingProgramIntroductions';
   constructor(private http: HttpClient) { }
 
   getValueFromTrainingProgram(trainingProgramId: number): Observable<any> {

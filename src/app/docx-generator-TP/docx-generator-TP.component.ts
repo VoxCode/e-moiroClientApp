@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import { Packer } from 'docx';
-import { model, empty } from './cv-data-TP';
 import { DocumentCreator } from './cv-generator-TP';
 import {TrainingProgramService} from '../services/training-program.service';
 import {TrainingProgram} from '../models/TrainingProgram';
@@ -30,6 +29,8 @@ import {TrainingProgramTeacherService} from '../services/training-program-teache
 import {TrainingProgramTeacher} from '../models/TrainingProgramTeacher';
 import {Department} from '../models/Department';
 import {DepartmentService} from '../services/department.service';
+import {TrainingProgramIntroduction} from '../models/TrainingProgramIntroduction';
+import {TrainingProgramIntroductionService} from '../services/training-program-introduction.service';
 
 
 @Component({
@@ -44,6 +45,7 @@ import {DepartmentService} from '../services/department.service';
     TrainingProgramAdditionalLiteratureService,
     TrainingProgramRegulationService,
     TrainingProgramTeacherService,
+    TrainingProgramIntroductionService,
     CurriculumTopicTrainingProgramService,
     StudentCategoryService,
     CertificationTypeService,
@@ -56,7 +58,7 @@ import {DepartmentService} from '../services/department.service';
 export class DocxGeneratorTPComponent implements OnInit{
   id: number;
   checkCurriculumTopicsList: number[] = [];
-  curriculumTopicsList: CurriculumTopicTrainingProgram[][];
+  curriculumTopicsList: CurriculumTopicTrainingProgram[][] = [];
   trainingProgram: TrainingProgram;
   studentCategory: StudentCategory;
   certificationType: CertificationType;
@@ -66,6 +68,7 @@ export class DocxGeneratorTPComponent implements OnInit{
   trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[];
   trainingProgramRegulations: TrainingProgramRegulation[];
   trainingProgramTeachers: TrainingProgramTeacher[];
+  trainingProgramIntroduction: TrainingProgramIntroduction;
   department: Department;
   docx: any[] = [];
   wordDocxType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
@@ -79,6 +82,7 @@ export class DocxGeneratorTPComponent implements OnInit{
     private trainingProgramRegulationService: TrainingProgramRegulationService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private trainingProgramTeacherService: TrainingProgramTeacherService,
+    private trainingProgramIntroductionService: TrainingProgramIntroductionService,
     private studentCategoryService: StudentCategoryService,
     private certificationTypeService: CertificationTypeService,
     private htmlToDocxService: WordToSfdtService,
@@ -88,122 +92,116 @@ export class DocxGeneratorTPComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
-    this.curriculumTopicsList = [];
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
   }
 
-  // LOAD
-
-  // tslint:disable-next-line:typedef
-  loadTrainingProgram() {
+  loadTrainingProgram(): void {
     this.trainingProgramService.getValue(this.id)
       .subscribe((data: TrainingProgram) => {
-        if (data !== undefined){
+        if (data) {
           this.trainingProgram = data;
-          this.loadTrainingProgramCurriculumSection();
+          this.loadTrainingProgramCurriculumSections();
         }
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadTrainingProgramCurriculumSection() {
-    this.trainingProgramCurriculumSectionService.getValue(this.id)
+  loadTrainingProgramCurriculumSections(): void {
+    this.trainingProgramCurriculumSectionService.GetFromTrainingProgram(this.id)
       .subscribe((data: TrainingProgramCurriculumSection[]) => {
-        if (data !== undefined){
+        if (data.length !== 0) {
+          data.sort((a, b) => a.sectionNumber - b.sectionNumber);
           this.trainingProgramCurriculumSections = data;
-          this.trainingProgramCurriculumSections.sort((a, b) => a.sectionNumber - b.sectionNumber);
-          this.loadCurriculumTopicTrainingProgram();
+          this.loadCurriculumTopicTrainingPrograms();
         }
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadCurriculumTopicTrainingProgram() {
-    // this.trainingProgramCurriculumSections.forEach((object, index) => {
-    //   this.curriculumTopicTrainingProgramService.getValueList(object.id)
-    //     .subscribe((data: CurriculumTopicTrainingProgram[]) => {
-    //       if (data !== undefined){
-    //         const curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = data;
-    //         curriculumTopicTrainingPrograms
-    //           .sort((a, b) => a.serialNumber - b.serialNumber);
-    //         this.curriculumTopicsList[index] = curriculumTopicTrainingPrograms;
-    //         this.checkCurriculumTopicsList.push(index);
-    //         if (this.checkCurriculumTopicsList.length === this.trainingProgramCurriculumSections.length) {
-    //           this.loadTrainingProgramFinalExamination();
-    //         }
-    //       }
-    //     });
-    // });
+  loadCurriculumTopicTrainingPrograms(): void {
+    this.trainingProgramCurriculumSections.forEach((object, index) => {
+      this.curriculumTopicTrainingProgramService.getFromTrainingProgramCurriculumSection(object.id)
+        .subscribe((data: CurriculumTopicTrainingProgram[]) => {
+          if (data.length !== 0) {
+            data.sort((a, b) => a.serialNumber - b.serialNumber);
+            this.curriculumTopicsList[index] = data;
+            this.checkCurriculumTopicsList.push(index);
+            if (this.checkCurriculumTopicsList.length === this.trainingProgramCurriculumSections.length) {
+              this.loadTrainingProgramFinalExaminations();
+            }
+          }
+        });
+    });
   }
 
-  // tslint:disable-next-line:typedef
-  loadTrainingProgramFinalExamination() {
-    this.trainingProgramFinalExaminationService.getValue(this.id)
+  loadTrainingProgramFinalExaminations(): void {
+    this.trainingProgramFinalExaminationService.getValuesFromTrainingProgram(this.id)
       .subscribe((data: TrainingProgramFinalExamination[]) => {
-        if (data !== undefined){
+        if (data.length !== 0){
+          data.sort((a, b) => a.serialNumber - b.serialNumber);
           this.trainingProgramFinalExaminations = data;
-          this.trainingProgramFinalExaminations.sort((a, b) => a.serialNumber - b.serialNumber);
-          this.loadTrainingProgramMainLiterature();
+          this.loadTrainingProgramMainLiteratures();
         }
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadTrainingProgramMainLiterature() {
-    this.trainingProgramMainLiteratureService.getValue(this.id)
+  loadTrainingProgramMainLiteratures(): void {
+    this.trainingProgramMainLiteratureService.getValuesFromTrainingProgram(this.id)
       .subscribe((data: TrainingProgramMainLiterature[]) => {
-        if (data !== undefined){
+        if (data.length !== 0){
+          data.sort((a, b) => a.serialNumber - b.serialNumber);
           this.trainingProgramMainLiteratures = data;
-          this.trainingProgramMainLiteratures
-            .sort((a, b) => a.serialNumber - b.serialNumber);
-          this.loadTrainingProgramAdditionalLiterature();
+          this.loadTrainingProgramAdditionalLiteratures();
         }
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadTrainingProgramAdditionalLiterature() {
-    this.trainingProgramAdditionalLiteratureService.getValue(this.id)
+  loadTrainingProgramAdditionalLiteratures(): void {
+    this.trainingProgramAdditionalLiteratureService.getValuesFromTrainingProgram(this.id)
       .subscribe((data: TrainingProgramAdditionalLiterature[]) => {
-        if (data !== undefined){
+        if (data.length !== 0){
+          data.sort((a, b) => a.serialNumber - b.serialNumber);
           this.trainingProgramAdditionalLiteratures = data;
-          this.trainingProgramAdditionalLiteratures
-            .sort((a, b) => a.serialNumber - b.serialNumber);
-          this.loadTrainingProgramRegulation();
+          this.loadTrainingProgramRegulations();
         }
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadTrainingProgramRegulation() {
-    this.trainingProgramRegulationService.getValue(this.id)
+  loadTrainingProgramRegulations(): void {
+    this.trainingProgramRegulationService.getValuesFromTrainingProgram(this.id)
       .subscribe((data: TrainingProgramRegulation[]) => {
-        if (data !== undefined){
+        if (data.length !== 0){
+          data.sort((a, b) => a.serialNumber - b.serialNumber);
           this.trainingProgramRegulations = data;
-          this.trainingProgramRegulations
-            .sort((a, b) => a.serialNumber - b.serialNumber);
+          this.loadTrainingProgramTeachers();
+        }
+      });
+  }
+
+  loadTrainingProgramTeachers(): void {
+    this.trainingProgramTeacherService.getValuesFromTrainingProgram(this.id)
+      .subscribe((data: TrainingProgramTeacher[]) => {
+        if (data.length !== 0){
+          this.trainingProgramTeachers = data;
+          this.loadTrainingProgramIntroduction();
+        }
+      });
+  }
+
+  loadTrainingProgramIntroduction(): void {
+    this.trainingProgramIntroductionService.getValueFromTrainingProgram(this.id)
+      .subscribe((data: TrainingProgramIntroduction) => {
+        if (data) {
+          this.trainingProgramIntroduction = data;
           this.loadStudentCategory();
         }
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadStudentCategory() {
+  loadStudentCategory(): void {
     this.studentCategoryService.getValue(this.trainingProgram.studentCategoryId)
       .subscribe((data: StudentCategory) => {
-        if (data !== undefined){
+        if (data){
           this.studentCategory = data;
-          this.loadTrainingProgramTeacher();
-        }
-      });
-  }
-
-  loadTrainingProgramTeacher(): void {
-    this.trainingProgramTeacherService.getTrainingProgramTeachers(this.id)
-      .subscribe((trainingProgramTeacher: TrainingProgramTeacher[]) => {
-        if (trainingProgramTeacher){
-          this.trainingProgramTeachers = trainingProgramTeacher;
           this.loadDepartment();
         }
       });
@@ -211,9 +209,9 @@ export class DocxGeneratorTPComponent implements OnInit{
 
   loadDepartment(): void {
     this.departmentService.getValue(this.trainingProgram.departmentId)
-      .subscribe((department: Department) => {
-        if (department){
-          this.department = department;
+      .subscribe((data: Department) => {
+        if (data){
+          this.department = data;
           this.loadCertificationType();
         }
       });
@@ -222,12 +220,22 @@ export class DocxGeneratorTPComponent implements OnInit{
   loadCertificationType(): void {
     this.certificationTypeService.getValue(this.trainingProgram.certificationTypeId)
       .subscribe((data: CertificationType) => {
-        if (data !== undefined){
+        if (data){
           this.certificationType = data;
           this.getDocument();
         }
       });
   }
+
+  // loadCertificationType(): void {
+  //   this.certificationTypeService.getValue(this.trainingProgram.certificationTypeId)
+  //     .subscribe((data: CertificationType) => {
+  //       if (data){
+  //         this.certificationType = data;
+  //         this.getDocument();
+  //       }
+  //     });
+  // }
 
   public getDocument(): void {
     const firstDocumentPart = new FirstDocumentPart(
@@ -247,27 +255,27 @@ export class DocxGeneratorTPComponent implements OnInit{
       this.trainingProgramRegulations,
     );
 
-    // const firstDocxTmp = firstDocumentPart.create();
-    // const secondDocxTmp = secondDocumentPart.create([model, empty]);
-    // Packer.toBlob(firstDocxTmp).then(blob => {
-    //   let blobArray: any[] = [];
-    //   const introductionBlob = new Base64ToBlob().generate(this.trainingProgram.introduction, this.wordDocxType, 512);
-    //   blobArray.push(introductionBlob);
-    //   blobArray.push(blob);
-    //   this.docxMergeService.merge(blobArray).subscribe((result) => {
-    //     const resultBlob = new Base64ToBlob().generate(result, this.wordDocxType, 512);
-    //
-    //     Packer.toBlob(secondDocxTmp).then(blob2 => {
-    //       blobArray = [];
-    //       blobArray.push(blob2);
-    //       blobArray.push(resultBlob);
-    //       this.docxMergeService.merge(blobArray).subscribe((result2) => {
-    //         const resultBlob2 = new Base64ToBlob().generate(result2, this.wordDocxType, 512);
-    //         this.docx.push(resultBlob2);
-    //       });
-    //     });
-    //   });
-    // });
+    const firstDocxTmp = firstDocumentPart.create();
+    const secondDocxTmp = secondDocumentPart.create();
+    Packer.toBlob(firstDocxTmp).then(blob => {
+      let blobArray: any[] = [];
+      const introductionBlob = new Base64ToBlob().generate(this.trainingProgramIntroduction.introduction, this.wordDocxType, 512);
+      blobArray.push(introductionBlob);
+      blobArray.push(blob);
+      this.docxMergeService.merge(blobArray).subscribe((result) => {
+        const resultBlob = new Base64ToBlob().generate(result, this.wordDocxType, 512);
+
+        Packer.toBlob(secondDocxTmp).then(blob2 => {
+          blobArray = [];
+          blobArray.push(blob2);
+          blobArray.push(resultBlob);
+          this.docxMergeService.merge(blobArray).subscribe((result2) => {
+            const resultBlob2 = new Base64ToBlob().generate(result2, this.wordDocxType, 512);
+            this.docx.push(resultBlob2);
+          });
+        });
+      });
+    });
 
     // const documentCreator = new DocumentCreator(
     //   this.curriculumTopicsList,
@@ -281,10 +289,7 @@ export class DocxGeneratorTPComponent implements OnInit{
     //   this.certificationType
     // );
     //
-    // const docxTmp = documentCreator.create([
-    //   model,
-    //   empty
-    // ]);
+    // const docxTmp = documentCreator.create();
     //
     // Packer.toBlob(docxTmp).then(blob => {
     //   this.docx.push(blob);

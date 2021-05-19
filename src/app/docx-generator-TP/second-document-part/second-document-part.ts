@@ -1,4 +1,4 @@
-import {convertMillimetersToTwip, Document, Footer, Header, PageNumberFormat, Paragraph} from 'docx';
+import {convertMillimetersToTwip, Document, Header, PageNumberFormat} from 'docx';
 import {TrainingProgramRegulation} from '../../models/TrainingProgramRegulation';
 import {TrainingProgramCurriculumSection} from '../../models/TrainingProgramCurriculumSection';
 import {DocxGeneratorDataTemplate} from '../../docx-generator-data-template/docx-generator-data-template';
@@ -14,6 +14,7 @@ export class SecondDocumentPart {
   isVariableOn = false;
   docxGeneratorDataTemplate: DocxGeneratorDataTemplate = new DocxGeneratorDataTemplate(28);
   sections: any[] = [];
+  children: any[] = [];
 
   constructor(
     private curriculumTopicsList: CurriculumTopicTrainingProgram[][],
@@ -22,12 +23,121 @@ export class SecondDocumentPart {
     private trainingProgramFinalExaminations: TrainingProgramFinalExamination[],
     private trainingProgramMainLiteratures: TrainingProgramMainLiterature[],
     private trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[],
-    private trainingProgramRegulations: TrainingProgramRegulation[],
-
-
+    private trainingProgramRegulations: TrainingProgramRegulation[]
   ) { }
 
-  public create([model, internalParameter ]): Document {
+  public create(): Document {
+
+    this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+    this.children.push(this.docxGeneratorDataTemplate.titleText('содержание'));
+    this.trainingProgramCurriculumSections.forEach((object, index) =>
+    {
+      this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+      this.children.push(this.docxGeneratorDataTemplate.titleText(index + 1 + '.' + object.name));
+      this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+      if (this.trainingProgram.isDistanceLearning === false){
+        this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Инвариантная часть', 0,  true));
+      }
+
+      let i = 1;
+      this.curriculumTopicsList[index].forEach(obj => {
+        if (obj.isVariable === false){
+          this.children.push(this.docxGeneratorDataTemplate
+            .someTextCurriculumTopics((index + 1) + '.' + i + ' ' + obj.topicTitle, ' (' + obj.topicTitle.toLowerCase() + ',' + // другая механика
+              ' ' + obj.classHours + ' часа)', 0, true));
+          this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
+          i++;
+        }
+        else {
+          this.isVariableOn = true;
+        }
+      });
+      this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+      if (this.trainingProgram.isDistanceLearning === false && this.isVariableOn === true){
+        this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Вариативная часть', 0,  true));
+      }
+
+      let j = 1;
+      this.curriculumTopicsList[index].forEach(obj => {
+        if (obj.isVariable === true) {
+          this.children.push(this.docxGeneratorDataTemplate
+            .someTextCurriculumTopics(obj.topicTitle, ' (' + obj.topicTitle.toLowerCase() + ', ' + // другая механика
+              ' ' + obj.classHours + ' часа)', 0, true));
+          this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
+          j++;
+        }
+      });
+      this.children.push(this.docxGeneratorDataTemplate.pageBreak());
+    });
+
+
+    if (this.trainingProgram.isDistanceLearning === false && this.trainingProgram.isTestWork){
+      this.children.push(this.docxGeneratorDataTemplate.titleText('содержание самостоятельной работы'));
+      this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+      for (let i = 1; i < 5; i++) {
+        for (let input = 1; input < 7; input++) {
+          this.children.push(this.docxGeneratorDataTemplate
+            .someText(i.toString() + '.' + input.toString() + ' Нормативы и прочие обеспечения'));
+          this.children.push(this.docxGeneratorDataTemplate.someText('Задание (сколько то там часов)', 720));
+          this.children.push(this.docxGeneratorDataTemplate.someText('Литература (какие-то страницы)', 720));
+        }
+        this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+      }
+      this.children.push(this.docxGeneratorDataTemplate.pageBreak());
+    }
+
+
+    if (this.trainingProgram.isDistanceLearning === false && this.trainingProgram.isControlWork){
+      this.children.push(this.docxGeneratorDataTemplate.titleText('содержание контрольной работы'));
+      this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+      for (let i = 1; i < 5; i++) {
+        this.children.push(this.docxGeneratorDataTemplate
+          .someText('Контрольная работа №' + i.toString() + ' Название кр - потом добавлю', 720, true));
+        this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+        for (let input = 1; input < 7; input++) {
+          this.children.push(this.docxGeneratorDataTemplate.someText(input.toString() + '. Задания (много много много)', 720));
+          this.children.push(this.docxGeneratorDataTemplate.someText('Литература (какие-то страницы)', 720));
+          this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+        }
+      }
+      this.children.push(this.docxGeneratorDataTemplate.pageBreak());
+    }
+
+
+    this.children.push(this.docxGeneratorDataTemplate.titleText('Материалы для итоговой аттестации слушателей'));
+    this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+    this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Вопросы для проведения зачета', 0 , true));
+    this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+    this.trainingProgramFinalExaminations.forEach((object, i) => {
+      this.children.push(this.docxGeneratorDataTemplate.someText((i + 1) +
+        '. ' + object.content, 720));
+    });
+    this.children.push(this.docxGeneratorDataTemplate.pageBreak());
+
+
+    let indx = 0;
+    this.children.push(this.docxGeneratorDataTemplate.titleText('список рекомендуемой литературы'));
+    this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+    this.children.push(this.docxGeneratorDataTemplate.someText('Основная', 720, true));
+    this.trainingProgramMainLiteratures.forEach((object, i) => {
+      this.children.push(this.docxGeneratorDataTemplate.someText((i + 1) +
+        '. ' + object.content, 720));
+      indx = i + 1;
+    });
+    this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+    this.children.push(this.docxGeneratorDataTemplate.someText('Дополнительная', 720, true));
+    this.trainingProgramAdditionalLiteratures.forEach((object, i) => {
+      indx = indx + 1;
+      this.children.push(this.docxGeneratorDataTemplate.someText((indx) +
+        '. ' + object.content, 720));
+    });
+    this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+    this.children.push(this.docxGeneratorDataTemplate.someText('Нормативные правовые акты', 720, true));
+    this.trainingProgramRegulations.forEach((object, i) => {
+      indx = indx + 1;
+      this.children.push(this.docxGeneratorDataTemplate.someText((indx) +
+        '. ' + object.content, 720));
+    });
 
     this.sections.push( {
       properties: {
@@ -47,156 +157,7 @@ export class SecondDocumentPart {
           children: [this.docxGeneratorDataTemplate.pageNumbers()],
         })
       },
-      children: [
-
-        //#region FourPage
-        ...internalParameter
-          .map((nothing) => {
-            const arr: Paragraph[] = [];
-            arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
-            arr.push(this.docxGeneratorDataTemplate.titleText('содержание'));
-            this.trainingProgramCurriculumSections.forEach((object, index) =>
-            {
-              arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
-              arr.push(this.docxGeneratorDataTemplate.titleText(index + 1 + '.' + object.name));
-              arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
-              if (this.trainingProgram.isDistanceLearning === false){
-                arr.push(this.docxGeneratorDataTemplate.someTextCenter('Инвариантная часть', 0,  true));
-              }
-
-              let i = 1;
-              this.curriculumTopicsList[index].forEach(obj => {
-                if (obj.isVariable === false){
-                  // arr.push(this.docxGeneratorDataTemplate
-                  //   .someTextCurriculumTopics((index + 1) + '.' + i + ' ' + obj.topicTitle, ' (' + obj.fullName.toLowerCase() + ',' +
-                  //     ' ' + obj.classHours + ' часа)', 0, true));
-                  arr.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
-                  i++;
-                }
-                else {
-                  this.isVariableOn = true;
-                }
-              });
-              arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
-              if (this.trainingProgram.isDistanceLearning === false && this.isVariableOn === true){
-                arr.push(this.docxGeneratorDataTemplate.someTextCenter('Вариативная часть', 0,  true));
-              }
-
-              let j = 1;
-              this.curriculumTopicsList[index].forEach(obj => {
-                if (obj.isVariable === true) {
-                  // arr.push(this.docxGeneratorDataTemplate
-                  //   .someTextCurriculumTopics(obj.topicTitle, ' (' + obj.fullName.toLowerCase() + ', ' +
-                  //     ' ' + obj.classHours + ' часа)', 0, true));
-                  arr.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
-                  j++;
-                }
-              });
-              arr.push(this.docxGeneratorDataTemplate.pageBreak());
-            });
-            return arr;
-          })
-          .reduce((prev, curr) => prev.concat(curr), []),
-        //#endregion
-
-        // #region FivePage
-        ...internalParameter
-          .map((nothing) => {
-            if (this.trainingProgram.isDistanceLearning === false && this.trainingProgram.isTestWork){
-              const arr: Paragraph[] = [];
-              arr.push(this.docxGeneratorDataTemplate.titleText('содержание самостоятельной работы'));
-              arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
-              for (let i = 1; i < 5; i++) // loop for a parts (PERFERED OBJECT THEN INT)
-              {
-                for (let input = 1; input < 7; input++)
-                {
-                  arr.push(this.docxGeneratorDataTemplate
-                    .someText(i.toString() + '.' + input.toString() + ' Нормативы и прочие обеспечения'));
-                  arr.push(this.docxGeneratorDataTemplate.someText('Задание (сколько то там часов)', 720));
-                  arr.push(this.docxGeneratorDataTemplate.someText('Литература (какие-то страницы)', 720));
-                }
-                arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
-              }
-              arr.push(this.docxGeneratorDataTemplate.pageBreak());
-              return arr;
-            }
-          })
-          .reduce((prev, curr) => prev.concat(curr), []),
-        // #endregion
-        // #region Содержание контрольно работы
-        ...internalParameter
-          .map((nothing) => {
-            if (this.trainingProgram.isDistanceLearning === false && this.trainingProgram.isControlWork){
-              const arr: Paragraph[] = [];
-              arr.push(this.docxGeneratorDataTemplate.titleText('содержание контрольной работы'));
-              arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
-              for (let i = 1; i < 5; i++) // loop for a parts (PERFERED OBJECT THEN INT)
-              {
-                arr.push(this.docxGeneratorDataTemplate
-                  .someText('Контрольная работа №' + i.toString() + ' Название кр - потом добавлю', 720, true));
-                arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
-                for (let input = 1; input < 7; input++) {
-                  arr.push(this.docxGeneratorDataTemplate.someText(input.toString() + '. Задания (много много много)', 720));
-                  arr.push(this.docxGeneratorDataTemplate.someText('Литература (какие-то страницы)', 720));
-                  arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
-                }
-              }
-              arr.push(this.docxGeneratorDataTemplate.pageBreak());
-              return arr;
-            }
-          })
-          .reduce((prev, curr) => prev.concat(curr), []),
-        // #endregion
-        // #region Материалы итоговой аттестации
-        ...internalParameter
-          .map((nothing) => {
-            const arr: Paragraph[] = [];
-            arr.push(this.docxGeneratorDataTemplate.titleText('Материалы для итоговой аттестации слушателей'));
-            arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
-            arr.push(this.docxGeneratorDataTemplate.someTextCenter('Вопросы для проведения зачета', 0 , true));
-            arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
-            this.trainingProgramFinalExaminations.forEach((object, i) => {
-              arr.push(this.docxGeneratorDataTemplate.someText((i + 1) +
-                '. ' + object.content, 720));
-            });
-            arr.push(this.docxGeneratorDataTemplate.pageBreak());
-            return arr;
-          })
-          .reduce((prev, curr) => prev.concat(curr), []),
-        // #endregion
-
-        // #region Материалы итоговой аттестации
-        ...internalParameter
-          .map((nothing) => {
-            let indx = 0;
-            const arr: Paragraph[] = [];
-            arr.push(this.docxGeneratorDataTemplate.titleText('список рекомендуемой литературы'));
-            arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
-            arr.push(this.docxGeneratorDataTemplate.someText('Основная', 720, true));
-            this.trainingProgramMainLiteratures.forEach((object, i) => {
-              arr.push(this.docxGeneratorDataTemplate.someText((i + 1) +
-                '. ' + object.content, 720));
-              indx = i + 1;
-            });
-            arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
-            arr.push(this.docxGeneratorDataTemplate.someText('Дополнительная', 720, true));
-            this.trainingProgramAdditionalLiteratures.forEach((object, i) => {
-              indx = indx + 1;
-              arr.push(this.docxGeneratorDataTemplate.someText((indx) +
-                '. ' + object.content, 720));
-            });
-            arr.push(this.docxGeneratorDataTemplate.emptyParagraph());
-            arr.push(this.docxGeneratorDataTemplate.someText('Нормативные правовые акты', 720, true));
-            this.trainingProgramRegulations.forEach((object, i) => {
-              indx = indx + 1;
-              arr.push(this.docxGeneratorDataTemplate.someText((indx) +
-                '. ' + object.content, 720));
-            });
-            return arr;
-          })
-          .reduce((prev, curr) => prev.concat(curr), []),
-        // #endregion
-      ],
+      children: this.children
     });
 
     return new Document({

@@ -29,7 +29,6 @@ export class DocumentCreator {
     private certificationType: CertificationType
   ) { }
 
-  // tslint:disable-next-line:no-shadowed-variable
   public create([model, internalParameter ]): Document {
     this.sections.push({
       properties: {

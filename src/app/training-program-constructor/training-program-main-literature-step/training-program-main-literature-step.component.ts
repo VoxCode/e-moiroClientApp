@@ -10,6 +10,9 @@ import {MainLiterature} from '../../models/MainLiterature';
 import {CurriculumTopicTrainingProgramService} from '../../services/curriculum-topic-training-program.service';
 import {CurriculumTopicTrainingProgram} from '../../models/СurriculumTopicTrainingProgram';
 import {Globals} from '../../globals';
+import {TrainingProgramAdditionalLiterature} from '../../models/TrainingProgramAdditionalLiterature';
+import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
+import {MainLiteratureEditComponent} from '../../main-literature/main-literature-edit.component';
 
 @Component({
   selector: 'app-training-program-main-literature-step',
@@ -23,14 +26,14 @@ import {Globals} from '../../globals';
   ]
 })
 export class TrainingProgramMainLiteratureStepComponent implements OnInit {
-
-  todo = [];
-  done = [];
   id: number;
+  todo: any[] = [];
+  done: any[] = [];
   trainingProgram: TrainingProgram;
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
   curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram;
   mainLiterature: MainLiterature = new MainLiterature();
+  modalRef: MDBModalRef;
 
   constructor(
     public globals: Globals,
@@ -38,59 +41,66 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
     private mainLiteratureService: MainLiteratureService,
     private trainingProgramMainLiteratureService: TrainingProgramMainLiteratureService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalService: MDBModalService,
   ) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
-    this.loadTrainingProgramMainLiterature();
-
+    this.loadTrainingProgram();
   }
 
-  // tslint:disable-next-line:typedef
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<string[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      this.save();
+      // this.save();
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-      this.save();
+      // this.save();
     }
   }
 
-  // tslint:disable-next-line:typedef
-  noReturnPredicate() {
-    return false;
-  }
-
-  // LOAD
-
-  // tslint:disable-next-line:typedef
-  loadTrainingProgram() {
+  loadTrainingProgram(): void {
     this.trainingProgramService.getValue(this.id)
       .subscribe((data: TrainingProgram) => {
-        if (data !== undefined){
+        if (data) {
           this.trainingProgram = data;
-          this.loadCurriculumTopicTrainingProgram();
+          this.loadTrainingProgramMainLiterature();
         }
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadCurriculumTopicTrainingProgram() {
+  loadTrainingProgramMainLiterature(): void {
+    this.trainingProgramMainLiteratureService.getValuesFromTrainingProgram(this.id)
+      .subscribe((trainingProgramMainLiteratures: TrainingProgramMainLiterature[]) => {
+        if (trainingProgramMainLiteratures.length !== 0) {
+          trainingProgramMainLiteratures
+            .sort((a, b) => a.serialNumber - b.serialNumber);
+          trainingProgramMainLiteratures.forEach((obj) => {
+            this.done.push({
+              id: obj.id,
+              trainingProgramId: obj.trainingProgramId,
+              content: obj.content,
+              serialNumber: obj.serialNumber
+            });
+          });
+        }
+      });
+  }
+
+  loadCurriculumTopicTrainingProgram(): void {
     this.curriculumTopicTrainingProgramService.getValue(this.id).subscribe((data: CurriculumTopicTrainingProgram[]) => {
-      if (data !== undefined && data !== null){
+      if (data.length !== 0){
         this.curriculumTopicTrainingPrograms = data;
-        this.loadMainLiterature();
+        // this.loadMainLiterature();
       }
     });
   }
 
-  // tslint:disable-next-line:typedef
-  loadMainLiterature() {
+  loadMainLiterature(): void {
     // tslint:disable-next-line:prefer-const
     // let curriculumTopicIdArray: number[] = [this.curriculumTopicTrainingPrograms.length];
     // this.curriculumTopicTrainingPrograms.forEach(i => {
@@ -116,33 +126,39 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
     //   });
   }
 
-  // tslint:disable-next-line:typedef
-  loadTrainingProgramMainLiterature() {
-    // this.trainingProgramMainLiteratureService.getValue(this.id)
-    //   .subscribe((data: TrainingProgramMainLiterature[]) => {
-    //     this.loadTrainingProgram();
-    //     if (data !== undefined && data !== null){
-    //       // tslint:disable-next-line:only-arrow-functions typedef
-    //       data.sort(function(a, b) {
-    //         return a.serialNumber - b.serialNumber;
-    //       });
-    //       data.forEach((tmp) => {
-    //         this.done.push({
-    //           fourth: tmp.id,
-    //           fifth: tmp.trainingProgramId,
-    //           third: tmp.content,
-    //           seventh: tmp.mainLiteratureId,
-    //           eight: tmp.serialNumber
-    //         });
-    //       });
-    //     }
-    //   });
+  crateMainLiteratureTemplate(): void {
+  }
+
+  crateTrainingProgramMainLiterature(trainingProgramMainLiterature: TrainingProgramMainLiterature): void {
+    this.trainingProgramMainLiteratureService.createValue(trainingProgramMainLiterature)
+      .subscribe((trainingProgramMainLiteratureResponse: TrainingProgramMainLiterature) => {
+        this.done.push(this.newDoneElement(trainingProgramMainLiteratureResponse));
+        console.log('Crate was successful!');
+      });
+  }
+
+  updateTrainingProgramMainLiterature(item: any): void {
+    const trainingProgramMainLiterature = new TrainingProgramMainLiterature(
+      item.id,
+      item.trainingProgramId,
+      item.content,
+      item.serialNumber
+    );
+    this.trainingProgramMainLiteratureService.updateValue(trainingProgramMainLiterature)
+      .subscribe(() => {
+        console.log('Update was successful!');
+      });
+  }
+
+  deleteTrainingProgramMainLiterature(id: number, index: number): void {
+    this.trainingProgramMainLiteratureService.deleteValue(id).subscribe(() => {
+      this.done.splice(index, 1);
+      console.log('Delete was successful ' + id);
+    });
   }
 
   // SAVE FULL
-
-  // tslint:disable-next-line:typedef
-  save() {
+  save(): void {
     // let i = 0;
     // this.done.forEach((object, index) => {
     //   let trainingProgramMainLiterature: TrainingProgramMainLiterature = new TrainingProgramMainLiterature();
@@ -173,66 +189,55 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
     // });
   }
 
-  // UPDATE
-
-  // tslint:disable-next-line:typedef
-  update(tmp: TrainingProgramMainLiterature){
-    this.trainingProgramMainLiteratureService.updateValue(tmp)
-      .subscribe((data: TrainingProgramMainLiterature) => {
-        console.log('Update was successful ' + data.serialNumber);
-      });
+  trainingProgramMainLiteratureCrateForm(): void {
+    this.modalRef = this.modalService.show(MainLiteratureEditComponent, this.modalOption(this.emptyEl()));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      const trainingProgramAdditionalLiterature = new TrainingProgramAdditionalLiterature(
+        0,
+        this.id,
+        newElement.last,
+        this.done.length + 1
+      );
+      this.crateTrainingProgramMainLiterature(trainingProgramAdditionalLiterature);
+    });
   }
 
-  // tslint:disable-next-line:typedef
-  cancel() {
-    // this.mainLiterature = new MainLiterature();
-    // this.curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
-    // this.curriculumTopicMainLiterature = new CurriculumTopicMainLiterature();
+  trainingProgramMainLiteratureEditForm(item: any): void {
+    const el = this.emptyEl();
+    el.last = item.content;
+    this.modalRef = this.modalService.show(MainLiteratureEditComponent, this.modalOption(el));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      item.content = newElement.last;
+      this.updateTrainingProgramMainLiterature(item);
+    });
   }
 
-  // tslint:disable-next-line:typedef
-  addMainLiterature() {
-    this.crateMainLiterature();
+  emptyEl(): any {
+    return {id: 0, first: '', last: ''};
   }
 
-  // tslint:disable-next-line:typedef
-  crateMainLiterature(){
-    // this.mainLiteratureService.createValue(this.mainLiterature)
-    //   .subscribe((data: MainLiterature) => {
-    //     if (data !== undefined){
-    //       this.mainLiterature = data;
-    //       console.log('Success');
-    //       this.done.push({
-    //         first: this.mainLiterature.id,
-    //         third: this.mainLiterature.content
-    //       });
-    //       this.curriculumTopicMainLiterature.mainLiteratureId = this.mainLiterature.id;
-    //       this.curriculumTopicMainLiterature.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
-    //       this.crateCurriculumTopicMainLiterature();
-    //     }
-    //   });
+  modalOption(el: any): any {
+    return {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+      show: false,
+      ignoreBackdropClick: true,
+      class: 'modal-fluid',
+      containerClass: '',
+      animated: true,
+      data: {
+        editableRow: el
+      }
+    };
   }
 
-  // tslint:disable-next-line:typedef
-  crateCurriculumTopicMainLiterature(){
-    // this.curriculumTopicMainLiteratureService.createValue(this.curriculumTopicMainLiterature)
-    //   .subscribe((data: CurriculumTopicMainLiterature) => {
-    //     if (data !== undefined){
-    //       this.curriculumTopicMainLiterature = data;
-    //       console.log('Success');
-    //       this.save();
-    //     }
-    //     this.cancel();
-    //   });
-  }
-
-  // tslint:disable-next-line:typedef
-  deleteTrainingProgramMainLiterature(id: number, indx: number){
-    this.done.splice(indx, 1);
-    if (id !== undefined){
-      this.trainingProgramMainLiteratureService.deleteValue(id).subscribe(() => {
-        console.log('Delete was successful ' + id);
-      });
-    }
+  newDoneElement(model: TrainingProgramMainLiterature): any {
+    return {
+      id: model.id,
+      trainingProgramId: model.trainingProgramId,
+      content: model.content,
+      serialNumber: model.serialNumber
+    };
   }
 }

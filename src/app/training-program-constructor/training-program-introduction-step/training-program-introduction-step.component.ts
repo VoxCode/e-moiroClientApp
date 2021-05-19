@@ -4,7 +4,7 @@ import {TrainingProgram} from '../../models/TrainingProgram';
 import {Globals} from '../../globals';
 import {TrainingProgramService} from '../../services/training-program.service';
 import {TrainingProgramIntroductionService} from '../../services/training-program-introduction.service';
-import {TrainingProgramIntroduction} from "../../models/TrainingProgramIntroduction";
+import {TrainingProgramIntroduction} from '../../models/TrainingProgramIntroduction';
 
 @Component({
   selector: 'app-training-introduction-step',
@@ -19,6 +19,7 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
 
   id: number;
   trainingProgram: TrainingProgram;
+  trainingProgramIntroduction: TrainingProgramIntroduction = new TrainingProgramIntroduction();
   introductionContent: string;
 
   constructor(
@@ -45,24 +46,36 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
   loadTrainingProgramIntroduction(): void {
     this.trainingProgramIntroductionService.getValueFromTrainingProgram(this.id)
       .subscribe((trainingProgramIntroduction: TrainingProgramIntroduction) => {
-        if (!trainingProgramIntroduction) { return; } // Остановился тут
-        if (trainingProgramIntroduction.introduction) {
-          this.introductionContent = trainingProgramIntroduction.introduction;
-        }
-        else {
+        if (!trainingProgramIntroduction) {
           this.introductionContent = 'Empty';
+          return;
         }
+        this.trainingProgramIntroduction = trainingProgramIntroduction;
+        this.introductionContent = trainingProgramIntroduction.introduction;
       });
   }
 
-  editTrainingProgram(): void {
-    this.trainingProgramService.updateValue(this.trainingProgram).subscribe(() => {
+  crateTrainingProgram(content: string): void {
+    this.trainingProgramIntroduction.trainingProgramId = this.id;
+    this.trainingProgramIntroduction.introduction = content;
+    this.trainingProgramIntroductionService.createValue(this.trainingProgramIntroduction).subscribe(() => {
+      console.log('Crate was successful');
+    });
+  }
+
+  editTrainingProgram(content: string): void {
+    this.trainingProgramIntroduction.introduction = content;
+    this.trainingProgramIntroductionService.updateValue(this.trainingProgramIntroduction).subscribe(() => {
         console.log('Update was successful');
     });
   }
 
   saveChanges(content: string): void {
-    // this.trainingProgram.introduction = content;
-    this.editTrainingProgram();
+    if (!this.trainingProgramIntroduction.id) {
+      this.crateTrainingProgram(content);
+    }
+    else {
+      this.editTrainingProgram(content);
+    }
   }
 }

@@ -10,6 +10,8 @@ import {TrainingProgramRegulation} from '../../models/TrainingProgramRegulation'
 import {Globals} from '../../globals';
 import {CurriculumTopicService} from '../../services/curriculum-topic.service';
 import {CurriculumTopic} from '../../models/CurriculumTopic';
+import {RegulationEditComponent} from '../../regulation/regulation-edit.component';
+import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-training-program-regulation-step',
@@ -23,12 +25,12 @@ import {CurriculumTopic} from '../../models/CurriculumTopic';
   ]
 })
 export class TrainingProgramRegulationStepComponent implements OnInit {
-
+  id: number;
   todo: any = [];
   done: any = [];
-  id: number;
   trainingProgram: TrainingProgram;
   regulation: Regulation = new Regulation();
+  modalRef: MDBModalRef;
 
   constructor(
     public globals: Globals,
@@ -36,30 +38,27 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
     private regulationService: RegulationService,
     private trainingProgramRegulationService: TrainingProgramRegulationService,
     private curriculumTopicService: CurriculumTopicService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalService: MDBModalService,
   ) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
-    this.loadTrainingProgramRegulation();
+    this.loadTrainingProgram();
 
   }
 
   drop(event: CdkDragDrop<string[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      this.save();
+      // this.save();
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-      this.save();
+      // this.save();
     }
-  }
-
-  noReturnPredicate(): boolean {
-    return false;
   }
 
   loadTrainingProgram(): void {
@@ -67,7 +66,7 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
       .subscribe((trainingProgram: TrainingProgram) => {
         if (trainingProgram){
           this.trainingProgram = trainingProgram;
-          this.loadCurriculumTopicTemplates();
+          this.loadTrainingProgramRegulation();
         }
       });
   }
@@ -75,15 +74,14 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   loadTrainingProgramRegulation(): void {
     this.trainingProgramRegulationService.getValuesFromTrainingProgram(this.id)
       .subscribe((trainingProgramRegulations: TrainingProgramRegulation[]) => {
-        this.loadTrainingProgram();
         if (trainingProgramRegulations.length !== 0){
           trainingProgramRegulations.sort((a, b) => a.serialNumber - b.serialNumber);
           trainingProgramRegulations.forEach((trainingProgramRegulation ) => {
             this.done.push({
-              trainingProgramRegulationId: trainingProgramRegulation.id,
+              id: trainingProgramRegulation.id,
               trainingProgramId: trainingProgramRegulation.trainingProgramId,
-              trainingProgramRegulationContent: trainingProgramRegulation.content,
-              trainingProgramRegulationSerialNumber: trainingProgramRegulation.serialNumber
+              content: trainingProgramRegulation.content,
+              serialNumber: trainingProgramRegulation.serialNumber
             });
           });
         }
@@ -92,30 +90,61 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
 
   loadCurriculumTopicTemplates(): void {
     this.curriculumTopicService.getFromTrainingProgram(this.id).subscribe((curriculumTopics: CurriculumTopic[]) => {
-      this.loadRegulationTemplates(curriculumTopics);
+      // this.loadRegulationTemplates(curriculumTopics);
     });
   }
 
   loadRegulationTemplates(curriculumTopics: CurriculumTopic[]): void {
-    const curriculumTopicIdArray: number[] = [curriculumTopics.length];
-    curriculumTopics.forEach(curriculumTopic => {
-      curriculumTopicIdArray.push(curriculumTopic.id);
-    });
-    this.regulationService.getByCurriculumTopics(curriculumTopicIdArray)
-      .subscribe((regulations: Regulation[]) => {
-        if (regulations.length !== 0) {
-          regulations.sort((a, b) => b.id - a.id);
-          regulations.forEach((regulation) => {
-            const regulationFound = this.done.find(a => a.regulationId === regulation.id);
-            if (!regulationFound) {
-              this.todo.push({
-                first: regulation.id,
-                second: regulation.content
-              });
-            }
-          });
-        }
+    // const curriculumTopicIdArray: number[] = [curriculumTopics.length];
+    // curriculumTopics.forEach(curriculumTopic => {
+    //   curriculumTopicIdArray.push(curriculumTopic.id);
+    // });
+    // this.regulationService.getByCurriculumTopics(curriculumTopicIdArray)
+    //   .subscribe((regulations: Regulation[]) => {
+    //     if (regulations.length !== 0) {
+    //       regulations.sort((a, b) => b.id - a.id);
+    //       regulations.forEach((regulation) => {
+    //         const regulationFound = this.done.find(a => a.regulationId === regulation.id);
+    //         if (!regulationFound) {
+    //           this.todo.push({
+    //             first: regulation.id,
+    //             second: regulation.content
+    //           });
+    //         }
+    //       });
+    //     }
+    //   });
+  }
+
+  crateRegulationTemplate(): void {
+  }
+
+  crateTrainingProgramRegulation(trainingProgramRegulation: TrainingProgramRegulation): void {
+    this.trainingProgramRegulationService.createValue(trainingProgramRegulation)
+      .subscribe((trainingProgramRegulationResponse: TrainingProgramRegulation) => {
+        this.done.push(this.newDoneElement(trainingProgramRegulationResponse));
+        console.log('Crate was successful!');
       });
+  }
+
+  updateTrainingProgramRegulation(item: any): void {
+    const trainingProgramRegulation = new TrainingProgramRegulation(
+      item.id,
+      item.trainingProgramId,
+      item.content,
+      item.serialNumber
+    );
+    this.trainingProgramRegulationService.updateValue(trainingProgramRegulation)
+      .subscribe(() => {
+        console.log('Update was successful!');
+      });
+  }
+
+  deleteTrainingProgramRegulation(id: number, index: number): void {
+    this.trainingProgramRegulationService.deleteValue(id).subscribe(() => {
+      this.done.splice(index, 1);
+      console.log('Delete was successful!');
+    });
   }
 
   save(): void {
@@ -152,40 +181,55 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
     // });
   }
 
-  update(tmp: TrainingProgramRegulation): void {
-    this.trainingProgramRegulationService.updateValue(tmp)
-      .subscribe((data: TrainingProgramRegulation) => {
-        console.log('Update was successful ' + data.serialNumber);
-      });
+  trainingProgramRegulationCrateForm(): void {
+    this.modalRef = this.modalService.show(RegulationEditComponent, this.modalOption(this.emptyEl()));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      const trainingProgramRegulation = new TrainingProgramRegulation(
+        0,
+        this.id,
+        newElement.last,
+        this.done.length + 1
+      );
+      this.crateTrainingProgramRegulation(trainingProgramRegulation);
+    });
   }
 
-  addTrainingProgramRegulation(): void {
-    this.crateRegulation();
+  trainingProgramRegulationEditForm(item: any): void {
+    const el = this.emptyEl();
+    el.last = item.content;
+    this.modalRef = this.modalService.show(RegulationEditComponent, this.modalOption(el));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      item.content = newElement.last;
+      this.updateTrainingProgramRegulation(item);
+    });
   }
 
-  crateRegulation(): void {
-    // this.regulationService.createValue(this.regulation)
-    //   .subscribe((data: Regulation) => {
-    //     if (data !== undefined){
-    //       this.regulation = data;
-    //       console.log('Success');
-    //       this.done.push({
-    //         first: this.regulation.id,
-    //         third: this.regulation.content
-    //       });
-    //       this.curriculumTopicRegulation.regulationId = this.regulation.id;
-    //       this.curriculumTopicRegulation.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
-    //       this.crateCurriculumTopicRegulation();
-    //     }
-    //   });
+  emptyEl(): any {
+    return {id: 0, first: '', last: ''};
   }
 
-  deleteTrainingProgramRegulation(id: number, index: number): void {
-    this.done.splice(index, 1);
-    if (id){
-      this.trainingProgramRegulationService.deleteValue(id).subscribe(() => {
-        console.log('Delete was successful ' + id);
-      });
-    }
+  modalOption(el: any): any {
+    return {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+      show: false,
+      ignoreBackdropClick: true,
+      class: 'modal-fluid',
+      containerClass: '',
+      animated: true,
+      data: {
+        editableRow: el
+      }
+    };
+  }
+
+  newDoneElement(model: TrainingProgramRegulation): any {
+    return {
+      id: model.id,
+      trainingProgramId: model.trainingProgramId,
+      content: model.content,
+      serialNumber: model.serialNumber
+    };
   }
 }

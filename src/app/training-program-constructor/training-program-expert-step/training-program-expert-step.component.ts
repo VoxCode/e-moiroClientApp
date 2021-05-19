@@ -63,7 +63,7 @@ export class TrainingProgramExpertStepComponent implements OnInit {
   }
 
   loadTrainingProgramTeacher(): void {
-    this.trainingProgramTeacherService.getTrainingProgramTeachers(this.id)
+    this.trainingProgramTeacherService.getValuesFromTrainingProgram(this.id)
       .subscribe((data: TrainingProgramTeacher[]) => {
         if (data.length !== 0) {
           this.trainingProgramTeacherDeveloper = data.filter(a => a.expertId === 1);

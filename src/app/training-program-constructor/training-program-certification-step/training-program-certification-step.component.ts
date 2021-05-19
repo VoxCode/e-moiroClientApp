@@ -12,6 +12,10 @@ import {CurriculumTopicTrainingProgramService} from '../../services/curriculum-t
 import {CertificationTypeService} from '../../services/certification-type.service';
 import {CertificationType} from '../../models/CertificationType';
 import {Globals} from '../../globals';
+import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
+import {MainLiteratureEditComponent} from '../../main-literature/main-literature-edit.component';
+import {TrainingProgramAdditionalLiterature} from '../../models/TrainingProgramAdditionalLiterature';
+import {TrainingProgramMainLiterature} from '../../models/TrainingProgramMainLiterature';
 
 @Component({
   selector: 'app-training-program-certification-step',
@@ -26,14 +30,15 @@ import {Globals} from '../../globals';
   ]
 })
 export class TrainingProgramCertificationStepComponent implements OnInit {
+  id: number;
   todo = [];
   done = [];
-  id: number;
   trainingProgram: TrainingProgram;
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
   curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram;
   finalExamination: FinalExamination = new FinalExamination();
   certificationType: CertificationType = new CertificationType();
+  modalRef: MDBModalRef;
 
   constructor(
     public globals: Globals,
@@ -42,16 +47,16 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
     private trainingProgramFinalExaminationService: TrainingProgramFinalExaminationService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private certificationTypeService: CertificationTypeService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalService: MDBModalService,
   ) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
-    this.loadTrainingProgramFinalExamination();
+    this.loadTrainingProgram();
   }
 
-  // tslint:disable-next-line:typedef
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<string[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       this.save();
@@ -64,37 +69,44 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
     }
   }
 
-  // tslint:disable-next-line:typedef
-  noReturnPredicate() {
-    return false;
-  }
-
-  // LOAD
-
-  // tslint:disable-next-line:typedef
-  loadTrainingProgram() {
+  loadTrainingProgram(): void {
     this.trainingProgramService.getValue(this.id)
       .subscribe((data: TrainingProgram) => {
-        if (data !== undefined){
+        if (data){
           this.trainingProgram = data;
-          this.loadCertificationType();
+          this.loadTrainingProgramFinalExamination();
         }
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadCertificationType() {
+  loadTrainingProgramFinalExamination(): void {
+    this.trainingProgramFinalExaminationService.getValuesFromTrainingProgram(this.id)
+      .subscribe((trainingProgramFinalExaminations: TrainingProgramFinalExamination[]) => {
+        if (trainingProgramFinalExaminations.length !== 0){
+          trainingProgramFinalExaminations.sort((a, b) => a.serialNumber - b.serialNumber);
+          trainingProgramFinalExaminations.forEach((obj) => {
+            this.done.push({
+              id: obj.id,
+              trainingProgramId: obj.trainingProgramId,
+              content: obj.content,
+              serialNumber: obj.serialNumber
+            });
+          });
+        }
+      });
+  }
+
+  loadCertificationType(): void {
     this.certificationTypeService.getValue(this.trainingProgram.certificationTypeId)
       .subscribe((data: CertificationType) => {
         if (data !== undefined){
           this.certificationType = data;
-          this.loadCurriculumTopicTrainingProgram();
+          // this.loadCurriculumTopicTrainingProgram();
         }
       });
   }
 
-  // tslint:disable-next-line:typedef
-  loadCurriculumTopicTrainingProgram() {
+  loadCurriculumTopicTrainingProgram(): void {
     this.curriculumTopicTrainingProgramService.getValue(this.id).subscribe((data: CurriculumTopicTrainingProgram[]) => {
       if (data !== undefined && data !== null){
         this.curriculumTopicTrainingPrograms = data;
@@ -103,8 +115,7 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
     });
   }
 
-  // tslint:disable-next-line:typedef
-  loadFinalExamination() {
+  loadFinalExamination(): void {
     // // tslint:disable-next-line:prefer-const
     // let curriculumTopicIdArray: number[] = [this.curriculumTopicTrainingPrograms.length];
     // this.curriculumTopicTrainingPrograms.forEach(i => {
@@ -130,33 +141,36 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
     //   });
   }
 
-  // tslint:disable-next-line:typedef
-  loadTrainingProgramFinalExamination() {
-    // this.trainingProgramFinalExaminationService.getValue(this.id)
-    //   .subscribe((data: TrainingProgramFinalExamination[]) => {
-    //     this.loadTrainingProgram();
-    //     if (data !== undefined && data !== null){
-    //       // tslint:disable-next-line:only-arrow-functions typedef
-    //       data.sort(function(a, b) {
-    //         return a.serialNumber - b.serialNumber;
-    //       });
-    //       data.forEach((tmp) => {
-    //         this.done.push({
-    //           fourth: tmp.id,
-    //           fifth: tmp.trainingProgramId,
-    //           third: tmp.content,
-    //           seventh: tmp.finalExaminationId,
-    //           eight: tmp.serialNumber
-    //         });
-    //       });
-    //     }
-    //   });
+  crateTrainingProgramFinalExamination(trainingProgramFinalExamination: TrainingProgramFinalExamination): void {
+    this.trainingProgramFinalExaminationService.createValue(trainingProgramFinalExamination)
+      .subscribe((trainingProgramFinalExaminationResponse: TrainingProgramFinalExamination) => {
+        this.done.push(this.newDoneElement(trainingProgramFinalExaminationResponse));
+        console.log('Crate was successful!');
+      });
+  }
+
+  updateTrainingProgramFinalExamination(item: any): void {
+    const trainingProgramFinalExamination = new TrainingProgramFinalExamination(
+      item.id,
+      item.trainingProgramId,
+      item.content,
+      item.serialNumber
+    );
+    this.trainingProgramFinalExaminationService.updateValue(trainingProgramFinalExamination)
+      .subscribe(() => {
+        console.log('Update was successful!');
+      });
+  }
+
+  deleteTrainingProgramFinalExamination(id: number, index: number): void {
+    this.trainingProgramFinalExaminationService.deleteValue(id).subscribe(() => {
+      this.done.splice(index, 1);
+      console.log('Delete was successful!');
+    });
   }
 
   // SAVE FULL
-
-  // tslint:disable-next-line:typedef
-  save() {
+  save(): void {
     // let i = 0;
     // this.done.forEach((object, index) => {
     //   let trainingProgramFinalExamination: TrainingProgramFinalExamination = new TrainingProgramFinalExamination();
@@ -187,67 +201,55 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
     // });
   }
 
-  // UPDATE
-
-  // tslint:disable-next-line:typedef
-  update(tmp: TrainingProgramFinalExamination){
-    this.trainingProgramFinalExaminationService.updateValue(tmp)
-      .subscribe((data: TrainingProgramFinalExamination) => {
-        console.log('Update was successful ' + data.serialNumber);
-      });
+  trainingProgramMainLiteratureCrateForm(): void {
+    this.modalRef = this.modalService.show(MainLiteratureEditComponent, this.modalOption(this.emptyEl()));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      const trainingProgramAdditionalLiterature = new TrainingProgramAdditionalLiterature(
+        0,
+        this.id,
+        newElement.last,
+        this.done.length + 1
+      );
+      this.crateTrainingProgramFinalExamination(trainingProgramAdditionalLiterature);
+    });
   }
 
-  // tslint:disable-next-line:typedef
-  cancel() {
-    // this.finalExamination = new FinalExamination();
-    // this.curriculumTopicFinalExamination = new CurriculumTopicFinalExamination();
-    // this.curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
+  trainingProgramMainLiteratureEditForm(item: any): void {
+    const el = this.emptyEl();
+    el.last = item.content;
+    this.modalRef = this.modalService.show(MainLiteratureEditComponent, this.modalOption(el));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      item.content = newElement.last;
+      this.updateTrainingProgramFinalExamination(item);
+    });
   }
 
-  // tslint:disable-next-line:typedef
-  addFinalExamination() {
-    this.crateFinalExamination();
+  emptyEl(): any {
+    return {id: 0, first: '', last: ''};
   }
 
-  // tslint:disable-next-line:typedef
-  crateFinalExamination(){
-    // this.finalExamination.certificationTypeId = this.trainingProgram.certificationTypeId;
-    // this.finalExaminationService.createValue(this.finalExamination)
-    //   .subscribe((data: FinalExamination) => {
-    //     if (data !== undefined){
-    //       this.finalExamination = data;
-    //       console.log('Success');
-    //       this.done.push({
-    //         first: this.finalExamination.id,
-    //         third: this.finalExamination.content
-    //       });
-    //       this.curriculumTopicFinalExamination.finalExaminationId = this.finalExamination.id;
-    //       this.curriculumTopicFinalExamination.curriculumTopicId = this.curriculumTopicTrainingProgram.curriculumTopicId;
-    //       this.crateCurriculumTopicFinalExamination();
-    //     }
-    //   });
+  modalOption(el: any): any {
+    return {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+      show: false,
+      ignoreBackdropClick: true,
+      class: 'modal-fluid',
+      containerClass: '',
+      animated: true,
+      data: {
+        editableRow: el
+      }
+    };
   }
 
-  // tslint:disable-next-line:typedef
-  crateCurriculumTopicFinalExamination(){
-    // this.curriculumTopicFinalExaminationService.createValue(this.curriculumTopicFinalExamination)
-    //   .subscribe((data: CurriculumTopicFinalExamination) => {
-    //     if (data !== undefined){
-    //       this.curriculumTopicFinalExamination = data;
-    //       console.log('Success');
-    //       this.save();
-    //     }
-    //     this.cancel();
-    //   });
-  }
-
-  // tslint:disable-next-line:typedef
-  deleteTrainingProgramFinalExamination(id: number, indx: number){
-    this.done.splice(indx, 1);
-    if (id !== undefined){
-      this.trainingProgramFinalExaminationService.deleteValue(id).subscribe(() => {
-        console.log('Delete was successful ' + id);
-      });
-    }
+  newDoneElement(model: TrainingProgramFinalExamination): any {
+    return {
+      id: model.id,
+      trainingProgramId: model.trainingProgramId,
+      content: model.content,
+      serialNumber: model.serialNumber
+    };
   }
 }
