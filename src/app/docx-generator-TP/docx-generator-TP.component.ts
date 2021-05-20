@@ -31,7 +31,7 @@ import {DepartmentService} from '../services/department.service';
 import {TrainingProgramIntroduction} from '../models/TrainingProgramIntroduction';
 import {TrainingProgramIntroductionService} from '../services/training-program-introduction.service';
 import {OccupationFormClassHourService} from '../services/occupation-form-class-hour.service';
-import {TrainingProgramGenerator} from "../models/generator-models/TrainingProgramGenerator";
+import {TrainingProgramGenerator} from '../models/generator-models/TrainingProgramGenerator';
 
 
 @Component({
@@ -100,7 +100,7 @@ export class DocxGeneratorTPComponent implements OnInit{
   }
 
   loadTrainingProgram(): void {
-    this.trainingProgramService.getValue(this.id)
+    this.trainingProgramService.getValueForDocxGenerator(this.id)
       .subscribe((data: TrainingProgram) => {
         if (data) {
           this.trainingProgram = data;
@@ -114,18 +114,18 @@ export class DocxGeneratorTPComponent implements OnInit{
       .subscribe((data: TrainingProgramCurriculumSection[]) => {
         if (data.length !== 0) {
           data.sort((a, b) => a.sectionNumber - b.sectionNumber);
-          this.trainingProgramCurriculumSections = data;
+          this.trainingProgram.trainingProgramCurriculumSections = data;
           this.loadCurriculumTopicTrainingPrograms();
         }
       });
   }
 
   loadCurriculumTopicTrainingPrograms(): void {
-    this.trainingProgramCurriculumSections.forEach((object, index) => {
+    this.trainingProgram.trainingProgramCurriculumSections.forEach((object, index) => {
       this.curriculumTopicTrainingProgramService.getFromTrainingProgramCurriculumSection(object.id)
         .subscribe((data: CurriculumTopicTrainingProgram[]) => {
           if (data.length !== 0) {
-            data.sort((a, b) => a.serialNumber - b.serialNumber);
+            data.sort((a, b) => a.serialNumber - b.serialNumber); // остановился тут
             this.curriculumTopicsList[index] = data;
             this.checkCurriculumTopicsList.push(index);
             if (this.checkCurriculumTopicsList.length === this.trainingProgramCurriculumSections.length) {
