@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import { Packer } from 'docx';
-import { DocumentCreator } from './cv-generator-TP';
 import {TrainingProgramService} from '../services/training-program.service';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {ActivatedRoute} from '@angular/router';
@@ -31,6 +30,8 @@ import {Department} from '../models/Department';
 import {DepartmentService} from '../services/department.service';
 import {TrainingProgramIntroduction} from '../models/TrainingProgramIntroduction';
 import {TrainingProgramIntroductionService} from '../services/training-program-introduction.service';
+import {OccupationFormClassHourService} from '../services/occupation-form-class-hour.service';
+import {TrainingProgramGenerator} from "../models/generator-models/TrainingProgramGenerator";
 
 
 @Component({
@@ -50,6 +51,7 @@ import {TrainingProgramIntroductionService} from '../services/training-program-i
     StudentCategoryService,
     CertificationTypeService,
     DepartmentService,
+    OccupationFormClassHourService,
     WordToSfdtService,
     DocxMergeService
   ]
@@ -59,7 +61,7 @@ export class DocxGeneratorTPComponent implements OnInit{
   id: number;
   checkCurriculumTopicsList: number[] = [];
   curriculumTopicsList: CurriculumTopicTrainingProgram[][] = [];
-  trainingProgram: TrainingProgram;
+  trainingProgram: TrainingProgramGenerator;
   studentCategory: StudentCategory;
   certificationType: CertificationType;
   trainingProgramCurriculumSections: TrainingProgramCurriculumSection[];
@@ -88,6 +90,7 @@ export class DocxGeneratorTPComponent implements OnInit{
     private htmlToDocxService: WordToSfdtService,
     private docxMergeService: DocxMergeService,
     private departmentService: DepartmentService,
+    private occupationFormClassHourService: OccupationFormClassHourService,
     private route: ActivatedRoute
   ) { }
 
@@ -222,7 +225,7 @@ export class DocxGeneratorTPComponent implements OnInit{
       .subscribe((data: CertificationType) => {
         if (data){
           this.certificationType = data;
-          this.getDocument();
+          // this.getDocument();
         }
       });
   }
@@ -276,23 +279,5 @@ export class DocxGeneratorTPComponent implements OnInit{
         });
       });
     });
-
-    // const documentCreator = new DocumentCreator(
-    //   this.curriculumTopicsList,
-    //   this.trainingProgram,
-    //   this.trainingProgramCurriculumSections,
-    //   this.trainingProgramFinalExaminations,
-    //   this.trainingProgramMainLiteratures,
-    //   this.trainingProgramAdditionalLiteratures,
-    //   this.trainingProgramRegulations,
-    //   this.studentCategory,
-    //   this.certificationType
-    // );
-    //
-    // const docxTmp = documentCreator.create();
-    //
-    // Packer.toBlob(docxTmp).then(blob => {
-    //   this.docx.push(blob);
-    // });
   }
 }

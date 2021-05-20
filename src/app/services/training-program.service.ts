@@ -2,30 +2,34 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { TrainingProgram } from '../models/TrainingProgram';
 import { environment } from '../../environments/environment';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class TrainingProgramService {
   public url = environment.apiUrl + 'api/TrainingPrograms';
   constructor(private http: HttpClient) { }
 
-  // tslint:disable-next-line:typedef
-  getValues() {
+  getValues(): Observable<any> {
     return this.http.get(this.url);
   }
-  // tslint:disable-next-line:typedef
-  getValue(id: number) {
+
+  getValue(id: number): Observable<any> {
     return this.http.get(this.url + '/' + id);
   }
-  // tslint:disable-next-line:typedef
-  createValue(trainingProgram: TrainingProgram) {
+
+  getValueForDocxGenerator(id: number): Observable<any> {
+    return this.http.get(this.url + '/ForDocxGenerator/' + id);
+  }
+
+  createValue(trainingProgram: TrainingProgram): Observable<any> {
     return this.http.post(this.url, trainingProgram);
   }
-  // tslint:disable-next-line:typedef
-  updateValue(trainingProgram: TrainingProgram) {
+
+  updateValue(trainingProgram: TrainingProgram): Observable<any> {
     return this.http.put(this.url, trainingProgram);
   }
-  // tslint:disable-next-line:typedef
-  deleteValue(id: number) {
+
+  deleteValue(id: number): Observable<any> {
     return this.http.delete(this.url + '/' + id);
   }
 }
