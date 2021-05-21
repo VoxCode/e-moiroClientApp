@@ -2,30 +2,30 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import {User} from '../models/User';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class UserService {
   public url = environment.apiUrl + 'api/users';
   constructor(private http: HttpClient) { }
 
-  // tslint:disable-next-line:typedef
-  getValues() {
+  getValues(): Observable<any> {
     return this.http.get(this.url);
   }
-  // tslint:disable-next-line:typedef
-  getValue(id: string) {
+
+  getValue(id: string): Observable<any> {
     return this.http.get(this.url + '/' + id);
   }
-  // tslint:disable-next-line:typedef
-  createValue(user: User) {
+
+  createValue(user: User): Observable<any> {
     return this.http.post(this.url, user);
   }
-  // tslint:disable-next-line:typedef
-  updateValue(userId: string, teacherId: number) {
+
+  updateValue(userId: string, teacherId: number): Observable<any> {
     return this.http.get(this.url + '/' + userId + '/' + teacherId);
   }
-  // tslint:disable-next-line:typedef
-  deleteValue(id: string) {
+
+  deleteValue(id: string): Observable<any> {
     return this.http.delete(this.url + '/' + id);
   }
 }

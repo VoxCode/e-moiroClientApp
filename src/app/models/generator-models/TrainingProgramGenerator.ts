@@ -11,13 +11,13 @@ import {TrainingProgramCurriculumSectionGenerator} from './TrainingProgramCurric
 
 export class TrainingProgramGenerator extends TrainingProgram{
   constructor(
-    public trainingProgramTestWorks?: TrainingProgramTestWork[],
+    public trainingProgramTestWork?: TrainingProgramTestWork,
     public trainingProgramMainLiteratures?: TrainingProgramMainLiterature[],
     public trainingProgramRegulations?: TrainingProgramRegulation[],
     public trainingProgramAdditionalLiteratures?: TrainingProgramAdditionalLiterature[],
     public trainingProgramFinalExaminations?: TrainingProgramFinalExamination[],
     public trainingProgramCurriculumSections?: TrainingProgramCurriculumSectionGenerator[],
-    public trainingProgramIntroductions?: TrainingProgramIntroduction[],
+    public trainingProgramIntroduction?: TrainingProgramIntroduction,
     public trainingProgramIndependentWorkQuestions?: TrainingProgramIndependentWorkQuestion[],
     public trainingProgramTeachers?: TrainingProgramTeacher[],
     ) {

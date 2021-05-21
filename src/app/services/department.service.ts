@@ -2,34 +2,34 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { Department } from '../models/Department';
 import { environment } from '../../environments/environment';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class DepartmentService {
   public url = environment.apiUrl + 'api/departments';
   constructor(private http: HttpClient) { }
 
-  // tslint:disable-next-line:typedef
-  getValues() {
+  getValues(): Observable<any> {
     return this.http.get(this.url);
   }
-  // tslint:disable-next-line:typedef
-  getValue(id: number) {
+
+  getValue(id: number): Observable<any> {
     return this.http.get(this.url + '/' + id);
   }
-  // tslint:disable-next-line:typedef
-  getDepartmentsForCurrentUser(userName: string, key: number) {
+
+  getDepartmentsForCurrentUser(userName: string, key: number): Observable<any> {
     return this.http.get(this.url + '/' + userName + '/' + key);
   }
-  // tslint:disable-next-line:typedef
-  createValue(department: Department) {
+
+  createValue(department: Department): Observable<any> {
     return this.http.post(this.url, department);
   }
-  // tslint:disable-next-line:typedef
-  updateValue(department: Department) {
+
+  updateValue(department: Department): Observable<any> {
     return this.http.put(this.url, department);
   }
-  // tslint:disable-next-line:typedef
-  deleteValue(id: number) {
+
+  deleteValue(id: number): Observable<any> {
     return this.http.delete(this.url + '/' + id);
   }
 }

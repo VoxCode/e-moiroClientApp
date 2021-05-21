@@ -2,35 +2,34 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { FinalExamination } from '../models/FinalExamination';
 import { environment } from '../../environments/environment';
-import {timeout} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class FinalExaminationService {
   public url = environment.apiUrl + 'api/FinalExaminations';
   constructor(private http: HttpClient) { }
 
-  // tslint:disable-next-line:typedef
-  getValues() {
+  getValues(): Observable<any> {
     return this.http.get(this.url);
   }
-  // tslint:disable-next-line:typedef
-  getValue(id: number) {
+
+  getValue(id: number): Observable<any> {
     return this.http.get(this.url + '/' + id);
   }
-  // tslint:disable-next-line:typedef
-  getFinalExamination(certificationTypeId: number, curriculumTopicIdArray: number[]) {
+
+  getFinalExamination(certificationTypeId: number, curriculumTopicIdArray: number[]): Observable<any> {
     return this.http.post(this.url + '/' + certificationTypeId, curriculumTopicIdArray);
   }
-  // tslint:disable-next-line:typedef
-  createValue(finalExamination: FinalExamination) {
+
+  createValue(finalExamination: FinalExamination): Observable<any> {
     return this.http.post(this.url, finalExamination);
   }
-  // tslint:disable-next-line:typedef
-  updateValue(finalExamination: FinalExamination) {
+
+  updateValue(finalExamination: FinalExamination): Observable<any> {
     return this.http.put(this.url, finalExamination);
   }
-  // tslint:disable-next-line:typedef
-  deleteValue(id: number) {
+
+  deleteValue(id: number): Observable<any> {
     return this.http.delete(this.url + '/' + id);
   }
 }

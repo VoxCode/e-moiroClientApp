@@ -2,30 +2,30 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { Group } from '../models/Group';
 import { environment } from '../../environments/environment';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class GroupService {
   public url = environment.apiUrl + 'api/groups';
   constructor(private http: HttpClient) { }
 
-  // tslint:disable-next-line:typedef
-  getValues() {
+  getValues(): Observable<any> {
     return this.http.get(this.url);
   }
-  // tslint:disable-next-line:typedef
-  getValue(id: number) {
+
+  getValue(id: number): Observable<any> {
     return this.http.get(this.url + '/' + id);
   }
-  // tslint:disable-next-line:typedef
-  createValue(group: Group) {
+
+  createValue(group: Group): Observable<any> {
     return this.http.post(this.url, group);
   }
-  // tslint:disable-next-line:typedef
-  updateValue(group: Group) {
+
+  updateValue(group: Group): Observable<any> {
     return this.http.put(this.url, group);
   }
-  // tslint:disable-next-line:typedef
-  deleteValue(id: number) {
+
+  deleteValue(id: number): Observable<any> {
     return this.http.delete(this.url + '/' + id);
   }
 }

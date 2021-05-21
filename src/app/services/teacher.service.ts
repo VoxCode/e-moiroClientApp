@@ -3,38 +3,38 @@ import { HttpClient} from '@angular/common/http';
 import { Teacher } from '../models/Teacher';
 import { environment } from '../../environments/environment';
 import {Department} from '../models/Department';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class TeacherService {
   public url = environment.apiUrl + 'api/teachers';
   constructor(private http: HttpClient) { }
 
-  // tslint:disable-next-line:typedef
-  getValues() {
+  getValues(): Observable<any> {
     return this.http.get(this.url);
   }
-  // tslint:disable-next-line:typedef
-  getValue(id: number) {
+
+  getValue(id: number): Observable<any> {
     return this.http.get(this.url + '/' + id);
   }
-  // tslint:disable-next-line:typedef
-  createValue(teacher: Teacher) {
+
+  createValue(teacher: Teacher): Observable<any> {
     return this.http.post(this.url, teacher);
   }
-  // tslint:disable-next-line:typedef
-  updateValue(teacher: Teacher) {
+
+  updateValue(teacher: Teacher): Observable<any> {
     return this.http.put(this.url, teacher);
   }
-  // tslint:disable-next-line:typedef
-  deleteValue(id: number) {
+
+  deleteValue(id: number): Observable<any> {
     return this.http.delete(this.url + '/' + id);
   }
-  // tslint:disable-next-line:typedef
-  addTeacherDepartment(teacherId: number, departments: Department[]) {
+
+  addTeacherDepartment(teacherId: number, departments: Department[]): Observable<any> {
     return this.http.post(this.url + '/' + teacherId, departments);
   }
-  // tslint:disable-next-line:typedef
-  getTeacherDepartment(teacherId: number) {
+
+  getTeacherDepartment(teacherId: number): Observable<any> {
     return this.http.get(this.url + '/GetTeacherDepartment/' + teacherId);
   }
 }

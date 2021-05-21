@@ -15,10 +15,6 @@ import {TrainingProgramRegulationService} from '../services/training-program-reg
 import {TrainingProgramMainLiterature} from '../models/TrainingProgramMainLiterature';
 import {TrainingProgramAdditionalLiterature} from '../models/TrainingProgramAdditionalLiterature';
 import {TrainingProgramRegulation} from '../models/TrainingProgramRegulation';
-import {StudentCategoryService} from '../services/student-category.service';
-import {StudentCategory} from '../models/StudentCategory';
-import {CertificationTypeService} from '../services/certification-type.service';
-import {CertificationType} from '../models/CertificationType';
 import {WordToSfdtService} from '../services/word-to-sfdt.service';
 import {FirstDocumentPart} from './first-document-part/first-document-part';
 import {DocxMergeService} from '../services/docx-merge.service';
@@ -26,12 +22,15 @@ import {Base64ToBlob} from '../base64-to-blob/base64-to-blob';
 import {SecondDocumentPart} from './second-document-part/second-document-part';
 import {TrainingProgramTeacherService} from '../services/training-program-teacher.service';
 import {TrainingProgramTeacher} from '../models/TrainingProgramTeacher';
-import {Department} from '../models/Department';
-import {DepartmentService} from '../services/department.service';
 import {TrainingProgramIntroduction} from '../models/TrainingProgramIntroduction';
 import {TrainingProgramIntroductionService} from '../services/training-program-introduction.service';
 import {OccupationFormClassHourService} from '../services/occupation-form-class-hour.service';
 import {TrainingProgramGenerator} from '../models/generator-models/TrainingProgramGenerator';
+import {TrainingProgramTestWorkService} from '../services/training-program-test-work.service';
+import {TrainingProgramIndependentWorkQuestionService} from '../services/training-program-independent-work-question.service';
+import {TrainingProgramTestWork} from '../models/TrainingProgramTestWork';
+import {TrainingProgramIndependentWorkQuestion} from '../models/TrainingProgramIndependentWorkQuestion';
+import {CurriculumTopicTrainingProgramGenerator} from '../models/generator-models/CurriculumTopicTrainingProgramGenerator';
 
 
 @Component({
@@ -47,10 +46,9 @@ import {TrainingProgramGenerator} from '../models/generator-models/TrainingProgr
     TrainingProgramRegulationService,
     TrainingProgramTeacherService,
     TrainingProgramIntroductionService,
+    TrainingProgramTestWorkService,
+    TrainingProgramIndependentWorkQuestionService,
     CurriculumTopicTrainingProgramService,
-    StudentCategoryService,
-    CertificationTypeService,
-    DepartmentService,
     OccupationFormClassHourService,
     WordToSfdtService,
     DocxMergeService
@@ -59,19 +57,7 @@ import {TrainingProgramGenerator} from '../models/generator-models/TrainingProgr
 
 export class DocxGeneratorTPComponent implements OnInit{
   id: number;
-  checkCurriculumTopicsList: number[] = [];
-  curriculumTopicsList: CurriculumTopicTrainingProgram[][] = [];
   trainingProgram: TrainingProgramGenerator;
-  studentCategory: StudentCategory;
-  certificationType: CertificationType;
-  trainingProgramCurriculumSections: TrainingProgramCurriculumSection[];
-  trainingProgramFinalExaminations: TrainingProgramFinalExamination[];
-  trainingProgramMainLiteratures: TrainingProgramMainLiterature[];
-  trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[];
-  trainingProgramRegulations: TrainingProgramRegulation[];
-  trainingProgramTeachers: TrainingProgramTeacher[];
-  trainingProgramIntroduction: TrainingProgramIntroduction;
-  department: Department;
   docx: any[] = [];
   wordDocxType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
@@ -85,12 +71,11 @@ export class DocxGeneratorTPComponent implements OnInit{
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private trainingProgramTeacherService: TrainingProgramTeacherService,
     private trainingProgramIntroductionService: TrainingProgramIntroductionService,
-    private studentCategoryService: StudentCategoryService,
-    private certificationTypeService: CertificationTypeService,
+    private trainingProgramTestWorkService: TrainingProgramTestWorkService,
+    private trainingProgramIndependentWorkQuestionService: TrainingProgramIndependentWorkQuestionService,
+    private occupationFormClassHourService: OccupationFormClassHourService,
     private htmlToDocxService: WordToSfdtService,
     private docxMergeService: DocxMergeService,
-    private departmentService: DepartmentService,
-    private occupationFormClassHourService: OccupationFormClassHourService,
     private route: ActivatedRoute
   ) { }
 
@@ -104,7 +89,8 @@ export class DocxGeneratorTPComponent implements OnInit{
       .subscribe((data: TrainingProgram) => {
         if (data) {
           this.trainingProgram = data;
-          this.loadTrainingProgramCurriculumSections();
+          console.log(data);
+          // this.loadTrainingProgramCurriculumSections();
         }
       });
   }
@@ -121,14 +107,15 @@ export class DocxGeneratorTPComponent implements OnInit{
   }
 
   loadCurriculumTopicTrainingPrograms(): void {
+    const checkLength: number[] = [];
     this.trainingProgram.trainingProgramCurriculumSections.forEach((object, index) => {
       this.curriculumTopicTrainingProgramService.getFromTrainingProgramCurriculumSection(object.id)
-        .subscribe((data: CurriculumTopicTrainingProgram[]) => {
+        .subscribe((data: CurriculumTopicTrainingProgramGenerator[]) => {
           if (data.length !== 0) {
-            data.sort((a, b) => a.serialNumber - b.serialNumber); // остановился тут
-            this.curriculumTopicsList[index] = data;
-            this.checkCurriculumTopicsList.push(index);
-            if (this.checkCurriculumTopicsList.length === this.trainingProgramCurriculumSections.length) {
+            data.sort((a, b) => a.serialNumber - b.serialNumber);
+            this.trainingProgram.trainingProgramCurriculumSections[index].curriculumTopicTrainingPrograms = data;
+            checkLength.push(index);
+            if (checkLength.length === this.trainingProgram.trainingProgramCurriculumSections.length) {
               this.loadTrainingProgramFinalExaminations();
             }
           }
@@ -139,9 +126,9 @@ export class DocxGeneratorTPComponent implements OnInit{
   loadTrainingProgramFinalExaminations(): void {
     this.trainingProgramFinalExaminationService.getValuesFromTrainingProgram(this.id)
       .subscribe((data: TrainingProgramFinalExamination[]) => {
-        if (data.length !== 0){
+        if (data.length !== 0) {
           data.sort((a, b) => a.serialNumber - b.serialNumber);
-          this.trainingProgramFinalExaminations = data;
+          this.trainingProgram.trainingProgramFinalExaminations = data;
           this.loadTrainingProgramMainLiteratures();
         }
       });
@@ -150,9 +137,9 @@ export class DocxGeneratorTPComponent implements OnInit{
   loadTrainingProgramMainLiteratures(): void {
     this.trainingProgramMainLiteratureService.getValuesFromTrainingProgram(this.id)
       .subscribe((data: TrainingProgramMainLiterature[]) => {
-        if (data.length !== 0){
+        if (data.length !== 0) {
           data.sort((a, b) => a.serialNumber - b.serialNumber);
-          this.trainingProgramMainLiteratures = data;
+          this.trainingProgram.trainingProgramMainLiteratures = data;
           this.loadTrainingProgramAdditionalLiteratures();
         }
       });
@@ -161,9 +148,9 @@ export class DocxGeneratorTPComponent implements OnInit{
   loadTrainingProgramAdditionalLiteratures(): void {
     this.trainingProgramAdditionalLiteratureService.getValuesFromTrainingProgram(this.id)
       .subscribe((data: TrainingProgramAdditionalLiterature[]) => {
-        if (data.length !== 0){
+        if (data.length !== 0) {
           data.sort((a, b) => a.serialNumber - b.serialNumber);
-          this.trainingProgramAdditionalLiteratures = data;
+          this.trainingProgram.trainingProgramAdditionalLiteratures = data;
           this.loadTrainingProgramRegulations();
         }
       });
@@ -172,9 +159,9 @@ export class DocxGeneratorTPComponent implements OnInit{
   loadTrainingProgramRegulations(): void {
     this.trainingProgramRegulationService.getValuesFromTrainingProgram(this.id)
       .subscribe((data: TrainingProgramRegulation[]) => {
-        if (data.length !== 0){
+        if (data.length !== 0) {
           data.sort((a, b) => a.serialNumber - b.serialNumber);
-          this.trainingProgramRegulations = data;
+          this.trainingProgram.trainingProgramRegulations = data;
           this.loadTrainingProgramTeachers();
         }
       });
@@ -183,8 +170,8 @@ export class DocxGeneratorTPComponent implements OnInit{
   loadTrainingProgramTeachers(): void {
     this.trainingProgramTeacherService.getValuesFromTrainingProgram(this.id)
       .subscribe((data: TrainingProgramTeacher[]) => {
-        if (data.length !== 0){
-          this.trainingProgramTeachers = data;
+        if (data.length !== 0) {
+          this.trainingProgram.trainingProgramTeachers = data;
           this.loadTrainingProgramIntroduction();
         }
       });
@@ -194,90 +181,60 @@ export class DocxGeneratorTPComponent implements OnInit{
     this.trainingProgramIntroductionService.getValueFromTrainingProgram(this.id)
       .subscribe((data: TrainingProgramIntroduction) => {
         if (data) {
-          this.trainingProgramIntroduction = data;
-          this.loadStudentCategory();
+          this.trainingProgram.trainingProgramIntroduction = data;
+          this.distanceEducationModules();
         }
       });
   }
 
-  loadStudentCategory(): void {
-    this.studentCategoryService.getValue(this.trainingProgram.studentCategoryId)
-      .subscribe((data: StudentCategory) => {
-        if (data){
-          this.studentCategory = data;
-          this.loadDepartment();
-        }
-      });
-  }
-
-  loadDepartment(): void {
-    this.departmentService.getValue(this.trainingProgram.departmentId)
-      .subscribe((data: Department) => {
-        if (data){
-          this.department = data;
-          this.loadCertificationType();
-        }
-      });
-  }
-
-  loadCertificationType(): void {
-    this.certificationTypeService.getValue(this.trainingProgram.certificationTypeId)
-      .subscribe((data: CertificationType) => {
-        if (data){
-          this.certificationType = data;
-          // this.getDocument();
-        }
-      });
-  }
-
-  // loadCertificationType(): void {
-  //   this.certificationTypeService.getValue(this.trainingProgram.certificationTypeId)
-  //     .subscribe((data: CertificationType) => {
-  //       if (data){
-  //         this.certificationType = data;
-  //         this.getDocument();
-  //       }
-  //     });
-  // }
-
-  public getDocument(): void {
-    const firstDocumentPart = new FirstDocumentPart(
-      this.trainingProgram,
-      this.studentCategory,
-      this.trainingProgramTeachers,
-      this.department
-    );
-
-    const secondDocumentPart = new SecondDocumentPart(
-      this.curriculumTopicsList,
-      this.trainingProgram,
-      this.trainingProgramCurriculumSections,
-      this.trainingProgramFinalExaminations,
-      this.trainingProgramMainLiteratures,
-      this.trainingProgramAdditionalLiteratures,
-      this.trainingProgramRegulations,
-    );
-
-    const firstDocxTmp = firstDocumentPart.create();
-    const secondDocxTmp = secondDocumentPart.create();
-    Packer.toBlob(firstDocxTmp).then(blob => {
-      let blobArray: any[] = [];
-      const introductionBlob = new Base64ToBlob().generate(this.trainingProgramIntroduction.introduction, this.wordDocxType, 512);
-      blobArray.push(introductionBlob);
-      blobArray.push(blob);
-      this.docxMergeService.merge(blobArray).subscribe((result) => {
-        const resultBlob = new Base64ToBlob().generate(result, this.wordDocxType, 512);
-
-        Packer.toBlob(secondDocxTmp).then(blob2 => {
-          blobArray = [];
-          blobArray.push(blob2);
-          blobArray.push(resultBlob);
-          this.docxMergeService.merge(blobArray).subscribe((result2) => {
-            const resultBlob2 = new Base64ToBlob().generate(result2, this.wordDocxType, 512);
-            this.docx.push(resultBlob2);
-          });
+  distanceEducationModules(): void {
+    if (!this.trainingProgram.isDistanceLearning) { this.getDocument(); return; }
+    this.trainingProgramTestWorkService.getValuesFromTrainingProgram(this.id)
+      .subscribe((trainingProgramTestWork: TrainingProgramTestWork) => {
+        if (!trainingProgramTestWork) { return; }
+        this.trainingProgram.trainingProgramTestWork = trainingProgramTestWork;
+        this.trainingProgramIndependentWorkQuestionService
+          .getValuesFromTrainingProgram(this.id).subscribe((data: TrainingProgramIndependentWorkQuestion[]) => {
+          if (data) {
+            data.sort((a, b) => a.serialNumber - b.serialNumber);
+            this.trainingProgram.trainingProgramIndependentWorkQuestions = data;
+            this.getDocument();
+          }
         });
       });
-    });
+  }
+
+  public getDocument(): void {
+    console.log(this.trainingProgram);
+    // const firstDocumentPart = new FirstDocumentPart(
+    //   this.trainingProgram
+    // );
+
+    // const secondDocumentPart = new SecondDocumentPart(
+    //   this.trainingProgram
+    // );
+    //
+    // const firstDocxTmp = firstDocumentPart.create();
+    // const secondDocxTmp = secondDocumentPart.create();
+    // Packer.toBlob(firstDocxTmp).then(blob => {
+    //   let blobArray: any[] = [];
+    //   const introductionBlob = new Base64ToBlob()
+    //     .generate(this.trainingProgram.trainingProgramIntroduction.introduction, this.wordDocxType, 512);
+    //   blobArray.push(introductionBlob);
+    //   blobArray.push(blob);
+    //   this.docxMergeService.merge(blobArray).subscribe((result) => {
+    //     const resultBlob = new Base64ToBlob().generate(result, this.wordDocxType, 512);
+    //
+    //     Packer.toBlob(secondDocxTmp).then(blob2 => {
+    //       blobArray = [];
+    //       blobArray.push(blob2);
+    //       blobArray.push(resultBlob);
+    //       this.docxMergeService.merge(blobArray).subscribe((result2) => {
+    //         const resultBlob2 = new Base64ToBlob().generate(result2, this.wordDocxType, 512);
+    //         this.docx.push(resultBlob2);
+    //       });
+    //     });
+    //   });
+    // });
   }
 }
