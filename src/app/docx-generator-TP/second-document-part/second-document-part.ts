@@ -1,12 +1,6 @@
 import {convertMillimetersToTwip, Document, Header, PageNumberFormat} from 'docx';
-import {TrainingProgramRegulation} from '../../models/TrainingProgramRegulation';
-import {TrainingProgramCurriculumSection} from '../../models/TrainingProgramCurriculumSection';
 import {DocxGeneratorDataTemplate} from '../../docx-generator-data-template/docx-generator-data-template';
-import {TrainingProgramFinalExamination} from '../../models/TrainingProgramFinalExamination';
-import {TrainingProgram} from '../../models/TrainingProgram';
-import {TrainingProgramMainLiterature} from '../../models/TrainingProgramMainLiterature';
-import {CurriculumTopicTrainingProgram} from '../../models/СurriculumTopicTrainingProgram';
-import {TrainingProgramAdditionalLiterature} from '../../models/TrainingProgramAdditionalLiterature';
+import {TrainingProgramGenerator} from '../../models/generator-models/TrainingProgramGenerator';
 
 export class SecondDocumentPart {
 
@@ -17,20 +11,13 @@ export class SecondDocumentPart {
   children: any[] = [];
 
   constructor(
-    private curriculumTopicsList: CurriculumTopicTrainingProgram[][],
-    private trainingProgram: TrainingProgram,
-    private trainingProgramCurriculumSections: TrainingProgramCurriculumSection[],
-    private trainingProgramFinalExaminations: TrainingProgramFinalExamination[],
-    private trainingProgramMainLiteratures: TrainingProgramMainLiterature[],
-    private trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[],
-    private trainingProgramRegulations: TrainingProgramRegulation[]
+    private trainingProgram: TrainingProgramGenerator,
   ) { }
 
   public create(): Document {
-
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
     this.children.push(this.docxGeneratorDataTemplate.titleText('содержание'));
-    this.trainingProgramCurriculumSections.forEach((object, index) =>
+    this.trainingProgram.trainingProgramCurriculumSections.forEach((object, index) =>
     {
       this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
       this.children.push(this.docxGeneratorDataTemplate.titleText(index + 1 + '.' + object.name));
@@ -40,11 +27,18 @@ export class SecondDocumentPart {
       }
 
       let i = 1;
-      this.curriculumTopicsList[index].forEach(obj => {
+      object.curriculumTopicTrainingPrograms.forEach(obj => {
         if (obj.isVariable === false){
+          let tmpString = '';
+          obj.occupationFormClassHours.forEach((occupationFormClassHour, t) => {
+            if (t === 0) { tmpString += ' ('; }
+            if (t !== 0) { tmpString += ', '; }
+            tmpString += occupationFormClassHour.fullName.toString().toLowerCase() + ',' +
+              ' ' + occupationFormClassHour.classHours + ' часа';
+            if (t === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }
+          });
           this.children.push(this.docxGeneratorDataTemplate
-            .someTextCurriculumTopics((index + 1) + '.' + i + ' ' + obj.topicTitle, ' (' + obj.topicTitle.toLowerCase() + ',' + // другая механика
-              ' ' + obj.classHours + ' часа)', 0, true));
+            .someTextCurriculumTopics((index + 1) + '.' + i + ' ' + obj.topicTitle, tmpString, 0, true));
           this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
           i++;
         }
@@ -58,7 +52,7 @@ export class SecondDocumentPart {
       }
 
       let j = 1;
-      this.curriculumTopicsList[index].forEach(obj => {
+      object.curriculumTopicTrainingPrograms.forEach(obj => {
         if (obj.isVariable === true) {
           this.children.push(this.docxGeneratorDataTemplate
             .someTextCurriculumTopics(obj.topicTitle, ' (' + obj.topicTitle.toLowerCase() + ', ' + // другая механика
@@ -108,7 +102,7 @@ export class SecondDocumentPart {
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
     this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Вопросы для проведения зачета', 0 , true));
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-    this.trainingProgramFinalExaminations.forEach((object, i) => {
+    this.trainingProgram.trainingProgramFinalExaminations.forEach((object, i) => {
       this.children.push(this.docxGeneratorDataTemplate.someText((i + 1) +
         '. ' + object.content, 720));
     });
@@ -119,21 +113,21 @@ export class SecondDocumentPart {
     this.children.push(this.docxGeneratorDataTemplate.titleText('список рекомендуемой литературы'));
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
     this.children.push(this.docxGeneratorDataTemplate.someText('Основная', 720, true));
-    this.trainingProgramMainLiteratures.forEach((object, i) => {
+    this.trainingProgram.trainingProgramMainLiteratures.forEach((object, i) => {
       this.children.push(this.docxGeneratorDataTemplate.someText((i + 1) +
         '. ' + object.content, 720));
       indx = i + 1;
     });
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
     this.children.push(this.docxGeneratorDataTemplate.someText('Дополнительная', 720, true));
-    this.trainingProgramAdditionalLiteratures.forEach((object, i) => {
+    this.trainingProgram.trainingProgramAdditionalLiteratures.forEach((object) => {
       indx = indx + 1;
       this.children.push(this.docxGeneratorDataTemplate.someText((indx) +
         '. ' + object.content, 720));
     });
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
     this.children.push(this.docxGeneratorDataTemplate.someText('Нормативные правовые акты', 720, true));
-    this.trainingProgramRegulations.forEach((object, i) => {
+    this.trainingProgram.trainingProgramRegulations.forEach((object) => {
       indx = indx + 1;
       this.children.push(this.docxGeneratorDataTemplate.someText((indx) +
         '. ' + object.content, 720));

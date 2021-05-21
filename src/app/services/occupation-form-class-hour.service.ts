@@ -13,6 +13,10 @@ export class OccupationFormClassHourService {
     return this.http.get(this.url + '/' + curriculumTopicTrainingProgramId);
   }
 
+  getValuesFromCurriculumSection(trainingProgramCurriculumSectionId: number): Observable<any> {
+    return this.http.get(this.url + '/FromTrainingProgramCurriculumSection/' + trainingProgramCurriculumSectionId);
+  }
+
   createValue(occupationFormClassHour: OccupationFormClassHour): Observable<any> {
     return this.http.post(this.url, occupationFormClassHour);
   }

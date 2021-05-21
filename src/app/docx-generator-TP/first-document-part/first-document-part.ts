@@ -1,9 +1,6 @@
 import {convertMillimetersToTwip, Document, Footer, Header, PageNumberFormat, Paragraph} from 'docx';
 import {DocxGeneratorDataTemplate} from '../../docx-generator-data-template/docx-generator-data-template';
-import {StudentCategory} from '../../models/StudentCategory';
-import {TrainingProgram} from '../../models/TrainingProgram';
-import {TrainingProgramTeacher} from '../../models/TrainingProgramTeacher';
-import {Department} from '../../models/Department';
+import {TrainingProgramGenerator} from '../../models/generator-models/TrainingProgramGenerator';
 
 export class FirstDocumentPart {
 
@@ -12,10 +9,7 @@ export class FirstDocumentPart {
   children: any[] = [];
 
   constructor(
-    private trainingProgram: TrainingProgram,
-    private studentCategory: StudentCategory,
-    private trainingProgramTeachers: TrainingProgramTeacher[],
-    private department: Department
+    private trainingProgram: TrainingProgramGenerator,
   ) { }
 
   public create(): Document {
@@ -42,13 +36,13 @@ export class FirstDocumentPart {
             this.docxGeneratorDataTemplate.emptyParagraph(),
             this.docxGeneratorDataTemplate.approveRector(this.docxGeneratorDataTemplate.getNowYear()),
             this.docxGeneratorDataTemplate.mainNameDocumentTP('«' + this.trainingProgram.name + '»'),
-            this.docxGeneratorDataTemplate.studentCategoryMain(this.studentCategory.name)
+            this.docxGeneratorDataTemplate.studentCategoryMain(this.trainingProgram.studentCategoryName)
           ],
         }),
       ],
     });
 
-    const teacherDevelopers = this.trainingProgramTeachers.filter(a => a.expertId === 1);
+    const teacherDevelopers = this.trainingProgram.trainingProgramTeachers.filter(a => a.expertId === 1);
     if (teacherDevelopers.length > 1) {
       this.children.push(this.docxGeneratorDataTemplate.someText('Разработчики учебной программы:'));
       teacherDevelopers.forEach((obj) => {
@@ -72,7 +66,7 @@ export class FirstDocumentPart {
     }
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
 
-    const teacherReviewers = this.trainingProgramTeachers.filter(a => a.expertId === 2);
+    const teacherReviewers = this.trainingProgram.trainingProgramTeachers.filter(a => a.expertId === 2);
     if (teacherReviewers.length > 1) {
       this.children.push(this.docxGeneratorDataTemplate.someText('Рецензенты:'));
       teacherReviewers.forEach((obj) => {
@@ -99,7 +93,7 @@ export class FirstDocumentPart {
       this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
     }
     this.children.push( this.docxGeneratorDataTemplate.someText('Рекомендовано к утверждению:'));
-    this.children.push(this.docxGeneratorDataTemplate.someText(this.department.name));
+    this.children.push(this.docxGeneratorDataTemplate.someText(this.trainingProgram.departmentName));
     this.children.push(this.docxGeneratorDataTemplate.someText('государственного учреждения образования'));
     this.children.push(this.docxGeneratorDataTemplate.someText('«Минский областной институт развития образования»'));
     this.children.push(this.docxGeneratorDataTemplate
