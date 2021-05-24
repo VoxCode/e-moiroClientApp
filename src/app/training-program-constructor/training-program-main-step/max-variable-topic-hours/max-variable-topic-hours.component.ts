@@ -23,28 +23,30 @@ export class MaxVariableTopicHoursComponent implements OnInit {
     if (!this.trainingProgramCurriculumSectionId) { return; }
     this.maxVariableTopicTimeService.getValues(this.trainingProgramCurriculumSectionId)
       .subscribe((maxVariableTopicTimeList: MaxVariableTopicTime[]) => {
+        console.log(maxVariableTopicTimeList);
         maxVariableTopicTimeList.forEach(obj => {
           const tmpIndex = this.occupationForms.findIndex(a => a.id === obj.occupationFormId);
-          this.occupationForms[tmpIndex].occupationFormId = obj.occupationFormId;
-          this.occupationForms[tmpIndex].trainingProgramCurriculumSectionId = obj.trainingProgramCurriculumSectionId;
-          this.occupationForms[tmpIndex].maxVariableTopicHours = obj.maxVariableTopicHours;
+          // this.occupationForms[tmpIndex].occupationFormId = obj.occupationFormId;
+          // this.occupationForms[tmpIndex].trainingProgramCurriculumSectionId = obj.trainingProgramCurriculumSectionId;
+          // this.occupationForms[tmpIndex].maxVariableTopicHours = obj.maxVariableTopicHours;
+          console.log(this.occupationForms);
         });
       });
   }
 
   crateMaxVariableTopicHours(occupationForm: OccupationForm): void {
-    const maxVariableTopicTime = new MaxVariableTopicTime(
-      occupationForm.id,
-      this.trainingProgramCurriculumSectionId,
-      occupationForm.maxVariableTopicHours);
-    if (occupationForm.maxVariableTopicHours === 0 && occupationForm.trainingProgramCurriculumSectionId) {
-      this.deleteMaxVariableTopicHours(maxVariableTopicTime);
-      return;
-    }
-    if (occupationForm.trainingProgramCurriculumSectionId) { this.updateMaxVariableTopicHours(maxVariableTopicTime); return; }
-    this.maxVariableTopicTimeService.createValue(maxVariableTopicTime).subscribe(() => {
-      console.log('Crate was successful!');
-    });
+    // const maxVariableTopicTime = new MaxVariableTopicTime(
+    //   occupationForm.id,
+    //   this.trainingProgramCurriculumSectionId,
+    //   occupationForm.maxVariableTopicHours);
+    // if (occupationForm.maxVariableTopicHours === 0 && occupationForm.trainingProgramCurriculumSectionId) {
+    //   this.deleteMaxVariableTopicHours(maxVariableTopicTime);
+    //   return;
+    // }
+    // if (occupationForm.trainingProgramCurriculumSectionId) { this.updateMaxVariableTopicHours(maxVariableTopicTime); return; }
+    // this.maxVariableTopicTimeService.createValue(maxVariableTopicTime).subscribe(() => {
+    //   console.log('Crate was successful!');
+    // });
   }
 
   updateMaxVariableTopicHours(maxVariableTopicTime: MaxVariableTopicTime): void {

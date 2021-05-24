@@ -25,15 +25,12 @@ export class TableATPGenerator {
     const secondRow = new TableHeaderSecondRow(occupationForms);
     const thirdRow = new TableHeaderThirdRow(occupationForms);
     const fourthRow = new TableHeaderFourthRow(occupationForms.length);
-
-    // переработка
-    const tableTotalClassHours = new TableTotalClassHours(trainingProgram.trainingProgramCurriculumSections, occupationForms);
-
-
-
-
     const tableCertificationType = new TableCertificationType(occupationForms.length, trainingProgram.certificationTypeName);
     const tableIndividualSessions = new TableIndividualSessions(occupationForms, trainingProgram.departmentName);
+    const totalTrainingProgramClassHoursList: number[] = [];
+    occupationForms.forEach(() => {
+      totalTrainingProgramClassHoursList.push(0);
+    });
     row.push(firstRow.insert());
     row.push(secondRow.insert());
     row.push(thirdRow.insert());
@@ -42,6 +39,9 @@ export class TableATPGenerator {
     trainingProgram.trainingProgramCurriculumSections.forEach((obj, index) => {
       const allOccupationFormsClassHours = new CurriculumSectionOccupationFormAllClassHours(
         obj, occupationForms);
+      allOccupationFormsClassHours.curriculumSectionClassHours.forEach((tmp, id) => {
+        totalTrainingProgramClassHoursList[id] += tmp;
+      });
 
       // общая сумма часов в рамках раздела
       let tableCurriculumSection = new TableCurriculumSection(
@@ -72,10 +72,13 @@ export class TableATPGenerator {
           ++i;
         }
       });
+
+      // общая сумма часов в рамках вариативной части (если программа не является дистанционной)
       if (!trainingProgram.isDistanceLearning) {
-        let variableTableRow = new TableVariableSection(obj.curriculumTopicTrainingPrograms, occupationForms);
+        let variableTableRow = new TableVariableSection(allOccupationFormsClassHours.variableClassHours);
         row.push(variableTableRow.insert());
         variableTableRow = null;
+
         let j = 0;
         obj.curriculumTopicTrainingPrograms.forEach(curriculumTopic => {
           if (curriculumTopic.isVariable){
@@ -89,6 +92,7 @@ export class TableATPGenerator {
         });
       }
     });
+    const tableTotalClassHours = new TableTotalClassHours(totalTrainingProgramClassHoursList);
     row.push(tableTotalClassHours.insert());
     row.push(tableCertificationType.insert());
     row.push(tableIndividualSessions.insert());

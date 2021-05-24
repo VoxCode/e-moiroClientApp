@@ -53,9 +53,6 @@ export class TrainingProgramMainStepComponent implements OnInit{
       .subscribe((data: OccupationForm[]) => {
         if (data.length !== 0){
           data.sort((a, b) => a.id - b.id);
-          data.forEach(obj => {
-            obj.maxVariableTopicHours = 0;
-          });
           this.occupationForms = data;
           this.loadUsedTemplates();
         }

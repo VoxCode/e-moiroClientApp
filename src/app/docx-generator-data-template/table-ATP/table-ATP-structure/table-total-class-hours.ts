@@ -1,18 +1,12 @@
-import {CurriculumTopicTrainingProgram} from '../../../models/СurriculumTopicTrainingProgram';
-import {OccupationForm} from '../../../models/OccupationForm';
 import {Paragraph, TableCell, TableRow, TextRun} from 'docx';
-import {TrainingProgramAllClassHours} from '../table-class-hours/training-program-all-class-hours';
-import {TrainingProgramOccupationFormAllClassHours} from '../table-class-hours/training-program-occupation-form-all-class-hours';
 import {EmptyTableCell} from '../table-cell-templates/empty-table-cell';
 import {TableCellBoldTextAlignmentCenter} from '../table-cell-templates/table-cell-bold-text-alignment-center';
 import {TableCellDefaultTextAlignmentCenter} from '../table-cell-templates/table-cell-default-text-alignment-center';
-import {TrainingProgramCurriculumSectionGenerator} from '../../../models/generator-models/TrainingProgramCurriculumSectionGenerator';
+import {TotalClassHours} from '../table-class-hours/total-class-hours';
 
 export class TableTotalClassHours {
   constructor(
-    private trainingProgramCurriculumSections: TrainingProgramCurriculumSectionGenerator[],
-    private occupationForms: OccupationForm[]
-  ) {
+    private classHours: number[]) {
   }
 
   public insert(): TableRow {
@@ -20,10 +14,7 @@ export class TableTotalClassHours {
     const emptyTableCell = new EmptyTableCell();
     const defaultTableCell = new TableCellDefaultTextAlignmentCenter();
     const child: any = [];
-    // const tmpClassHours = new TrainingProgramAllClassHours(this.trainingProgramCurriculumSection);
-    // const tmpOccupationFormClassHours = new TrainingProgramOccupationFormAllClassHours(
-    //   this.trainingProgramCurriculumSection, this.occupationForms);
-    // const tmpClassHoursList = tmpOccupationFormClassHours.getTrainingProgramAllClassHours;
+    const allClassHours = new TotalClassHours(this.classHours);
     child.push(new TableCell({
       children: [
         new Paragraph({
@@ -37,16 +28,16 @@ export class TableTotalClassHours {
         })
       ]
     }));
-    // child.push(tableCellBoldText.insertText(tmpClassHours.getTrainingProgramAllClassHours.toString()));
-    // tmpClassHoursList.forEach((obj, i) => {
-    //   if (obj === 0) {
-    //     child.push(emptyTableCell.insert());
-    //   }
-    //   else {
-    //     child.push(defaultTableCell.insertText(obj.toString()));
-    //   }
-    // });
-    // child.push(emptyTableCell.insert());
+    child.push(tableCellBoldText.insertText(allClassHours.allClassHours.toString()));
+    this.classHours.forEach((obj) => {
+      if (obj === 0) {
+        child.push(emptyTableCell.insert());
+      }
+      else {
+        child.push(defaultTableCell.insertText(obj.toString()));
+      }
+    });
+    child.push(emptyTableCell.insert());
 
     return new TableRow({
       children: child,
