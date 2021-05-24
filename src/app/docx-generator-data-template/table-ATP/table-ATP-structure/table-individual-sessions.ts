@@ -2,11 +2,10 @@ import {Paragraph, TableCell, TableRow, TextRun} from 'docx';
 import {TableCellDefaultText} from '../table-cell-templates/table-cell-default-text';
 import {EmptyTableCell} from '../table-cell-templates/empty-table-cell';
 import {OccupationForm} from '../../../models/OccupationForm';
-import {Department} from '../../../models/Department';
 
 export class TableIndividualSessions {
   constructor(private occupationForms: OccupationForm[],
-              private department: Department) {
+              private departmentName: string) {
   }
 
   public insert(): TableRow {
@@ -29,7 +28,7 @@ export class TableIndividualSessions {
     this.occupationForms.forEach((obj, i) => {
       child.push(emptyTableCell.insert());
     });
-    child.push(defaultTableCell.insertText(this.department.name.substr(this.department.name.indexOf(' ') + 1)));
+    child.push(defaultTableCell.insertText(this.departmentName.substr(this.departmentName.indexOf(' ') + 1)));
 
     return new TableRow({
       children: child,

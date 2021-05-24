@@ -83,7 +83,7 @@ export class DepartmentComponent implements OnInit, AfterViewInit {
   }
 
   crate(el: any): void {
-    const department = new Department(0, el.second, el.last);
+    const department = new Department(0, el.last, el.second);
     this.valueService.createValue(department)
       .subscribe((departmentResponse: Department) => {
         const index = this.elements.length + 1;
@@ -98,7 +98,7 @@ export class DepartmentComponent implements OnInit, AfterViewInit {
   }
 
   save(el: any): void {
-    const department = new Department(el.first, el.second, el.last);
+    const department = new Department(el.first, el.last, el.second);
     this.valueService.updateValue(department).subscribe();
   }
 

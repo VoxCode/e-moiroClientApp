@@ -54,9 +54,16 @@ export class SecondDocumentPart {
       let j = 1;
       object.curriculumTopicTrainingPrograms.forEach(obj => {
         if (obj.isVariable === true) {
+          let tmpString = '';
+          obj.occupationFormClassHours.forEach((occupationFormClassHour, t) => {
+            if (t === 0) { tmpString += ' ('; }
+            if (t !== 0) { tmpString += ', '; }
+            tmpString += occupationFormClassHour.fullName.toString().toLowerCase() + ',' +
+              ' ' + occupationFormClassHour.classHours + ' часа';
+            if (t === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }
+          });
           this.children.push(this.docxGeneratorDataTemplate
-            .someTextCurriculumTopics(obj.topicTitle, ' (' + obj.topicTitle.toLowerCase() + ', ' + // другая механика
-              ' ' + obj.classHours + ' часа)', 0, true));
+            .someTextCurriculumTopics(obj.topicTitle, tmpString, 0, true));
           this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
           j++;
         }

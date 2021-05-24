@@ -1,25 +1,19 @@
-import {TrainingProgramCurriculumSection} from '../../../models/TrainingProgramCurriculumSection';
-import {CurriculumTopicTrainingProgram} from '../../../models/СurriculumTopicTrainingProgram';
-import {OccupationForm} from '../../../models/OccupationForm';
 import {Paragraph, TableCell, TableRow, TextRun} from 'docx';
-import {CurriculumSectionAllClassHours} from '../table-class-hours/curriculum-section-all-class-hours';
-import {CurriculumSectionOccupationFormAllClassHours} from '../table-class-hours/curriculum-section-occupation-form-all-class-hours';
 import {CapitalizeFirstLetter} from '../capitalize-first-letter';
 import {EmptyTableCell} from '../table-cell-templates/empty-table-cell';
 import {TableCellBoldTextAlignmentCenter} from '../table-cell-templates/table-cell-bold-text-alignment-center';
+import {TrainingProgramCurriculumSectionGenerator} from '../../../models/generator-models/TrainingProgramCurriculumSectionGenerator';
+import {TotalClassHours} from '../table-class-hours/total-class-hours';
 
 export class TableCurriculumSection {
-  private allClassHours = new CurriculumSectionAllClassHours(this.curriculumTopicsList);
-  private allOccupationFormsClassHours = new CurriculumSectionOccupationFormAllClassHours(this.curriculumTopicsList, this.occupationForms);
-  private tmpClassHours = this.allOccupationFormsClassHours.curriculumSectionAllClassHours;
   private child: any = [];
   private capitalize = new CapitalizeFirstLetter();
   private emptyTableCell = new EmptyTableCell();
   constructor(
-    private trainingProgramCurriculumSection: TrainingProgramCurriculumSection,
+    private trainingProgramCurriculumSection: TrainingProgramCurriculumSectionGenerator,
     private readonly index: number,
-    private curriculumTopicsList: CurriculumTopicTrainingProgram[],
-    private occupationForms: OccupationForm[]) {
+    private curriculumSectionClassHours: number[]) {
+    const allClassHours = new TotalClassHours(curriculumSectionClassHours);
     const tableCellBoldText = new TableCellBoldTextAlignmentCenter();
     this.child.push(new TableCell({
       children: [
@@ -33,9 +27,9 @@ export class TableCurriculumSection {
         })
       ]
     }));
-    this.child.push(tableCellBoldText.insertText(this.allClassHours.curriculumSectionAllClassHours.toString()));
+    this.child.push(tableCellBoldText.insertText(allClassHours.allClassHours.toString()));
 
-    this.tmpClassHours.forEach((object, idx) => {
+    this.curriculumSectionClassHours.forEach((object) => {
       if (object === 0) {
         this.child.push(this.emptyTableCell.insert());
       }

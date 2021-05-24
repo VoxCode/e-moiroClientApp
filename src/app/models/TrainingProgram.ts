@@ -13,5 +13,6 @@ export class TrainingProgram {
     public certificationTypeId?: number,
     public certificationTypeName?: string,
     public formOfEducationId?: number,
-    public formOfEducationName?: string){ }
+    public formOfEducationName?: string,
+    public departmentHeadName?: string){ }
 }

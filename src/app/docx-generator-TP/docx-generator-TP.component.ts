@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {TrainingProgramService} from '../services/training-program.service';
-import {TrainingProgram} from '../models/TrainingProgram';
 import {ActivatedRoute} from '@angular/router';
 import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
 import {TrainingProgramCurriculumSectionService} from '../services/training-program-curriculum-section.service';
@@ -86,7 +85,7 @@ export class DocxGeneratorTPComponent implements OnInit{
 
   loadTrainingProgram(): void {
     this.trainingProgramService.getValueForDocxGenerator(this.id)
-      .subscribe((data: TrainingProgram) => {
+      .subscribe((data: TrainingProgramGenerator) => {
         if (data) {
           this.trainingProgram = data;
           this.loadTrainingProgramCurriculumSections();

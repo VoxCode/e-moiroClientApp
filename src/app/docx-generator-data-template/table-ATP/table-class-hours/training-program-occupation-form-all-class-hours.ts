@@ -1,22 +1,22 @@
-import {CurriculumTopicTrainingProgram} from '../../../models/СurriculumTopicTrainingProgram';
 import {OccupationForm} from '../../../models/OccupationForm';
 import {CurriculumSectionOccupationFormAllClassHours} from './curriculum-section-occupation-form-all-class-hours';
+import {TrainingProgramCurriculumSectionGenerator} from '../../../models/generator-models/TrainingProgramCurriculumSectionGenerator';
 
 export class TrainingProgramOccupationFormAllClassHours {
   private classHoursList: number[] = [];
   constructor(
-    private curriculumTopicsList: CurriculumTopicTrainingProgram[][],
+    private trainingProgramCurriculumSection: TrainingProgramCurriculumSectionGenerator,
     private occupationForms: OccupationForm[]
   ) {
     this.occupationForms.forEach(obj => {
       this.classHoursList.push(0);
     });
-    this.curriculumTopicsList.forEach(obj => {
+    this.trainingProgramCurriculumSection.curriculumTopicTrainingPrograms.forEach(obj => {
       const tmpCurriculumSectionOccupationFormAllClassHours = new CurriculumSectionOccupationFormAllClassHours(obj, occupationForms);
-      const tmpClassHoursList = tmpCurriculumSectionOccupationFormAllClassHours.curriculumSectionAllClassHours;
-      tmpClassHoursList.forEach((object, index) => {
-        this.classHoursList[index] += object;
-      });
+      // const tmpClassHoursList = tmpCurriculumSectionOccupationFormAllClassHours.curriculumSectionAllClassHours;
+      // tmpClassHoursList.forEach((object, index) => {
+      //   this.classHoursList[index] += object;
+      // });
     });
   }
 

@@ -1,15 +1,15 @@
-import {CurriculumTopicTrainingProgram} from '../../../models/СurriculumTopicTrainingProgram';
-import {CurriculumSectionAllClassHours} from './curriculum-section-all-class-hours';
+import {TotalClassHours} from './total-class-hours';
+import {TrainingProgramCurriculumSectionGenerator} from '../../../models/generator-models/TrainingProgramCurriculumSectionGenerator';
 
 export class TrainingProgramAllClassHours {
   private classHours = 0;
   constructor(
-    private curriculumTopicsList: CurriculumTopicTrainingProgram[][]
+    private trainingProgramCurriculumSections: TrainingProgramCurriculumSectionGenerator[],
   ) {
-    this.curriculumTopicsList.forEach(obj => {
-      const tmpCurriculumTopic = new CurriculumSectionAllClassHours(obj);
-      this.classHours += tmpCurriculumTopic.curriculumSectionAllClassHours;
-    });
+    // this.trainingProgramCurriculumSections.forEach(obj => {
+    //   const tmpCurriculumTopic = new TotalClassHours(obj.curriculumTopicTrainingPrograms);
+    //   this.classHours += tmpCurriculumTopic.curriculumSectionAllClassHours;
+    // });
   }
 
   public get getTrainingProgramAllClassHours(): number {

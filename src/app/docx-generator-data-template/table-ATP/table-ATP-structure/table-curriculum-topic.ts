@@ -1,20 +1,19 @@
-import {CurriculumTopicTrainingProgram} from '../../../models/СurriculumTopicTrainingProgram';
 import {OccupationForm} from '../../../models/OccupationForm';
-import {Department} from '../../../models/Department';
 import {Paragraph, TableCell, TableRow, TextRun} from 'docx';
 import {CurriculumTopicTotalClassHours} from '../table-class-hours/curriculum-topic-total-class-hours';
 import {TableCellDefaultTextAlignmentCenter} from '../table-cell-templates/table-cell-default-text-alignment-center';
 import {TableCellDefaultText} from '../table-cell-templates/table-cell-default-text';
+import {CurriculumTopicTrainingProgramGenerator} from '../../../models/generator-models/CurriculumTopicTrainingProgramGenerator';
 
 export class TableCurriculumTopic {
   constructor(
-    private curriculumTopic: CurriculumTopicTrainingProgram,
+    private curriculumTopic: CurriculumTopicTrainingProgramGenerator,
     private index: number,
     private i: number,
     private occupationForms: OccupationForm[],
     private variable: boolean,
-    private department: Department,
-    private list: CurriculumTopicTrainingProgram[]) {
+    private departmentName: string,
+    private blockLength: number) {
   }
 
   public insert(): TableRow {
@@ -30,13 +29,17 @@ export class TableCurriculumTopic {
     }
 
     const curriculumTopicTotalClassHours = new CurriculumTopicTotalClassHours(this.occupationForms, this.curriculumTopic);
-    const classHours = curriculumTopicTotalClassHours.getClassHours;
-    const totalClassHours = curriculumTopicTotalClassHours.getTotalClassHours;
+    const classHours = curriculumTopicTotalClassHours.ClassHours;
 
-    child.push(tableCellDefaultTextCenter.insertText(classHours[totalClassHours]));
+    child.push(tableCellDefaultTextCenter.insertText(curriculumTopicTotalClassHours.TotalClassHours.toString()));
 
     classHours.forEach(obj => {
-      child.push(tableCellDefaultTextCenter.insertText(obj));
+      if (obj !== 0) {
+        child.push(tableCellDefaultTextCenter.insertText(obj.toString()));
+      }
+      else {
+        child.push(tableCellDefaultTextCenter.insertText(''));
+      }
     });
 
     if (this.i === 1) {
@@ -45,12 +48,12 @@ export class TableCurriculumTopic {
           new Paragraph({
             children: [
               new TextRun({
-                text:  this.department.name.substr(this.department.name.indexOf(' ') + 1),
+                text:  this.departmentName.substr(this.departmentName.indexOf(' ') + 1),
               })
             ],
           })
         ],
-        rowSpan: this.list.length
+        rowSpan: this.blockLength
       }));
     }
 

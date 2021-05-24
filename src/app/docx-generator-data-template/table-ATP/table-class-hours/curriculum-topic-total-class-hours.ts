@@ -1,40 +1,29 @@
-import {CurriculumTopicTrainingProgram} from '../../../models/СurriculumTopicTrainingProgram';
 import {OccupationForm} from '../../../models/OccupationForm';
+import {CurriculumTopicTrainingProgramGenerator} from '../../../models/generator-models/CurriculumTopicTrainingProgramGenerator';
 
 export class CurriculumTopicTotalClassHours {
-  private classHours: string[] = [];
   private totalClassHours = 0;
+  private classHours: number[] = [];
   constructor(
     private occupationForms: OccupationForm[],
-    private curriculumTopic: CurriculumTopicTrainingProgram) {
-    // let j = 0;
-    // occupationForms.forEach(obj => {
-    //     let tmp: string;
-    //     tmp = this.curriculumTopicClassHours(obj.id, curriculumTopic);
-    //     if (tmp !== '') {
-    //       this.totalClassHours = j;
-    //     }
-    //     this.classHours.push(tmp);
-    //     j++;
-    // });
+    private curriculumTopic: CurriculumTopicTrainingProgramGenerator) {
+
+    occupationForms.forEach(() => {
+      this.classHours.push(0);
+    });
+
+    curriculumTopic.occupationFormClassHours.forEach(obj => {
+      const index = occupationForms.findIndex(a => a.id === obj.occupationFormId);
+      this.classHours[index] += obj.classHours;
+      this.totalClassHours += obj.classHours;
+    });
   }
 
-  public get getTotalClassHours(): number {
-    return this.totalClassHours;
-  }
-
-  public get getClassHours(): string[] {
+  public get ClassHours(): number[] {
     return this.classHours;
   }
 
-  // tslint:disable-next-line:typedef
-  private curriculumTopicClassHours(
-    occupationFormId: number, curriculumTopic: CurriculumTopicTrainingProgram) {
-  //   if (occupationFormId === curriculumTopic.occupationFormId) {
-  //     return curriculumTopic.classHours.toString();
-  //   }
-  //   else {
-  //     return '';
-  //   }
+  public get TotalClassHours(): number {
+    return this.totalClassHours;
   }
 }
