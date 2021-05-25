@@ -15,7 +15,7 @@ import {Globals} from '../../globals';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {MainLiteratureEditComponent} from '../../main-literature/main-literature-edit.component';
 import {TrainingProgramAdditionalLiterature} from '../../models/TrainingProgramAdditionalLiterature';
-import {TrainingProgramMainLiterature} from '../../models/TrainingProgramMainLiterature';
+import {TrainingProgramConstructorService} from '../training-program-constructor.service';
 
 @Component({
   selector: 'app-training-program-certification-step',
@@ -42,6 +42,7 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
 
   constructor(
     public globals: Globals,
+    public  trainingProgramConstructorService: TrainingProgramConstructorService,
     private trainingProgramService: TrainingProgramService,
     private finalExaminationService: FinalExaminationService,
     private trainingProgramFinalExaminationService: TrainingProgramFinalExaminationService,
@@ -70,12 +71,10 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
   }
 
   loadTrainingProgram(): void {
-    this.trainingProgramService.getValue(this.id)
-      .subscribe((data: TrainingProgram) => {
-        if (data){
-          this.trainingProgram = data;
-          this.loadTrainingProgramFinalExamination();
-        }
+    this.trainingProgramConstructorService.TrainingProgram(this.id)
+      .subscribe((trainingProgramResponse: TrainingProgram) => {
+        this.trainingProgram = trainingProgramResponse;
+        this.loadTrainingProgramFinalExamination();
       });
   }
 

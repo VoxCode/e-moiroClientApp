@@ -50,7 +50,7 @@ export class DocumentCreatorRector {
           this.trainingProgram
         ),
         this.docxGeneratorDataTemplate.noteATP(),
-        this.docxGeneratorDataTemplate.footerATPDean(),
+        this.docxGeneratorDataTemplate.footerATPDean(this.isRector),
         this.docxGeneratorDataTemplate
           .footerATPDepartmentHead(this.trainingProgram.departmentName, this.trainingProgram.departmentHeadName)
       ],

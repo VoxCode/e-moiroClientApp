@@ -5,6 +5,7 @@ import {Globals} from '../../globals';
 import {TrainingProgramService} from '../../services/training-program.service';
 import {TrainingProgramIntroductionService} from '../../services/training-program-introduction.service';
 import {TrainingProgramIntroduction} from '../../models/TrainingProgramIntroduction';
+import {TrainingProgramConstructorService} from '../training-program-constructor.service';
 
 @Component({
   selector: 'app-training-introduction-step',
@@ -24,6 +25,7 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
 
   constructor(
     public globals: Globals,
+    public  trainingProgramConstructorService: TrainingProgramConstructorService,
     private trainingProgramService: TrainingProgramService,
     private trainingProgramIntroductionService: TrainingProgramIntroductionService,
     private route: ActivatedRoute
@@ -35,10 +37,9 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
   }
 
   loadTrainingProgram(): void {
-    this.trainingProgramService.getValue(this.id)
-      .subscribe((trainingProgram: TrainingProgram) => {
-        if (!trainingProgram) { return; }
-        this.trainingProgram = trainingProgram;
+    this.trainingProgramConstructorService.TrainingProgram(this.id)
+      .subscribe((trainingProgramResponse: TrainingProgram) => {
+        this.trainingProgram = trainingProgramResponse;
         this.loadTrainingProgramIntroduction();
       });
   }

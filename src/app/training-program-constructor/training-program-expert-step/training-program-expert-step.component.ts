@@ -7,6 +7,7 @@ import {TrainingProgramTeacher} from '../../models/TrainingProgramTeacher';
 import {TrainingProgramTeacherService} from '../../services/training-program-teacher.service';
 import {Teacher} from '../../models/Teacher';
 import {TeacherService} from '../../services/teacher.service';
+import {TrainingProgramConstructorService} from '../training-program-constructor.service';
 
 @Component({
   selector: 'app-training-program-expert-step',
@@ -31,6 +32,7 @@ export class TrainingProgramExpertStepComponent implements OnInit {
 
   constructor(
     public globals: Globals,
+    public  trainingProgramConstructorService: TrainingProgramConstructorService,
     private trainingProgramService: TrainingProgramService,
     private trainingProgramTeacherService: TrainingProgramTeacherService,
     private teacherService: TeacherService,
@@ -43,9 +45,9 @@ export class TrainingProgramExpertStepComponent implements OnInit {
   }
 
   loadTrainingProgram(): void {
-    this.trainingProgramService.getValue(this.id)
-      .subscribe((data: TrainingProgram) => {
-        this.trainingProgram = data;
+    this.trainingProgramConstructorService.TrainingProgram(this.id)
+      .subscribe((trainingProgramResponse: TrainingProgram) => {
+        this.trainingProgram = trainingProgramResponse;
         this.loadTeacher();
       });
   }

@@ -352,38 +352,40 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
-  public footerATPDean(): Paragraph
+  public footerATPDean(isRector: boolean): Paragraph
   {
-    return new Paragraph({
-      children: [
-        new TextRun({
-          text: 'Декан факультета',
-          size : this.size,
-          break: 2
-        }),
-        new TextRun({
-          text: 'профессионального развития',
-          size : this.size,
-          break: 1
-        }),
-        new TextRun({
-          text: 'руководящих работников',
-          size : this.size,
-          break: 1
-        }),
-        new TextRun({
-          text: 'и специалистов образования \tЕ.А.Ротмирова',
-          size : this.size,
-          break: 1
-        }),
-      ],
-      tabStops: [
-        {
-          type: TabStopType.LEFT,
-          position: 6000,
-        },
-      ]
-    });
+    if (isRector) {
+      return new Paragraph({
+        children: [
+          new TextRun({
+            text: 'Декан факультета',
+            size : this.size,
+            break: 2
+          }),
+          new TextRun({
+            text: 'профессионального развития',
+            size : this.size,
+            break: 1
+          }),
+          new TextRun({
+            text: 'руководящих работников',
+            size : this.size,
+            break: 1
+          }),
+          new TextRun({
+            text: 'и специалистов образования \tЕ.А.Ротмирова',
+            size : this.size,
+            break: 1
+          }),
+        ],
+        tabStops: [
+          {
+            type: TabStopType.LEFT,
+            position: 6000,
+          },
+        ]
+      });
+    }
   }
 
   public footerATPDepartmentHead(department: string, departmentHeadName: string): Paragraph

@@ -5,7 +5,6 @@ import {TrainingProgramGenerator} from '../../models/generator-models/TrainingPr
 export class SecondDocumentPart {
 
   teacher: number;
-  isVariableOn = false;
   docxGeneratorDataTemplate: DocxGeneratorDataTemplate = new DocxGeneratorDataTemplate(28);
   sections: any[] = [];
   children: any[] = [];
@@ -22,55 +21,53 @@ export class SecondDocumentPart {
       this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
       this.children.push(this.docxGeneratorDataTemplate.titleText(index + 1 + '.' + object.name));
       this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-      if (this.trainingProgram.isDistanceLearning === false){
+
+      // Делим на инвариантную и вариативную
+      const invariantCurriculumTopicsList = object.curriculumTopicTrainingPrograms.filter(a => !a.isVariable);
+      const variableCurriculumTopicsList = object.curriculumTopicTrainingPrograms.filter(a => a.isVariable);
+
+      if (!this.trainingProgram.isDistanceLearning) {
         this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Инвариантная часть', 0,  true));
       }
 
       let i = 1;
-      object.curriculumTopicTrainingPrograms.forEach(obj => {
-        if (obj.isVariable === false){
-          let tmpString = '';
-          obj.occupationFormClassHours.forEach((occupationFormClassHour, t) => {
-            if (t === 0) { tmpString += ' ('; }
-            if (t !== 0) { tmpString += ', '; }
-            tmpString += occupationFormClassHour.fullName.toString().toLowerCase() + ',' +
-              ' ' + occupationFormClassHour.classHours + ' часа';
-            if (t === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }
-          });
-          this.children.push(this.docxGeneratorDataTemplate
-            .someTextCurriculumTopics((index + 1) + '.' + i + ' ' + obj.topicTitle, tmpString, 0, true));
-          this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
-          i++;
-        }
-        else {
-          this.isVariableOn = true;
-        }
+      invariantCurriculumTopicsList.forEach(obj => {
+        let tmpString = '';
+        obj.occupationFormClassHours.forEach((occupationFormClassHour, t) => {
+          if (t === 0) { tmpString += ' ('; }
+          if (t !== 0) { tmpString += ', '; }
+          tmpString += occupationFormClassHour.fullName.toString().toLowerCase() + ',' +
+            ' ' + occupationFormClassHour.classHours + ' часа';
+          if (t === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }
+        });
+        this.children.push(this.docxGeneratorDataTemplate
+          .someTextCurriculumTopics((index + 1) + '.' + i + '. ' + obj.topicTitle, tmpString, 0, true));
+        this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
+        i++;
       });
       this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-      if (this.trainingProgram.isDistanceLearning === false && this.isVariableOn === true){
+
+      if (!this.trainingProgram.isDistanceLearning && variableCurriculumTopicsList.length !== 0) {
         this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Вариативная часть', 0,  true));
       }
 
       let j = 1;
-      object.curriculumTopicTrainingPrograms.forEach(obj => {
-        if (obj.isVariable === true) {
-          let tmpString = '';
-          obj.occupationFormClassHours.forEach((occupationFormClassHour, t) => {
-            if (t === 0) { tmpString += ' ('; }
-            if (t !== 0) { tmpString += ', '; }
-            tmpString += occupationFormClassHour.fullName.toString().toLowerCase() + ',' +
-              ' ' + occupationFormClassHour.classHours + ' часа';
-            if (t === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }
-          });
-          this.children.push(this.docxGeneratorDataTemplate
-            .someTextCurriculumTopics(obj.topicTitle, tmpString, 0, true));
-          this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
-          j++;
-        }
+      variableCurriculumTopicsList.forEach(obj => {
+        let tmpString = '';
+        obj.occupationFormClassHours.forEach((occupationFormClassHour, t) => {
+          if (t === 0) { tmpString += ' ('; }
+          if (t !== 0) { tmpString += ', '; }
+          tmpString += occupationFormClassHour.fullName.toString().toLowerCase() + ',' +
+            ' ' + occupationFormClassHour.classHours + ' часа';
+          if (t === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }
+        });
+        this.children.push(this.docxGeneratorDataTemplate
+          .someTextCurriculumTopics(obj.topicTitle, tmpString, 0, true));
+        this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
+        j++;
       });
-      this.children.push(this.docxGeneratorDataTemplate.pageBreak());
     });
-
+    this.children.push(this.docxGeneratorDataTemplate.pageBreak());
 
     if (this.trainingProgram.isDistanceLearning === false && this.trainingProgram.isTestWork){
       this.children.push(this.docxGeneratorDataTemplate.titleText('содержание самостоятельной работы'));

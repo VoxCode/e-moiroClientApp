@@ -12,6 +12,7 @@ import {CurriculumTopicService} from '../../services/curriculum-topic.service';
 import {CurriculumTopic} from '../../models/CurriculumTopic';
 import {RegulationEditComponent} from '../../regulation/regulation-edit.component';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
+import {TrainingProgramConstructorService} from '../training-program-constructor.service';
 
 @Component({
   selector: 'app-training-program-regulation-step',
@@ -34,6 +35,7 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
 
   constructor(
     public globals: Globals,
+    public  trainingProgramConstructorService: TrainingProgramConstructorService,
     private trainingProgramService: TrainingProgramService,
     private regulationService: RegulationService,
     private trainingProgramRegulationService: TrainingProgramRegulationService,
@@ -62,12 +64,10 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   }
 
   loadTrainingProgram(): void {
-    this.trainingProgramService.getValue(this.id)
-      .subscribe((trainingProgram: TrainingProgram) => {
-        if (trainingProgram){
-          this.trainingProgram = trainingProgram;
-          this.loadTrainingProgramRegulation();
-        }
+    this.trainingProgramConstructorService.TrainingProgram(this.id)
+      .subscribe((trainingProgramResponse: TrainingProgram) => {
+        this.trainingProgram = trainingProgramResponse;
+        this.loadTrainingProgramRegulation();
       });
   }
 

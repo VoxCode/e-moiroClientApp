@@ -74,7 +74,7 @@ export class TableATPGenerator {
       });
 
       // общая сумма часов в рамках вариативной части (если программа не является дистанционной)
-      if (!trainingProgram.isDistanceLearning) {
+      if (!trainingProgram.isDistanceLearning && obj.maxVariableTopicTimes.length !== 0) {
         let variableTableRow = new TableVariableSection(allOccupationFormsClassHours.variableClassHours);
         row.push(variableTableRow.insert());
         variableTableRow = null;

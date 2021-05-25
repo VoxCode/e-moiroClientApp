@@ -13,6 +13,7 @@ import {Globals} from '../../globals';
 import {TrainingProgramAdditionalLiterature} from '../../models/TrainingProgramAdditionalLiterature';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {MainLiteratureEditComponent} from '../../main-literature/main-literature-edit.component';
+import {TrainingProgramConstructorService} from '../training-program-constructor.service';
 
 @Component({
   selector: 'app-training-program-main-literature-step',
@@ -37,6 +38,7 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
 
   constructor(
     public globals: Globals,
+    public  trainingProgramConstructorService: TrainingProgramConstructorService,
     private trainingProgramService: TrainingProgramService,
     private mainLiteratureService: MainLiteratureService,
     private trainingProgramMainLiteratureService: TrainingProgramMainLiteratureService,
@@ -64,12 +66,10 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
   }
 
   loadTrainingProgram(): void {
-    this.trainingProgramService.getValue(this.id)
-      .subscribe((data: TrainingProgram) => {
-        if (data) {
-          this.trainingProgram = data;
-          this.loadTrainingProgramMainLiterature();
-        }
+    this.trainingProgramConstructorService.TrainingProgram(this.id)
+      .subscribe((trainingProgramResponse: TrainingProgram) => {
+        this.trainingProgram = trainingProgramResponse;
+        this.loadTrainingProgramMainLiterature();
       });
   }
 

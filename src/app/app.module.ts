@@ -38,32 +38,17 @@ import {CertificationTypeComponent} from './certification-type/certification-typ
 import {FinalExaminationComponent} from './final-examination/final-examination.component';
 import {TestWorkComponent} from './test-work/test-work.component';
 import {TestWorkEditComponent} from './test-work/test-work-edit.component';
-import {TrainingProgramMainStepComponent
-} from './training-program-constructor/training-program-main-step/training-program-main-step.component';
 import {FinalExaminationEditComponent} from './final-examination/final-examination-edit.component';
 import {CertificationTypeEditComponent} from './certification-type/certification-type-edit.component';
 import {TrainingProgramEditComponent} from './training-program/training-program-edit.component';
 import {RegulationComponent} from './regulation/regulation.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-import {CurriculumSectionChildComponent
-} from './training-program-constructor/training-program-main-step/curriculum-section-child/curriculum-section-child.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import {CommonService} from './common-service/common-service.component';
 import {DocumentEditorAllModule, DocumentEditorContainerModule} from '@syncfusion/ej2-angular-documenteditor';
 import {DocumentEdComponent} from './document-editor/document-ed/document-ed.component';
-import {TrainingProgramCertificationStepComponent
-} from './training-program-constructor/training-program-certification-step/training-program-certification-step.component';
-import {TrainingProgramStepperComponent
-} from './training-program-constructor/training-program-stepper/training-program-stepper.component';
-import {TrainingProgramMainLiteratureStepComponent
-} from './training-program-constructor/training-program-main-literature-step/training-program-main-literature-step.component';
-import {TrainingProgramAdditionalLiteratureStepComponent
-} from './training-program-constructor/training-program-additional-literature-step/training-program-additional-literature-step.component';
-import {TrainingProgramRegulationStepComponent
-} from './training-program-constructor/training-program-regulation-step/training-program-regulation-step.component';
 import {DocxGeneratorTPComponent} from './docx-generator-TP/docx-generator-TP.component';
-import { FilterPipe } from './filter.pipe';
 import { JwtModule } from '@auth0/angular-jwt';
 import {AuthService} from './services/security/auth.service';
 import {TokenInterceptorService} from './services/security/token-interceptor.service';
@@ -78,18 +63,10 @@ import { AuthorizationComponent } from './authorization/authorization.component'
 import {Globals} from './globals';
 import { RichTextEditorFormComponent } from './rich-text-editor-form/rich-text-editor-form.component';
 import {RichTextEditorAllModule} from '@syncfusion/ej2-angular-richtexteditor';
-import {TrainingProgramIntroductionStepComponent
-} from './training-program-constructor/training-program-introduction-step/training-program-introduction-step.component';
-import { DocumentEditorFormComponent } from './document-editor/document-editor-form/document-editor-form.component';
 import { TeacherDepartmentAddFormComponent } from './teacher/teacher-department-add-form/teacher-department-add-form.component';
 import { ExpertComponent } from './expert/expert.component';
 import {ExpertEditComponent} from './expert/expert-edit.component';
-import { TrainingProgramExpertStepComponent
-} from './training-program-constructor/training-program-expert-step/training-program-expert-step.component';
-import { TemplateOfferComponent } from './training-program-constructor/template-offer/template-offer.component';
-import { CurriculumTopicChildComponent } from './training-program-constructor/training-program-main-step/curriculum-topic-child/curriculum-topic-child.component';
-import { OccupationFormClassHourChildComponent } from './training-program-constructor/training-program-main-step/occupation-form-class-hour-child/occupation-form-class-hour-child.component';
-import { MaxVariableTopicHoursComponent } from './training-program-constructor/training-program-main-step/max-variable-topic-hours/max-variable-topic-hours.component';
+import {TrainingProgramConstructorModule} from './training-program-constructor/training-program-constructor.module';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -133,15 +110,7 @@ export function tokenGetter(): string {
     FinalExaminationComponent,
     TestWorkComponent,
     TestWorkEditComponent,
-    TrainingProgramMainStepComponent,
-    CurriculumSectionChildComponent,
     DocumentEdComponent,
-    TrainingProgramCertificationStepComponent,
-    TrainingProgramStepperComponent,
-    TrainingProgramMainLiteratureStepComponent,
-    TrainingProgramAdditionalLiteratureStepComponent,
-    TrainingProgramRegulationStepComponent,
-    FilterPipe,
     AdminAreaComponent,
     CreatorAreaComponent,
     EditorAreaComponent,
@@ -151,16 +120,9 @@ export function tokenGetter(): string {
     UserEditComponent,
     AuthorizationComponent,
     RichTextEditorFormComponent,
-    TrainingProgramIntroductionStepComponent,
-    DocumentEditorFormComponent,
     TeacherDepartmentAddFormComponent,
     ExpertComponent,
     ExpertEditComponent,
-    TrainingProgramExpertStepComponent,
-    TemplateOfferComponent,
-    CurriculumTopicChildComponent,
-    OccupationFormClassHourChildComponent,
-    MaxVariableTopicHoursComponent
   ],
   imports: [
     BrowserModule,
@@ -177,6 +139,7 @@ export function tokenGetter(): string {
     DocumentEditorContainerModule,
     DocumentEditorAllModule,
     RichTextEditorAllModule,
+    TrainingProgramConstructorModule,
     DragDropModule,
     JwtModule.forRoot({
       config: {

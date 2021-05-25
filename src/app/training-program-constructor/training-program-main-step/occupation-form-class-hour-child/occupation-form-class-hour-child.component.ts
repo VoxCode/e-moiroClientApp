@@ -48,6 +48,7 @@ export class OccupationFormClassHourChildComponent implements OnInit {
   }
 
   updateOccupationFormClassHours(occupationFormClassHour: OccupationFormClassHour): void {
+    console.log(occupationFormClassHour);
     this.occupationFormClassHourService.updateValue(occupationFormClassHour)
       .subscribe(() => {
         console.log('Update was successful');

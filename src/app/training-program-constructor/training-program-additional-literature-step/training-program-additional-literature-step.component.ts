@@ -12,6 +12,7 @@ import {CurriculumTopicTrainingProgramService} from '../../services/curriculum-t
 import {Globals} from '../../globals';
 import {AdditionalLiteratureEditComponent} from '../../additional-literature/additional-literature-edit.component';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
+import {TrainingProgramConstructorService} from '../training-program-constructor.service';
 
 @Component({
   selector: 'app-training-program-additional-literature-step',
@@ -36,6 +37,7 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
 
   constructor(
     public globals: Globals,
+    public  trainingProgramConstructorService: TrainingProgramConstructorService,
     private trainingProgramService: TrainingProgramService,
     private additionalLiteratureService: AdditionalLiteratureService,
     private trainingProgramAdditionalLiteratureService: TrainingProgramAdditionalLiteratureService,
@@ -63,12 +65,10 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
   }
 
   loadTrainingProgram(): void {
-    this.trainingProgramService.getValue(this.id)
-      .subscribe((data: TrainingProgram) => {
-        if (data) {
-          this.trainingProgram = data;
-          this.loadTrainingProgramAdditionalLiterature();
-        }
+    this.trainingProgramConstructorService.TrainingProgram(this.id)
+      .subscribe((trainingProgramResponse: TrainingProgram) => {
+        this.trainingProgram = trainingProgramResponse;
+        this.loadTrainingProgramAdditionalLiterature();
       });
   }
 

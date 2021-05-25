@@ -7,6 +7,7 @@ import {TrainingProgram} from '../../models/TrainingProgram';
 import {OccupationFormService} from '../../services/occupation-form.service';
 import {Globals} from '../../globals';
 import {OccupationForm} from '../../models/OccupationForm';
+import {TrainingProgramConstructorService} from '../training-program-constructor.service';
 
 @Component({
   selector: 'app-training-program-main-step',
@@ -27,6 +28,7 @@ export class TrainingProgramMainStepComponent implements OnInit{
 
   constructor(
     public globals: Globals,
+    public  trainingProgramConstructorService: TrainingProgramConstructorService,
     private curriculumTopicService: CurriculumTopicService,
     private trainingProgramService: TrainingProgramService,
     private occupationFormService: OccupationFormService,
@@ -39,12 +41,10 @@ export class TrainingProgramMainStepComponent implements OnInit{
   }
 
   loadTrainingProgram(): void {
-    this.trainingProgramService.getValue(this.id)  // Загружаю учебную программу
-      .subscribe((data: TrainingProgram) => {
-        if (data) {
-          this.trainingProgram = data;
-          this.loadOccupationForms();
-        }
+    this.trainingProgramConstructorService.TrainingProgram(this.id)
+      .subscribe((trainingProgramResponse: TrainingProgram) => {
+        this.trainingProgram = trainingProgramResponse;
+        this.loadOccupationForms();
       });
   }
 

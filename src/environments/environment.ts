@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:44358/' // ---IIS
+  // apiUrl: 'https://localhost:44358/' // ---IIS
   // apiUrl: 'http://api.smart.moiro.by/'
-  // apiUrl: 'http://localhost:5009/'  // ---Kestrel
+  apiUrl: 'http://localhost:5009/'  // ---Kestrel
 };
 
 /*
