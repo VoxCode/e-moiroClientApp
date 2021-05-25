@@ -12,10 +12,18 @@ import {MaxVariableTopicTime} from '../../../models/MaxVariableTopicTime';
 export class MaxVariableTopicHoursComponent implements OnInit {
   @Input() occupationForms: OccupationForm[];
   @Input() trainingProgramCurriculumSectionId: number;
+  public maxVariableTopicTimes: MaxVariableTopicTime[] = [];
 
   constructor(private maxVariableTopicTimeService: MaxVariableTopicTimeService) { }
 
   ngOnInit(): void {
+    this.occupationForms.forEach((obj) => {
+      const maxVariableTopicTime = new MaxVariableTopicTime();
+      maxVariableTopicTime.maxVariableTopicHours = 0;
+      maxVariableTopicTime.occupationFormId = obj.id;
+      maxVariableTopicTime.fullName = obj.fullName;
+      this.maxVariableTopicTimes.push(maxVariableTopicTime);
+    });
     this.loadMaxVariableTopicHours();
   }
 
@@ -23,30 +31,27 @@ export class MaxVariableTopicHoursComponent implements OnInit {
     if (!this.trainingProgramCurriculumSectionId) { return; }
     this.maxVariableTopicTimeService.getValues(this.trainingProgramCurriculumSectionId)
       .subscribe((maxVariableTopicTimeList: MaxVariableTopicTime[]) => {
-        console.log(maxVariableTopicTimeList);
-        maxVariableTopicTimeList.forEach(obj => {
-          const tmpIndex = this.occupationForms.findIndex(a => a.id === obj.occupationFormId);
-          // this.occupationForms[tmpIndex].occupationFormId = obj.occupationFormId;
-          // this.occupationForms[tmpIndex].trainingProgramCurriculumSectionId = obj.trainingProgramCurriculumSectionId;
-          // this.occupationForms[tmpIndex].maxVariableTopicHours = obj.maxVariableTopicHours;
-          console.log(this.occupationForms);
-        });
+        if (maxVariableTopicTimeList.length !== 0) {
+          maxVariableTopicTimeList.forEach(obj => {
+            const tmpIndex = this.maxVariableTopicTimes.findIndex(a => a.occupationFormId === obj.occupationFormId);
+            this.maxVariableTopicTimes[tmpIndex].maxVariableTopicHours = obj.maxVariableTopicHours;
+            this.maxVariableTopicTimes[tmpIndex].trainingProgramCurriculumSectionId = obj.trainingProgramCurriculumSectionId;
+          });
+        }
       });
   }
 
-  crateMaxVariableTopicHours(occupationForm: OccupationForm): void {
-    // const maxVariableTopicTime = new MaxVariableTopicTime(
-    //   occupationForm.id,
-    //   this.trainingProgramCurriculumSectionId,
-    //   occupationForm.maxVariableTopicHours);
-    // if (occupationForm.maxVariableTopicHours === 0 && occupationForm.trainingProgramCurriculumSectionId) {
-    //   this.deleteMaxVariableTopicHours(maxVariableTopicTime);
-    //   return;
-    // }
-    // if (occupationForm.trainingProgramCurriculumSectionId) { this.updateMaxVariableTopicHours(maxVariableTopicTime); return; }
-    // this.maxVariableTopicTimeService.createValue(maxVariableTopicTime).subscribe(() => {
-    //   console.log('Crate was successful!');
-    // });
+  crateMaxVariableTopicHours(maxVariableTopicTime: MaxVariableTopicTime): void {
+    if (maxVariableTopicTime.maxVariableTopicHours === 0 && maxVariableTopicTime.trainingProgramCurriculumSectionId) {
+      this.deleteMaxVariableTopicHours(maxVariableTopicTime);
+      maxVariableTopicTime.trainingProgramCurriculumSectionId = undefined;
+      return;
+    }
+    if (maxVariableTopicTime.trainingProgramCurriculumSectionId) { this.updateMaxVariableTopicHours(maxVariableTopicTime); return; }
+    maxVariableTopicTime.trainingProgramCurriculumSectionId = this.trainingProgramCurriculumSectionId;
+    this.maxVariableTopicTimeService.createValue(maxVariableTopicTime).subscribe(() => {
+      console.log('Crate was successful!');
+    });
   }
 
   updateMaxVariableTopicHours(maxVariableTopicTime: MaxVariableTopicTime): void {

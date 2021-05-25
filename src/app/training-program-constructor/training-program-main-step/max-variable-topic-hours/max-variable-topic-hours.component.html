@@ -1,6 +1,5 @@
-
 <h6><b>Максимальное количество вариативных часов:</b></h6>
-<div style="display: inline-block; margin-right: 20px; text-align: center;" *ngFor="let el of occupationForms">
+<div style="display: inline-block; margin-right: 20px; text-align: center;" *ngFor="let el of maxVariableTopicTimes">
 
   <label style="font-size: small" for="maxVariableHours">{{el.fullName.slice(0,2)}}.</label>
   <input id="maxVariableHours" type="number" min="0" max="10"
