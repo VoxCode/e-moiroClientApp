@@ -45,6 +45,7 @@ export class DocxGeneratorATPComponent implements OnInit{
   docx: any[] = [];
   isRector = true;
   occupationForms: OccupationForm[];
+  loading: boolean;
 
   constructor(
     private trainingProgramService: TrainingProgramService,
@@ -61,6 +62,7 @@ export class DocxGeneratorATPComponent implements OnInit{
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
+    this.loading = true;
     this.loadTrainingProgram();
   }
 
@@ -170,6 +172,7 @@ export class DocxGeneratorATPComponent implements OnInit{
     Packer.toBlob(docxTmp).then(blob => {
       this.docx = [];
       this.docx.push(blob);
+      this.loading = false;
     });
   }
 

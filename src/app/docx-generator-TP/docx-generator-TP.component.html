@@ -1,3 +1,7 @@
+<div *ngIf="loading" style="position: absolute; top: 50%; left: 50% ; margin-right: -50%; width: 100px; height: 100px"
+     class="spinner-grow text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
 <app-document-ed *ngIf="docx[0]" [docx]="docx" [trainingProgram]="trainingProgram"></app-document-ed>
 
 

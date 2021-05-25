@@ -58,6 +58,7 @@ export class DocxGeneratorTPComponent implements OnInit{
   id: number;
   trainingProgram: TrainingProgramGenerator;
   docx: any[] = [];
+  loading: boolean;
   wordDocxType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
   constructor(
@@ -80,6 +81,7 @@ export class DocxGeneratorTPComponent implements OnInit{
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
+    this.loading = true;
     this.loadTrainingProgram();
   }
 
@@ -241,6 +243,7 @@ export class DocxGeneratorTPComponent implements OnInit{
           this.docxMergeService.merge(blobArray).subscribe((result2) => {
             const resultBlob2 = new Base64ToBlob().generate(result2, this.wordDocxType, 512);
             this.docx.push(resultBlob2);
+            this.loading = false;
           });
         });
       });

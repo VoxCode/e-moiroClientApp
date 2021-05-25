@@ -1,3 +1,7 @@
+<div *ngIf="loading" style="position: absolute; top: 50%; left: 50% ; margin-right: -50%; width: 100px; height: 100px"
+     class="spinner-grow text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
 <button type="button" (click)="generateRector()" size="sm" mdbBtn color="primary"
         class="relative waves-light" mdbWavesEffect>Сгенерировать УТП для ректора</button>
 <button type="button" (click)="generateDean()" size="sm" mdbBtn color="primary"
