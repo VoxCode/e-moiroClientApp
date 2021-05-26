@@ -17,7 +17,6 @@ import {
 } from '@syncfusion/ej2-angular-documenteditor';
 import {DocumentEditorTranslateData} from '../document-editor-translate-data';
 import {WordToSfdtService} from '../../services/word-to-sfdt.service';
-import {Base64ToBlob} from '../../base64-to-blob/base64-to-blob';
 
 @Component({
   selector: 'app-document-editor-form',
@@ -36,12 +35,13 @@ import {Base64ToBlob} from '../../base64-to-blob/base64-to-blob';
 export class DocumentEditorFormComponent implements OnChanges, AfterViewInit {
   public hostUrl = 'https://ej2services.syncfusion.com/production/web-services/';
 
-  @Input() content: string;
+  @Input() docxContent: Blob;
   @Output() saveButtonClicked: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('documentEditorContainerComponent')
   public container: DocumentEditorContainerComponent;
   public path: string;
   public culture = 'ru';
+  content: string;
 
   constructor(
     private wordToSfdtService: WordToSfdtService
@@ -71,11 +71,7 @@ export class DocumentEditorFormComponent implements OnChanges, AfterViewInit {
   }
 
   onCreate(): any {
-    if (this.content !== 'Empty') {
-      const type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-      const blob = new Base64ToBlob().generate(this.content, type, 512);
-      this.loadFile(blob);
-    }
+    this.loadFile(this.docxContent);
   }
 
   saveBlob(): void {

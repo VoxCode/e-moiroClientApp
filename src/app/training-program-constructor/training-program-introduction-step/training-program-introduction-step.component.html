@@ -12,8 +12,8 @@
 <!--  (saveButtonClicked)="saveChanges($event)">-->
 <!--  </app-rich-text-editor-form>-->
 
-  <app-document-editor-form *ngIf="introductionContent"
-                            [content]="introductionContent"
+  <app-document-editor-form *ngIf="docxContent"
+                            [docxContent]="docxContent"
                             (saveButtonClicked)="saveChanges($event)">
   </app-document-editor-form>
 </div>

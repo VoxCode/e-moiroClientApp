@@ -105,6 +105,8 @@ export class FirstDocumentPart {
     this.children.push(this.docxGeneratorDataTemplate
       .someText('Протокол заседания от ____________ ' + this.docxGeneratorDataTemplate.getNowYear() + ' № ______'));
     this.children.push(this.docxGeneratorDataTemplate.pageBreak());
+    this.children.push(this.docxGeneratorDataTemplate.titleText('введение'));
+    this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
 
     this.sections.push( {
       properties: {

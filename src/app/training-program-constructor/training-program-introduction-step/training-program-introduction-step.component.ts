@@ -6,6 +6,9 @@ import {TrainingProgramService} from '../../services/training-program.service';
 import {TrainingProgramIntroductionService} from '../../services/training-program-introduction.service';
 import {TrainingProgramIntroduction} from '../../models/TrainingProgramIntroduction';
 import {TrainingProgramConstructorService} from '../training-program-constructor.service';
+import {IntroductionTemplate} from '../../document-part-templates/introduction-template';
+import {Packer} from 'docx';
+import {Base64ToBlob} from '../../base64-to-blob/base64-to-blob';
 
 @Component({
   selector: 'app-training-introduction-step',
@@ -21,7 +24,7 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
   id: number;
   trainingProgram: TrainingProgram;
   trainingProgramIntroduction: TrainingProgramIntroduction = new TrainingProgramIntroduction();
-  introductionContent: string;
+  docxContent: Blob;
 
   constructor(
     public globals: Globals,
@@ -48,11 +51,15 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
     this.trainingProgramIntroductionService.getValueFromTrainingProgram(this.id)
       .subscribe((trainingProgramIntroduction: TrainingProgramIntroduction) => {
         if (!trainingProgramIntroduction) {
-          this.introductionContent = 'Empty';
+          const introductionTemplate = new IntroductionTemplate().create();
+          Packer.toBlob(introductionTemplate).then(blobResult => {
+            this.docxContent = blobResult;
+          });
           return;
         }
         this.trainingProgramIntroduction = trainingProgramIntroduction;
-        this.introductionContent = trainingProgramIntroduction.introduction;
+        const type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        this.docxContent = new Base64ToBlob().generate(trainingProgramIntroduction.introduction, type, 512);
       });
   }
 

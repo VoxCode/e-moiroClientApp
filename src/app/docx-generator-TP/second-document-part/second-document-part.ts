@@ -14,7 +14,10 @@ export class SecondDocumentPart {
   ) { }
 
   public create(): Document {
-    this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+    this.children.push(this.docxGeneratorDataTemplate
+      .someTextCertificationType('Форма итоговой аттестации', ' - ' +
+        this.trainingProgram.certificationTypeName + '.', 720, true));
+    this.children.push(this.docxGeneratorDataTemplate.pageBreak());
     this.children.push(this.docxGeneratorDataTemplate.titleText('содержание'));
     this.trainingProgram.trainingProgramCurriculumSections.forEach((object, index) =>
     {
@@ -32,14 +35,7 @@ export class SecondDocumentPart {
 
       let i = 1;
       invariantCurriculumTopicsList.forEach(obj => {
-        let tmpString = '';
-        obj.occupationFormClassHours.forEach((occupationFormClassHour, t) => {
-          if (t === 0) { tmpString += ' ('; }
-          if (t !== 0) { tmpString += ', '; }
-          tmpString += occupationFormClassHour.fullName.toString().toLowerCase() + ',' +
-            ' ' + occupationFormClassHour.classHours + ' часа';
-          if (t === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }
-        });
+        const tmpString = this.docxGeneratorDataTemplate.classHoursStringBuilder(obj);
         this.children.push(this.docxGeneratorDataTemplate
           .someTextCurriculumTopics((index + 1) + '.' + i + '. ' + obj.topicTitle, tmpString, 0, true));
         this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
@@ -53,14 +49,7 @@ export class SecondDocumentPart {
 
       let j = 1;
       variableCurriculumTopicsList.forEach(obj => {
-        let tmpString = '';
-        obj.occupationFormClassHours.forEach((occupationFormClassHour, t) => {
-          if (t === 0) { tmpString += ' ('; }
-          if (t !== 0) { tmpString += ', '; }
-          tmpString += occupationFormClassHour.fullName.toString().toLowerCase() + ',' +
-            ' ' + occupationFormClassHour.classHours + ' часа';
-          if (t === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }
-        });
+        const tmpString = this.docxGeneratorDataTemplate.classHoursStringBuilder(obj);
         this.children.push(this.docxGeneratorDataTemplate
           .someTextCurriculumTopics(obj.topicTitle, tmpString, 0, true));
         this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));

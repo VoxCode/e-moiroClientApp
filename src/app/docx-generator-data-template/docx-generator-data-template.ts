@@ -6,6 +6,7 @@ import {
   TabStopType,
   TextRun
 } from 'docx';
+import {CurriculumTopicTrainingProgramGenerator} from '../models/generator-models/CurriculumTopicTrainingProgramGenerator';
 
 export class DocxGeneratorDataTemplate {
 
@@ -60,6 +61,28 @@ export class DocxGeneratorDataTemplate {
         new TextRun({
           text: txt2,
           italics: true
+        })
+      ]
+    });
+  }
+
+  public someTextCertificationType(txt: string, txt2: string, indent?: number, bld?: boolean, caps?: boolean ): Paragraph{
+
+    return new Paragraph({
+      style: 'default',
+      alignment: AlignmentType.JUSTIFIED,
+      indent: {
+        left: 0,
+        firstLine: indent,
+      },
+      children: [
+        new TextRun({
+          text: txt,
+          allCaps: caps,
+          bold: bld,
+        }),
+        new TextRun({
+          text: txt2.toLowerCase(),
         })
       ]
     });
@@ -238,6 +261,18 @@ export class DocxGeneratorDataTemplate {
         }),
       ],
     });
+  }
+
+  public classHoursStringBuilder(obj: CurriculumTopicTrainingProgramGenerator): string {
+    let tmpString = '';
+    obj.occupationFormClassHours.forEach((occupationFormClassHour, index) => {
+      if (index === 0) { tmpString += ' ('; }
+      if (index !== 0) { tmpString += ', '; }
+      tmpString += occupationFormClassHour.fullName.toString().toLowerCase() + ',' +
+        ' ' + occupationFormClassHour.classHours + ' часа';
+      if (index === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }
+    });
+    return tmpString;
   }
 
   public mainNameDocumentTP(exactly: string): Paragraph
