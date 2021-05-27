@@ -13,7 +13,7 @@ import {OccupationForm} from '../../../models/OccupationForm';
 })
 export class OccupationFormClassTimeEditFormComponent implements OnInit{
 
-  public editableRow: { occupationFormId: string, classHours: number };
+  public editableRow: {occupationFormId: string, classHours: number, fullName: string};
   public saveButtonClicked: Subject<any> = new Subject<any>();
   occupationForms: OccupationForm[];
 
@@ -35,12 +35,14 @@ export class OccupationFormClassTimeEditFormComponent implements OnInit{
 
   editRow(): void {
     this.editableRow = this.form.getRawValue();
+    this.editableRow.fullName = this.occupationForms.find(a => a.id === +this.editableRow.occupationFormId).fullName;
     this.saveButtonClicked.next(this.editableRow);
     this.modalRef.hide();
   }
 
   get occupationFormId(): AbstractControl { return this.form.get('occupationFormId'); }
   get classHours(): AbstractControl { return this.form.get('classHours'); }
+  get fullName(): AbstractControl { return this.form.get('fullName'); }
 
   loadOccupationForms(): void {
     this.occupationFormService.getValues()

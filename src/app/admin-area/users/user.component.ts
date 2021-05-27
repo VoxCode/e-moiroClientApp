@@ -137,7 +137,9 @@ export class UserComponent implements OnInit, AfterViewInit {
     this.modalRef = this.modalService.show(UserEditComponent, modalOptions);
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       this.elements[elementIndex] = newElement;
-      this.save(newElement, el);
+      console.log(newElement);
+      console.log(el);
+      // this.save(newElement, el);
     });
     this.mdbTable.setDataSource(this.elements);
   }

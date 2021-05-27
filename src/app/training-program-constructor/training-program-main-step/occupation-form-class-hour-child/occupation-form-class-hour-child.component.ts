@@ -69,6 +69,7 @@ export class OccupationFormClassHourChildComponent implements OnInit {
       occupationFormClassHour.occupationFormId = +newElement.occupationFormId;
       occupationFormClassHour.curriculumTopicTrainingProgramId = this.curriculumTopicTrainingProgramId;
       occupationFormClassHour.classHours = newElement.classHours;
+      occupationFormClassHour.fullName = newElement.fullName;
       if (this.occupationFormClassHours.length === 0) {
         occupationFormClassHour.serialNumber = this.occupationFormClassHours.length + 1;
       }
@@ -80,7 +81,7 @@ export class OccupationFormClassHourChildComponent implements OnInit {
   }
 
   emptyEl(): any {
-    return {occupationFormId: '', classHours: 0};
+    return {occupationFormId: '', classHours: 0, fullName: ''};
   }
 
   modalOption(el: any): any {

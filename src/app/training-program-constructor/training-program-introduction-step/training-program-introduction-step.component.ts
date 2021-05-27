@@ -70,7 +70,9 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
 
   editTrainingProgram(content: string): void {
     this.trainingProgramIntroduction.introduction = content;
-    this.trainingProgramIntroductionService.updateValue(this.trainingProgramIntroduction).subscribe(() => {
+    this.trainingProgramIntroductionService.updateValue(this.trainingProgramIntroduction)
+      .subscribe((trainingProgramIntroduction: TrainingProgramIntroduction) => {
+        this.trainingProgramIntroduction = trainingProgramIntroduction;
         console.log('Update was successful');
     });
   }
