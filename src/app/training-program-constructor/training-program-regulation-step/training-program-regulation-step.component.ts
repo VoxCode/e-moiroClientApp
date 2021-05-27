@@ -53,13 +53,13 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      // this.save();
+      this.save();
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-      // this.save();
+      this.save();
     }
   }
 
@@ -148,37 +148,35 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   }
 
   save(): void {
-    // let i = 0;
-    // this.done.forEach((regulationDragAndDrop, index) => {
-    //   let trainingProgramRegulation: TrainingProgramRegulation = new TrainingProgramRegulation();
-    //   i = index + 1;
-    //   if (regulationDragAndDrop.fourth){
-    //     trainingProgramRegulation.id = +regulationDragAndDrop.fourth;
-    //     trainingProgramRegulation.trainingProgramId = +regulationDragAndDrop.fifth;
-    //     trainingProgramRegulation.regulationId = +regulationDragAndDrop.seventh;
-    //   }
-    //   else {
-    //     trainingProgramRegulation.regulationId = +regulationDragAndDrop.first;
-    //     trainingProgramRegulation.trainingProgramId = +this.id;
-    //   }
-    //   trainingProgramRegulation.serialNumber = +i;
-    //
-    //   if (!trainingProgramRegulation.id) {
-    //     this.trainingProgramRegulationService.createValue(trainingProgramRegulation)
-    //       .subscribe((data: TrainingProgramRegulation) => {
-    //         object.fourth = data.id;
-    //         object.fifth = data.trainingProgramId;
-    //         object.seventh = data.regulationId;
-    //         object.eight = data.serialNumber;
-    //         console.log('Save was successful');
-    //         trainingProgramRegulation = null;
-    //       });
-    //   }
-    //   else {
-    //     this.update(trainingProgramRegulation);
-    //     trainingProgramRegulation = null;
-    //   }
-    // });
+    const trainingProgramRegulations: TrainingProgramRegulation[] = [];
+    this.done.forEach((object, index) => {
+      const trainingProgramRegulation: TrainingProgramRegulation = new TrainingProgramRegulation();
+      trainingProgramRegulation.id = +object.id;
+      trainingProgramRegulation.trainingProgramId = +object.trainingProgramId;
+      trainingProgramRegulation.content = object.content;
+      trainingProgramRegulation.serialNumber = ++index;
+      trainingProgramRegulations.push(trainingProgramRegulation);
+
+
+      // if (!trainingProgramRegulation.id) {
+      //   this.trainingProgramRegulationService.createValue(trainingProgramRegulation)
+      //     .subscribe((data: TrainingProgramRegulation) => {
+      //       object.fourth = data.id;
+      //       object.fifth = data.trainingProgramId;
+      //       object.seventh = data.regulationId;
+      //       object.eight = data.serialNumber;
+      //       console.log('Save was successful');
+      //       trainingProgramRegulation = null;
+      //     });
+      // }
+      // else {
+      //   this.update(trainingProgramRegulation);
+      //   trainingProgramRegulation = null;
+      // }
+    });
+    this.trainingProgramRegulationService.updateSerialNumbers(trainingProgramRegulations).subscribe(() => {
+      console.log('Successful!');
+    });
   }
 
   trainingProgramRegulationCrateForm(): void {

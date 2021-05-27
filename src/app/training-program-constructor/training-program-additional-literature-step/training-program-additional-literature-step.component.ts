@@ -54,13 +54,13 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
   drop(event: CdkDragDrop<string[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      // this.save();
+      this.save();
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-      // this.save();
+      this.save();
     }
   }
 
@@ -156,36 +156,19 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
     });
   }
 
-  // SAVE FULL
   save(): void {
-    // let i = 0;
-    // this.done.forEach((object, index) => {
-    //   let trainingProgramAdditionalLiterature: TrainingProgramAdditionalLiterature = new TrainingProgramAdditionalLiterature();
-    //   i = index + 1;
-    //   if (object.fourth !== undefined){
-    //     trainingProgramAdditionalLiterature.id = +object.fourth;
-    //     trainingProgramAdditionalLiterature.trainingProgramId = +object.fifth;
-    //     trainingProgramAdditionalLiterature.additionalLiteratureId = +object.seventh;
-    //   }
-    //   else {
-    //     trainingProgramAdditionalLiterature.additionalLiteratureId = +object.first;
-    //     trainingProgramAdditionalLiterature.trainingProgramId = +this.id;
-    //   }
-    //   trainingProgramAdditionalLiterature.serialNumber = +i;
-    //
-    //   if (trainingProgramAdditionalLiterature.id === undefined){
-    //     this.trainingProgramAdditionalLiteratureService.createValue(trainingProgramAdditionalLiterature)
-    //       .subscribe((data: TrainingProgramAdditionalLiterature) => {
-    //         object.fourth = data.id;
-    //         console.log('Save was successful');
-    //         trainingProgramAdditionalLiterature = null;
-    //       });
-    //   }
-    //   else {
-    //     this.update(trainingProgramAdditionalLiterature);
-    //     trainingProgramAdditionalLiterature = null;
-    //   }
-    // });
+    const trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[] = [];
+    this.done.forEach((object, index) => {
+      const trainingProgramAdditionalLiterature: TrainingProgramAdditionalLiterature = new TrainingProgramAdditionalLiterature();
+      trainingProgramAdditionalLiterature.id = +object.id;
+      trainingProgramAdditionalLiterature.trainingProgramId = +object.trainingProgramId;
+      trainingProgramAdditionalLiterature.content = object.content;
+      trainingProgramAdditionalLiterature.serialNumber = ++index;
+      trainingProgramAdditionalLiteratures.push(trainingProgramAdditionalLiterature);
+    });
+    this.trainingProgramAdditionalLiteratureService.updateSerialNumbers(trainingProgramAdditionalLiteratures).subscribe(() => {
+      console.log('Successful!');
+    });
   }
 
   trainingProgramAdditionalLiteratureCrateForm(): void {

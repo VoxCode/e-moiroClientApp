@@ -7,6 +7,7 @@ import {OccupationForm} from '../../../models/OccupationForm';
 import {CurriculumTopicTrainingProgramService} from '../../../services/curriculum-topic-training-program.service';
 import {CurriculumTopicEditComponent} from '../../../curriculum-topic/curriculum-topic-edit.component';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
+import {TrainingProgramAdditionalLiterature} from "../../../models/TrainingProgramAdditionalLiterature";
 
 @Component({
   selector: 'app-curriculum-topic-child',
@@ -34,13 +35,13 @@ export class CurriculumTopicChildComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>): void {
     if (event.previousContainer === event.container && this.trainingProgramCurriculumSection.id) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      // this.saveCurriculumTopicTrainingProgram();
+      this.save();
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-      // this.saveCurriculumTopicTrainingProgram();
+      this.save();
     }
   }
 
@@ -84,39 +85,22 @@ export class CurriculumTopicChildComponent implements OnInit {
     });
   }
 
-  saveCurriculumTopicTrainingPrograms(): void {
-    // let i = 0;
-    // if (this.trainingProgramCurriculumSectionSelect){
-    //   this.done.forEach((object, index) => {
-    //     let curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
-    //     i = index + 1;
-    //     curriculumTopicTrainingProgram.trainingProgramId = +object.sixth;
-    //     curriculumTopicTrainingProgram.curriculumTopicId = object.first;
-    //     curriculumTopicTrainingProgram.classHours = object.fourth;
-    //     curriculumTopicTrainingProgram.isVariable = object.third;
-    //     if (object.fifth) {
-    //       curriculumTopicTrainingProgram.occupationFormId = object.fifth;
-    //     }
-    //     else {
-    //       curriculumTopicTrainingProgram.occupationFormId = 1;
-    //     }
-    //     curriculumTopicTrainingProgram.serialNumber = i;
-    //     curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = this.trainingProgramCurriculumSectionId;
-    //     curriculumTopicTrainingProgram.id = object.seventh;
-    //     if (curriculumTopicTrainingProgram.id){
-    //       this.curriculumTopicTrainingProgramService.createValue(curriculumTopicTrainingProgram)
-    //         .subscribe((data: CurriculumTopicTrainingProgram) => {
-    //           object.seventh = data.id;
-    //           console.log('Save was successful');
-    //           curriculumTopicTrainingProgram = null;
-    //         });
-    //     }
-    //     else {
-    //       this.updateCurriculumTopicTrainingProgram(curriculumTopicTrainingProgram);
-    //       curriculumTopicTrainingProgram = null;
-    //     }
-    //   });
-    // }
+  save(): void {
+    const curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
+    this.done.forEach((object, index) => {
+      const curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
+      curriculumTopicTrainingProgram.id = object.curriculumTopicTrainingProgramId;
+      curriculumTopicTrainingProgram.isVariable = object.isVariable;
+      curriculumTopicTrainingProgram.classHours = object.classHours;
+      curriculumTopicTrainingProgram.topicTitle = object.topicTitle;
+      curriculumTopicTrainingProgram.annotation = object.annotation;
+      curriculumTopicTrainingProgram.serialNumber = ++index;
+      curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = object.trainingProgramCurriculumSectionId;
+      curriculumTopicTrainingPrograms.push(curriculumTopicTrainingProgram);
+    });
+    this.curriculumTopicTrainingProgramService.updateSerialNumbers(curriculumTopicTrainingPrograms).subscribe(() => {
+      console.log('Successful!');
+    });
   }
 
 

@@ -1,3 +1,10 @@
+<div *ngIf="occupationFormClassHours.length === 0">
+  <button  type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
+          (click)="occupationFormClassTimeCrateForm()" mdbWavesEffect>
+    <mdb-icon fas icon="plus" size="lg"></mdb-icon>
+  </button>
+</div>
+
 <div class="occupationFormClassHour" *ngFor="let item of occupationFormClassHours; index as i">
   <div class="row">
     <div class="col-sm-6">

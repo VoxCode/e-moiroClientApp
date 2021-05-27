@@ -18,6 +18,11 @@ export class CurriculumTopicTrainingProgramService {
   getFromTrainingProgramCurriculumSection(trainingProgramCurriculumSectionId: number): Observable<any> {
     return this.http.get(this.url + '/TrainingProgramCurriculumSection/' + trainingProgramCurriculumSectionId);
   }
+
+  updateSerialNumbers(curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[]): Observable<any> {
+    return this.http.put(this.url + '/SerialNumbers', curriculumTopicTrainingPrograms);
+  }
+
   createValue(curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram): Observable<any> {
     return this.http.post(this.url, curriculumTopicTrainingProgram);
   }

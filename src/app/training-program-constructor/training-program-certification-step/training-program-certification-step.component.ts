@@ -168,36 +168,19 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
     });
   }
 
-  // SAVE FULL
   save(): void {
-    // let i = 0;
-    // this.done.forEach((object, index) => {
-    //   let trainingProgramFinalExamination: TrainingProgramFinalExamination = new TrainingProgramFinalExamination();
-    //   i = index + 1;
-    //   if (object.fourth !== undefined){
-    //     trainingProgramFinalExamination.id = +object.fourth;
-    //     trainingProgramFinalExamination.trainingProgramId = +object.fifth;
-    //     trainingProgramFinalExamination.finalExaminationId = +object.seventh;
-    //   }
-    //   else {
-    //     trainingProgramFinalExamination.finalExaminationId = +object.first;
-    //     trainingProgramFinalExamination.trainingProgramId = +this.id;
-    //   }
-    //   trainingProgramFinalExamination.serialNumber = +i;
-    //
-    //   if (trainingProgramFinalExamination.id === undefined){
-    //     this.trainingProgramFinalExaminationService.createValue(trainingProgramFinalExamination)
-    //       .subscribe((data: TrainingProgramFinalExamination) => {
-    //         object.fourth = data.id;
-    //         console.log('Save was successful');
-    //         trainingProgramFinalExamination = null;
-    //       });
-    //   }
-    //   else {
-    //     this.update(trainingProgramFinalExamination);
-    //     trainingProgramFinalExamination = null;
-    //   }
-    // });
+    const trainingProgramFinalExaminations: TrainingProgramFinalExamination[] = [];
+    this.done.forEach((object, index) => {
+      const trainingProgramFinalExamination: TrainingProgramFinalExamination = new TrainingProgramFinalExamination();
+      trainingProgramFinalExamination.id = +object.id;
+      trainingProgramFinalExamination.trainingProgramId = +object.trainingProgramId;
+      trainingProgramFinalExamination.content = object.content;
+      trainingProgramFinalExamination.serialNumber = ++index;
+      trainingProgramFinalExaminations.push(trainingProgramFinalExamination);
+    });
+    this.trainingProgramFinalExaminationService.updateSerialNumbers(trainingProgramFinalExaminations).subscribe(() => {
+      console.log('Successful!');
+    });
   }
 
   trainingProgramMainLiteratureCrateForm(): void {

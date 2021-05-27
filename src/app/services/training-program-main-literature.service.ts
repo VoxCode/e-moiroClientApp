@@ -21,6 +21,10 @@ export class TrainingProgramMainLiteratureService {
     return this.http.get(this.url + '/FromTrainingProgram/' + trainingProgramId);
   }
 
+  updateSerialNumbers(trainingProgramMainLiteratures: TrainingProgramMainLiterature[]): Observable<any> {
+    return this.http.put(this.url + '/SerialNumbers', trainingProgramMainLiteratures);
+  }
+
   createValue(trainingProgramMainLiterature: TrainingProgramMainLiterature): Observable<any> {
     return this.http.post(this.url, trainingProgramMainLiterature);
   }

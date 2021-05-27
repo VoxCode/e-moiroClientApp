@@ -21,6 +21,10 @@ export class TrainingProgramRegulationService {
     return this.http.get(this.url + '/FromTrainingProgram/' + trainingProgramId);
   }
 
+  updateSerialNumbers(trainingProgramRegulations: TrainingProgramRegulation[]): Observable<any> {
+    return this.http.put(this.url + '/SerialNumbers', trainingProgramRegulations);
+  }
+
   createValue(trainingProgramRegulation: TrainingProgramRegulation): Observable<any> {
     return this.http.post(this.url, trainingProgramRegulation);
   }

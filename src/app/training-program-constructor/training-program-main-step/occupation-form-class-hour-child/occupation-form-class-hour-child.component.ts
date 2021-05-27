@@ -16,7 +16,7 @@ import {OccupationFormClassTimeEditFormComponent} from './occupation-form-class-
 export class OccupationFormClassHourChildComponent implements OnInit {
   @Input() occupationForms: OccupationForm[];
   @Input() curriculumTopicTrainingProgramId: number;
-  occupationFormClassHours: OccupationFormClassHour[] = [{}];
+  occupationFormClassHours: OccupationFormClassHour[] = [];
   modalRef: MDBModalRef;
 
   constructor(
@@ -69,7 +69,12 @@ export class OccupationFormClassHourChildComponent implements OnInit {
       occupationFormClassHour.occupationFormId = +newElement.occupationFormId;
       occupationFormClassHour.curriculumTopicTrainingProgramId = this.curriculumTopicTrainingProgramId;
       occupationFormClassHour.classHours = newElement.classHours;
-      occupationFormClassHour.serialNumber = this.occupationFormClassHours.length + 1;
+      if (this.occupationFormClassHours.length === 0) {
+        occupationFormClassHour.serialNumber = this.occupationFormClassHours.length + 1;
+      }
+      else {
+        occupationFormClassHour.serialNumber = this.occupationFormClassHours[this.occupationFormClassHours.length - 1].classHours + 1;
+      }
       this.crateOccupationFormClassHours(occupationFormClassHour);
     });
   }

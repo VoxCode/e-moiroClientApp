@@ -55,13 +55,13 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      // this.save();
+      this.save();
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-      // this.save();
+      this.save();
     }
   }
 
@@ -157,36 +157,19 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
     });
   }
 
-  // SAVE FULL
   save(): void {
-    // let i = 0;
-    // this.done.forEach((object, index) => {
-    //   let trainingProgramMainLiterature: TrainingProgramMainLiterature = new TrainingProgramMainLiterature();
-    //   i = index + 1;
-    //   if (object.fourth !== undefined){
-    //     trainingProgramMainLiterature.id = +object.fourth;
-    //     trainingProgramMainLiterature.trainingProgramId = +object.fifth;
-    //     trainingProgramMainLiterature.mainLiteratureId = +object.seventh;
-    //   }
-    //   else {
-    //     trainingProgramMainLiterature.mainLiteratureId = +object.first;
-    //     trainingProgramMainLiterature.trainingProgramId = +this.id;
-    //   }
-    //   trainingProgramMainLiterature.serialNumber = +i;
-    //
-    //   if (trainingProgramMainLiterature.id === undefined){
-    //     this.trainingProgramMainLiteratureService.createValue(trainingProgramMainLiterature)
-    //       .subscribe((data: TrainingProgramMainLiterature) => {
-    //         object.fourth = data.id;
-    //         console.log('Save was successful');
-    //         trainingProgramMainLiterature = null;
-    //       });
-    //   }
-    //   else {
-    //     this.update(trainingProgramMainLiterature);
-    //     trainingProgramMainLiterature = null;
-    //   }
-    // });
+    const trainingProgramMainLiteratures: TrainingProgramMainLiterature[] = [];
+    this.done.forEach((object, index) => {
+      const trainingProgramMainLiterature: TrainingProgramMainLiterature = new TrainingProgramMainLiterature();
+      trainingProgramMainLiterature.id = +object.id;
+      trainingProgramMainLiterature.trainingProgramId = +object.trainingProgramId;
+      trainingProgramMainLiterature.content = object.content;
+      trainingProgramMainLiterature.serialNumber = ++index;
+      trainingProgramMainLiteratures.push(trainingProgramMainLiterature);
+    });
+    this.trainingProgramMainLiteratureService.updateSerialNumbers(trainingProgramMainLiteratures).subscribe(() => {
+      console.log('Successful!');
+    });
   }
 
   trainingProgramMainLiteratureCrateForm(): void {
