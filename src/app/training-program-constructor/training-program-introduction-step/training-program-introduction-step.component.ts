@@ -51,10 +51,7 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
     this.trainingProgramIntroductionService.getValueFromTrainingProgram(this.id)
       .subscribe((trainingProgramIntroduction: TrainingProgramIntroduction) => {
         if (!trainingProgramIntroduction) {
-          const introductionTemplate = new IntroductionTemplate().create();
-          Packer.toBlob(introductionTemplate).then(blobResult => {
-            this.docxContent = blobResult;
-          });
+          this.crateTemplate();
           return;
         }
         this.trainingProgramIntroduction = trainingProgramIntroduction;
@@ -85,5 +82,12 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
     else {
       this.editTrainingProgram(content);
     }
+  }
+
+  crateTemplate(): void {
+    const introductionTemplate = new IntroductionTemplate().create();
+    Packer.toBlob(introductionTemplate).then(blobResult => {
+      this.docxContent = blobResult;
+    });
   }
 }

@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TrainingProgramConstructorService} from './training-program-constructor.service';
 import {TrainingProgramIntroductionStepComponent} from './training-program-introduction-step/training-program-introduction-step.component';
 import {DocumentEditorFormComponent} from '../document-editor/document-editor-form/document-editor-form.component';
@@ -22,6 +22,7 @@ import {MaxVariableTopicHoursComponent} from './training-program-main-step/max-v
 import {CurriculumTopicChildComponent} from './training-program-main-step/curriculum-topic-child/curriculum-topic-child.component';
 import {OccupationFormClassHourChildComponent} from './training-program-main-step/occupation-form-class-hour-child/occupation-form-class-hour-child.component';
 import {NgSelectModule} from '@ng-select/ng-select';
+import {OccupationFormClassTimeEditFormComponent} from './training-program-main-step/occupation-form-class-hour-child/occupation-form-class-time-edit-form.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import {NgSelectModule} from '@ng-select/ng-select';
     DragDropModule,
     DocumentEditorContainerModule,
     DocumentEditorAllModule,
-    NgSelectModule
+    NgSelectModule,
+    ReactiveFormsModule
   ],
   declarations: [
     TrainingProgramIntroductionStepComponent,
@@ -49,7 +51,8 @@ import {NgSelectModule} from '@ng-select/ng-select';
     CurriculumSectionChildComponent,
     MaxVariableTopicHoursComponent,
     CurriculumTopicChildComponent,
-    OccupationFormClassHourChildComponent
+    OccupationFormClassHourChildComponent,
+    OccupationFormClassTimeEditFormComponent
   ],
   exports: [],
   providers: [TrainingProgramConstructorService]

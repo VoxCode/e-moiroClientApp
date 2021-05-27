@@ -2,6 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {OccupationForm} from '../../../models/OccupationForm';
 import {OccupationFormClassHourService} from '../../../services/occupation-form-class-hour.service';
 import {OccupationFormClassHour} from '../../../models/OccupationFormClassHour';
+import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
+import {OccupationFormClassTimeEditFormComponent} from './occupation-form-class-time-edit-form.component';
 
 @Component({
   selector: 'app-occupation-form-class-hour-child',
@@ -15,9 +17,11 @@ export class OccupationFormClassHourChildComponent implements OnInit {
   @Input() occupationForms: OccupationForm[];
   @Input() curriculumTopicTrainingProgramId: number;
   occupationFormClassHours: OccupationFormClassHour[] = [{}];
+  modalRef: MDBModalRef;
 
   constructor(
-    private occupationFormClassHourService: OccupationFormClassHourService
+    private occupationFormClassHourService: OccupationFormClassHourService,
+    private modalService: MDBModalService
   ) { }
 
   ngOnInit(): void {
@@ -34,24 +38,11 @@ export class OccupationFormClassHourChildComponent implements OnInit {
     });
   }
 
-  crateOccupationFormClassHours(occupationFormClassHour: OccupationFormClassHour, index): void {
-    if (occupationFormClassHour.curriculumTopicTrainingProgramId) {
-      this.updateOccupationFormClassHours(occupationFormClassHour);
-      return;
-    }
-    occupationFormClassHour.curriculumTopicTrainingProgramId = this.curriculumTopicTrainingProgramId;
-    occupationFormClassHour.serialNumber = ++index;
+  crateOccupationFormClassHours(occupationFormClassHour: OccupationFormClassHour): void {
     this.occupationFormClassHourService.createValue(occupationFormClassHour)
       .subscribe(() => {
+        this.occupationFormClassHours.push(occupationFormClassHour);
         console.log('Create was successful');
-      });
-  }
-
-  updateOccupationFormClassHours(occupationFormClassHour: OccupationFormClassHour): void {
-    console.log(occupationFormClassHour);
-    this.occupationFormClassHourService.updateValue(occupationFormClassHour)
-      .subscribe(() => {
-        console.log('Update was successful');
       });
   }
 
@@ -63,11 +54,43 @@ export class OccupationFormClassHourChildComponent implements OnInit {
     this.occupationFormClassHourService.deleteValue(occupationFormClassHour)
       .subscribe(() => {
         this.occupationFormClassHours.splice(index, 1);
+        console.log('Delete was successful');
       });
   }
 
   addOccupationFormClassHours(): void {
     this.occupationFormClassHours.push(new OccupationFormClassHour());
+  }
 
+  occupationFormClassTimeCrateForm(): void {
+    this.modalRef = this.modalService.show(OccupationFormClassTimeEditFormComponent, this.modalOption(this.emptyEl()));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      const occupationFormClassHour = new OccupationFormClassHour();
+      occupationFormClassHour.occupationFormId = +newElement.occupationFormId;
+      occupationFormClassHour.curriculumTopicTrainingProgramId = this.curriculumTopicTrainingProgramId;
+      occupationFormClassHour.classHours = newElement.classHours;
+      occupationFormClassHour.serialNumber = this.occupationFormClassHours.length + 1;
+      this.crateOccupationFormClassHours(occupationFormClassHour);
+    });
+  }
+
+  emptyEl(): any {
+    return {occupationFormId: '', classHours: 0};
+  }
+
+  modalOption(el: any): any {
+    return {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+      show: false,
+      ignoreBackdropClick: true,
+      class: 'modal-fluid',
+      containerClass: '',
+      animated: true,
+      data: {
+        editableRow: el
+      }
+    };
   }
 }
