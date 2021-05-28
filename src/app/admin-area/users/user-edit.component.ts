@@ -22,7 +22,7 @@ import {UserService} from '../../services/user.service';
 export class UserEditComponent implements OnInit{
   public roles: Role[];
   public teachers: Teacher[] = [];
-  public teacherSelect: Teacher;
+  public teacherSelect: Teacher = new Teacher();
 
   public editableRow: {
     id: number,

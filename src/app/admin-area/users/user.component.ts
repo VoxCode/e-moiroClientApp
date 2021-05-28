@@ -14,8 +14,6 @@ import {AuthService} from '../../services/security/auth.service';
   providers: [UserService, RoleService, AuthService]
 })
 export class UserComponent implements OnInit, AfterViewInit {
-  value: User = new User();
-  values: User[];
 
   @ViewChild(MdbTableDirective, { static: true }) mdbTable: MdbTableDirective;
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination: MdbTablePaginationComponent;
@@ -74,16 +72,15 @@ export class UserComponent implements OnInit, AfterViewInit {
   loadValue(): void {
     this.valueService.getValues()
       .subscribe((data: User[]) => {
-        this.values = data;
-        for (let i = 1; i <= this.values.length; i++) {
+        data.forEach((obj, index) => {
           this.elements.push({
-            id: i.toString(),
-            first: this.values[i - 1].email,
-            second: this.values[i - 1].userName,
-            third: this.values[i - 1].id,
-            fourth: this.values[i - 1].teacherId,
-            last: this.values[i - 1].role});
-        }
+            id: ++index,
+            first: obj.email,
+            second: obj.userName,
+            third: obj.id,
+            fourth: obj.teacherId,
+            last: obj.role});
+        });
         this.mdbTable.setDataSource(this.elements);
         this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
         this.elements = this.mdbTable.getDataSource();
@@ -92,15 +89,12 @@ export class UserComponent implements OnInit, AfterViewInit {
   }
 
   save(newEl: any, oldEl: any): void {
-    this.cancel();
     const roleChangeModel: RoleChangeModel = new RoleChangeModel(oldEl.second, oldEl.last, newEl.last);
     this.authService.changeRole(roleChangeModel)
       .subscribe(() => {}, () => { location.reload(); alert('Ошибка изменения роли!'); });
   }
 
-  cancel(): void {
-    this.value = new User();
-  }
+
 
   delete(p: any): void {
     this.valueService.deleteValue(p.third)
@@ -116,7 +110,6 @@ export class UserComponent implements OnInit, AfterViewInit {
       value.id = (index + 1).toString();
     });
     this.mdbTable.setDataSource(this.elements);
-    this.cancel();
   }
 
   editRow(el: any): void {
@@ -137,9 +130,7 @@ export class UserComponent implements OnInit, AfterViewInit {
     this.modalRef = this.modalService.show(UserEditComponent, modalOptions);
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       this.elements[elementIndex] = newElement;
-      console.log(newElement);
-      console.log(el);
-      // this.save(newElement, el);
+      this.save(newElement, el);
     });
     this.mdbTable.setDataSource(this.elements);
   }

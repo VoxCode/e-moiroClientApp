@@ -269,10 +269,44 @@ export class DocxGeneratorDataTemplate {
       if (index === 0) { tmpString += ' ('; }
       if (index !== 0) { tmpString += ', '; }
       tmpString += occupationFormClassHour.fullName.toString().toLowerCase() + ',' +
-        ' ' + occupationFormClassHour.classHours + ' часа';
+        ' ' + occupationFormClassHour.classHours + ' ' + this.classHoursEndingDeclination(occupationFormClassHour.classHours);
       if (index === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }
     });
     return tmpString;
+  }
+
+  classHoursEndingDeclination(classHour: number): string {
+    switch (classHour) {
+      case 1: return 'час';
+      case 2: return 'часа';
+      case 3: return 'часа';
+      case 4: return 'часа';
+      case 21: return 'час';
+      case 22: return 'часа';
+      case 23: return 'часа';
+      case 24: return 'часа';
+      case 31: return 'час';
+      case 32: return 'часа';
+      case 33: return 'часа';
+      case 34: return 'часа';
+      case 41: return 'час';
+      case 42: return 'часа';
+      case 43: return 'часа';
+      case 44: return 'часа';
+      case 51: return 'час';
+      case 52: return 'часа';
+      case 53: return 'часа';
+      case 54: return 'часа';
+      case 61: return 'час';
+      case 62: return 'часа';
+      case 63: return 'часа';
+      case 64: return 'часа';
+      case 71: return 'час';
+      case 72: return 'часа';
+      case 73: return 'часа';
+      case 74: return 'часа';
+      default: return 'часов';
+    }
   }
 
   public mainNameDocumentTP(exactly: string): Paragraph
@@ -353,7 +387,8 @@ export class DocxGeneratorDataTemplate {
     return new Paragraph({
       children: [
         new TextRun({
-          text: 'Продолжительность обучения - ' + 'X' + ' недель' + ' (' + numberOfHours + ' часов)',
+          text: 'Продолжительность обучения - ' + 'X' + ' недель' +
+            ' (' + numberOfHours + ' ' + this.classHoursEndingDeclination(numberOfHours) + ')',
           size : this.size,
           break: 1
         }),

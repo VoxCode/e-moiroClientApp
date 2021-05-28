@@ -18,6 +18,15 @@ export class OccupationFormClassHourChildComponent implements OnInit {
   @Input() curriculumTopicTrainingProgramId: number;
   occupationFormClassHours: OccupationFormClassHour[] = [];
   modalRef: MDBModalRef;
+  plurals = {
+    result: {
+      '=1': 'час',
+      '=2': 'часа',
+      '=3': 'часа',
+      '=4': 'часа',
+      other: '# часов'
+    },
+  };
 
   constructor(
     private occupationFormClassHourService: OccupationFormClassHourService,
