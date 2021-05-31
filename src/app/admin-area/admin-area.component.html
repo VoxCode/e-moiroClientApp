@@ -12,10 +12,6 @@
       <li class="nav-item" routerLinkActive="active" [routerLink]="['/admin/trainingProgram']">
         <a class="nav-link waves-light" mdbWavesEffect>Программы учебных занятий</a>
       </li>
-    </ul>
-
-    <!-- Links -->
-    <ul class="navbar-nav mr-auto">
       <li class="nav-item" routerLinkActive="active" [routerLink]="['/admin/docxGeneratorSchedule']">
         <a class="nav-link waves-light" mdbWavesEffect>Расписание генератор</a>
       </li>
@@ -40,16 +36,16 @@
 </mdb-navbar><br><br><br>
 <!--/.Navbar-->
 
-<main>
-  <div class="container-fluid">
 
-    <router-outlet></router-outlet>
-
-  </div>
-</main>
 <!-- /.Main -->
-<div class="main">
+<div class="main" style="min-height:100vh;">
+  <main>
+    <div class="container-fluid">
 
+      <router-outlet></router-outlet>
+
+    </div>
+  </main>
 </div>
 <br>
 

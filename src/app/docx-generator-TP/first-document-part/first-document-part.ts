@@ -50,7 +50,7 @@ export class FirstDocumentPart {
           this.docxGeneratorDataTemplate
             .someText(obj.firstName[0].toUpperCase() + '.' +
               obj.patronymicName[0].toUpperCase() + '. ' +
-              obj.lastName + ', ' + obj.position)
+              obj.lastName + ', ' + obj.position + ', ' + obj.academicRank)
         );
       });
     }
@@ -61,7 +61,7 @@ export class FirstDocumentPart {
         this.docxGeneratorDataTemplate
           .someText(teacherDevelopers[0].firstName[0].toUpperCase() + '.' +
             teacherDevelopers[0].patronymicName[0].toUpperCase() + '. ' +
-            teacherDevelopers[0].lastName + ', ' + teacherDevelopers[0].position)
+            teacherDevelopers[0].lastName + ', ' + teacherDevelopers[0].position + ', ' + teacherDevelopers[0].academicRank)
       );
     }
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
@@ -74,7 +74,7 @@ export class FirstDocumentPart {
           this.docxGeneratorDataTemplate
             .someText(obj.firstName[0].toUpperCase() + '.' +
               obj.patronymicName[0].toUpperCase() + '. ' +
-              obj.lastName + ', ' + obj.position)
+              obj.lastName + ', ' + obj.position + ', ' + obj.academicRank)
         );
       });
     }
@@ -85,7 +85,7 @@ export class FirstDocumentPart {
         this.docxGeneratorDataTemplate
           .someText(teacherReviewers[0].firstName[0].toUpperCase() + '.' +
             teacherReviewers[0].patronymicName[0].toUpperCase() + '. ' +
-            teacherReviewers[0].lastName + ', ' + teacherReviewers[0].position)
+            teacherReviewers[0].lastName + ', ' + teacherReviewers[0].position + ', ' + teacherReviewers[0].academicRank)
       );
     }
     for (let i = 0; i < 26; i++)
