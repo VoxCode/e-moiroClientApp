@@ -18,7 +18,7 @@ export class DocxGeneratorDataTemplate {
     return new Paragraph({
       style: 'default',
     });
-  } // hello
+  }
 
   public pageBreak(): Paragraph{
     return new Paragraph({
