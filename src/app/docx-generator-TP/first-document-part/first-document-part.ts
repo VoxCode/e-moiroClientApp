@@ -93,7 +93,7 @@ export class FirstDocumentPart {
       this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
     }
     this.children.push( this.docxGeneratorDataTemplate.someText('Рекомендовано к утверждению:'));
-    this.children.push(this.docxGeneratorDataTemplate.someText(this.trainingProgram.departmentName));
+    this.children.push(this.docxGeneratorDataTemplate.someText(this.trainingProgram.departmentName.toLowerCase()));
     this.children.push(this.docxGeneratorDataTemplate.someText('государственного учреждения образования'));
     this.children.push(this.docxGeneratorDataTemplate.someText('«Минский областной институт развития образования»'));
     this.children.push(this.docxGeneratorDataTemplate

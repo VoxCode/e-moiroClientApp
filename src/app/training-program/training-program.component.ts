@@ -2,7 +2,6 @@ import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, O
 import {TrainingProgramService} from '../services/training-program.service';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
-import {DepartmentService} from '../services/department.service';
 import {TrainingProgramEditComponent} from './training-program-edit.component';
 import {AuthService} from '../services/security/auth.service';
 import {Globals} from '../globals';
@@ -12,8 +11,7 @@ import {Globals} from '../globals';
   templateUrl: './training-program.component.html',
   styleUrls: ['./training-program.component.scss'],
   providers: [
-    TrainingProgramService,
-    DepartmentService
+    TrainingProgramService
   ]
 })
 
@@ -34,7 +32,6 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     public globals: Globals,
     private authService: AuthService,
     private valueService: TrainingProgramService,
-    private departmentService: DepartmentService,
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService) { }
 
@@ -43,7 +40,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.loadValue();
+    this.loadValues();
   }
 
   ngAfterViewInit(): void {
@@ -74,16 +71,28 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     });
   }
 
-  loadValue(): void {
+  loadValues(): void {
+    if (this.globals.role !== 'admin') {
+      this.loadTrainingProgramForCurrentUser();
+    }
+    else {
+      this.loadTrainingProgramForAdmin();
+    }
+  }
+
+  loadTrainingProgramForAdmin(): void {
     this.valueService.getValues()
       .subscribe((data: TrainingProgram[]) => {
         data.sort((a, b) => a.id - b.id);
-        if (this.globals.role !== 'admin') {
-          this.loadDepartmentsForCurrentUser(data);
-        }
-        else {
-          this.pushData(data);
-        }
+        this.pushData(data);
+      });
+  }
+
+  loadTrainingProgramForCurrentUser(): void {
+    this.valueService.getValueForTeacher(this.globals.name)
+      .subscribe((data: TrainingProgram[]) => {
+        data.sort((a, b) => a.id - b.id);
+        this.pushData(data);
       });
   }
 
@@ -110,18 +119,6 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
     this.elements = this.mdbTable.getDataSource();
     this.previous = this.mdbTable.getDataSource();
-  }
-
-  loadDepartmentsForCurrentUser(data: TrainingProgram[]): void {
-    // this.departmentService.getDepartmentsForCurrentUser(this.globals.name, 1)
-    //   .subscribe((teacherDepartments: TeacherDepartment[]) => {
-    //     let tmp: TrainingProgram[] = [];
-    //     teacherDepartments.forEach((teacherDepartment) => {
-    //       tmp = [...tmp, ...data.filter(a => a.departmentId === teacherDepartment.departmentId)];
-    //     });
-    //     data = tmp;
-    //     this.pushData(data);
-    //   });
   }
 
   crate(el: any): void {

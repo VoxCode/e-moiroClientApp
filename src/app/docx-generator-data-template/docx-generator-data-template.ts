@@ -268,7 +268,7 @@ export class DocxGeneratorDataTemplate {
     obj.occupationFormClassHours.forEach((occupationFormClassHour, index) => {
       if (index === 0) { tmpString += ' ('; }
       if (index !== 0) { tmpString += ', '; }
-      tmpString += occupationFormClassHour.fullName.toString().toLowerCase() + ',' +
+      tmpString += occupationFormClassHour.fullName.toString().toLowerCase().split(',')[0] + ',' +
         ' ' + occupationFormClassHour.classHours + ' ' + this.classHoursEndingDeclination(occupationFormClassHour.classHours);
       if (index === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }
     });

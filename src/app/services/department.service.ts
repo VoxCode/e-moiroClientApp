@@ -17,10 +17,6 @@ export class DepartmentService {
     return this.http.get(this.url + '/' + id);
   }
 
-  getDepartmentsForCurrentUser(userName: string, key: number): Observable<any> {
-    return this.http.get(this.url + '/' + userName + '/' + key);
-  }
-
   createValue(department: Department): Observable<any> {
     return this.http.post(this.url, department);
   }

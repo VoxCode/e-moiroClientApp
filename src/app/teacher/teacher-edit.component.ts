@@ -30,7 +30,7 @@ export class TeacherEditComponent implements OnInit{
     third: new FormControl('', Validators.required),
     fourth: new FormControl('', Validators.required),
     fifth: new FormControl('', Validators.required),
-    sixth: new FormControl('', Validators.required),
+    sixth: new FormControl(''),
     seventh: new FormControl('')
   });
 

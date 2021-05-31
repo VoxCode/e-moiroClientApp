@@ -21,6 +21,10 @@ export class TrainingProgramService {
     return this.http.get(this.url + '/ForDocxGenerator/' + id);
   }
 
+  getValueForTeacher(userName: string): Observable<any> {
+    return this.http.get(this.url + '/ForTeacher/' + userName);
+  }
+
   createValue(trainingProgram: TrainingProgram): Observable<any> {
     return this.http.post(this.url, trainingProgram);
   }
