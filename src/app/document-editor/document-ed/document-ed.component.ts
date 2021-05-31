@@ -7,7 +7,6 @@ import {
   ToolbarService,
   WordExportService
 } from '@syncfusion/ej2-angular-documenteditor';
-import {TrainingProgram} from '../../models/TrainingProgram';
 import {DocxMergeService} from '../../services/docx-merge.service';
 import {DocumentEditorTranslateData} from '../document-editor-translate-data';
 import {WordToSfdtService} from '../../services/word-to-sfdt.service';
@@ -31,7 +30,8 @@ export class DocumentEdComponent implements OnChanges, AfterViewInit {
   public hostUrl = 'https://ej2services.syncfusion.com/production/web-services/';
 
   @Input() docx: any[];
-  @Input() trainingProgram: TrainingProgram;
+  @Input() trainingProgramName: string;
+  @Input() docxType: number;
   @ViewChild('documentEditorContainerComponent')
   public container: DocumentEditorContainerComponent;
   public path: string;
@@ -83,6 +83,12 @@ export class DocumentEdComponent implements OnChanges, AfterViewInit {
   }
 
   public saveAsDocx(): void {
-    this.container.documentEditor.save(this.trainingProgram.name + '(УТП)', 'Docx');
+    let type;
+    switch (this.docxType) {
+      case 1: type = 'УП'; break;
+      case 2: type = 'УТП'; break;
+      case 3: type = 'Расписание'; break;
+    }
+    this.container.documentEditor.save(this.trainingProgramName + '(УП)', 'Docx');
   }
 }

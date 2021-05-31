@@ -40,6 +40,7 @@ import {UserComponent} from './admin-area/users/user.component';
 import {AuthorizationComponent} from './authorization/authorization.component';
 import {ExpertComponent} from './expert/expert.component';
 import {TrainingProgramExpertStepComponent} from './training-program-constructor/training-program-expert-step/training-program-expert-step.component';
+import {DocxGeneratorScheduleComponent} from './doxc-generator-Schedule/docx-generator-schedule.component';
 
 const adminRoutes: Routes = [
   { path: 'trainingProgramExpertStep/:id', component: TrainingProgramExpertStepComponent },
@@ -51,6 +52,7 @@ const adminRoutes: Routes = [
   { path: 'trainingProgramRegulationStep/:id', component: TrainingProgramRegulationStepComponent },
   { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
   { path: 'docxGeneratorATP/:id', component:  DocxGeneratorATPComponent },
+  { path: 'docxGeneratorSchedule', component: DocxGeneratorScheduleComponent },
   { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent },
   { path: 'additionalLiterature', component: AdditionalLiteratureComponent },
   { path: 'regulation', component: RegulationComponent },

@@ -7,4 +7,4 @@
 <button type="button" (click)="generateDean()" size="sm" mdbBtn color="primary"
         class="relative waves-light" mdbWavesEffect>Сгенерировать УТП для декана</button>
 
-<app-document-ed *ngIf="docx[0]" [docx]="docx" [trainingProgram]="trainingProgram"></app-document-ed>
+<app-document-ed *ngIf="docx[0]" [docxType]="2" [docx]="docx" [trainingProgramName]="trainingProgram.name"></app-document-ed>
