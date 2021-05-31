@@ -38,7 +38,6 @@ import {DeanAreaComponent} from './dean-area/dean-area.component';
 import {ViewerAreaComponent} from './viewer-area/viewer-area.component';
 import {UserComponent} from './admin-area/users/user.component';
 import {AuthorizationComponent} from './authorization/authorization.component';
-import {RichTextEditorFormComponent} from './rich-text-editor-form/rich-text-editor-form.component';
 import {ExpertComponent} from './expert/expert.component';
 import {TrainingProgramExpertStepComponent} from './training-program-constructor/training-program-expert-step/training-program-expert-step.component';
 
@@ -89,7 +88,6 @@ const creatorRoutes: Routes = [
   { path: 'trainingProgramRegulationStep/:id', component: TrainingProgramRegulationStepComponent },
   { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
   { path: 'docxGeneratorATP/:id', component:  DocxGeneratorATPComponent },
-  { path: 'richText', component:  RichTextEditorFormComponent },
   { path: 'studentCategory', component: StudentCategoryComponent },
   { path: 'teacher', component: TeacherComponent },
   { path: '**', redirectTo: 'trainingProgram'}

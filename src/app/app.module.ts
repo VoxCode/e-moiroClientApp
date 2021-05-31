@@ -61,8 +61,6 @@ import { UserComponent } from './admin-area/users/user.component';
 import { UserEditComponent } from './admin-area/users/user-edit.component';
 import { AuthorizationComponent } from './authorization/authorization.component';
 import {Globals} from './globals';
-import { RichTextEditorFormComponent } from './rich-text-editor-form/rich-text-editor-form.component';
-import {RichTextEditorAllModule} from '@syncfusion/ej2-angular-richtexteditor';
 import { TeacherDepartmentAddFormComponent } from './teacher/teacher-department-add-form/teacher-department-add-form.component';
 import { ExpertComponent } from './expert/expert.component';
 import {ExpertEditComponent} from './expert/expert-edit.component';
@@ -119,7 +117,6 @@ export function tokenGetter(): string {
     UserComponent,
     UserEditComponent,
     AuthorizationComponent,
-    RichTextEditorFormComponent,
     TeacherDepartmentAddFormComponent,
     ExpertComponent,
     ExpertEditComponent,
@@ -138,7 +135,6 @@ export function tokenGetter(): string {
     NgOptionHighlightModule,
     DocumentEditorContainerModule,
     DocumentEditorAllModule,
-    RichTextEditorAllModule,
     TrainingProgramConstructorModule,
     DragDropModule,
     JwtModule.forRoot({
