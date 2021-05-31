@@ -63,9 +63,11 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
   crateTrainingProgram(content: string): void {
     this.trainingProgramIntroduction.trainingProgramId = this.id;
     this.trainingProgramIntroduction.introduction = content;
-    this.trainingProgramIntroductionService.createValue(this.trainingProgramIntroduction).subscribe(() => {
-      console.log('Crate was successful');
-    });
+    this.trainingProgramIntroductionService.createValue(this.trainingProgramIntroduction)
+      .subscribe((trainingProgramIntroduction: TrainingProgramIntroduction) => {
+        this.trainingProgramIntroduction = trainingProgramIntroduction;
+        console.log('Crate was successful');
+      });
   }
 
   editTrainingProgram(content: string): void {
