@@ -222,6 +222,16 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
+  public experts(obj: any): Paragraph {
+    let rank = '';
+    if (obj.academicRank !== '') {
+      rank = ', ' + obj.academicRank;
+    }
+    return this.someText(obj.firstName[0].toUpperCase() + '.' +
+      obj.patronymicName[0].toUpperCase() + '. ' +
+      obj.lastName + ', ' + obj.position + rank);
+  }
+
   public yearBoth(): Paragraph
   {
     return new Paragraph({
