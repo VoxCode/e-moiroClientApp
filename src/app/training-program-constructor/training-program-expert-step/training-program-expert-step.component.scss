@@ -3,7 +3,6 @@ button{
 }
 
 .buttons{
-  text-align: right;
 }
 
 .delButton {
@@ -16,9 +15,18 @@ button{
 }
 
 .experts {
+  min-height: 170px;
   margin-bottom: 10px;
-  background-color: ghostwhite;
+  background-color: white;
   padding: 20px;
-  border: 1px solid black;
+  border: 1px solid #cccccc;
+  border-radius: 15px;;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 255, .2);
+}
+
+.exp {
+  background: linear-gradient(white, #bdd9f8);
+  padding: 20px;
+  border: 1px solid #92b7ee;
   border-radius: 5px;;
 }

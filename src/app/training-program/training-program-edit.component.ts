@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
-import {MDBModalRef} from 'angular-bootstrap-md';
+import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {DepartmentService} from '../services/department.service';
 import {StudentCategoryService} from '../services/student-category.service';
 import {CertificationTypeService} from '../services/certification-type.service';
@@ -10,6 +10,7 @@ import {StudentCategory} from '../models/StudentCategory';
 import {CertificationType} from '../models/CertificationType';
 import {FormOfEducation} from '../models/FormOfEducation';
 import {FormOfEducationService} from '../services/form-of-education.service';
+import {StudentCategoryEditComponent} from '../student-category/student-category-edit.component';
 
 @Component({
   selector: 'app-modal-edit',
@@ -63,10 +64,12 @@ export class TrainingProgramEditComponent implements OnInit{
 
   constructor(
     public modalRef: MDBModalRef,
+    public modalRef2: MDBModalRef,
     private departmentService: DepartmentService,
     private studentCategoryService: StudentCategoryService,
     private certificationTypeService: CertificationTypeService,
-    private formOfEducationService: FormOfEducationService
+    private formOfEducationService: FormOfEducationService,
+    private modalService2: MDBModalService
   ) { }
 
 
@@ -140,5 +143,40 @@ export class TrainingProgramEditComponent implements OnInit{
 
   changeIsDistanceLearning(el: boolean): void {
     this.isDistanceLearning = el;
+  }
+
+  createStudentCategory(el: any): void {
+    const studentCategory = new StudentCategory(0, el.last);
+    // this.studentCategoryService.createValue(studentCategory)
+    //   .subscribe((studentCategoryResponse: StudentCategory) => {
+    //
+    //   });
+  }
+
+  addStudentCategory(): void {
+    this.modalRef2 = this.modalService2.show(StudentCategoryEditComponent, this.modalOption(this.emptyEl()));
+    this.modalRef2.content.saveButtonClicked.subscribe((newElement: any) => {
+      this.createStudentCategory(newElement);
+    });
+  }
+
+  emptyEl(): any {
+    return {id: 0, first: '', last: ''};
+  }
+
+  modalOption(el: any): any {
+    return {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+      show: false,
+      ignoreBackdropClick: true,
+      class: 'modal-fluid',
+      containerClass: '',
+      animated: true,
+      data: {
+        editableRow: el
+      }
+    };
   }
 }

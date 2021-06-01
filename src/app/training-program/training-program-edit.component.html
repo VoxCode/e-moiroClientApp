@@ -53,6 +53,9 @@
         <option *ngFor="let el of studentCategories" [ngValue]="el.id">{{el.name}}</option>
       </select>
       <mdb-error *ngIf="ninth.invalid && (ninth.dirty || ninth.touched)"></mdb-error>
+      <button size="sm" type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
+              [disabled]="form.invalid" (click)="addStudentCategory()">Добавить новую категорию слушателей
+      </button>
       <br><br>
 
       <label for="eleventh">Тип аттестации</label>
