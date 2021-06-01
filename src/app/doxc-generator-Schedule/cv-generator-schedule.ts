@@ -12,7 +12,7 @@ import {TableScheduleGenerator} from './schedule-document-template/schedule-tabl
 export class DocumentCreatorSchedule {
   docxGeneratorDataTemplate: DocxGeneratorDataTemplate = new DocxGeneratorDataTemplate(28);
   docxGeneratorScheduleTemplate: DocxGeneratorScheduleTemplate = new DocxGeneratorScheduleTemplate(24);
-  // tableScheduleGenerator: TableScheduleGenerator = new TableScheduleGenerator();
+  tableScheduleGenerator: TableScheduleGenerator = new TableScheduleGenerator();
   sections: any[] = [];
 
   constructor(
@@ -51,7 +51,7 @@ export class DocumentCreatorSchedule {
           Date.now(),
           Date.now()),
         this.docxGeneratorScheduleTemplate.trainingProgramInfoATP(5, 'kek', true),
-        // this.tableScheduleGenerator.insertTable(),
+        this.tableScheduleGenerator.insertTable(),
         this.docxGeneratorScheduleTemplate.signatureSchedule(),
         this.docxGeneratorDataTemplate.emptyParagraph(),
       ]

@@ -44,21 +44,17 @@ export class TableScheduleGenerator {
           'Day',
       ],
       [
-        {
-          subs: [
             new ScheduleRowTree([
                   'theme1'
               ],
               [
-                {
-                  subs: [
                     new ScheduleRowTree([
                             'teacher1',
                             'f1',
                             'f1',
                             'f1'
                       ],
-                      [{subs: []}]
+                      []
                     ),
                     new ScheduleRowTree([
                             'teacher2',
@@ -66,25 +62,21 @@ export class TableScheduleGenerator {
                             'f2',
                             'f2'
                       ],
-                      [{subs: []}]
+                      []
                     ),
-                  ]
-                }
               ]
             ),
             new ScheduleRowTree([
                     'theme2'
               ],
               [
-                {
-                  subs: [
                     new ScheduleRowTree([
                             'teacher3',
                             'f3',
                             'f3',
                             'f3'
                       ],
-                      [{subs: []}]
+                      []
                     ),
                     new ScheduleRowTree([
                             'teacher4',
@@ -92,71 +84,69 @@ export class TableScheduleGenerator {
                             'f4',
                             'f4'
                       ],
-                      [{subs: []}]
+                      []
                     ),
-                  ]
-                }
               ]
             ),
-          ]
-      }
       ]
     );
-    this.generateRows(tree);
-    this.scheduleRows.push(a);
+    console.log('=======================================');
+    // tree.calcRowSpan();
+    // console.log(tree.calcRowSpan());
+    // console.log('=======================================');
+    // console.log(tree);
+    this.generateRows(tree, false, undefined);
+    // this.scheduleRows.push(a);
     // this.generateTableRow();
   }
 
 
-  public generateRows(rowTree: ScheduleRowTree, isSub: boolean = false, row?: TableRow): boolean{
-    console.log(rowTree);
-    if (row === undefined) {
-      row = new TableRow({
-        children: this.pushFieldsArr(rowTree.getFields, rowTree.calcRowSpan()),
-      });
+  public generateRows(rowTree: ScheduleRowTree, isSub: boolean = false, cells: TableCell[]): boolean{
+    console.log('-----------------');
 
-    }
-    else {
-      this.pushFields(rowTree.getFields, row, rowTree.calcRowSpan());
+    if (rowTree.getFields.length > 0) {
+      if (cells === undefined) {
+        cells = [];
+      }
+      this.pushFields(rowTree.getFields, cells, rowTree.calcRowSpan());
     }
 
     if (rowTree.getSubs.length > 0) {
         rowTree.getSubs.forEach(sub => {
           if (isSub) {
-            this.generateRows(sub, isSub);
+            console.log('1');
+            console.log(sub);
+            this.generateRows(sub, isSub, undefined);
           }
           else {
-            this.generateRows(sub, isSub, row);
+            console.log('2');
+            console.log(sub);
+            this.generateRows(sub, isSub, cells);
           }
         });
         isSub = false;
     }
     else {
-      this.child.push(row);
+      console.log('push');
+      this.child.push(
+        new TableRow({
+          children: cells,
+        })
+      );
       isSub = true;
     }
     return isSub;
   }
 
   // tslint:disable-next-line:typedef
-  public pushFields(fields: string[], row: TableRow, rowSpan: number){
+  public pushFields(fields: string[], cells: TableCell[], rowSpan: number){
     fields.forEach(field => {
-      // row.Children.push(
-      //   this.generateTableCell(field, this.size, rowSpan),
-      // );
-    });
-  }
-
-  public pushFieldsArr(fields: string[], rowSpan: number): any[]{
-    const fl: any = [];
-    fields.forEach(field => {
-      fl.push(
-        this.generateTableCell(field, this.size, rowSpan)
+      cells.push(
+        this.generateTableCell(field, this.size, rowSpan),
       );
-      console.log(field);
+      console.log('||||||||||||||||||||||||||');
+      console.log(cells.length);
     });
-    console.log(fl);
-    return fl;
   }
 
   // tslint:disable-next-line:typedef
