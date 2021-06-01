@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {TrainingProgram} from '../../models/TrainingProgram';
-import {TrainingProgramService} from '../../services/training-program.service';
 import {ActivatedRoute} from '@angular/router';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {AdditionalLiterature} from '../../models/AdditionalLiterature';
@@ -19,7 +18,6 @@ import {TrainingProgramConstructorService} from '../training-program-constructor
   templateUrl: './training-program-additional-literature-step.component.html',
   styleUrls: ['./training-program-additional-literature-step.component.scss'],
   providers: [
-    TrainingProgramService,
     AdditionalLiteratureService,
     TrainingProgramAdditionalLiteratureService,
     CurriculumTopicTrainingProgramService
@@ -38,7 +36,6 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
   constructor(
     public globals: Globals,
     public  trainingProgramConstructorService: TrainingProgramConstructorService,
-    private trainingProgramService: TrainingProgramService,
     private additionalLiteratureService: AdditionalLiteratureService,
     private trainingProgramAdditionalLiteratureService: TrainingProgramAdditionalLiteratureService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,

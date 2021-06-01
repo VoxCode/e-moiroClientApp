@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {ActivatedRoute} from '@angular/router';
 import {TrainingProgram} from '../../models/TrainingProgram';
-import {TrainingProgramService} from '../../services/training-program.service';
 import {FinalExaminationService} from '../../services/final-examination.service';
 import {FinalExamination} from '../../models/FinalExamination';
 import {TrainingProgramFinalExaminationService} from '../../services/training-program-final-examination.service';
@@ -22,7 +21,6 @@ import {TrainingProgramConstructorService} from '../training-program-constructor
   templateUrl: './training-program-certification-step.component.html',
   styleUrls: ['./training-program-certification-step.component.scss'],
   providers: [
-    TrainingProgramService,
     FinalExaminationService,
     TrainingProgramFinalExaminationService,
     CurriculumTopicTrainingProgramService,
@@ -43,7 +41,6 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
   constructor(
     public globals: Globals,
     public  trainingProgramConstructorService: TrainingProgramConstructorService,
-    private trainingProgramService: TrainingProgramService,
     private finalExaminationService: FinalExaminationService,
     private trainingProgramFinalExaminationService: TrainingProgramFinalExaminationService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,

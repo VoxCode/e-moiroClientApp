@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {CurriculumTopic} from '../../models/CurriculumTopic';
 import {CurriculumTopicService} from '../../services/curriculum-topic.service';
 import {ActivatedRoute} from '@angular/router';
-import {TrainingProgramService} from '../../services/training-program.service';
 import {TrainingProgram} from '../../models/TrainingProgram';
 import {OccupationFormService} from '../../services/occupation-form.service';
 import {Globals} from '../../globals';
@@ -15,7 +14,6 @@ import {TrainingProgramConstructorService} from '../training-program-constructor
   styleUrls: ['./training-program-main-step..component.scss'],
   providers: [
     CurriculumTopicService,
-    TrainingProgramService,
     OccupationFormService,
   ]
 })
@@ -30,7 +28,6 @@ export class TrainingProgramMainStepComponent implements OnInit{
     public globals: Globals,
     public  trainingProgramConstructorService: TrainingProgramConstructorService,
     private curriculumTopicService: CurriculumTopicService,
-    private trainingProgramService: TrainingProgramService,
     private occupationFormService: OccupationFormService,
     private route: ActivatedRoute
   ) { }

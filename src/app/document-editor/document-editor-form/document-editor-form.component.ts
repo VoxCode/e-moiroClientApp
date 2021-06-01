@@ -42,6 +42,7 @@ export class DocumentEditorFormComponent implements OnChanges, AfterViewInit {
   public path: string;
   public culture = 'ru';
   content: string;
+  public saveDisable = false;
 
   constructor(
     private wordToSfdtService: WordToSfdtService
@@ -86,6 +87,11 @@ export class DocumentEditorFormComponent implements OnChanges, AfterViewInit {
         }
       };
       fileReader.readAsDataURL(blob);
+      this.saveDisable = false;
     });
+  }
+
+  saveDisableChange(): void {
+    this.saveDisable = true;
   }
 }

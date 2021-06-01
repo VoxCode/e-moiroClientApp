@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {TrainingProgram} from '../../models/TrainingProgram';
-import {TrainingProgramService} from '../../services/training-program.service';
 import {ActivatedRoute} from '@angular/router';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {RegulationService} from '../../services/regulation.service';
@@ -19,7 +18,6 @@ import {TrainingProgramConstructorService} from '../training-program-constructor
   templateUrl: './training-program-regulation-step.component.html',
   styleUrls: ['./training-program-regulation-step.component.scss'],
   providers: [
-    TrainingProgramService,
     RegulationService,
     TrainingProgramRegulationService,
     CurriculumTopicService
@@ -36,7 +34,6 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   constructor(
     public globals: Globals,
     public  trainingProgramConstructorService: TrainingProgramConstructorService,
-    private trainingProgramService: TrainingProgramService,
     private regulationService: RegulationService,
     private trainingProgramRegulationService: TrainingProgramRegulationService,
     private curriculumTopicService: CurriculumTopicService,

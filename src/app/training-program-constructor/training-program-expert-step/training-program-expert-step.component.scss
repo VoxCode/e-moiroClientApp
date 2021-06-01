@@ -5,3 +5,20 @@ button{
 .buttons{
   text-align: right;
 }
+
+.delButton {
+  display: inline-block;
+  float: right;
+}
+
+.addButton {
+  display: inline-block;
+}
+
+.experts {
+  margin-bottom: 10px;
+  background-color: ghostwhite;
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 5px;;
+}

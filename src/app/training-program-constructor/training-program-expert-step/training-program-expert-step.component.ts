@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import {TrainingProgram} from '../../models/TrainingProgram';
 import {Globals} from '../../globals';
-import {TrainingProgramService} from '../../services/training-program.service';
 import {ActivatedRoute} from '@angular/router';
 import {TrainingProgramTeacher} from '../../models/TrainingProgramTeacher';
 import {TrainingProgramTeacherService} from '../../services/training-program-teacher.service';
 import {Teacher} from '../../models/Teacher';
 import {TeacherService} from '../../services/teacher.service';
 import {TrainingProgramConstructorService} from '../training-program-constructor.service';
+import {TeacherEditComponent} from '../../teacher/teacher-edit.component';
+import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-training-program-expert-step',
   templateUrl: './training-program-expert-step.component.html',
   styleUrls: ['./training-program-expert-step.component.scss'],
   providers: [
-    TrainingProgramService,
     TrainingProgramTeacherService,
     TeacherService,
   ]
@@ -29,14 +29,15 @@ export class TrainingProgramExpertStepComponent implements OnInit {
   teacherDevelopers: Teacher[] = [];
   teacherReviewers: Teacher[] = [];
   teachers: Teacher[] = [];
+  modalRef: MDBModalRef;
 
   constructor(
     public globals: Globals,
     public  trainingProgramConstructorService: TrainingProgramConstructorService,
-    private trainingProgramService: TrainingProgramService,
     private trainingProgramTeacherService: TrainingProgramTeacherService,
     private teacherService: TeacherService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalService: MDBModalService
   ) { }
 
   ngOnInit(): void {
@@ -101,12 +102,16 @@ export class TrainingProgramExpertStepComponent implements OnInit {
 
   removeDeveloper(i: number, id: number): void {
     this.trainingProgramTeacherDeveloper.splice(i, 1);
-    this.trainingProgramTeacherService.deleteValue(id).subscribe();
+    if (id) {
+      this.trainingProgramTeacherService.deleteValue(id).subscribe();
+    }
   }
 
   removeReviewer(i: number, id: number): void {
     this.trainingProgramTeacherReviewer.splice(i, 1);
-    this.trainingProgramTeacherService.deleteValue(id).subscribe();
+    if (id) {
+      this.trainingProgramTeacherService.deleteValue(id).subscribe();
+    }
   }
 
   saveDeveloper(teacherId: number, index: number): void {
@@ -161,5 +166,55 @@ export class TrainingProgramExpertStepComponent implements OnInit {
         console.log('Update was successful!');
       });
     }
+  }
+
+  createTeacher(el: any): void {
+    const teacher = new Teacher(0, el.second, el.third, el.fourth, el.fifth, el.sixth, el.seventh);
+    this.teacherService.createValue(teacher)
+      .subscribe((teacherResponse: Teacher) => {
+        teacherResponse.fullNameForm = teacher.lastName + ' ' + teacher.firstName + ' ' +
+          teacher.patronymicName + ' (' + teacher.academicRank + ')';
+        const tmp = this.teachers;
+        this.teachers = [];
+        tmp.forEach((obj) => {
+          this.teachers.push(obj);
+        });
+        this.teachers.push(teacherResponse);
+      });
+  }
+
+  addNewTeacher(): void {
+    this.modalRef = this.modalService.show(TeacherEditComponent, this.modalOption(this.emptyEl()));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      this.createTeacher(newElement);
+    });
+  }
+
+  emptyEl(): any {
+    return {
+      id: 0,
+      first: '',
+      second: '',
+      third: '',
+      fourth: '',
+      fifth: '',
+      sixth: '',
+      seventh: false};
+  }
+
+  modalOption(el: any): any {
+    return {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+      show: false,
+      ignoreBackdropClick: true,
+      class: 'modal-fluid',
+      containerClass: '',
+      animated: true,
+      data: {
+        editableRow: el
+      }
+    };
   }
 }
