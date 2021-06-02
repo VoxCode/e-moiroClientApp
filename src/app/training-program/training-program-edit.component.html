@@ -21,6 +21,13 @@
         <mdb-error *ngIf="third.invalid && (third.dirty || third.touched)">Обязательно для заполнения</mdb-error>
       </div>
 
+      <div class="md-form">
+        <label for="fifteenth">Количество недель</label>
+        <input id="fifteenth" type="number" class="form-control" formControlName="fifteenth" mdbInput mdbValidate
+               [validateSuccess]="false">
+        <mdb-error *ngIf="fifteenth.invalid && (fifteenth.dirty || fifteenth.touched)">Обязательно для заполнения</mdb-error>
+      </div>
+
       <div>
         <mdb-checkbox [default]="true" (change)="changeIsDistanceLearning($event.checked)"
                       formControlName="fourth">Дистанционное обучение</mdb-checkbox>
@@ -54,7 +61,7 @@
       </select>
       <mdb-error *ngIf="ninth.invalid && (ninth.dirty || ninth.touched)"></mdb-error>
       <button size="sm" type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
-              [disabled]="form.invalid" (click)="addStudentCategory()">Добавить новую категорию слушателей
+              (click)="addStudentCategory()">Добавить новую категорию слушателей
       </button>
       <br><br>
 

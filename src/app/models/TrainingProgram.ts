@@ -3,6 +3,7 @@ export class TrainingProgram {
     public id?: number,
     public name?: string,
     public numberOfHours?: number,
+    public numberOfWeeks?: number,
     public isDistanceLearning?: boolean,
     public isControlWork?: boolean,
     public isTestWork?: boolean,
@@ -14,5 +15,6 @@ export class TrainingProgram {
     public certificationTypeName?: string,
     public formOfEducationId?: number,
     public formOfEducationName?: string,
-    public departmentHeadName?: string){ }
+    public departmentHeadName?: string,
+    public studentCategoryGenitiveName?: string){ }
 }
