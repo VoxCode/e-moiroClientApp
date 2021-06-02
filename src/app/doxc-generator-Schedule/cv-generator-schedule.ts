@@ -43,7 +43,7 @@ export class DocumentCreatorSchedule {
         left: convertMillimetersToTwip(9)
       },
       children: [
-        this.docxGeneratorScheduleTemplate.tableScheduleHeader(),
+        this.docxGeneratorScheduleTemplate.scheduleHeader(),
         this.docxGeneratorScheduleTemplate.mainNameSchedule(),
         this.docxGeneratorScheduleTemplate.groupInfo(5,
           'Современные подходы в образовании младших школьников',

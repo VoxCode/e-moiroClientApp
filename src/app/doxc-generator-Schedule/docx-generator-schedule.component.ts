@@ -19,7 +19,6 @@ export class DocxGeneratorScheduleComponent implements OnInit{
 
   ngOnInit(): void {
     const date = new Date();
-    console.log(date.toLocaleDateString());
     this.getDocument();
   }
 

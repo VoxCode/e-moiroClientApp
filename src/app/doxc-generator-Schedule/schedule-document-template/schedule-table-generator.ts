@@ -10,20 +10,15 @@ import {
   WidthType
 } from 'docx';
 import {TableScheduleHeader} from './schedule-table-header';
-import {ScheduleDataRow} from './table-schedule-data-objects/table-schedule-row';
-import {ScheduleTheme} from './table-schedule-data-objects/table-schedule-theme';
-import {ScheduleTeacher} from './table-schedule-data-objects/table-schedule-teacher';
 import {ScheduleRowTree} from './table-schedule-data-objects/table-schedule-tree-model';
 
 
 export class TableScheduleGenerator {
   private child: any = [];
   private header: TableScheduleHeader;
-  private scheduleRows: ScheduleDataRow[];
   private size: number;
   constructor(
   ) {
-    this.scheduleRows = [];
     this.header = new TableScheduleHeader();
     this.child.push(this.header.insert());
     this.size = 24;
@@ -42,7 +37,6 @@ export class TableScheduleGenerator {
                             'teacher1',
                             'f1',
                             'f1',
-                            'f1'
                       ],
                       []
                     ),
@@ -50,7 +44,6 @@ export class TableScheduleGenerator {
                             'teacher2',
                             'f2',
                             'f2',
-                            'f2'
                       ],
                       []
                     ),
@@ -64,7 +57,6 @@ export class TableScheduleGenerator {
                             'teacher3',
                             'f3',
                             'f3',
-                            'f3'
                       ],
                       []
                     ),
@@ -72,7 +64,6 @@ export class TableScheduleGenerator {
                             'teacher4',
                             'f4',
                             'f4',
-                            'f4'
                       ],
                       []
                     ),
@@ -140,71 +131,6 @@ export class TableScheduleGenerator {
       console.log('||||||||' + field + '|||||||||||');
       console.log(rowSpan);
     });
-  }
-
-  // tslint:disable-next-line:typedef
-  public generateTableRow(){
-    let themeIndex = 0;
-    let teacherIndex = 0;
-    this.scheduleRows.forEach( scheduleRow => {
-      let newRow: TableRow;
-      newRow = new TableRow({
-        children: [
-          this.generateTableCell(scheduleRow.date.toDateString(), this.size, scheduleRow.calcRowSpan()),
-          this.generateTableCell(ScheduleDataRow.getDayOfTheWeek(scheduleRow.date), this.size, scheduleRow.calcRowSpan()),
-          this.generateTableCell(scheduleRow.hours, this.size, scheduleRow.calcRowSpan()),
-          this.generateTableCell(scheduleRow.themes[themeIndex].name, this.size, scheduleRow.calcRowSpan()),
-          this.generateTableCell(scheduleRow.themes[themeIndex].teachers[teacherIndex].name, this.size, scheduleRow.calcRowSpan()),
-          this.generateTableCell(scheduleRow.themes[themeIndex].teachers[teacherIndex].hours.toString(),
-            this.size, scheduleRow.calcRowSpan()),
-          this.generateTableCell(scheduleRow.themes[themeIndex].teachers[teacherIndex].audienceNumber,
-            this.size, scheduleRow.calcRowSpan()),
-        ]
-      });
-      themeIndex++;
-      teacherIndex++;
-      let themeSubrow: TableRow;
-      for (; themeIndex < scheduleRow.themes.length; themeIndex++){
-        const theme = scheduleRow.themes[themeIndex];
-        for (; teacherIndex < theme.teachers.length; teacherIndex++){
-          const teacher = theme.teachers[teacherIndex];
-          if (themeSubrow !== undefined) {
-            // themeSubrow.Children.push(
-            //   this.generateTableCell(teacher.name, this.size, teacher.calcRowSpan()),
-            //   this.generateTableCell(teacher.hours.toString(), this.size, teacher.calcRowSpan()),
-            //   this.generateTableCell(teacher.audienceNumber, this.size, teacher.calcRowSpan()),
-            // );
-            this.child.push(themeSubrow);
-          }
-          else {
-            themeSubrow =  new TableRow({
-              children: [
-                this.generateTableCell(teacher.name, this.size, teacher.calcRowSpan()),
-                this.generateTableCell(teacher.hours.toString(), this.size, teacher.calcRowSpan()),
-                this.generateTableCell(teacher.audienceNumber, this.size, teacher.calcRowSpan()),
-            ],
-              }
-            );
-            this.child.push(themeSubrow);
-          }
-          // if (teacherIndex > 10) {
-          //   break;
-          // }
-        }
-        // if (themeIndex > 10) {
-        //   break;
-        // }
-        themeSubrow = new TableRow({
-            children: [
-              this.generateTableCell(theme.name, this.size, theme.calcRowSpan()),
-            ]
-          }
-        );
-        // this.child.push(themeSubrow);
-      }
-      this.child.push(themeSubrow);
-      this.child.push(newRow);
-    } );
   }
 
 

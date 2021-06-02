@@ -1,5 +1,3 @@
-import {ScheduleTheme} from './table-schedule-theme';
-
 export class ScheduleRowTree {
 
   constructor(private fields: string[], private subs: ScheduleRowTree[]) {
