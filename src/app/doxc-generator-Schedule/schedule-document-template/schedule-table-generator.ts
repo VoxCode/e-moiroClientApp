@@ -28,20 +28,10 @@ export class TableScheduleGenerator {
     this.child.push(this.header.insert());
     this.size = 24;
 
-    const a = new ScheduleDataRow(new Date(Date.now()), '453', [
-      new ScheduleTheme('theme1', [
-        new ScheduleTeacher('teacher1', 12, 'aud1'),
-        new ScheduleTeacher('teacher2', 12, 'aud2'),
-      ]),
-      new ScheduleTheme('theme2', [
-        new ScheduleTeacher('teacher3', 12, 'aud3'),
-        new ScheduleTeacher('teacher4', 12, 'aud4'),
-      ]),
-    ]);
-
     const tree = new ScheduleRowTree([
-          'Date',
-          'Day',
+      'Date',
+      'Day',
+      'Time',
       ],
       [
             new ScheduleRowTree([
@@ -113,15 +103,17 @@ export class TableScheduleGenerator {
 
     if (rowTree.getSubs.length > 0) {
         rowTree.getSubs.forEach(sub => {
+          // console.log('/////////' + isSub + '/////////');
           if (isSub) {
-            console.log('1');
-            console.log(sub);
-            this.generateRows(sub, isSub, undefined);
+            console.log('P1');
+            // console.log(rowTree.calcRowSpan());
+            this.generateRows(sub, !isSub, undefined);
           }
           else {
-            console.log('2');
-            console.log(sub);
+            console.log('P2');
+            // console.log(rowTree.calcRowSpan());
             this.generateRows(sub, isSub, cells);
+            isSub = true;
           }
         });
         isSub = false;
@@ -135,6 +127,7 @@ export class TableScheduleGenerator {
       );
       isSub = true;
     }
+    // console.log(isSub);
     return isSub;
   }
 
@@ -144,8 +137,8 @@ export class TableScheduleGenerator {
       cells.push(
         this.generateTableCell(field, this.size, rowSpan),
       );
-      console.log('||||||||||||||||||||||||||');
-      console.log(cells.length);
+      console.log('||||||||' + field + '|||||||||||');
+      console.log(rowSpan);
     });
   }
 

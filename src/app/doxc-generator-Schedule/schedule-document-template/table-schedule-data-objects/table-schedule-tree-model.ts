@@ -13,25 +13,14 @@ export class ScheduleRowTree {
     return this.subs;
   }
 
-  public cal(): number {
-    if (this.subs === undefined) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-
   public calcRowSpan(): number {
-    if (this.subs === undefined) {
+    if (this.subs.length < 1) {
       return 1;
     }
-    else {
-      const rs = 0;
-      // this.subs.forEach(sub => {
-      //   rs += sub.calcRowSpan();
-      // });
-      return rs;
-    }
+    let rs = 0;
+    this.subs.forEach(sub => {
+      rs += sub.calcRowSpan();
+    });
+    return rs;
   }
 }
