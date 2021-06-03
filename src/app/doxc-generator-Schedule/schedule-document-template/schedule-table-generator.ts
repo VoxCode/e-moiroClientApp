@@ -1,5 +1,5 @@
 import {
-  AlignmentType,
+  AlignmentType, BorderStyle,
   convertMillimetersToTwip,
   Paragraph,
   Table,
@@ -40,13 +40,13 @@ export class TableScheduleGenerator {
                       ],
                       []
                     ),
-                    new ScheduleRowTree([
-                            'teacher2',
-                            'f2',
-                            'f2',
-                      ],
-                      []
-                    ),
+                new ScheduleRowTree([
+                    'teacher2',
+                    'f2',
+                    'f2',
+                  ],
+                  []
+                ),
               ]
             ),
             new ScheduleRowTree([
@@ -140,6 +140,11 @@ export class TableScheduleGenerator {
         text,
         alignment: AlignmentType.CENTER,
       })],
+      borders: {
+        top: {style: BorderStyle.DOT_DASH, size: 5, color: '000000'},
+        bottom: {style: BorderStyle.DOUBLE, size: 5, color: '000000'},
+
+      },
       // columnSpan: this.occupationForms.length,
       verticalAlign: VerticalAlign.TOP,
       textDirection: TextDirection.BOTTOM_TO_TOP_LEFT_TO_RIGHT,
@@ -151,7 +156,7 @@ export class TableScheduleGenerator {
     return new Table({
       rows: this.child,
       width: {
-        size: convertMillimetersToTwip(284.3),
+        size: convertMillimetersToTwip(250.3), // 284.3
         type: WidthType.DXA
       }
     });
