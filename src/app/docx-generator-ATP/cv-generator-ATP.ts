@@ -43,7 +43,10 @@ export class DocumentCreatorRector {
         this.docxGeneratorDataTemplate.approve(this.docxGeneratorDataTemplate.getNowYear(), this.isRector),
         this.docxGeneratorDataTemplate.mainNameDocumentATP('«' + this.trainingProgram.name + '»'),
         this.docxGeneratorDataTemplate.trainingProgramInfoATP(
-          this.trainingProgram.numberOfHours, this.trainingProgram.formOfEducationName, this.trainingProgram.isDistanceLearning),
+          this.trainingProgram.numberOfHours,
+          this.trainingProgram.formOfEducationName,
+          this.trainingProgram.isDistanceLearning,
+          this.trainingProgram.numberOfWeeks),
         new Paragraph({ text: '' }),
         this.tableATPGenerator.tableATP(
           this.occupationForms,

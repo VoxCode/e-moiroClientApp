@@ -319,6 +319,16 @@ export class DocxGeneratorDataTemplate {
     }
   }
 
+  weekEndingDeclination(numberOfWeeks: number): string {
+    switch (numberOfWeeks) {
+      case 1: return 'неделя';
+      case 2: return 'недели';
+      case 3: return 'недели';
+      case 4: return 'недели';
+      default: return 'недель';
+    }
+  }
+
   public mainNameDocumentTP(exactly: string): Paragraph
   {
     return new Paragraph({
@@ -383,8 +393,10 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
-  public trainingProgramInfoATP(numberOfHours: number, formOfEducation: string, isDistance: boolean): Paragraph {
+  public trainingProgramInfoATP(
+    numberOfHours: number, formOfEducation: string, isDistance: boolean, numberOfWeeks: number): Paragraph {
     let tmp = '';
+    const weeks = this.weekEndingDeclination(numberOfWeeks);
     if (isDistance){
       tmp = '(дистанционная)';
     }
@@ -396,7 +408,7 @@ export class DocxGeneratorDataTemplate {
     return new Paragraph({
       children: [
         new TextRun({
-          text: 'Продолжительность обучения - ' + 'X' + ' недель' +
+          text: 'Продолжительность обучения - ' + numberOfWeeks + ' ' + weeks +
             ' (' + numberOfHours + ' ' + this.classHoursEndingDeclination(numberOfHours) + ')',
           size : this.size,
           break: 1
