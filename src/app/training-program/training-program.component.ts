@@ -123,7 +123,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   }
 
   crate(el: any): void {
-    const trainingProgram = new TrainingProgram(0, el.second, el.third, el.fourth, el.fifth,
+    const trainingProgram = new TrainingProgram(0, el.second, el.third, el.fifteenth, el.fourth, el.fifth,
       el.sixth, el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
     this.valueService.createValue(trainingProgram)
       .subscribe((trainingProgramResponse: TrainingProgram) => {
@@ -152,8 +152,8 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
 
   save(el: any): void {
     this.valueService.getValue(el.first).subscribe(() => {
-      const trainingProgram = new TrainingProgram(el.first, el.second, el.third, el.fourth, el.fifth,
-        el.sixth, el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth, el.fifteenth);
+      const trainingProgram = new TrainingProgram(el.first, el.second, el.third, el.fifteenth, el.fourth, el.fifth,
+        el.sixth, el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
       this.valueService.updateValue(trainingProgram).subscribe();
     });
   }

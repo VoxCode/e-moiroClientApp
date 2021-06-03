@@ -369,14 +369,13 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
-  public studentCategoryMain(exactly: string): Paragraph  // Написать логику для удаления и подстановки на возможные другие варианты!!!
+  public studentCategoryMain(exactly: string): Paragraph
   {
-    exactly = exactly.substring( exactly.indexOf(' ') + 1, exactly.length );
     return new Paragraph({
       alignment: AlignmentType.CENTER,
       children: [
         new TextRun({
-          text: 'учителей ' + exactly,
+          text: exactly,
           size : this.size,
           bold : true,
         }),

@@ -36,7 +36,7 @@ export class FirstDocumentPart {
             this.docxGeneratorDataTemplate.emptyParagraph(),
             this.docxGeneratorDataTemplate.approveRector(this.docxGeneratorDataTemplate.getNowYear()),
             this.docxGeneratorDataTemplate.mainNameDocumentTP('«' + this.trainingProgram.name + '»'),
-            this.docxGeneratorDataTemplate.studentCategoryMain(this.trainingProgram.studentCategoryName)
+            this.docxGeneratorDataTemplate.studentCategoryMain(this.trainingProgram.studentCategoryGenitiveName)
           ],
         }),
       ],

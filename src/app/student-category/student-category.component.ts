@@ -70,7 +70,7 @@ export class StudentCategoryComponent implements OnInit, AfterViewInit {
       .subscribe((data: StudentCategory[]) => {
         data.sort((a, b) => a.id - b.id);
         data.forEach((obj, index) => {
-          this.elements.push({id: (++index).toString(), first: obj.id, last: obj.name});
+          this.elements.push({id: (++index).toString(), first: obj.id, second: obj.genitiveName, last: obj.name});
         });
         this.mdbTable.setDataSource(this.elements);
         this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
@@ -80,13 +80,14 @@ export class StudentCategoryComponent implements OnInit, AfterViewInit {
   }
 
   crate(el: any): void {
-    const studentCategory = new StudentCategory(0, el.last);
+    const studentCategory = new StudentCategory(0, el.last, el.second);
     this.valueService.createValue(studentCategory)
       .subscribe((studentCategoryResponse: StudentCategory) => {
         const index = this.elements.length + 1;
         this.mdbTable.addRow({
           id: index.toString(),
           first: studentCategoryResponse.id,
+          second: studentCategoryResponse.genitiveName,
           last: studentCategoryResponse.name
         });
         this.mdbTable.setDataSource(this.elements);
@@ -94,7 +95,7 @@ export class StudentCategoryComponent implements OnInit, AfterViewInit {
   }
 
   save(el: any): void {
-    const studentCategory = new StudentCategory(el.first, el.last);
+    const studentCategory = new StudentCategory(el.first, el.last, el.second);
     this.valueService.updateValue(studentCategory).subscribe();
   }
 
@@ -132,7 +133,7 @@ export class StudentCategoryComponent implements OnInit, AfterViewInit {
   }
 
   emptyEl(): any {
-    return {id: 0, first: '', last: ''};
+    return {id: 0, first: '', second: '', last: ''};
   }
 
   modalOption(el: any): any {
@@ -151,5 +152,3 @@ export class StudentCategoryComponent implements OnInit, AfterViewInit {
     };
   }
 }
-
-

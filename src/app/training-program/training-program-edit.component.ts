@@ -150,7 +150,7 @@ export class TrainingProgramEditComponent implements OnInit{
   }
 
   createStudentCategory(el: any): void {
-    const studentCategory = new StudentCategory(0, el.last);
+    const studentCategory = new StudentCategory(0, el.last, el.second);
     this.studentCategoryService.createValue(studentCategory)
       .subscribe((studentCategoryResponse: StudentCategory) => {
         this.studentCategories.push(studentCategoryResponse);
@@ -166,7 +166,7 @@ export class TrainingProgramEditComponent implements OnInit{
   }
 
   emptyEl(): any {
-    return {id: 0, first: '', last: ''};
+    return {id: 0, first: '', second: '', last: ''};
   }
 
   modalOption(el: any): any {
