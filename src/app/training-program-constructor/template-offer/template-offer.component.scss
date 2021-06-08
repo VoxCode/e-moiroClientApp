@@ -18,7 +18,10 @@
   background: linear-gradient(white, #ddecff);
   border: black solid 1px;
   border-radius: 5px;
-  position: fixed;
+  position: sticky;
+  top: 6vh;
+  height: 93vh;
+  margin-top: -4px;
 }
 
 .example-list {
