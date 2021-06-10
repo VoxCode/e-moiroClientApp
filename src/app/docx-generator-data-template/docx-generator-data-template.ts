@@ -503,6 +503,40 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
+  public testWork(txt: string, indent?: number): Paragraph {
+    return new Paragraph({
+      style: 'default',
+      alignment: AlignmentType.JUSTIFIED,
+      indent: {
+        left: 0,
+        firstLine: indent,
+      },
+      children: [
+        new TextRun({
+          text: txt,
+          break: 1
+        })
+      ]
+    });
+  }
+
+  public independentWork(txt: string, indent?: number): Paragraph {
+    return new Paragraph({
+      style: 'default',
+      alignment: AlignmentType.JUSTIFIED,
+      indent: {
+        left: 0,
+        firstLine: indent,
+      },
+      children: [
+        new TextRun({
+          text: txt,
+          italics: true
+        })
+      ]
+    });
+  }
+
   public getNowYear(): string
   {
     return new Date().getFullYear().toString();

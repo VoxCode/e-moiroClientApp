@@ -40,6 +40,11 @@ export class SecondDocumentPart {
           .someTextCurriculumTopics((index + 1) + '.' + i + '. ' + obj.topicTitle, tmpString, 0, true));
         this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
         i++;
+        if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isControlWork) {
+          this.children.push(this.docxGeneratorDataTemplate
+            .independentWork('Управляемая самостоятельная работа (' + 4 + ' ' + this.docxGeneratorDataTemplate
+              .classHoursEndingDeclination(4) + ')', 720));
+        }
       });
       this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
 
@@ -54,42 +59,18 @@ export class SecondDocumentPart {
           .someTextCurriculumTopics(obj.topicTitle, tmpString, 0, true));
         this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
         j++;
+        if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isControlWork) {
+          this.children.push(this.docxGeneratorDataTemplate
+            .independentWork('Управляемая самостоятельная работа (' + 4 + ' ' + this.docxGeneratorDataTemplate
+              .classHoursEndingDeclination(4) + ')', 720));
+        }
       });
+      if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isControlWork) {
+        this.children.push(this.docxGeneratorDataTemplate
+          .testWork('Контрольная работа № ' + (index + 1).toString(), 720));
+      }
     });
     this.children.push(this.docxGeneratorDataTemplate.pageBreak());
-
-    if (this.trainingProgram.isDistanceLearning === false && this.trainingProgram.isTestWork){
-      this.children.push(this.docxGeneratorDataTemplate.titleText('содержание самостоятельной работы'));
-      this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-      for (let i = 1; i < 5; i++) {
-        for (let input = 1; input < 7; input++) {
-          this.children.push(this.docxGeneratorDataTemplate
-            .someText(i.toString() + '.' + input.toString() + ' Нормативы и прочие обеспечения'));
-          this.children.push(this.docxGeneratorDataTemplate.someText('Задание (сколько то там часов)', 720));
-          this.children.push(this.docxGeneratorDataTemplate.someText('Литература (какие-то страницы)', 720));
-        }
-        this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-      }
-      this.children.push(this.docxGeneratorDataTemplate.pageBreak());
-    }
-
-
-    if (this.trainingProgram.isDistanceLearning === false && this.trainingProgram.isControlWork){
-      this.children.push(this.docxGeneratorDataTemplate.titleText('содержание контрольной работы'));
-      this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-      for (let i = 1; i < 5; i++) {
-        this.children.push(this.docxGeneratorDataTemplate
-          .someText('Контрольная работа №' + i.toString() + ' Название кр - потом добавлю', 720, true));
-        this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-        for (let input = 1; input < 7; input++) {
-          this.children.push(this.docxGeneratorDataTemplate.someText(input.toString() + '. Задания (много много много)', 720));
-          this.children.push(this.docxGeneratorDataTemplate.someText('Литература (какие-то страницы)', 720));
-          this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-        }
-      }
-      this.children.push(this.docxGeneratorDataTemplate.pageBreak());
-    }
-
 
     this.children.push(this.docxGeneratorDataTemplate.titleText('Материалы для итоговой аттестации слушателей'));
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
@@ -100,7 +81,6 @@ export class SecondDocumentPart {
         '. ' + object.content, 720));
     });
     this.children.push(this.docxGeneratorDataTemplate.pageBreak());
-
 
     let indx = 0;
     this.children.push(this.docxGeneratorDataTemplate.titleText('список рекомендуемой литературы'));

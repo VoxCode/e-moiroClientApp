@@ -22,8 +22,6 @@ import {OccupationFormClassHourService} from '../services/occupation-form-class-
 import {TrainingProgramGenerator} from '../models/generator-models/TrainingProgramGenerator';
 import {TrainingProgramTestWorkService} from '../services/training-program-test-work.service';
 import {TrainingProgramIndependentWorkQuestionService} from '../services/training-program-independent-work-question.service';
-import {TrainingProgramTestWork} from '../models/TrainingProgramTestWork';
-import {TrainingProgramIndependentWorkQuestion} from '../models/TrainingProgramIndependentWorkQuestion';
 import {CurriculumTopicTrainingProgramGenerator} from '../models/generator-models/CurriculumTopicTrainingProgramGenerator';
 import {OccupationFormClassHour} from '../models/OccupationFormClassHour';
 import {FirstDocumentPart} from './first-document-part/first-document-part';
@@ -194,25 +192,8 @@ export class DocxGeneratorTPComponent implements OnInit{
       .subscribe((data: TrainingProgramIntroduction) => {
         if (data) {
           this.trainingProgram.trainingProgramIntroduction = data;
-          this.distanceEducationModules();
+          this.getDocument();
         }
-      });
-  }
-
-  distanceEducationModules(): void {
-    if (!this.trainingProgram.isDistanceLearning) { this.getDocument(); return; }
-    this.trainingProgramTestWorkService.getValuesFromTrainingProgram(this.id)
-      .subscribe((trainingProgramTestWork: TrainingProgramTestWork) => {
-        if (!trainingProgramTestWork) { return; }
-        this.trainingProgram.trainingProgramTestWork = trainingProgramTestWork;
-        this.trainingProgramIndependentWorkQuestionService
-          .getValuesFromTrainingProgram(this.id).subscribe((data: TrainingProgramIndependentWorkQuestion[]) => {
-          if (data) {
-            data.sort((a, b) => a.serialNumber - b.serialNumber);
-            this.trainingProgram.trainingProgramIndependentWorkQuestions = data;
-            this.getDocument();
-          }
-        });
       });
   }
 
