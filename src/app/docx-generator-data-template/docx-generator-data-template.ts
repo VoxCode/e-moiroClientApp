@@ -273,13 +273,24 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
-  public classHoursStringBuilder(obj: CurriculumTopicTrainingProgramGenerator): string {
+  public classHoursStringBuilder(obj: CurriculumTopicTrainingProgramGenerator, isDist: boolean): string {
     let tmpString = '';
     obj.occupationFormClassHours.forEach((occupationFormClassHour, index) => {
       if (index === 0) { tmpString += ' ('; }
       if (index !== 0) { tmpString += ', '; }
-      tmpString += occupationFormClassHour.fullName.toString().toLowerCase().split(',')[0] + ',' +
-        ' ' + occupationFormClassHour.classHours + ' ' + this.classHoursEndingDeclination(occupationFormClassHour.classHours);
+      if (occupationFormClassHour.fullName.toLowerCase() === 'форум') {
+        tmpString += occupationFormClassHour.fullName.toString().toLowerCase();
+      }
+      else {
+        if (isDist) {
+          tmpString += occupationFormClassHour.fullName.toString().toLowerCase().split(',')[0] + ': онлайн,' +
+            ' ' + occupationFormClassHour.classHours + ' ' + this.classHoursEndingDeclination(occupationFormClassHour.classHours);
+        }
+        else {
+          tmpString += occupationFormClassHour.fullName.toString().toLowerCase().split(',')[0] + ',' +
+            ' ' + occupationFormClassHour.classHours + ' ' + this.classHoursEndingDeclination(occupationFormClassHour.classHours);
+        }
+      }
       if (index === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }
     });
     return tmpString;

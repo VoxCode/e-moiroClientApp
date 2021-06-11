@@ -35,15 +35,15 @@ export class SecondDocumentPart {
 
       let i = 1;
       invariantCurriculumTopicsList.forEach(obj => {
-        const tmpString = this.docxGeneratorDataTemplate.classHoursStringBuilder(obj);
+        const tmpString = this.docxGeneratorDataTemplate.classHoursStringBuilder(obj, this.trainingProgram.isDistanceLearning);
         this.children.push(this.docxGeneratorDataTemplate
           .someTextCurriculumTopics((index + 1) + '.' + i + '. ' + obj.topicTitle, tmpString, 0, true));
         this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
         i++;
         if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isControlWork) {
           this.children.push(this.docxGeneratorDataTemplate
-            .independentWork('Управляемая самостоятельная работа (' + 4 + ' ' + this.docxGeneratorDataTemplate
-              .classHoursEndingDeclination(4) + ')', 720));
+            .independentWork('Управляемая самостоятельная работа (' + obj.testWorkHours + ' ' + this.docxGeneratorDataTemplate
+              .classHoursEndingDeclination(obj.testWorkHours) + ')', 720));
         }
       });
       this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
@@ -54,15 +54,15 @@ export class SecondDocumentPart {
 
       let j = 1;
       variableCurriculumTopicsList.forEach(obj => {
-        const tmpString = this.docxGeneratorDataTemplate.classHoursStringBuilder(obj);
+        const tmpString = this.docxGeneratorDataTemplate.classHoursStringBuilder(obj, this.trainingProgram.isDistanceLearning);
         this.children.push(this.docxGeneratorDataTemplate
           .someTextCurriculumTopics(obj.topicTitle, tmpString, 0, true));
         this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
         j++;
-        if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isControlWork) {
+        if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isTestWork) {
           this.children.push(this.docxGeneratorDataTemplate
-            .independentWork('Управляемая самостоятельная работа (' + 4 + ' ' + this.docxGeneratorDataTemplate
-              .classHoursEndingDeclination(4) + ')', 720));
+            .independentWork('Управляемая самостоятельная работа (' + obj.testWorkHours  + ' ' + this.docxGeneratorDataTemplate
+              .classHoursEndingDeclination(obj.testWorkHours) + ')', 720));
         }
       });
       if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isControlWork) {

@@ -7,7 +7,6 @@ import {OccupationForm} from '../../../models/OccupationForm';
 import {CurriculumTopicTrainingProgramService} from '../../../services/curriculum-topic-training-program.service';
 import {CurriculumTopicEditComponent} from '../../../curriculum-topic/curriculum-topic-edit.component';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
-import {TrainingProgramAdditionalLiterature} from "../../../models/TrainingProgramAdditionalLiterature";
 
 @Component({
   selector: 'app-curriculum-topic-child',
@@ -23,6 +22,15 @@ export class CurriculumTopicChildComponent implements OnInit {
   @Input() occupationForms: OccupationForm[];
   done: any[] = [];
   modalRef: MDBModalRef;
+  plurals = {
+    result: {
+      '=1': 'час',
+      '=2': 'часа',
+      '=3': 'часа',
+      '=4': 'часа',
+      other: 'часов'
+    },
+  };
 
   constructor(
     private modalService: MDBModalService,
@@ -73,6 +81,7 @@ export class CurriculumTopicChildComponent implements OnInit {
     curriculumTopicTrainingProgram.annotation = item.annotation;
     curriculumTopicTrainingProgram.serialNumber = item.serialNumber;
     curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = item.trainingProgramCurriculumSectionId;
+    curriculumTopicTrainingProgram.testWorkHours = item.testWorkHours;
     this.curriculumTopicTrainingProgramService.updateValue(curriculumTopicTrainingProgram).subscribe(() => {
         console.log('Update was successful');
       });
@@ -96,6 +105,7 @@ export class CurriculumTopicChildComponent implements OnInit {
       curriculumTopicTrainingProgram.annotation = object.annotation;
       curriculumTopicTrainingProgram.serialNumber = ++index;
       curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = object.trainingProgramCurriculumSectionId;
+      curriculumTopicTrainingProgram.testWorkHours = object.testWorkHours;
       curriculumTopicTrainingPrograms.push(curriculumTopicTrainingProgram);
     });
     this.curriculumTopicTrainingProgramService.updateSerialNumbers(curriculumTopicTrainingPrograms).subscribe(() => {
@@ -165,7 +175,8 @@ export class CurriculumTopicChildComponent implements OnInit {
       curriculumTopicTrainingProgramId: curriculumTopicTrainingProgram.id,
       serialNumber: curriculumTopicTrainingProgram.serialNumber,
       annotation: curriculumTopicTrainingProgram.annotation,
-      trainingProgramCurriculumSectionId: curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId
+      trainingProgramCurriculumSectionId: curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId,
+      testWorkHours: curriculumTopicTrainingProgram.testWorkHours
     };
   }
 }

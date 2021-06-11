@@ -14,7 +14,7 @@ export class TableHeaderThirdRow {
           new Paragraph({
             children: [
               new TextRun({
-                text: obj.fullName,
+                text: obj.pluralName,
               })
             ]
           })

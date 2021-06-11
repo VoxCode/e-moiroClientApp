@@ -157,6 +157,9 @@ export class DocxGeneratorATPComponent implements OnInit{
       .subscribe((data: OccupationForm[]) => {
         if (data) {
           this.occupationForms = data;
+          const index = this.occupationForms
+            .findIndex(a => a.fullName.toLowerCase() === 'форум'); // заглушка для удаления форума из УТП
+          this.occupationForms.splice(index, 1);
           this.getDocument();
         }
       });

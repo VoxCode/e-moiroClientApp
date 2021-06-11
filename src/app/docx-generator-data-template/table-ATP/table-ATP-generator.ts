@@ -13,6 +13,7 @@ import {TableCertificationType} from './table-ATP-structure/table-certification-
 import {TableIndividualSessions} from './table-ATP-structure/table-individual-sessions';
 import {TrainingProgramGenerator} from '../../models/generator-models/TrainingProgramGenerator';
 import {CurriculumSectionOccupationFormAllClassHours} from './table-class-hours/curriculum-section-occupation-form-all-class-hours';
+import {TableControlWork} from './table-ATP-structure/table-control-work';
 
 export class TableATPGenerator {
   constructor() {
@@ -26,6 +27,7 @@ export class TableATPGenerator {
     const thirdRow = new TableHeaderThirdRow(occupationForms);
     const fourthRow = new TableHeaderFourthRow(occupationForms.length);
     const tableCertificationType = new TableCertificationType(occupationForms.length, trainingProgram.certificationTypeName);
+    const tableControlWork = new TableControlWork(occupationForms.length);
     const tableIndividualSessions = new TableIndividualSessions(occupationForms, trainingProgram.departmentName);
     const totalTrainingProgramClassHoursList: number[] = [];
     occupationForms.forEach(() => {
@@ -90,6 +92,9 @@ export class TableATPGenerator {
             j++;
           }
         });
+      }
+      if (trainingProgram.isDistanceLearning) {
+        row.push(tableControlWork.insert(index));
       }
     });
     const tableTotalClassHours = new TableTotalClassHours(totalTrainingProgramClassHoursList);

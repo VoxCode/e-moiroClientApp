@@ -6,5 +6,6 @@ export class CurriculumTopicTrainingProgram {
     public serialNumber?: number,
     public trainingProgramCurriculumSectionId?: number,
     public topicTitle?: string,
-    public annotation?: string){ }
+    public annotation?: string,
+    public testWorkHours?: number){ }
 }
