@@ -3,12 +3,13 @@ import {DocxGeneratorDataTemplate} from '../docx-generator-data-template/docx-ge
 import {OccupationForm} from '../models/OccupationForm';
 import {TableATPGenerator} from '../docx-generator-data-template/table-ATP/table-ATP-generator';
 import {TrainingProgramGenerator} from '../models/generator-models/TrainingProgramGenerator';
+import {DistanceTableATPGenerator} from '../docx-generator-data-template/table-ATP/distance-table-ATP-generator';
 
 export class DocumentCreatorRector {
 
   teacher: number;
   docxGeneratorDataTemplate: DocxGeneratorDataTemplate = new DocxGeneratorDataTemplate(28);
-  tableATPGenerator: TableATPGenerator = new TableATPGenerator();
+  tableATPGenerator: TableATPGenerator;
   sections: any[] = [];
 
   constructor(
@@ -18,6 +19,12 @@ export class DocumentCreatorRector {
   ) { }
 
   public create(): Document {
+    if (this.trainingProgram.isDistanceLearning) {
+      this.tableATPGenerator = new DistanceTableATPGenerator(); // distanceATP
+    }
+    else {
+      this.tableATPGenerator = new TableATPGenerator(); // ATP
+    }
     this.sections.push({
       properties: {
         page: {

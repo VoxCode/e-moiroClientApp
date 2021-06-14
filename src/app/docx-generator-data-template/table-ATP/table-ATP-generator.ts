@@ -22,13 +22,13 @@ export class TableATPGenerator {
     occupationForms: OccupationForm[],
     trainingProgram: TrainingProgramGenerator): Table{
     const row: any = [];
-    const firstRow = new TableHeaderFirstRow(occupationForms);
-    const secondRow = new TableHeaderSecondRow(occupationForms);
+    const firstRow = new TableHeaderFirstRow(occupationForms.length);
+    const secondRow = new TableHeaderSecondRow(occupationForms.length);
     const thirdRow = new TableHeaderThirdRow(occupationForms);
     const fourthRow = new TableHeaderFourthRow(occupationForms.length);
     const tableCertificationType = new TableCertificationType(occupationForms.length, trainingProgram.certificationTypeName);
     const tableControlWork = new TableControlWork(occupationForms.length);
-    const tableIndividualSessions = new TableIndividualSessions(occupationForms, trainingProgram.departmentName);
+    const tableIndividualSessions = new TableIndividualSessions(occupationForms.length, trainingProgram.departmentName);
     const totalTrainingProgramClassHoursList: number[] = [];
     occupationForms.forEach(() => {
       totalTrainingProgramClassHoursList.push(0);

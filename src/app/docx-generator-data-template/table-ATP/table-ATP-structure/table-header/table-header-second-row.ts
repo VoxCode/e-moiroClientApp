@@ -2,16 +2,22 @@ import {AlignmentType, Paragraph, TableCell, TableRow} from 'docx';
 
 export class TableHeaderSecondRow {
   private child: any = [];
-  constructor(private occupationForms: any[]) {
+  constructor(private occupationFormsLength: number, isDistance?: boolean) {
     this.child.push(new TableCell({
         children: [new Paragraph({text: '', alignment: AlignmentType.CENTER} )]
       })
     );
     this.child.push(new TableCell({
         children: [new Paragraph({text: 'Распределение по видам занятий', alignment: AlignmentType.CENTER} )],
-        columnSpan: occupationForms.length
+        columnSpan: occupationFormsLength
       })
     );
+    if (isDistance) {
+      this.child.push(new TableCell({
+          children: [new Paragraph({text: '', alignment: AlignmentType.CENTER} )]
+        })
+      );
+    }
   }
   public insert(): TableRow {
 
