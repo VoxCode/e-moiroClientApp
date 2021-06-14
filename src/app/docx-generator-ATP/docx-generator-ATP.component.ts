@@ -99,8 +99,9 @@ export class DocxGeneratorATPComponent implements OnInit{
 
   loadCurriculumTopicTrainingPrograms(): void {
     const checkLength: number[] = [];
-    const forumId = this.occupationForms.findIndex(a => a
+    const forumTmp = this.occupationForms.find(a => a
       .fullName.toLowerCase() === 'форум'); // заглушка для удаления форума из УТП (часть 1)
+    const forumId = forumTmp.id;
     this.trainingProgram.trainingProgramCurriculumSections.forEach((object, index) => {
       this.maxVariableTopicTimeService.getValues(object.id)  // load maxVariableTopicTimes
         .subscribe((maxVariableTopicTimes: MaxVariableTopicTime[]) => {
