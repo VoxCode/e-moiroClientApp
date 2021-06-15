@@ -20,7 +20,8 @@ export class TableATPGenerator {
   }
   public tableATP(
     occupationForms: OccupationForm[],
-    trainingProgram: TrainingProgramGenerator): Table{
+    trainingProgram: TrainingProgramGenerator,
+    isForum: boolean): Table{
     const row: any = [];
     const firstRow = new TableHeaderFirstRow(occupationForms.length);
     const secondRow = new TableHeaderSecondRow(occupationForms.length);
