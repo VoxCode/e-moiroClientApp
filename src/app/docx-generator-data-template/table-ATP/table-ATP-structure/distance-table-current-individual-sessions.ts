@@ -7,11 +7,15 @@ export class DistanceTableCurrentIndividualSessions {
               private departmentName: string) {
   }
 
-  public insert(): TableRow {
+  public insert(isForum: boolean): TableRow {
+    let forum = '';
+    if (isForum) {
+      forum = ': форум';
+    }
     const child: any = [];
     const defaultTableCell = new TableCellDefaultText();
     const emptyTableCell = new EmptyTableCell();
-    child.push(defaultTableCell.insertText('Текущие индивидуальные консультации (на одного слушателя): форум'));
+    child.push(defaultTableCell.insertText('Текущие индивидуальные консультации (на одного слушателя)' + forum));
     child.push(new TableCell({
       children: [
         new Paragraph({

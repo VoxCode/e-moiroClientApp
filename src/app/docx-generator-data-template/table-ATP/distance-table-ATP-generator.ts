@@ -19,7 +19,8 @@ export class DistanceTableATPGenerator {
   }
   public tableATP(
     occupationForms: OccupationForm[],
-    trainingProgram: TrainingProgramGenerator): Table{
+    trainingProgram: TrainingProgramGenerator,
+    isForum: boolean): Table{
     const row: any = [];
     const firstRow = new TableHeaderFirstRow(occupationForms.length, true);
     const secondRow = new TableHeaderSecondRow(occupationForms.length, true);
@@ -73,8 +74,8 @@ export class DistanceTableATPGenerator {
     const tableTotalClassHours = new TableTotalClassHours(totalTrainingProgramClassHoursList);
     row.push(tableTotalClassHours.insert());
     row.push(tableCertificationType.insert());
-    row.push(tableCurrentIndividualSessions.insert());
-    row.push(tableIndividualSessions.insert());
+    row.push(tableCurrentIndividualSessions.insert(isForum));
+    row.push(tableIndividualSessions.insert(isForum));
 
     return new Table({
       rows: row,

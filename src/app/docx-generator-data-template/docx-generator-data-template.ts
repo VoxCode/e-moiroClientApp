@@ -433,24 +433,51 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
-  public noteATP(): Paragraph {
+  public noteATP(isForum: boolean, isDistanceLearning: boolean): Paragraph {
+    const child: any = [];
+    child.push(new TextRun({
+      text: 'Примечание:',
+      break: 1
+    }));
+    if (!isDistanceLearning) {
+      child.push(
+        new TextRun({
+          text: child.length + '. При проведении практических занятий группа может делиться на две' +
+            ' подгруппы численностью слушателей не менее 12 человек.',
+          break: 1
+        }),
+        new TextRun({
+          text: child.length + '. В проведении круглого стола, тематической дискуссии, конференции принимают участие' +
+            ' 2 преподавателя, деловой игры – до 3 преподавателей.',
+          break: 1
+        }));
+    }
+    else {
+      child.push(new TextRun({
+        text: child.length + '. Расчет часов за проверку контрольных работ осуществляется из расчета 0,3 часа за одну работу.',
+        break: 1
+      }));
+      if (isForum) {
+        child.push(new TextRun({
+          text: child.length + '. Расчет часов за проведение форума (текущих консультаций слушателей дистанционной формы' +
+            ' получения образования) осуществляется из расчета 0,15 часа на одного слушателя.',
+          break: 1
+        }));
+      }
+      child.push(new TextRun({
+        text: child.length + '. По запросам слушателей проводятся индивидуальные консультации из расчета 0,4 часа ' +
+          'на одного слушателя за весь заочный (дистанционный) курс.',
+        break: 1
+      }));
+      child.push(new TextRun({
+        text: child.length + '. В проведении зачета принимают участие 2 члена комиссии и отводится до 0,25 часа' +
+          ' на одного слушателя каждому члену комиссии',
+        break: 1
+      }));
+    }
+
     return new Paragraph({
-      children: [
-        new TextRun({
-          text: 'Примечание:',
-          break: 1
-        }),
-        new TextRun({
-          // tslint:disable-next-line:max-line-length
-          text: '1. При проведении практических занятий группа может делиться на две подгруппы численностью слушателей не менее 12 человек.',
-          break: 1
-        }),
-        new TextRun({
-          // tslint:disable-next-line:max-line-length
-          text: '2. В проведении круглого стола, тематической дискуссии, конференции принимают участие 2 преподавателя, деловой игры – до 3 преподавателей.',
-          break: 1
-        }),
-      ]
+      children: child
     });
   }
 

@@ -6,12 +6,16 @@ export class DistanceTableIndividualSessions {
   constructor(private occupationFormsLength: number) {
   }
 
-  public insert(): TableRow {
+  public insert(isForum: boolean): TableRow {
+    let forum = '';
+    if (isForum) {
+      forum = ': форум';
+    }
     const child: any = [];
     const defaultTableCell = new TableCellDefaultText();
     const emptyTableCell = new EmptyTableCell();
-    child.push(defaultTableCell.insertText('Индивидуальные консультации за весь заочный (дистанционный) курс (на одного слушателя): форум' +
-      ''));
+    child.push(defaultTableCell.insertText('Индивидуальные консультации за весь ' +
+      'заочный (дистанционный) курс (на одного слушателя)' + forum));
     child.push(new TableCell({
       children: [
         new Paragraph({

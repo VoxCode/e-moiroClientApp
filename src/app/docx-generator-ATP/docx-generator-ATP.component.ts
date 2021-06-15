@@ -46,6 +46,7 @@ export class DocxGeneratorATPComponent implements OnInit{
   isRector = true;
   occupationForms: OccupationForm[];
   loading: boolean;
+  isForum: boolean;
 
   constructor(
     private trainingProgramService: TrainingProgramService,
@@ -120,7 +121,13 @@ export class DocxGeneratorATPComponent implements OnInit{
             checkLength.push(index);
             this.occupationFormClassHourService.getValuesFromCurriculumSection(object.id) // load occupationFormClassHours
               .subscribe((occupationFormClassHours: OccupationFormClassHour[]) => {
-                if (data.length !== 0) {
+                if (occupationFormClassHours.length !== 0) {
+                  if (!this.isForum && this.trainingProgram.isDistanceLearning) {
+                    const tmp = occupationFormClassHours.find(a => a.occupationFormId === forumId);
+                    if (tmp) {
+                      this.isForum = true;
+                    }
+                  }
                   this.trainingProgram.trainingProgramCurriculumSections[index]
                     .curriculumTopicTrainingPrograms.forEach((obj, i) => {
                     this.trainingProgram.trainingProgramCurriculumSections[index]
@@ -180,6 +187,7 @@ export class DocxGeneratorATPComponent implements OnInit{
       this.trainingProgram,
       this.occupationForms,
       this.isRector,
+      this.isForum
     );
     const docxTmp = documentCreator.create();
     Packer.toBlob(docxTmp).then(blob => {

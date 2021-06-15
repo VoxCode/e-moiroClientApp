@@ -16,6 +16,7 @@ export class DocumentCreatorRector {
     private trainingProgram: TrainingProgramGenerator,
     private occupationForms: OccupationForm[],
     private isRector: boolean,
+    private isForum: boolean
   ) { }
 
   public create(): Document {
@@ -57,9 +58,10 @@ export class DocumentCreatorRector {
         new Paragraph({ text: '' }),
         this.tableATPGenerator.tableATP(
           this.occupationForms,
-          this.trainingProgram
+          this.trainingProgram,
+          this.isForum
         ),
-        this.docxGeneratorDataTemplate.noteATP(),
+        this.docxGeneratorDataTemplate.noteATP(this.isForum, this.trainingProgram.isDistanceLearning),
         this.docxGeneratorDataTemplate.footerATPDean(this.isRector),
         this.docxGeneratorDataTemplate
           .footerATPDepartmentHead(this.trainingProgram.departmentName, this.trainingProgram.departmentHeadName)
