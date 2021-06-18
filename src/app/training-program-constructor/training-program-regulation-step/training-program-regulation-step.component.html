@@ -16,7 +16,7 @@
       </div>
       <div class="col-sm-6">
         <div class="example-container">
-          <h2>Выбрано</h2>
+          <h2>Перечень</h2>
           <button *ngIf="done.length === 0" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
                   (click)="trainingProgramRegulationCrateForm()" mdbWavesEffect>
             <mdb-icon fas icon="plus" size="sm"></mdb-icon>
@@ -51,10 +51,12 @@
   </div>
   <br><br>
 
+  <button type="button" [routerLink]="['/' + globals.role +'/trainingProgramAdditionalLiteratureStep', id]"
+          mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Назад</button>
   <button type="button" [routerLink]="'/' + globals.role +'/trainingProgram'"
-          mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Завершить</button>
-  <button type="button" [routerLink]="['/' + globals.role +'/docxGeneratorTP', id]" mdbBtn color="success"
+          mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Завершить</button>
+  <button type="button" size="sm" [routerLink]="['/' + globals.role +'/docxGeneratorTP', id]" mdbBtn color="orange"
           class="relative waves-light" mdbWavesEffect>Сгенерировать УП</button>
-  <button type="button" [routerLink]="['/' + globals.role +'/docxGeneratorATP', id]" mdbBtn color="success"
+  <button type="button" size="sm" [routerLink]="['/' + globals.role +'/docxGeneratorATP', id]" mdbBtn color="orange"
           class="relative waves-light" mdbWavesEffect>Сгенерировать УТП</button>
 </div>

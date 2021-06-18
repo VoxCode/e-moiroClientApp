@@ -71,6 +71,8 @@
   </div>
   <br>
   <button style="float: right" type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="addNewTeacher()"
-          mdbWavesEffect>Добавить нового преподавателя</button>
+          mdbWavesEffect>Добавить нового эксперта</button>
+  <br>
+  <button style="float: left" type="button" [routerLink]="['/' + globals.role +'/trainingProgramIntroductionStep', id]"
+          mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Далее</button><br>
 </div>
-

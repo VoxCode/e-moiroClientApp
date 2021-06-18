@@ -2,6 +2,12 @@
      class="spinner-grow text-primary" role="status">
   <span class="sr-only">Loading...</span>
 </div>
+<button type="button" mdbBtn color="orange" size="sm" class="relative waves-light"
+        [routerLink]="['/' + globals.role +'/docxGeneratorATP', id]"
+        mdbWavesEffect>Сгенерировать УТП</button>
+<button type="button" mdbBtn color="green" size="sm" class="relative waves-light"
+        [routerLink]="['/' + globals.role +'/trainingProgramExpertStep', id]"
+        mdbWavesEffect>Конструктор</button>
 <app-document-ed *ngIf="docx[0]" [docxType]="1" [docx]="docx" [trainingProgramName]="trainingProgram.name"></app-document-ed>
 
 

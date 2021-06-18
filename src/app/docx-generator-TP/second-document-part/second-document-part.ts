@@ -41,12 +41,17 @@ export class SecondDocumentPart {
         this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
         i++;
         if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isControlWork) {
-          this.children.push(this.docxGeneratorDataTemplate
-            .independentWork('Управляемая самостоятельная работа (' + obj.testWorkHours + ' ' + this.docxGeneratorDataTemplate
-              .classHoursEndingDeclination(obj.testWorkHours) + ')', 720));
+          if (obj.testWorkHours !== 0) {
+            this.children.push(this.docxGeneratorDataTemplate
+              .independentWork('Управляемая самостоятельная работа (' + obj.testWorkHours + ' ' + this.docxGeneratorDataTemplate
+                .classHoursEndingDeclination(obj.testWorkHours) + ')', 720));
+          }
+          else {
+            this.children.push(this.docxGeneratorDataTemplate
+              .independentWork('Управляемая самостоятельная работа', 720));
+          }
         }
       });
-      this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
 
       if (!this.trainingProgram.isDistanceLearning && variableCurriculumTopicsList.length !== 0) {
         this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Вариативная часть', 0,  true));
@@ -60,14 +65,21 @@ export class SecondDocumentPart {
         this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
         j++;
         if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isTestWork) {
-          this.children.push(this.docxGeneratorDataTemplate
-            .independentWork('Управляемая самостоятельная работа (' + obj.testWorkHours  + ' ' + this.docxGeneratorDataTemplate
-              .classHoursEndingDeclination(obj.testWorkHours) + ')', 720));
+          if (obj.testWorkHours !== 0) {
+            this.children.push(this.docxGeneratorDataTemplate
+              .independentWork('Управляемая самостоятельная работа (' + obj.testWorkHours  + ' ' + this.docxGeneratorDataTemplate
+                .classHoursEndingDeclination(obj.testWorkHours) + ')', 720));
+          }
+          else {
+            this.children.push(this.docxGeneratorDataTemplate
+              .independentWork('Управляемая самостоятельная работа', 720));
+          }
         }
       });
       if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isControlWork) {
         this.children.push(this.docxGeneratorDataTemplate
           .testWork('Контрольная работа № ' + (index + 1).toString(), 720));
+        this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
       }
     });
     this.children.push(this.docxGeneratorDataTemplate.pageBreak());

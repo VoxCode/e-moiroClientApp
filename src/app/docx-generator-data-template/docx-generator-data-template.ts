@@ -113,16 +113,14 @@ export class DocxGeneratorDataTemplate {
       alignment: AlignmentType.CENTER,
       children: [
         new TextRun({
-          text: 'ГОСУДАРСТВЕННОЕ УЧРЕЖДЕНИЕ ОБРАЗОВАНИЯ',
+          text: 'Государственное учреждение образования',
           size : this.size,
           bold : true,
-          allCaps: true
         }),
         new TextRun({
-          text: '«МИНСКИЙ ОБЛАСТНОЙ ИНСТИТУТ РАЗВИТИЯ ОБРАЗОВАНИЯ»',
+          text: '«Минский областной институт развития образования»',
           size : this.size,
           bold : true,
-          allCaps: true,
           break: 1
         }),
       ],
@@ -471,7 +469,7 @@ export class DocxGeneratorDataTemplate {
       }));
       child.push(new TextRun({
         text: child.length + '. В проведении зачета принимают участие 2 члена комиссии и отводится до 0,25 часа' +
-          ' на одного слушателя каждому члену комиссии',
+          ' на одного слушателя каждому члену комиссии.',
         break: 1
       }));
     }

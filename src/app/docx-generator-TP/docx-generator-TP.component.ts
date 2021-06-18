@@ -28,6 +28,7 @@ import {FirstDocumentPart} from './first-document-part/first-document-part';
 import {SecondDocumentPart} from './second-document-part/second-document-part';
 import {Packer} from 'docx';
 import {Base64ToBlob} from '../base64-to-blob/base64-to-blob';
+import {Globals} from '../globals';
 
 
 @Component({
@@ -74,7 +75,8 @@ export class DocxGeneratorTPComponent implements OnInit{
     private occupationFormClassHourService: OccupationFormClassHourService,
     private htmlToDocxService: WordToSfdtService,
     private docxMergeService: DocxMergeService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public globals: Globals
   ) { }
 
   ngOnInit(): void {

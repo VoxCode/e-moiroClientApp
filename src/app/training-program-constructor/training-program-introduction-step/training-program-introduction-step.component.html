@@ -15,4 +15,10 @@
                             [docxContent]="docxContent"
                             (saveButtonClicked)="saveChanges($event)">
   </app-document-editor-form>
+
+  <br>
+  <button style="float: left; border-radius: 5px" type="button" [routerLink]="['/' + globals.role +'/trainingProgramExpertStep', id]"
+          mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Назад</button>
+  <button style="float: left; border-radius: 5px" type="button" [routerLink]="['/' + globals.role +'/trainingProgramMainStep', id]"
+          mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Далее</button><br>
 </div>

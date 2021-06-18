@@ -76,7 +76,6 @@ export class CurriculumTopicChildComponent implements OnInit {
     const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
     curriculumTopicTrainingProgram.id = item.curriculumTopicTrainingProgramId;
     curriculumTopicTrainingProgram.isVariable = item.isVariable;
-    curriculumTopicTrainingProgram.classHours = item.classHours;
     curriculumTopicTrainingProgram.topicTitle = item.topicTitle;
     curriculumTopicTrainingProgram.annotation = item.annotation;
     curriculumTopicTrainingProgram.serialNumber = item.serialNumber;
@@ -100,7 +99,6 @@ export class CurriculumTopicChildComponent implements OnInit {
       const curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
       curriculumTopicTrainingProgram.id = object.curriculumTopicTrainingProgramId;
       curriculumTopicTrainingProgram.isVariable = object.isVariable;
-      curriculumTopicTrainingProgram.classHours = object.classHours;
       curriculumTopicTrainingProgram.topicTitle = object.topicTitle;
       curriculumTopicTrainingProgram.annotation = object.annotation;
       curriculumTopicTrainingProgram.serialNumber = ++index;
@@ -126,7 +124,6 @@ export class CurriculumTopicChildComponent implements OnInit {
       const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram(
         0,
         false,
-        0,
         this.done.length + 1,
         this.trainingProgramCurriculumSection.id,
         newElement.second,
@@ -171,7 +168,6 @@ export class CurriculumTopicChildComponent implements OnInit {
     return {
       topicTitle: curriculumTopicTrainingProgram.topicTitle,
       isVariable: curriculumTopicTrainingProgram.isVariable,
-      classHours: curriculumTopicTrainingProgram.classHours,
       curriculumTopicTrainingProgramId: curriculumTopicTrainingProgram.id,
       serialNumber: curriculumTopicTrainingProgram.serialNumber,
       annotation: curriculumTopicTrainingProgram.annotation,

@@ -20,6 +20,7 @@ import {CurriculumTopicTrainingProgramGenerator} from '../models/generator-model
 import {OccupationFormClassHour} from '../models/OccupationFormClassHour';
 import {MaxVariableTopicTimeService} from '../services/max-variable-topic-time.service';
 import {MaxVariableTopicTime} from '../models/MaxVariableTopicTime';
+import {Globals} from '../globals';
 
 
 @Component({
@@ -58,7 +59,8 @@ export class DocxGeneratorATPComponent implements OnInit{
     private occupationFormClassHourService: OccupationFormClassHourService,
     private maxVariableTopicTimeService: MaxVariableTopicTimeService,
     private occupationFormService: OccupationFormService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public globals: Globals
   ) { }
 
   ngOnInit(): void {
@@ -82,6 +84,7 @@ export class DocxGeneratorATPComponent implements OnInit{
       .subscribe((data: OccupationForm[]) => {
         if (data) {
           this.occupationForms = data;
+          data.sort((a, b) => a.id - b.id);
           this.loadTrainingProgramCurriculumSections();
         }
       });
