@@ -111,12 +111,9 @@ export class CurriculumTopicChildComponent implements OnInit {
     });
   }
 
-
   crateCurriculumTopicTemplate(): void {
 
   }
-
-
 
   curriculumTopicAddForm(): void {
     this.modalRef = this.modalService.show(CurriculumTopicEditComponent, this.modalOption(this.emptyEl()));

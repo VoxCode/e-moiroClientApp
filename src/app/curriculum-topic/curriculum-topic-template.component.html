@@ -1,0 +1,32 @@
+<div class="modal-content" >
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">×</span>
+    </button>
+    <h4 class="modal-title w-100" id="myModalLabel">Желаете создать шаблон на основе этой темы</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form">
+      <div class="md-textarea">
+        <label for="second">Тема</label>
+        <textarea id="second" type="text" class="md-textarea md-textarea-auto form-control"
+                  formControlName="second" mdbInput mdbValidate [validateSuccess]="false"></textarea>
+        <mdb-error *ngIf="second.invalid && (second.dirty || second.touched)"></mdb-error>
+      </div>
+      <div class="md-textarea">
+        <label for="last">Аннотация</label>
+        <textarea id="last" type="text" class="md-textarea md-textarea-auto form-control"
+                  formControlName="last" mdbInput mdbValidate [validateSuccess]="false"></textarea>
+        <mdb-error *ngIf="last.invalid && (last.dirty || last.touched)"></mdb-error>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" mdbBtn color="danger" class="relative waves-light" mdbWavesEffect
+            (click)="modalRef.hide()">Отмена
+    </button>
+    <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
+            [disabled]="form.invalid" (click)="editRow()">Создать
+    </button>
+  </div>
+</div>
