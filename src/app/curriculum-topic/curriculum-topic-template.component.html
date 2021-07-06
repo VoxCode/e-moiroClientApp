@@ -3,7 +3,7 @@
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">×</span>
     </button>
-    <h4 class="modal-title w-100" id="myModalLabel">Желаете создать шаблон на основе этой темы</h4>
+    <h4 class="modal-title w-100" id="myModalLabel">Создание шаблона</h4>
   </div>
   <div class="modal-body">
     <form [formGroup]="form">
@@ -22,11 +22,11 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" mdbBtn color="danger" class="relative waves-light" mdbWavesEffect
+    <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
             (click)="modalRef.hide()">Отмена
     </button>
     <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
-            [disabled]="form.invalid" (click)="editRow()">Создать
+            [disabled]="form.invalid" (click)="editRow()">Сохранить шаблон
     </button>
   </div>
 </div>

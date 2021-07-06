@@ -7,6 +7,10 @@ import {OccupationForm} from '../../../models/OccupationForm';
 import {CurriculumTopicTrainingProgramService} from '../../../services/curriculum-topic-training-program.service';
 import {CurriculumTopicEditComponent} from '../../../curriculum-topic/curriculum-topic-edit.component';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
+import {CurriculumTopicTemplateComponent} from '../../../curriculum-topic/curriculum-topic-template.component';
+import {CurriculumTopic} from '../../../models/CurriculumTopic';
+import {Globals} from '../../../globals';
+import {CurriculumTopicService} from '../../../services/curriculum-topic.service';
 
 @Component({
   selector: 'app-curriculum-topic-child',
@@ -33,8 +37,10 @@ export class CurriculumTopicChildComponent implements OnInit {
   };
 
   constructor(
+    public globals: Globals,
     private modalService: MDBModalService,
-    private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService) { }
+    private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
+    private curriculumTopicService: CurriculumTopicService) { }
 
   ngOnInit(): void {
     this.loadCurriculumTopicTrainingPrograms();
@@ -111,8 +117,11 @@ export class CurriculumTopicChildComponent implements OnInit {
     });
   }
 
-  crateCurriculumTopicTemplate(): void {
-
+  crateCurriculumTopicTemplate(curriculumTopicTemplate: CurriculumTopic): void {
+    this.curriculumTopicService.createValue(curriculumTopicTemplate)
+      .subscribe((curriculumTopicTemplateResponse: CurriculumTopic) => {
+        console.log('Save was successful!');
+      });
   }
 
   curriculumTopicAddForm(): void {
@@ -126,6 +135,19 @@ export class CurriculumTopicChildComponent implements OnInit {
         newElement.second,
         newElement.last);
       this.crateCurriculumTopicTrainingProgram(curriculumTopicTrainingProgram);
+      if (newElement.third) {
+        const element = {id: 0, first: '', second: newElement.second, last: newElement.last};
+        this.modalRef = this.modalService.show(CurriculumTopicTemplateComponent, this.modalOption(element));
+        this.modalRef.content.saveButtonClicked.subscribe((newTemplateElement: any) => {
+          const curriculumTopicTemplate = new CurriculumTopic(
+            0,
+            newTemplateElement.first,
+            newTemplateElement.second,
+            this.globals.userId
+          );
+          this.crateCurriculumTopicTemplate(curriculumTopicTemplate);
+        });
+      }
     });
   }
 
