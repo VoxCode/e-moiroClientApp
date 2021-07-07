@@ -45,7 +45,7 @@ export class TrainingProgramMainStepComponent implements OnInit{
       });
   }
 
-  loadOccupationForms(): void {  // Загружаю формы занятия для всех потомков (нужно закинуть в общий класс)
+  loadOccupationForms(): void {  // Загружаю формы занятия для всех потомков
     this.occupationFormService.getValues()
       .subscribe((data: OccupationForm[]) => {
         if (data.length !== 0){

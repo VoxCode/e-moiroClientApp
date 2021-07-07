@@ -141,8 +141,8 @@ export class CurriculumTopicChildComponent implements OnInit {
         this.modalRef.content.saveButtonClicked.subscribe((newTemplateElement: any) => {
           const curriculumTopicTemplate = new CurriculumTopic(
             0,
-            newTemplateElement.first,
             newTemplateElement.second,
+            newTemplateElement.last,
             this.globals.userId
           );
           this.crateCurriculumTopicTemplate(curriculumTopicTemplate);

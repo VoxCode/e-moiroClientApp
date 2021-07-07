@@ -1,9 +1,9 @@
 import {TableRow} from 'docx';
-import {TableCellBoldText} from '../table-cell-templates/table-cell-bold-text';
 import {EmptyTableCell} from '../table-cell-templates/empty-table-cell';
 import {TableCellDefaultTextAlignmentCenter} from '../table-cell-templates/table-cell-default-text-alignment-center';
 import {TableCellBoldTextAlignmentCenter} from '../table-cell-templates/table-cell-bold-text-alignment-center';
 import {TotalClassHours} from '../table-class-hours/total-class-hours';
+import {TableCellItalicText} from '../table-cell-templates/table-cell-italic-text';
 
 export class TableVariableSection {
   private child: any = [];
@@ -12,12 +12,12 @@ export class TableVariableSection {
   }
 
   public insert(): TableRow {
-    const tableCellBoldText = new TableCellBoldText();
+    const tableCellItalicText = new TableCellItalicText();
     const tableCellBoldTextCenter = new TableCellBoldTextAlignmentCenter();
     const emptyTableCell = new EmptyTableCell();
     const defaultTableCell = new TableCellDefaultTextAlignmentCenter();
     const allClassHours = new TotalClassHours(this.classHours);
-    this.child.push(tableCellBoldText.insertText('Вариативная часть'));
+    this.child.push(tableCellItalicText.insertText('Вариативная часть'));
     this.child.push(tableCellBoldTextCenter.insertText(allClassHours.allClassHours.toString()));
     this.classHours.forEach((obj) => {
       if (obj === 0) {

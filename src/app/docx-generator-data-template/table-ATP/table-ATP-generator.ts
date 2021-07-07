@@ -14,6 +14,7 @@ import {TableIndividualSessions} from './table-ATP-structure/table-individual-se
 import {TrainingProgramGenerator} from '../../models/generator-models/TrainingProgramGenerator';
 import {CurriculumSectionOccupationFormAllClassHours} from './table-class-hours/curriculum-section-occupation-form-all-class-hours';
 import {TableControlWork} from './table-ATP-structure/table-control-work';
+import {TableVariableOptionalPracticalTraining} from './table-ATP-structure/table-variable-optional-practical-training';
 
 export class TableATPGenerator {
   constructor() {
@@ -81,6 +82,10 @@ export class TableATPGenerator {
         let variableTableRow = new TableVariableSection(allOccupationFormsClassHours.variableClassHours);
         row.push(variableTableRow.insert());
         variableTableRow = null;
+        let tableVariableOptionalPracticalTraining = new TableVariableOptionalPracticalTraining(
+          allOccupationFormsClassHours.variableClassHours);
+        row.push(tableVariableOptionalPracticalTraining.insert());
+        tableVariableOptionalPracticalTraining = null;
 
         let j = 0;
         obj.curriculumTopicTrainingPrograms.forEach(curriculumTopic => {
