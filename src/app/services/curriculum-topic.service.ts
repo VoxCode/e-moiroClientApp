@@ -3,6 +3,7 @@ import { HttpClient} from '@angular/common/http';
 import { CurriculumTopic } from '../models/CurriculumTopic';
 import { environment } from '../../environments/environment';
 import {Observable} from 'rxjs';
+import {TrainingProgram} from '../models/TrainingProgram';
 
 @Injectable()
 export class CurriculumTopicService {
@@ -12,14 +13,17 @@ export class CurriculumTopicService {
   getValues(): Observable<any> {
     return this.http.get(this.url);
   }
-  getValue(studentCategoryId: number, departmentId: number): Observable<any> {
-    return this.http.get(this.url + '/' + studentCategoryId + '/' + departmentId);
+  getValuesFromFilter(studentCategoryId: number, departmentId: number, authorIndex: string): Observable<any> {
+    return this.http.get(this.url + '/' + studentCategoryId + '/' + departmentId + '/' + authorIndex);
   }
   getFromTrainingProgram(trainingProgramId: number): Observable<any> {
     return this.http.get(this.url + '/TrainingProgram/' + trainingProgramId);
   }
   createValue(curriculumTopic: CurriculumTopic): Observable<any> {
     return this.http.post(this.url, curriculumTopic);
+  }
+  createRelationships(trainingProgram: TrainingProgram, curriculumTopicId: number): Observable<any> {
+    return this.http.post(this.url + '/PostTrainingProgram/' + curriculumTopicId, trainingProgram);
   }
   updateValue(curriculumTopic: CurriculumTopic): Observable<any> {
     return this.http.put(this.url, curriculumTopic);

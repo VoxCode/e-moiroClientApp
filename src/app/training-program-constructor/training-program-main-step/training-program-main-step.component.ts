@@ -51,37 +51,35 @@ export class TrainingProgramMainStepComponent implements OnInit{
         if (data.length !== 0){
           data.sort((a, b) => a.id - b.id);
           this.occupationForms = data;
-          this.loadUsedTemplates();
+          this.loadTemplateCurriculumTopics();
         }
       });
   }
 
-  loadUsedTemplates(): void { // Загружаю шаблоны которые уже используются в этой учебной программе
-    this.curriculumTopicService.getFromTrainingProgram(this.id)
-      .subscribe((curriculumTopics: CurriculumTopic[]) => {
-        if (curriculumTopics.length !== 0) {
-          this.loadTemplateCurriculumTopics(curriculumTopics);
-        }
-      });
-  }
-
-  loadTemplateCurriculumTopics(curriculumTopicsUsed: CurriculumTopic[]): void { // Загружаю предложку с фильтрацией
-    this.curriculumTopicService.getValue(this.trainingProgram.studentCategoryId, this.trainingProgram.departmentId)
+  loadTemplateCurriculumTopics(): void { // Загружаю предложку с фильтрацией
+    this.curriculumTopicService.getValuesFromFilter(
+      this.trainingProgram.studentCategoryId, this.trainingProgram.departmentId, this.globals.userId)
       .subscribe((curriculumTopics: CurriculumTopic[]) => {
         if (curriculumTopics.length !== 0) {
           curriculumTopics.sort((a, b) => b.id - a.id);
           curriculumTopics.forEach((curriculumTopic) => {
-            const used = curriculumTopicsUsed.find(a => a.id === curriculumTopic.id);
-            if (!used) {
-              this.todo.push({
-                curriculumTopicId: curriculumTopic.id,
-                topicTitle: curriculumTopic.topicTitle,
-                isVariable: false,
-                annotation: curriculumTopic.annotation
-              });
-            }
+            this.todo.push({
+              curriculumTopicId: curriculumTopic.id,
+              topicTitle: curriculumTopic.topicTitle,
+              isVariable: false,
+              annotation: curriculumTopic.annotation
+            });
           });
         }
       });
+  }
+
+  addNewTemplate(newTemplate: CurriculumTopic ): void {
+    this.todo.push({
+      curriculumTopicId: newTemplate.id,
+      topicTitle: newTemplate.topicTitle,
+      isVariable: false,
+      annotation: newTemplate.annotation
+    });
   }
 }

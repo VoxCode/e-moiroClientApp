@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {CurriculumTopicTrainingProgram} from '../../../models/СurriculumTopicTrainingProgram';
 import {TrainingProgram} from '../../../models/TrainingProgram';
@@ -24,6 +24,7 @@ export class CurriculumTopicChildComponent implements OnInit {
   @Input() trainingProgram: TrainingProgram;
   @Input() trainingProgramCurriculumSection: TrainingProgramCurriculumSection;
   @Input() occupationForms: OccupationForm[];
+  @Output() newTodoValue = new EventEmitter<CurriculumTopic>();
   done: any[] = [];
   modalRef: MDBModalRef;
   plurals = {
@@ -102,15 +103,34 @@ export class CurriculumTopicChildComponent implements OnInit {
   save(): void {
     const curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
     this.done.forEach((object, index) => {
-      const curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
-      curriculumTopicTrainingProgram.id = object.curriculumTopicTrainingProgramId;
-      curriculumTopicTrainingProgram.isVariable = object.isVariable;
-      curriculumTopicTrainingProgram.topicTitle = object.topicTitle;
-      curriculumTopicTrainingProgram.annotation = object.annotation;
-      curriculumTopicTrainingProgram.serialNumber = ++index;
-      curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = object.trainingProgramCurriculumSectionId;
-      curriculumTopicTrainingProgram.testWorkHours = object.testWorkHours;
-      curriculumTopicTrainingPrograms.push(curriculumTopicTrainingProgram);
+      if (object.curriculumTopicId) {
+        const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram(
+          0,
+          false,
+          ++index,
+          this.trainingProgramCurriculumSection.id,
+          object.topicTitle,
+          object.annotation);
+        this.curriculumTopicTrainingProgramService.createValue(curriculumTopicTrainingProgram)
+          .subscribe((curriculumTopicTrainingProgramResponse: CurriculumTopicTrainingProgram) => {
+            object.serialNumber = curriculumTopicTrainingProgramResponse.serialNumber;
+            object.curriculumTopicTrainingProgramId = curriculumTopicTrainingProgramResponse.id;
+            object.testWorkHours = 0;
+            object.curriculumTopicId = undefined;
+            object.trainingProgramCurriculumSectionId = this.trainingProgramCurriculumSection.id;
+          });
+      }
+      else {
+        const curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
+        curriculumTopicTrainingProgram.id = object.curriculumTopicTrainingProgramId;
+        curriculumTopicTrainingProgram.isVariable = object.isVariable;
+        curriculumTopicTrainingProgram.topicTitle = object.topicTitle;
+        curriculumTopicTrainingProgram.annotation = object.annotation;
+        curriculumTopicTrainingProgram.serialNumber = ++index;
+        curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = object.trainingProgramCurriculumSectionId;
+        curriculumTopicTrainingProgram.testWorkHours = object.testWorkHours;
+        curriculumTopicTrainingPrograms.push(curriculumTopicTrainingProgram);
+      }
     });
     this.curriculumTopicTrainingProgramService.updateSerialNumbers(curriculumTopicTrainingPrograms).subscribe(() => {
       console.log('Successful!');
@@ -121,6 +141,11 @@ export class CurriculumTopicChildComponent implements OnInit {
     this.curriculumTopicService.createValue(curriculumTopicTemplate)
       .subscribe((curriculumTopicTemplateResponse: CurriculumTopic) => {
         console.log('Save was successful!');
+        this.curriculumTopicService.createRelationships(this.trainingProgram, curriculumTopicTemplateResponse.id)
+          .subscribe(() => {
+            this.newTodoValue.emit(curriculumTopicTemplateResponse);
+            console.log('Relationships created!');
+          });
       });
   }
 

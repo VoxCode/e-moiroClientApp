@@ -85,11 +85,11 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
       });
   }
 
-  loadCurriculumTopicTemplates(): void {
-    this.curriculumTopicService.getFromTrainingProgram(this.id).subscribe((curriculumTopics: CurriculumTopic[]) => {
-      // this.loadRegulationTemplates(curriculumTopics);
-    });
-  }
+  // loadCurriculumTopicTemplates(): void {
+  //   this.curriculumTopicService.getFromTrainingProgram(this.id).subscribe((curriculumTopics: CurriculumTopic[]) => {
+  //     // this.loadRegulationTemplates(curriculumTopics);
+  //   });
+  // }
 
   loadRegulationTemplates(curriculumTopics: CurriculumTopic[]): void {
     // const curriculumTopicIdArray: number[] = [curriculumTopics.length];

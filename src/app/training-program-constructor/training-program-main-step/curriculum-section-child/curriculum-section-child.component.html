@@ -22,7 +22,8 @@
     <app-curriculum-topic-child
       [trainingProgram]="trainingProgram"
       [trainingProgramCurriculumSection]="item"
-      [occupationForms]="occupationForms">
+      [occupationForms]="occupationForms"
+      (newTodoValue)="addNewTemplate($event)">
     </app-curriculum-topic-child>
 
   </div>
