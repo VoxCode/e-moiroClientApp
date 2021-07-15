@@ -7,8 +7,6 @@ import {TrainingProgramRegulationService} from '../../services/training-program-
 import {Regulation} from '../../models/Regulation';
 import {TrainingProgramRegulation} from '../../models/TrainingProgramRegulation';
 import {Globals} from '../../globals';
-import {CurriculumTopicService} from '../../services/curriculum-topic.service';
-import {CurriculumTopic} from '../../models/CurriculumTopic';
 import {RegulationEditComponent} from '../../regulation/regulation-edit.component';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {TrainingProgramConstructorService} from '../training-program-constructor.service';
@@ -19,8 +17,7 @@ import {TrainingProgramConstructorService} from '../training-program-constructor
   styleUrls: ['./training-program-regulation-step.component.scss'],
   providers: [
     RegulationService,
-    TrainingProgramRegulationService,
-    CurriculumTopicService
+    TrainingProgramRegulationService
   ]
 })
 export class TrainingProgramRegulationStepComponent implements OnInit {
@@ -36,7 +33,6 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
     public  trainingProgramConstructorService: TrainingProgramConstructorService,
     private regulationService: RegulationService,
     private trainingProgramRegulationService: TrainingProgramRegulationService,
-    private curriculumTopicService: CurriculumTopicService,
     private route: ActivatedRoute,
     private modalService: MDBModalService,
   ) { }
@@ -44,7 +40,7 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
-
+    this.loadRegulation();
   }
 
   drop(event: CdkDragDrop<string[]>): void {
@@ -85,35 +81,18 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
       });
   }
 
-  // loadCurriculumTopicTemplates(): void {
-  //   this.curriculumTopicService.getFromTrainingProgram(this.id).subscribe((curriculumTopics: CurriculumTopic[]) => {
-  //     // this.loadRegulationTemplates(curriculumTopics);
-  //   });
-  // }
-
-  loadRegulationTemplates(curriculumTopics: CurriculumTopic[]): void {
-    // const curriculumTopicIdArray: number[] = [curriculumTopics.length];
-    // curriculumTopics.forEach(curriculumTopic => {
-    //   curriculumTopicIdArray.push(curriculumTopic.id);
-    // });
-    // this.regulationService.getByCurriculumTopics(curriculumTopicIdArray)
-    //   .subscribe((regulations: Regulation[]) => {
-    //     if (regulations.length !== 0) {
-    //       regulations.sort((a, b) => b.id - a.id);
-    //       regulations.forEach((regulation) => {
-    //         const regulationFound = this.done.find(a => a.regulationId === regulation.id);
-    //         if (!regulationFound) {
-    //           this.todo.push({
-    //             first: regulation.id,
-    //             second: regulation.content
-    //           });
-    //         }
-    //       });
-    //     }
-    //   });
-  }
-
-  crateRegulationTemplate(): void {
+  loadRegulation(): void {
+    this.regulationService.getValues().subscribe((regulations: Regulation[]) => {
+      if (regulations.length !== 0) {
+        regulations.sort((a, b) => b.id - a.id);
+        regulations.forEach((regulation) => {
+          this.todo.push({
+            regulationId: regulation.id,
+            topicTitle: regulation.content
+          });
+        });
+      }
+    });
   }
 
   crateTrainingProgramRegulation(trainingProgramRegulation: TrainingProgramRegulation): void {

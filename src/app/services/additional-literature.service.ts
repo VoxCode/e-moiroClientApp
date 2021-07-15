@@ -17,7 +17,7 @@ export class AdditionalLiteratureService {
     return this.http.get(this.url + '/' + id);
   }
   getAdditionalLiterature(curriculumTopicIdArray: number[]): Observable<any> {
-    return this.http.post(this.url + '/' + 1, curriculumTopicIdArray);
+    return this.http.post(this.url + '/GetAdditionalLiterature', curriculumTopicIdArray);
   }
   createValue(additionalLiterature: AdditionalLiterature): Observable<any> {
     return this.http.post(this.url, additionalLiterature);

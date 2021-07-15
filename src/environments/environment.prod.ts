@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://api.smart.moiro.by/'
+  apiUrl: 'https://api.smart.moiro.by/'
 };
