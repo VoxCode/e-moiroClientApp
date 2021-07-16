@@ -29,17 +29,17 @@ export class DocxGeneratorScheduleComponent implements OnInit{
   isBLR = false;
 
   constructor(
-    private trainingProgramService: TrainingProgramService,
-    private group: GroupService,
-    private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
-    private trainingProgramMainLiteratureService: TrainingProgramMainLiteratureService,
-    private trainingProgramAdditionalLiteratureService: TrainingProgramAdditionalLiteratureService,
-    private trainingProgramRegulationService: TrainingProgramRegulationService,
-    private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
-    private occupationFormClassHourService: OccupationFormClassHourService,
-    private maxVariableTopicTimeService: MaxVariableTopicTimeService,
-    private occupationFormService: OccupationFormService,
-    private route: ActivatedRoute
+    // private trainingProgramService: TrainingProgramService,
+    // private group: GroupService,
+    // private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
+    // private trainingProgramMainLiteratureService: TrainingProgramMainLiteratureService,
+    // private trainingProgramAdditionalLiteratureService: TrainingProgramAdditionalLiteratureService,
+    // private trainingProgramRegulationService: TrainingProgramRegulationService,
+    // private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
+    // private occupationFormClassHourService: OccupationFormClassHourService,
+    // private maxVariableTopicTimeService: MaxVariableTopicTimeService,
+    // private occupationFormService: OccupationFormService,
+    // private route: ActivatedRoute
   ) {
   }
 
@@ -48,14 +48,14 @@ export class DocxGeneratorScheduleComponent implements OnInit{
     this.getDocument();
   }
 
-  loadTrainingProgram(): void {
-    this.trainingProgramService.getValueForDocxGenerator(this.id)
-      .subscribe((data: TrainingProgramGenerator) => {
-        if (data) {
-          this.trainingProgram = data;
-        }
-      });
-  }
+  // loadTrainingProgram(): void {
+  //   this.trainingProgramService.getValueForDocxGenerator(this.id)
+  //     .subscribe((data: TrainingProgramGenerator) => {
+  //       if (data) {
+  //         this.trainingProgram = data;
+  //       }
+  //     });
+  // }
 
   public getDocument(): void {
     const documentCreator = new DocumentCreatorSchedule(

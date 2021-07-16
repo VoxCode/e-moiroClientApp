@@ -1,4 +1,13 @@
-import {AlignmentType, convertMillimetersToTwip, Paragraph, TableCell, TableRow, VerticalAlign, WidthType} from 'docx';
+import {
+  AlignmentType,
+  BorderStyle,
+  convertMillimetersToTwip,
+  Paragraph,
+  TableCell,
+  TableRow,
+  VerticalAlign,
+  WidthType
+} from 'docx';
 
 export class TableScheduleHeader {
   private child: any = [];
@@ -19,6 +28,9 @@ export class TableScheduleHeader {
     return new TableCell({
       children: [new Paragraph({text, alignment: AlignmentType.CENTER})],
       // columnSpan: this.occupationForms.length,
+      borders: {
+        bottom: {style: BorderStyle.DOUBLE, size: 5, color: '000000'},
+      },
       verticalAlign: VerticalAlign.CENTER,
       width: {
         size,

@@ -3,5 +3,6 @@ export class ScheduleBlockClassRoom {
     public id?: number,
     public scheduleBlockId?: number,
     public classRoom?: number,
+    public name?: string,
     public serialNumber?: number){ }
 }

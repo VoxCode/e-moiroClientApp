@@ -1,6 +1,6 @@
 import {
   AlignmentType, BorderStyle,
-  convertMillimetersToTwip,
+  convertMillimetersToTwip, ITableBordersOptions,
   Paragraph,
   Table,
   TableCell,
@@ -11,13 +11,16 @@ import {
 } from 'docx';
 import {TableScheduleHeader} from './schedule-table-header';
 import {ScheduleRowTree} from './table-schedule-data-objects/table-schedule-tree-model';
+import {GroupScheduleGenerator} from '../../models/generator-models/GroupScheduleGenerator';
 
 
 export class TableScheduleGenerator {
   private child: any = [];
   private header: TableScheduleHeader;
   private size: number;
+
   constructor(
+    // private GroupSchedule: GroupScheduleGenerator,
   ) {
     this.header = new TableScheduleHeader();
     this.child.push(this.header.insert());
@@ -69,6 +72,26 @@ export class TableScheduleGenerator {
                     ),
               ]
             ),
+        new ScheduleRowTree([
+            'theme2'
+          ],
+          [
+            new ScheduleRowTree([
+                'teacher3',
+                'f3',
+                'f3',
+              ],
+              []
+            ),
+            new ScheduleRowTree([
+                'teacher4',
+                'f4',
+                'f4',
+              ],
+              []
+            ),
+          ]
+        ),
       ]
     );
     console.log('=======================================');
@@ -77,18 +100,29 @@ export class TableScheduleGenerator {
     // console.log('=======================================');
     // console.log(tree);
     this.generateRows(tree, false, undefined);
+    this.generateRows(tree, false, undefined);
     // this.scheduleRows.push(a);
     // this.generateTableRow();
   }
 
 
+  public generateRowTree(GroupSchedule: GroupScheduleGenerator): ScheduleRowTree{
+
+    // let rowTree: ScheduleRowTree;
+    // GroupSchedule.scheduleDateScheduleBlock.forEach(block =>{
+    //   block.scheduleDate.
+    // });
+    return undefined;
+  }
+
   public generateRows(rowTree: ScheduleRowTree, isSub: boolean = false, cells: TableCell[]): boolean{
     console.log('-----------------');
-
+    console.log(isSub);
     if (rowTree.getFields.length > 0) {
       if (cells === undefined) {
         cells = [];
       }
+
       this.pushFields(rowTree.getFields, cells, rowTree.calcRowSpan());
     }
 
@@ -135,21 +169,29 @@ export class TableScheduleGenerator {
 
 
   private generateTableCell(text: string, size: number, rowSpan: number): TableCell {
+    let borders: ITableBordersOptions;
+    console.log('OOOOOOOOOO ' + rowSpan.toString() + ' OOOOOOOOOOOO');
+    if (rowSpan === 1) {
+      borders = {top: {style: BorderStyle.DASHED, size: 5, color: '000000'}};
+    }
+    else {
+      // borders = {top: {style: BorderStyle.NIL, size: 5, color: '000000'}};
+    }
     return new TableCell({
       children: [new Paragraph({
         text,
         alignment: AlignmentType.CENTER,
       })],
-      borders: {
-        top: {style: BorderStyle.DOT_DASH, size: 5, color: '000000'},
-        bottom: {style: BorderStyle.DOUBLE, size: 5, color: '000000'},
-
-      },
+      borders,
       // columnSpan: this.occupationForms.length,
       verticalAlign: VerticalAlign.TOP,
       textDirection: TextDirection.BOTTOM_TO_TOP_LEFT_TO_RIGHT,
       rowSpan
     });
+    // borders: {
+    //   top: {style: BorderStyle.DOT_DASH, size: 5, color: '000000'},
+    //   bottom: {style: BorderStyle.DOUBLE, size: 5, color: '000000'},
+    // }
   }
 
   public insertTable(): Table {
@@ -158,7 +200,7 @@ export class TableScheduleGenerator {
       width: {
         size: convertMillimetersToTwip(250.3), // 284.3
         type: WidthType.DXA
-      }
+      },
     });
   }
 }
