@@ -1,4 +1,10 @@
+import {BorderStyle, ITableBordersOptions} from 'docx';
+
 export class ScheduleRowTree {
+
+
+  // tslint:disable-next-line:variable-name
+  private _style: ITableBordersOptions;
 
   constructor(private fields: string[], private subs: ScheduleRowTree[]) {
 
@@ -9,6 +15,9 @@ export class ScheduleRowTree {
   }
   public get getSubs(): ScheduleRowTree[]{
     return this.subs;
+  }
+  get style(): ITableBordersOptions {
+    return this._style;
   }
 
   public calcRowSpan(): number {
@@ -21,4 +30,18 @@ export class ScheduleRowTree {
     });
     return rs;
   }
+
+  public generateSubsStyle(lvl: number = 0, currentIndex: number = 0): void{
+    this.subs.forEach((sub, index) => {
+      sub.generateSubsStyle(lvl + 1, index);
+    });
+    if (lvl > 0) {
+      if (currentIndex > 0) {
+        this._style = {top: {style: BorderStyle.DASHED, size: 10, color: '000000'}};
+      }
+    }
+  }
+
+
+
 }

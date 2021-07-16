@@ -85,10 +85,20 @@ export class TableScheduleGenerator {
             ),
             new ScheduleRowTree([
                 'teacher4',
-                'f4',
-                'f4',
               ],
-              []
+              [
+                new ScheduleRowTree([
+                  'f4',
+                ],
+                [
+                  new ScheduleRowTree([
+                    'f45',
+                  ],
+                  []
+                  ),
+                ]
+                ),
+              ]
             ),
           ]
         ),
@@ -99,6 +109,7 @@ export class TableScheduleGenerator {
     // console.log(tree.calcRowSpan());
     // console.log('=======================================');
     // console.log(tree);
+    tree.generateSubsStyle();
     this.generateRows(tree, false, undefined);
     this.generateRows(tree, false, undefined);
     // this.scheduleRows.push(a);
@@ -123,7 +134,7 @@ export class TableScheduleGenerator {
         cells = [];
       }
 
-      this.pushFields(rowTree.getFields, cells, rowTree.calcRowSpan());
+      this.pushFields(rowTree, cells, rowTree.calcRowSpan());
     }
 
     if (rowTree.getSubs.length > 0) {
@@ -157,26 +168,26 @@ export class TableScheduleGenerator {
   }
 
   // tslint:disable-next-line:typedef
-  public pushFields(fields: string[], cells: TableCell[], rowSpan: number){
-    fields.forEach(field => {
+  public pushFields(tree: ScheduleRowTree, cells: TableCell[], rowSpan: number){
+    tree.getFields.forEach((field, index) => {
+      console.log('index: ' + index);
       cells.push(
-        this.generateTableCell(field, this.size, rowSpan),
+        this.generateTableCell(field, this.size, rowSpan, tree.style), // STYLE HERE PLS!!1
       );
       console.log('||||||||' + field + '|||||||||||');
       console.log(rowSpan);
     });
   }
 
-
-  private generateTableCell(text: string, size: number, rowSpan: number): TableCell {
-    let borders: ITableBordersOptions;
+  private generateTableCell(text: string, size: number, rowSpan: number, borders: ITableBordersOptions): TableCell {
+    // let borders: ITableBordersOptions;
     console.log('OOOOOOOOOO ' + rowSpan.toString() + ' OOOOOOOOOOOO');
-    if (rowSpan === 1) {
-      borders = {top: {style: BorderStyle.DASHED, size: 5, color: '000000'}};
-    }
-    else {
-      // borders = {top: {style: BorderStyle.NIL, size: 5, color: '000000'}};
-    }
+    // if (rowSpan === 1) {
+    //   borders = {top: {style: BorderStyle.DASHED, size: 5, color: '000000'}};
+    // }
+    // else {
+    //   // borders = {top: {style: BorderStyle.NIL, size: 5, color: '000000'}};
+    // }
     return new TableCell({
       children: [new Paragraph({
         text,
