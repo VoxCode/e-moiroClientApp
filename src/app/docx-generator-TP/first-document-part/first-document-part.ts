@@ -36,7 +36,7 @@ export class FirstDocumentPart {
             this.docxGeneratorDataTemplate.emptyParagraph(),
             this.docxGeneratorDataTemplate.approveRector(this.docxGeneratorDataTemplate.getNowYear()),
             this.docxGeneratorDataTemplate.mainNameDocumentTP('«' + this.trainingProgram.name + '»'),
-            this.docxGeneratorDataTemplate.studentCategoryMain(this.trainingProgram.studentCategoryName)
+            this.docxGeneratorDataTemplate.studentCategoryMain(this.trainingProgram.studentCategoryGenitiveName)
           ],
         }),
       ],
@@ -45,49 +45,28 @@ export class FirstDocumentPart {
     const teacherDevelopers = this.trainingProgram.trainingProgramTeachers.filter(a => a.expertId === 1);
     if (teacherDevelopers.length > 1) {
       this.children.push(this.docxGeneratorDataTemplate.someText('Разработчики учебной программы:'));
-      teacherDevelopers.forEach((obj) => {
-        this.children.push(
-          this.docxGeneratorDataTemplate
-            .someText(obj.firstName[0].toUpperCase() + '.' +
-              obj.patronymicName[0].toUpperCase() + '. ' +
-              obj.lastName + ', ' + obj.position + ', ' + obj.academicRank)
-        );
-      });
     }
     else
     {
       this.children.push(this.docxGeneratorDataTemplate.someText( 'Разработчик учебной программы:'));
-      this.children.push(
-        this.docxGeneratorDataTemplate
-          .someText(teacherDevelopers[0].firstName[0].toUpperCase() + '.' +
-            teacherDevelopers[0].patronymicName[0].toUpperCase() + '. ' +
-            teacherDevelopers[0].lastName + ', ' + teacherDevelopers[0].position + ', ' + teacherDevelopers[0].academicRank)
-      );
     }
+    teacherDevelopers.forEach((obj) => {
+      this.children.push(this.docxGeneratorDataTemplate.experts(obj));
+    });
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
 
     const teacherReviewers = this.trainingProgram.trainingProgramTeachers.filter(a => a.expertId === 2);
     if (teacherReviewers.length > 1) {
       this.children.push(this.docxGeneratorDataTemplate.someText('Рецензенты:'));
-      teacherReviewers.forEach((obj) => {
-        this.children.push(
-          this.docxGeneratorDataTemplate
-            .someText(obj.firstName[0].toUpperCase() + '.' +
-              obj.patronymicName[0].toUpperCase() + '. ' +
-              obj.lastName + ', ' + obj.position + ', ' + obj.academicRank)
-        );
-      });
     }
     else
     {
       this.children.push(this.docxGeneratorDataTemplate.someText( 'Рецензент:'));
-      this.children.push(
-        this.docxGeneratorDataTemplate
-          .someText(teacherReviewers[0].firstName[0].toUpperCase() + '.' +
-            teacherReviewers[0].patronymicName[0].toUpperCase() + '. ' +
-            teacherReviewers[0].lastName + ', ' + teacherReviewers[0].position + ', ' + teacherReviewers[0].academicRank)
-      );
     }
+    teacherReviewers.forEach((obj) => {
+      this.children.push(this.docxGeneratorDataTemplate.experts(obj));
+    });
+
     for (let i = 0; i < 26; i++)
     {
       this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());

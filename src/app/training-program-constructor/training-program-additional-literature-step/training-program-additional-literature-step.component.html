@@ -17,7 +17,7 @@
       </div>
       <div class="col-sm-6">
         <div class="example-container">
-          <h2>Выбрано</h2>
+          <h2>Перечень</h2>
           <button *ngIf="done.length === 0" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
                   (click)="trainingProgramAdditionalLiteratureCrateForm()" mdbWavesEffect
           ><mdb-icon fas icon="plus" size="sm"></mdb-icon>
@@ -51,4 +51,9 @@
     </div>
   </div>
   <br><br>
+
+  <button style="float: left; border-radius: 5px" type="button" [routerLink]="['/' + globals.role +'/trainingProgramMainLiteratureStep', id]"
+          mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Назад</button>
+  <button style="float: left; border-radius: 5px" type="button" [routerLink]="['/' + globals.role +'/trainingProgramRegulationStep', id]"
+          mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Далее</button><br>
 </div>

@@ -12,6 +12,12 @@
         <textarea id="last" type="text" class="md-textarea md-textarea-auto form-control"
                   formControlName="last" mdbInput mdbValidate [validateSuccess]="false"></textarea>
         <mdb-error *ngIf="last.invalid && (last.dirty || last.touched)"></mdb-error>
+      </div><br>
+      <div class="md-textarea">
+        <label for="second">Содержимое в родительном падеже</label>
+        <textarea id="second" type="text" class="md-textarea md-textarea-auto form-control"
+                  formControlName="second" mdbInput mdbValidate [validateSuccess]="false"></textarea>
+        <mdb-error *ngIf="second.invalid && (second.dirty || second.touched)"></mdb-error>
       </div>
     </form>
   </div>

@@ -66,6 +66,7 @@ import { ExpertComponent } from './expert/expert.component';
 import {ExpertEditComponent} from './expert/expert-edit.component';
 import {TrainingProgramConstructorModule} from './training-program-constructor/training-program-constructor.module';
 import {DocxGeneratorScheduleComponent} from './doxc-generator-Schedule/docx-generator-schedule.component';
+import {CurriculumTopicTemplateComponent} from './curriculum-topic/curriculum-topic-template.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -81,6 +82,7 @@ export function tokenGetter(): string {
     CurriculumSectionComponent,
     CurriculumSectionEditComponent,
     CurriculumTopicComponent,
+    CurriculumTopicTemplateComponent,
     CurriculumTopicEditComponent,
     DepartmentComponent,
     DepartmentEditComponent,

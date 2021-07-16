@@ -113,16 +113,14 @@ export class DocxGeneratorDataTemplate {
       alignment: AlignmentType.CENTER,
       children: [
         new TextRun({
-          text: 'ГОСУДАРСТВЕННОЕ УЧРЕЖДЕНИЕ ОБРАЗОВАНИЯ',
+          text: 'Государственное учреждение образования',
           size : this.size,
           bold : true,
-          allCaps: true
         }),
         new TextRun({
-          text: '«МИНСКИЙ ОБЛАСТНОЙ ИНСТИТУТ РАЗВИТИЯ ОБРАЗОВАНИЯ»',
+          text: '«Минский областной институт развития образования»',
           size : this.size,
           bold : true,
-          allCaps: true,
           break: 1
         }),
       ],
@@ -222,6 +220,16 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
+  public experts(obj: any): Paragraph {
+    let rank = '';
+    if (obj.academicRank !== '') {
+      rank = ', ' + obj.academicRank;
+    }
+    return this.someText(obj.firstName[0].toUpperCase() + '.' +
+      obj.patronymicName[0].toUpperCase() + '. ' +
+      obj.lastName + ', ' + obj.position + rank);
+  }
+
   public yearBoth(): Paragraph
   {
     return new Paragraph({
@@ -263,13 +271,24 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
-  public classHoursStringBuilder(obj: CurriculumTopicTrainingProgramGenerator): string {
+  public classHoursStringBuilder(obj: CurriculumTopicTrainingProgramGenerator, isDist: boolean): string {
     let tmpString = '';
     obj.occupationFormClassHours.forEach((occupationFormClassHour, index) => {
       if (index === 0) { tmpString += ' ('; }
       if (index !== 0) { tmpString += ', '; }
-      tmpString += occupationFormClassHour.fullName.toString().toLowerCase().split(',')[0] + ',' +
-        ' ' + occupationFormClassHour.classHours + ' ' + this.classHoursEndingDeclination(occupationFormClassHour.classHours);
+      if (occupationFormClassHour.fullName.toLowerCase() === 'форум') {
+        tmpString += occupationFormClassHour.fullName.toString().toLowerCase();
+      }
+      else {
+        if (isDist) {
+          tmpString += occupationFormClassHour.fullName.toString().toLowerCase().split(',')[0] + ': онлайн,' +
+            ' ' + occupationFormClassHour.classHours + ' ' + this.classHoursEndingDeclination(occupationFormClassHour.classHours);
+        }
+        else {
+          tmpString += occupationFormClassHour.fullName.toString().toLowerCase().split(',')[0] + ',' +
+            ' ' + occupationFormClassHour.classHours + ' ' + this.classHoursEndingDeclination(occupationFormClassHour.classHours);
+        }
+      }
       if (index === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }
     });
     return tmpString;
@@ -306,6 +325,16 @@ export class DocxGeneratorDataTemplate {
       case 73: return 'часа';
       case 74: return 'часа';
       default: return 'часов';
+    }
+  }
+
+  weekEndingDeclination(numberOfWeeks: number): string {
+    switch (numberOfWeeks) {
+      case 1: return 'неделя';
+      case 2: return 'недели';
+      case 3: return 'недели';
+      case 4: return 'недели';
+      default: return 'недель';
     }
   }
 
@@ -359,14 +388,13 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
-  public studentCategoryMain(exactly: string): Paragraph  // Написать логику для удаления и подстановки на возможные другие варианты!!!
+  public studentCategoryMain(exactly: string): Paragraph
   {
-    exactly = exactly.substring( exactly.indexOf(' ') + 1, exactly.length );
     return new Paragraph({
       alignment: AlignmentType.CENTER,
       children: [
         new TextRun({
-          text: 'учителей ' + exactly,
+          text: exactly,
           size : this.size,
           bold : true,
         }),
@@ -374,8 +402,10 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
-  public trainingProgramInfoATP(numberOfHours: number, formOfEducation: string, isDistance: boolean): Paragraph {
+  public trainingProgramInfoATP(
+    numberOfHours: number, formOfEducation: string, isDistance: boolean, numberOfWeeks: number): Paragraph {
     let tmp = '';
+    const weeks = this.weekEndingDeclination(numberOfWeeks);
     if (isDistance){
       tmp = '(дистанционная)';
     }
@@ -387,7 +417,7 @@ export class DocxGeneratorDataTemplate {
     return new Paragraph({
       children: [
         new TextRun({
-          text: 'Продолжительность обучения - ' + 'X' + ' недель' +
+          text: 'Продолжительность обучения - ' + numberOfWeeks + ' ' + weeks +
             ' (' + numberOfHours + ' ' + this.classHoursEndingDeclination(numberOfHours) + ')',
           size : this.size,
           break: 1
@@ -401,24 +431,51 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
-  public noteATP(): Paragraph {
+  public noteATP(isForum: boolean, isDistanceLearning: boolean): Paragraph {
+    const child: any = [];
+    child.push(new TextRun({
+      text: 'Примечание:',
+      break: 1
+    }));
+    if (!isDistanceLearning) {
+      child.push(
+        new TextRun({
+          text: '1. При проведении практических занятий группа может делиться на две' +
+            ' подгруппы численностью слушателей не менее 12 человек.',
+          break: 1
+        }),
+        new TextRun({
+          text: '2. В проведении круглого стола, тематической дискуссии, конференции принимают участие' +
+            ' 2 преподавателя, деловой игры – до 3 преподавателей.',
+          break: 1
+        }));
+    }
+    else {
+      child.push(new TextRun({
+        text: child.length + '. Расчет часов за проверку контрольных работ осуществляется из расчета 0,3 часа за одну работу.',
+        break: 1
+      }));
+      if (isForum) {
+        child.push(new TextRun({
+          text: child.length + '. Расчет часов за проведение форума (текущих консультаций слушателей дистанционной формы' +
+            ' получения образования) осуществляется из расчета 0,15 часа на одного слушателя.',
+          break: 1
+        }));
+      }
+      child.push(new TextRun({
+        text: child.length + '. По запросам слушателей проводятся индивидуальные консультации из расчета 0,4 часа ' +
+          'на одного слушателя за весь заочный (дистанционный) курс.',
+        break: 1
+      }));
+      child.push(new TextRun({
+        text: child.length + '. В проведении зачета принимают участие 2 члена комиссии и отводится до 0,25 часа' +
+          ' на одного слушателя каждому члену комиссии.',
+        break: 1
+      }));
+    }
+
     return new Paragraph({
-      children: [
-        new TextRun({
-          text: 'Примечание:',
-          break: 1
-        }),
-        new TextRun({
-          // tslint:disable-next-line:max-line-length
-          text: '1. При проведении практических занятий группа может делиться на две подгруппы численностью слушателей не менее 12 человек.',
-          break: 1
-        }),
-        new TextRun({
-          // tslint:disable-next-line:max-line-length
-          text: '2. В проведении круглого стола, тематической дискуссии, конференции принимают участие 2 преподавателя, деловой игры – до 3 преподавателей.',
-          break: 1
-        }),
-      ]
+      children: child
     });
   }
 
@@ -479,6 +536,40 @@ export class DocxGeneratorDataTemplate {
           position: 6000,
         },
         ]
+    });
+  }
+
+  public testWork(txt: string, indent?: number): Paragraph {
+    return new Paragraph({
+      style: 'default',
+      alignment: AlignmentType.JUSTIFIED,
+      indent: {
+        left: 0,
+        firstLine: indent,
+      },
+      children: [
+        new TextRun({
+          text: txt,
+          break: 1
+        })
+      ]
+    });
+  }
+
+  public independentWork(txt: string, indent?: number): Paragraph {
+    return new Paragraph({
+      style: 'default',
+      alignment: AlignmentType.JUSTIFIED,
+      indent: {
+        left: 0,
+        firstLine: indent,
+      },
+      children: [
+        new TextRun({
+          text: txt,
+          italics: true
+        })
+      ]
     });
   }
 

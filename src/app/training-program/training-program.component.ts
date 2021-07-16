@@ -113,7 +113,8 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
         eleventh: obj.certificationTypeId,
         twelfth: obj.certificationTypeName,
         thirteenth: obj.formOfEducationId,
-        fourteenth: obj.formOfEducationName});
+        fourteenth: obj.formOfEducationName,
+        fifteenth: obj.numberOfWeeks });
     });
     this.mdbTable.setDataSource(this.elements);
     this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
@@ -122,7 +123,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   }
 
   crate(el: any): void {
-    const trainingProgram = new TrainingProgram(0, el.second, el.third, el.fourth, el.fifth,
+    const trainingProgram = new TrainingProgram(0, el.second, el.third, el.fifteenth, el.fourth, el.fifth,
       el.sixth, el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
     this.valueService.createValue(trainingProgram)
       .subscribe((trainingProgramResponse: TrainingProgram) => {
@@ -142,7 +143,8 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
           eleventh: trainingProgramResponse.certificationTypeId,
           twelfth: trainingProgramResponse.certificationTypeName,
           thirteenth: trainingProgramResponse.formOfEducationId,
-          fourteenth: trainingProgramResponse.formOfEducationName
+          fourteenth: trainingProgramResponse.formOfEducationName,
+          fifteenth: trainingProgramResponse.numberOfWeeks
         });
         this.mdbTable.setDataSource(this.elements);
       });
@@ -150,7 +152,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
 
   save(el: any): void {
     this.valueService.getValue(el.first).subscribe(() => {
-      const trainingProgram = new TrainingProgram(el.first, el.second, el.third, el.fourth, el.fifth,
+      const trainingProgram = new TrainingProgram(el.first, el.second, el.third, el.fifteenth, el.fourth, el.fifth,
         el.sixth, el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
       this.valueService.updateValue(trainingProgram).subscribe();
     });
@@ -190,7 +192,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
 
   emptyEl(): any {
     return { id: 0, first: '', second: '', third: '', fourth: false, fifth: false, sixth: false, seventh: '',
-      eight: '', ninth: '', tenth: '', eleventh: '', twelfth: '', thirteenth: '', fourteenth: '' };
+      eight: '', ninth: '', tenth: '', eleventh: '', twelfth: '', thirteenth: '', fourteenth: '', fifteenth: '' };
   }
 
   modalOption(el: any): any {

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {TrainingProgram} from '../../models/TrainingProgram';
-import {TrainingProgramService} from '../../services/training-program.service';
 import {ActivatedRoute} from '@angular/router';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {RegulationService} from '../../services/regulation.service';
@@ -8,8 +7,6 @@ import {TrainingProgramRegulationService} from '../../services/training-program-
 import {Regulation} from '../../models/Regulation';
 import {TrainingProgramRegulation} from '../../models/TrainingProgramRegulation';
 import {Globals} from '../../globals';
-import {CurriculumTopicService} from '../../services/curriculum-topic.service';
-import {CurriculumTopic} from '../../models/CurriculumTopic';
 import {RegulationEditComponent} from '../../regulation/regulation-edit.component';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {TrainingProgramConstructorService} from '../training-program-constructor.service';
@@ -19,10 +16,8 @@ import {TrainingProgramConstructorService} from '../training-program-constructor
   templateUrl: './training-program-regulation-step.component.html',
   styleUrls: ['./training-program-regulation-step.component.scss'],
   providers: [
-    TrainingProgramService,
     RegulationService,
-    TrainingProgramRegulationService,
-    CurriculumTopicService
+    TrainingProgramRegulationService
   ]
 })
 export class TrainingProgramRegulationStepComponent implements OnInit {
@@ -36,10 +31,8 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   constructor(
     public globals: Globals,
     public  trainingProgramConstructorService: TrainingProgramConstructorService,
-    private trainingProgramService: TrainingProgramService,
     private regulationService: RegulationService,
     private trainingProgramRegulationService: TrainingProgramRegulationService,
-    private curriculumTopicService: CurriculumTopicService,
     private route: ActivatedRoute,
     private modalService: MDBModalService,
   ) { }
@@ -47,7 +40,7 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
-
+    this.loadRegulation();
   }
 
   drop(event: CdkDragDrop<string[]>): void {
@@ -88,35 +81,18 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
       });
   }
 
-  loadCurriculumTopicTemplates(): void {
-    this.curriculumTopicService.getFromTrainingProgram(this.id).subscribe((curriculumTopics: CurriculumTopic[]) => {
-      // this.loadRegulationTemplates(curriculumTopics);
+  loadRegulation(): void {
+    this.regulationService.getValues().subscribe((regulations: Regulation[]) => {
+      if (regulations.length !== 0) {
+        regulations.sort((a, b) => b.id - a.id);
+        regulations.forEach((regulation) => {
+          this.todo.push({
+            regulationId: regulation.id,
+            topicTitle: regulation.content
+          });
+        });
+      }
     });
-  }
-
-  loadRegulationTemplates(curriculumTopics: CurriculumTopic[]): void {
-    // const curriculumTopicIdArray: number[] = [curriculumTopics.length];
-    // curriculumTopics.forEach(curriculumTopic => {
-    //   curriculumTopicIdArray.push(curriculumTopic.id);
-    // });
-    // this.regulationService.getByCurriculumTopics(curriculumTopicIdArray)
-    //   .subscribe((regulations: Regulation[]) => {
-    //     if (regulations.length !== 0) {
-    //       regulations.sort((a, b) => b.id - a.id);
-    //       regulations.forEach((regulation) => {
-    //         const regulationFound = this.done.find(a => a.regulationId === regulation.id);
-    //         if (!regulationFound) {
-    //           this.todo.push({
-    //             first: regulation.id,
-    //             second: regulation.content
-    //           });
-    //         }
-    //       });
-    //     }
-    //   });
-  }
-
-  crateRegulationTemplate(): void {
   }
 
   crateTrainingProgramRegulation(trainingProgramRegulation: TrainingProgramRegulation): void {

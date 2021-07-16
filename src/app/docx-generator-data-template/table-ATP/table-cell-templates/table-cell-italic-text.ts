@@ -1,23 +1,21 @@
 import {Paragraph, TableCell, TextRun} from 'docx';
 
-export class TableCellDefaultText {
+export class TableCellItalicText {
   constructor() {
   }
-  public insertText(value: string, value2?: string): TableCell {
+
+  public insertText(value: string): TableCell {
     return new TableCell({
       children: [
         new Paragraph({
           children: [
             new TextRun({
               text: value,
+              italics : true,
             }),
-            new TextRun({
-              text: value2,
-              break: 1
-            }),
-          ],
+          ]
         })
-      ]
+      ],
     });
   }
 }

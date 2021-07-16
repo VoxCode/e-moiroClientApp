@@ -20,6 +20,7 @@ import {CurriculumTopicTrainingProgramGenerator} from '../models/generator-model
 import {OccupationFormClassHour} from '../models/OccupationFormClassHour';
 import {MaxVariableTopicTimeService} from '../services/max-variable-topic-time.service';
 import {MaxVariableTopicTime} from '../models/MaxVariableTopicTime';
+import {Globals} from '../globals';
 
 
 @Component({
@@ -46,6 +47,7 @@ export class DocxGeneratorATPComponent implements OnInit{
   isRector = true;
   occupationForms: OccupationForm[];
   loading: boolean;
+  isForum: boolean;
 
   constructor(
     private trainingProgramService: TrainingProgramService,
@@ -57,7 +59,8 @@ export class DocxGeneratorATPComponent implements OnInit{
     private occupationFormClassHourService: OccupationFormClassHourService,
     private maxVariableTopicTimeService: MaxVariableTopicTimeService,
     private occupationFormService: OccupationFormService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public globals: Globals
   ) { }
 
   ngOnInit(): void {
@@ -71,6 +74,17 @@ export class DocxGeneratorATPComponent implements OnInit{
       .subscribe((data: TrainingProgramGenerator) => {
         if (data) {
           this.trainingProgram = data;
+          this.loadOccupationForms();
+        }
+      });
+  }
+
+  loadOccupationForms(): void {
+    this.occupationFormService.getValues()
+      .subscribe((data: OccupationForm[]) => {
+        if (data) {
+          this.occupationForms = data;
+          data.sort((a, b) => a.id - b.id);
           this.loadTrainingProgramCurriculumSections();
         }
       });
@@ -89,10 +103,18 @@ export class DocxGeneratorATPComponent implements OnInit{
 
   loadCurriculumTopicTrainingPrograms(): void {
     const checkLength: number[] = [];
+    const forumTmp = this.occupationForms.find(a => a
+      .fullName.toLowerCase() === 'форум'); // заглушка для удаления форума из УТП (часть 1)
+    const forumId = forumTmp.id;
     this.trainingProgram.trainingProgramCurriculumSections.forEach((object, index) => {
       this.maxVariableTopicTimeService.getValues(object.id)  // load maxVariableTopicTimes
         .subscribe((maxVariableTopicTimes: MaxVariableTopicTime[]) => {
-        this.trainingProgram.trainingProgramCurriculumSections[index].maxVariableTopicTimes = maxVariableTopicTimes;
+          if (!this.trainingProgram.isDistanceLearning) { // заглушка для отключения макс. вариативных часов в УТП
+            this.trainingProgram.trainingProgramCurriculumSections[index].maxVariableTopicTimes = maxVariableTopicTimes;
+          }
+          else {
+            this.trainingProgram.trainingProgramCurriculumSections[index].maxVariableTopicTimes = [];
+          }
       });
       this.curriculumTopicTrainingProgramService.getFromTrainingProgramCurriculumSection(object.id)
         .subscribe((data: CurriculumTopicTrainingProgramGenerator[]) => {
@@ -102,16 +124,27 @@ export class DocxGeneratorATPComponent implements OnInit{
             checkLength.push(index);
             this.occupationFormClassHourService.getValuesFromCurriculumSection(object.id) // load occupationFormClassHours
               .subscribe((occupationFormClassHours: OccupationFormClassHour[]) => {
-                if (data.length !== 0) {
+                if (occupationFormClassHours.length !== 0) {
+                  if (!this.isForum && this.trainingProgram.isDistanceLearning) {
+                    const tmp = occupationFormClassHours.find(a => a.occupationFormId === forumId);
+                    if (tmp) {
+                      this.isForum = true;
+                    }
+                  }
                   this.trainingProgram.trainingProgramCurriculumSections[index]
                     .curriculumTopicTrainingPrograms.forEach((obj, i) => {
                     this.trainingProgram.trainingProgramCurriculumSections[index]
                       .curriculumTopicTrainingPrograms[i].occupationFormClassHours = occupationFormClassHours
-                      .filter(a => a.curriculumTopicTrainingProgramId === obj.id);
+                      .filter(a => a.
+                        curriculumTopicTrainingProgramId === obj.id && a.
+                        occupationFormId !== forumId); // заглушка для удаления форума из УТП (часть 2)
                   });
                 }
               });
             if (checkLength.length === this.trainingProgram.trainingProgramCurriculumSections.length) {
+              const indx = this.occupationForms
+                .findIndex(a => a.fullName.toLowerCase() === 'форум'); // заглушка для удаления форума из УТП (часть 3)
+              this.occupationForms.splice(indx, 1);
               this.loadTrainingProgramMainLiteratures();
             }
           }
@@ -147,16 +180,6 @@ export class DocxGeneratorATPComponent implements OnInit{
         if (data.length !== 0) {
           data.sort((a, b) => a.serialNumber - b.serialNumber);
           this.trainingProgram.trainingProgramRegulations = data;
-          this.loadOccupationForms();
-        }
-      });
-  }
-
-  loadOccupationForms(): void {
-    this.occupationFormService.getValues()
-      .subscribe((data: OccupationForm[]) => {
-        if (data) {
-          this.occupationForms = data;
           this.getDocument();
         }
       });
@@ -167,6 +190,7 @@ export class DocxGeneratorATPComponent implements OnInit{
       this.trainingProgram,
       this.occupationForms,
       this.isRector,
+      this.isForum
     );
     const docxTmp = documentCreator.create();
     Packer.toBlob(docxTmp).then(blob => {

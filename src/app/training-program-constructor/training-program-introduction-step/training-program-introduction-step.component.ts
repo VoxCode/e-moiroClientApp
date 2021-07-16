@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {TrainingProgram} from '../../models/TrainingProgram';
 import {Globals} from '../../globals';
-import {TrainingProgramService} from '../../services/training-program.service';
 import {TrainingProgramIntroductionService} from '../../services/training-program-introduction.service';
 import {TrainingProgramIntroduction} from '../../models/TrainingProgramIntroduction';
 import {TrainingProgramConstructorService} from '../training-program-constructor.service';
@@ -15,7 +14,6 @@ import {Base64ToBlob} from '../../base64-to-blob/base64-to-blob';
   templateUrl: './training-program-introduction-step.component.html',
   styleUrls: ['./training-program-introduction-step.component.scss'],
   providers: [
-    TrainingProgramService,
     TrainingProgramIntroductionService
   ]
 })
@@ -29,7 +27,6 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
   constructor(
     public globals: Globals,
     public  trainingProgramConstructorService: TrainingProgramConstructorService,
-    private trainingProgramService: TrainingProgramService,
     private trainingProgramIntroductionService: TrainingProgramIntroductionService,
     private route: ActivatedRoute
   ) { }

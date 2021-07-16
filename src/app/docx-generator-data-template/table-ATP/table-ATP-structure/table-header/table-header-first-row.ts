@@ -2,8 +2,10 @@ import {AlignmentType, convertMillimetersToTwip, Paragraph, TableCell, TableRow,
 
 export class TableHeaderFirstRow {
   private child: any = [];
-  constructor(private occupationForms: any[]) {
-
+  constructor(private readonly occupationFormsLength: number, isDistance?: boolean) {
+    if (isDistance) {
+      this.occupationFormsLength++;
+    }
     this.child.push(new TableCell({
         children: [new Paragraph({text: 'Названия разделов и тем', alignment: AlignmentType.CENTER} )],
         rowSpan: 3,
@@ -15,7 +17,7 @@ export class TableHeaderFirstRow {
       }),
       new TableCell({
         children: [new Paragraph( {text: 'Количество учебных часов', alignment: AlignmentType.CENTER} )],
-        columnSpan: this.occupationForms.length + 1,
+        columnSpan: this.occupationFormsLength + 1,
         verticalAlign: VerticalAlign.CENTER,
       }),
       new TableCell({

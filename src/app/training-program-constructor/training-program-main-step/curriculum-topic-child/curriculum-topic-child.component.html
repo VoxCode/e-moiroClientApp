@@ -22,7 +22,19 @@
     <app-occupation-form-class-hour-child
     [curriculumTopicTrainingProgramId]="item.curriculumTopicTrainingProgramId"
     [occupationForms]="occupationForms">
-    </app-occupation-form-class-hour-child>
+    </app-occupation-form-class-hour-child><br>
+    <div *ngIf="trainingProgram.isTestWork">
+      <label style="font-size: large">Управляемая самостоятельная работа
+        <input [value]="" type="number" min="0" max="10"
+               (change)= "item.testWorkHours < 0 ? item.testWorkHours = 0 : item.testWorkHours;
+           item.testWorkHours > 10 ? item.testWorkHours = 0 : item.testWorkHours;"
+               class="md-textarea form-control" [(ngModel)]="item.testWorkHours"
+               (focusout)="updateCurriculumTopicTrainingProgram(item)" mdbInput style="display: inline-block; max-width: 60px">
+        <span style="font-size: large"> {{ item.testWorkHours | i18nPlural:plurals.result }}</span><br>
+      </label>
+
+    </div>
+    <hr>
 
     <button *ngIf="i == done.length - 1" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
             (click)="curriculumTopicAddForm()" mdbWavesEffect>

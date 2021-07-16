@@ -3,7 +3,7 @@
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">×</span>
     </button>
-    <h4 class="modal-title w-100" id="myModalLabel">Тема учебной программы</h4>
+    <h4 class="modal-title w-100" id="myModalLabel">Создание шаблона</h4>
   </div>
   <div class="modal-body">
     <form [formGroup]="form">
@@ -18,15 +18,15 @@
         <textarea id="last" type="text" class="md-textarea md-textarea-auto form-control"
                   formControlName="last" mdbInput mdbValidate [validateSuccess]="false"></textarea>
         <mdb-error *ngIf="last.invalid && (last.dirty || last.touched)"></mdb-error>
-      </div><br>
-      <div>
-        <mdb-checkbox [default]="true" formControlName="third">Создать шаблон</mdb-checkbox>
       </div>
     </form>
   </div>
   <div class="modal-footer">
     <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
-            [disabled]="form.invalid" (click)="editRow()">Сохранить
+            (click)="modalRef.hide()">Отмена
+    </button>
+    <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
+            [disabled]="form.invalid" (click)="editRow()">Сохранить шаблон
     </button>
   </div>
 </div>

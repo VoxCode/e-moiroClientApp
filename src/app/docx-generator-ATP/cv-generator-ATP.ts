@@ -3,21 +3,29 @@ import {DocxGeneratorDataTemplate} from '../docx-generator-data-template/docx-ge
 import {OccupationForm} from '../models/OccupationForm';
 import {TableATPGenerator} from '../docx-generator-data-template/table-ATP/table-ATP-generator';
 import {TrainingProgramGenerator} from '../models/generator-models/TrainingProgramGenerator';
+import {DistanceTableATPGenerator} from '../docx-generator-data-template/table-ATP/distance-table-ATP-generator';
 
 export class DocumentCreatorRector {
 
   teacher: number;
   docxGeneratorDataTemplate: DocxGeneratorDataTemplate = new DocxGeneratorDataTemplate(28);
-  tableATPGenerator: TableATPGenerator = new TableATPGenerator();
+  tableATPGenerator: TableATPGenerator;
   sections: any[] = [];
 
   constructor(
     private trainingProgram: TrainingProgramGenerator,
     private occupationForms: OccupationForm[],
     private isRector: boolean,
+    private isForum: boolean
   ) { }
 
   public create(): Document {
+    if (this.trainingProgram.isDistanceLearning) {
+      this.tableATPGenerator = new DistanceTableATPGenerator(); // distanceATP
+    }
+    else {
+      this.tableATPGenerator = new TableATPGenerator(); // ATP
+    }
     this.sections.push({
       properties: {
         page: {
@@ -43,13 +51,17 @@ export class DocumentCreatorRector {
         this.docxGeneratorDataTemplate.approve(this.docxGeneratorDataTemplate.getNowYear(), this.isRector),
         this.docxGeneratorDataTemplate.mainNameDocumentATP('«' + this.trainingProgram.name + '»'),
         this.docxGeneratorDataTemplate.trainingProgramInfoATP(
-          this.trainingProgram.numberOfHours, this.trainingProgram.formOfEducationName, this.trainingProgram.isDistanceLearning),
+          this.trainingProgram.numberOfHours,
+          this.trainingProgram.formOfEducationName,
+          this.trainingProgram.isDistanceLearning,
+          this.trainingProgram.numberOfWeeks),
         new Paragraph({ text: '' }),
         this.tableATPGenerator.tableATP(
           this.occupationForms,
-          this.trainingProgram
+          this.trainingProgram,
+          this.isForum
         ),
-        this.docxGeneratorDataTemplate.noteATP(),
+        this.docxGeneratorDataTemplate.noteATP(this.isForum, this.trainingProgram.isDistanceLearning),
         this.docxGeneratorDataTemplate.footerATPDean(this.isRector),
         this.docxGeneratorDataTemplate
           .footerATPDepartmentHead(this.trainingProgram.departmentName, this.trainingProgram.departmentHeadName)

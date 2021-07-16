@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {TrainingProgram} from '../../models/TrainingProgram';
-import {TrainingProgramService} from '../../services/training-program.service';
 import {ActivatedRoute} from '@angular/router';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {MainLiteratureService} from '../../services/main-literature.service';
 import {TrainingProgramMainLiterature} from '../../models/TrainingProgramMainLiterature';
 import {TrainingProgramMainLiteratureService} from '../../services/training-program-main-literature.service';
 import {MainLiterature} from '../../models/MainLiterature';
-import {CurriculumTopicTrainingProgramService} from '../../services/curriculum-topic-training-program.service';
-import {CurriculumTopicTrainingProgram} from '../../models/СurriculumTopicTrainingProgram';
 import {Globals} from '../../globals';
 import {TrainingProgramAdditionalLiterature} from '../../models/TrainingProgramAdditionalLiterature';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
@@ -20,10 +17,8 @@ import {TrainingProgramConstructorService} from '../training-program-constructor
   templateUrl: './training-program-main-literature-step.component.html',
   styleUrls: ['./training-program-main-literature-step.component.scss'],
   providers: [
-    TrainingProgramService,
     MainLiteratureService,
-    TrainingProgramMainLiteratureService,
-    CurriculumTopicTrainingProgramService
+    TrainingProgramMainLiteratureService
   ]
 })
 export class TrainingProgramMainLiteratureStepComponent implements OnInit {
@@ -31,18 +26,14 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
   todo: any[] = [];
   done: any[] = [];
   trainingProgram: TrainingProgram;
-  curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
-  curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram;
   mainLiterature: MainLiterature = new MainLiterature();
   modalRef: MDBModalRef;
 
   constructor(
     public globals: Globals,
     public  trainingProgramConstructorService: TrainingProgramConstructorService,
-    private trainingProgramService: TrainingProgramService,
     private mainLiteratureService: MainLiteratureService,
     private trainingProgramMainLiteratureService: TrainingProgramMainLiteratureService,
-    private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private route: ActivatedRoute,
     private modalService: MDBModalService,
   ) { }
@@ -50,6 +41,7 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
+    this.loadMainLiterature();
   }
 
   drop(event: CdkDragDrop<string[]>): void {
@@ -91,42 +83,18 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
       });
   }
 
-  loadCurriculumTopicTrainingProgram(): void {
-    this.curriculumTopicTrainingProgramService.getValue(this.id).subscribe((data: CurriculumTopicTrainingProgram[]) => {
-      if (data.length !== 0){
-        this.curriculumTopicTrainingPrograms = data;
-        // this.loadMainLiterature();
+  loadMainLiterature(): void {
+    this.mainLiteratureService.getValues().subscribe((mainLiteratures: MainLiterature[]) => {
+      if (mainLiteratures.length !== 0) {
+        mainLiteratures.sort((a, b) => b.id - a.id);
+        mainLiteratures.forEach((mainLiterature) => {
+          this.todo.push({
+            mainLiteratureId: mainLiterature.id,
+            topicTitle: mainLiterature.content
+          });
+        });
       }
     });
-  }
-
-  loadMainLiterature(): void {
-    // tslint:disable-next-line:prefer-const
-    // let curriculumTopicIdArray: number[] = [this.curriculumTopicTrainingPrograms.length];
-    // this.curriculumTopicTrainingPrograms.forEach(i => {
-    //   curriculumTopicIdArray.push(i.curriculumTopicId);
-    // });
-    // this.mainLiteratureService.getMainLiterature(curriculumTopicIdArray)
-    //   .subscribe((data: MainLiterature[]) => {
-    //     if (data !== undefined && data !== null){
-    //       // tslint:disable-next-line:only-arrow-functions typedef
-    //       data.sort(function(a, b) {
-    //         return b.id - a.id;
-    //       });
-    //       data.forEach((tmp) => {
-    //         const tmp2 = this.done.find(a => a.seventh === tmp.id);
-    //         if (tmp2 === undefined) {
-    //           this.todo.push({
-    //             first: tmp.id,
-    //             third: tmp.content
-    //           });
-    //         }
-    //       });
-    //     }
-    //   });
-  }
-
-  crateMainLiteratureTemplate(): void {
   }
 
   crateTrainingProgramMainLiterature(trainingProgramMainLiterature: TrainingProgramMainLiterature): void {

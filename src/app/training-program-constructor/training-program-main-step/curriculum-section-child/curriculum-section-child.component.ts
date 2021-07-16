@@ -1,10 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {OccupationForm} from '../../../models/OccupationForm';
 import {TrainingProgramCurriculumSectionService} from '../../../services/training-program-curriculum-section.service';
 import {TrainingProgramCurriculumSection} from '../../../models/TrainingProgramCurriculumSection';
 import {TrainingProgram} from '../../../models/TrainingProgram';
 import {CurriculumSectionEditComponent} from '../../../curriculum-section/curriculum-section-edit.component';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
+import {CurriculumTopic} from '../../../models/CurriculumTopic';
 
 @Component({
   selector: 'app-curriculum-section-child',
@@ -18,6 +19,7 @@ import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 export class CurriculumSectionChildComponent implements OnInit {
   @Input() trainingProgram: TrainingProgram;
   @Input() occupationForms: OccupationForm[];
+  @Output() newTodoValue = new EventEmitter<CurriculumTopic>();
   trainingProgramCurriculumSections: TrainingProgramCurriculumSection[] = [];
   trainingProgramCurriculumSectionSelectList: TrainingProgramCurriculumSection[] = [];
   modalRef: MDBModalRef;
@@ -65,6 +67,10 @@ export class CurriculumSectionChildComponent implements OnInit {
   swapTrainingProgramCurriculumSection(index: number): void {
     const trainingProgramCurriculumSection = this.trainingProgramCurriculumSectionSelectList[index];
     console.log(trainingProgramCurriculumSection);
+  }
+
+  addNewTemplate(newTemplate: CurriculumTopic ): void {
+    this.newTodoValue.emit(newTemplate);
   }
 
   curriculumSectionAddForm(): void {

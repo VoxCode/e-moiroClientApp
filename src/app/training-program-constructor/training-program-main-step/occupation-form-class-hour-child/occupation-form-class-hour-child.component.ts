@@ -24,7 +24,7 @@ export class OccupationFormClassHourChildComponent implements OnInit {
       '=2': 'часа',
       '=3': 'часа',
       '=4': 'часа',
-      other: '# часов'
+      other: 'часов'
     },
   };
 

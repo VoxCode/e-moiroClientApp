@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {CurriculumTopicTrainingProgram} from '../../../models/СurriculumTopicTrainingProgram';
 import {TrainingProgram} from '../../../models/TrainingProgram';
@@ -7,7 +7,10 @@ import {OccupationForm} from '../../../models/OccupationForm';
 import {CurriculumTopicTrainingProgramService} from '../../../services/curriculum-topic-training-program.service';
 import {CurriculumTopicEditComponent} from '../../../curriculum-topic/curriculum-topic-edit.component';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
-import {TrainingProgramAdditionalLiterature} from "../../../models/TrainingProgramAdditionalLiterature";
+import {CurriculumTopicTemplateComponent} from '../../../curriculum-topic/curriculum-topic-template.component';
+import {CurriculumTopic} from '../../../models/CurriculumTopic';
+import {Globals} from '../../../globals';
+import {CurriculumTopicService} from '../../../services/curriculum-topic.service';
 
 @Component({
   selector: 'app-curriculum-topic-child',
@@ -21,12 +24,24 @@ export class CurriculumTopicChildComponent implements OnInit {
   @Input() trainingProgram: TrainingProgram;
   @Input() trainingProgramCurriculumSection: TrainingProgramCurriculumSection;
   @Input() occupationForms: OccupationForm[];
+  @Output() newTodoValue = new EventEmitter<CurriculumTopic>();
   done: any[] = [];
   modalRef: MDBModalRef;
+  plurals = {
+    result: {
+      '=1': 'час',
+      '=2': 'часа',
+      '=3': 'часа',
+      '=4': 'часа',
+      other: 'часов'
+    },
+  };
 
   constructor(
+    public globals: Globals,
     private modalService: MDBModalService,
-    private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService) { }
+    private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
+    private curriculumTopicService: CurriculumTopicService) { }
 
   ngOnInit(): void {
     this.loadCurriculumTopicTrainingPrograms();
@@ -68,11 +83,11 @@ export class CurriculumTopicChildComponent implements OnInit {
     const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
     curriculumTopicTrainingProgram.id = item.curriculumTopicTrainingProgramId;
     curriculumTopicTrainingProgram.isVariable = item.isVariable;
-    curriculumTopicTrainingProgram.classHours = item.classHours;
     curriculumTopicTrainingProgram.topicTitle = item.topicTitle;
     curriculumTopicTrainingProgram.annotation = item.annotation;
     curriculumTopicTrainingProgram.serialNumber = item.serialNumber;
     curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = item.trainingProgramCurriculumSectionId;
+    curriculumTopicTrainingProgram.testWorkHours = item.testWorkHours;
     this.curriculumTopicTrainingProgramService.updateValue(curriculumTopicTrainingProgram).subscribe(() => {
         console.log('Update was successful');
       });
@@ -88,27 +103,51 @@ export class CurriculumTopicChildComponent implements OnInit {
   save(): void {
     const curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
     this.done.forEach((object, index) => {
-      const curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
-      curriculumTopicTrainingProgram.id = object.curriculumTopicTrainingProgramId;
-      curriculumTopicTrainingProgram.isVariable = object.isVariable;
-      curriculumTopicTrainingProgram.classHours = object.classHours;
-      curriculumTopicTrainingProgram.topicTitle = object.topicTitle;
-      curriculumTopicTrainingProgram.annotation = object.annotation;
-      curriculumTopicTrainingProgram.serialNumber = ++index;
-      curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = object.trainingProgramCurriculumSectionId;
-      curriculumTopicTrainingPrograms.push(curriculumTopicTrainingProgram);
+      if (object.curriculumTopicId) {
+        const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram(
+          0,
+          false,
+          ++index,
+          this.trainingProgramCurriculumSection.id,
+          object.topicTitle,
+          object.annotation);
+        this.curriculumTopicTrainingProgramService.createValue(curriculumTopicTrainingProgram)
+          .subscribe((curriculumTopicTrainingProgramResponse: CurriculumTopicTrainingProgram) => {
+            object.serialNumber = curriculumTopicTrainingProgramResponse.serialNumber;
+            object.curriculumTopicTrainingProgramId = curriculumTopicTrainingProgramResponse.id;
+            object.testWorkHours = 0;
+            object.curriculumTopicId = undefined;
+            object.trainingProgramCurriculumSectionId = this.trainingProgramCurriculumSection.id;
+          });
+      }
+      else {
+        const curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
+        curriculumTopicTrainingProgram.id = object.curriculumTopicTrainingProgramId;
+        curriculumTopicTrainingProgram.isVariable = object.isVariable;
+        curriculumTopicTrainingProgram.topicTitle = object.topicTitle;
+        curriculumTopicTrainingProgram.annotation = object.annotation;
+        curriculumTopicTrainingProgram.serialNumber = ++index;
+        curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = object.trainingProgramCurriculumSectionId;
+        curriculumTopicTrainingProgram.testWorkHours = object.testWorkHours;
+        curriculumTopicTrainingPrograms.push(curriculumTopicTrainingProgram);
+      }
     });
     this.curriculumTopicTrainingProgramService.updateSerialNumbers(curriculumTopicTrainingPrograms).subscribe(() => {
       console.log('Successful!');
     });
   }
 
-
-  crateCurriculumTopicTemplate(): void {
-
+  crateCurriculumTopicTemplate(curriculumTopicTemplate: CurriculumTopic): void {
+    this.curriculumTopicService.createValue(curriculumTopicTemplate)
+      .subscribe((curriculumTopicTemplateResponse: CurriculumTopic) => {
+        console.log('Save was successful!');
+        this.curriculumTopicService.createRelationships(this.trainingProgram, curriculumTopicTemplateResponse.id)
+          .subscribe(() => {
+            this.newTodoValue.emit(curriculumTopicTemplateResponse);
+            console.log('Relationships created!');
+          });
+      });
   }
-
-
 
   curriculumTopicAddForm(): void {
     this.modalRef = this.modalService.show(CurriculumTopicEditComponent, this.modalOption(this.emptyEl()));
@@ -116,12 +155,24 @@ export class CurriculumTopicChildComponent implements OnInit {
       const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram(
         0,
         false,
-        0,
         this.done.length + 1,
         this.trainingProgramCurriculumSection.id,
         newElement.second,
         newElement.last);
       this.crateCurriculumTopicTrainingProgram(curriculumTopicTrainingProgram);
+      if (newElement.third) {
+        const element = {id: 0, first: '', second: newElement.second, last: newElement.last};
+        this.modalRef = this.modalService.show(CurriculumTopicTemplateComponent, this.modalOption(element));
+        this.modalRef.content.saveButtonClicked.subscribe((newTemplateElement: any) => {
+          const curriculumTopicTemplate = new CurriculumTopic(
+            0,
+            newTemplateElement.second,
+            newTemplateElement.last,
+            this.globals.userId
+          );
+          this.crateCurriculumTopicTemplate(curriculumTopicTemplate);
+        });
+      }
     });
   }
 
@@ -161,11 +212,11 @@ export class CurriculumTopicChildComponent implements OnInit {
     return {
       topicTitle: curriculumTopicTrainingProgram.topicTitle,
       isVariable: curriculumTopicTrainingProgram.isVariable,
-      classHours: curriculumTopicTrainingProgram.classHours,
       curriculumTopicTrainingProgramId: curriculumTopicTrainingProgram.id,
       serialNumber: curriculumTopicTrainingProgram.serialNumber,
       annotation: curriculumTopicTrainingProgram.annotation,
-      trainingProgramCurriculumSectionId: curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId
+      trainingProgramCurriculumSectionId: curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId,
+      testWorkHours: curriculumTopicTrainingProgram.testWorkHours
     };
   }
 }

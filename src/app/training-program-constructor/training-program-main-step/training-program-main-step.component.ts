@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {CurriculumTopic} from '../../models/CurriculumTopic';
 import {CurriculumTopicService} from '../../services/curriculum-topic.service';
 import {ActivatedRoute} from '@angular/router';
-import {TrainingProgramService} from '../../services/training-program.service';
 import {TrainingProgram} from '../../models/TrainingProgram';
 import {OccupationFormService} from '../../services/occupation-form.service';
 import {Globals} from '../../globals';
@@ -15,7 +14,6 @@ import {TrainingProgramConstructorService} from '../training-program-constructor
   styleUrls: ['./training-program-main-step..component.scss'],
   providers: [
     CurriculumTopicService,
-    TrainingProgramService,
     OccupationFormService,
   ]
 })
@@ -30,7 +28,6 @@ export class TrainingProgramMainStepComponent implements OnInit{
     public globals: Globals,
     public  trainingProgramConstructorService: TrainingProgramConstructorService,
     private curriculumTopicService: CurriculumTopicService,
-    private trainingProgramService: TrainingProgramService,
     private occupationFormService: OccupationFormService,
     private route: ActivatedRoute
   ) { }
@@ -48,43 +45,41 @@ export class TrainingProgramMainStepComponent implements OnInit{
       });
   }
 
-  loadOccupationForms(): void {  // Загружаю формы занятия для всех потомков (нужно закинуть в общий класс)
+  loadOccupationForms(): void {  // Загружаю формы занятия для всех потомков
     this.occupationFormService.getValues()
       .subscribe((data: OccupationForm[]) => {
         if (data.length !== 0){
           data.sort((a, b) => a.id - b.id);
           this.occupationForms = data;
-          this.loadUsedTemplates();
+          this.loadTemplateCurriculumTopics();
         }
       });
   }
 
-  loadUsedTemplates(): void { // Загружаю шаблоны которые уже используются в этой учебной программе
-    this.curriculumTopicService.getFromTrainingProgram(this.id)
-      .subscribe((curriculumTopics: CurriculumTopic[]) => {
-        if (curriculumTopics.length !== 0) {
-          this.loadTemplateCurriculumTopics(curriculumTopics);
-        }
-      });
-  }
-
-  loadTemplateCurriculumTopics(curriculumTopicsUsed: CurriculumTopic[]): void { // Загружаю предложку с фильтрацией
-    this.curriculumTopicService.getValue(this.trainingProgram.studentCategoryId, this.trainingProgram.departmentId)
+  loadTemplateCurriculumTopics(): void { // Загружаю предложку с фильтрацией
+    this.curriculumTopicService.getValuesFromFilter(
+      this.trainingProgram.studentCategoryId, this.trainingProgram.departmentId, this.globals.userId)
       .subscribe((curriculumTopics: CurriculumTopic[]) => {
         if (curriculumTopics.length !== 0) {
           curriculumTopics.sort((a, b) => b.id - a.id);
           curriculumTopics.forEach((curriculumTopic) => {
-            const used = curriculumTopicsUsed.find(a => a.id === curriculumTopic.id);
-            if (!used) {
-              this.todo.push({
-                curriculumTopicId: curriculumTopic.id,
-                topicTitle: curriculumTopic.topicTitle,
-                isVariable: false,
-                annotation: curriculumTopic.annotation
-              });
-            }
+            this.todo.push({
+              curriculumTopicId: curriculumTopic.id,
+              topicTitle: curriculumTopic.topicTitle,
+              isVariable: false,
+              annotation: curriculumTopic.annotation
+            });
           });
         }
       });
+  }
+
+  addNewTemplate(newTemplate: CurriculumTopic ): void {
+    this.todo.push({
+      curriculumTopicId: newTemplate.id,
+      topicTitle: newTemplate.topicTitle,
+      isVariable: false,
+      annotation: newTemplate.annotation
+    });
   }
 }

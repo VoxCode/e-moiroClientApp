@@ -2,6 +2,12 @@
      class="spinner-grow text-primary" role="status">
   <span class="sr-only">Loading...</span>
 </div>
+<button type="button" mdbBtn color="orange" size="sm" class="relative waves-light"
+        [routerLink]="['/' + globals.role +'/docxGeneratorTP', id]"
+        mdbWavesEffect>Сгенерировать УП</button>
+<button type="button" mdbBtn color="green" size="sm" class="relative waves-light"
+        [routerLink]="['/' + globals.role +'/trainingProgramExpertStep', id]"
+        mdbWavesEffect>Конструктор</button>
 <button type="button" (click)="generateRector()" size="sm" mdbBtn color="primary"
         class="relative waves-light" mdbWavesEffect>Сгенерировать УТП для ректора</button>
 <button type="button" (click)="generateDean()" size="sm" mdbBtn color="primary"

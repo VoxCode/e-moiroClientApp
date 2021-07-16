@@ -13,7 +13,7 @@
     <button  type="button" mdbBtn color="gray" size="sm" class="relative waves-light"
             (click)="curriculumSectionEditForm(item)" mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon>
     </button><br><br>
-    <app-max-variable-topic-hours *ngIf="occupationForms"
+    <app-max-variable-topic-hours *ngIf="occupationForms && !trainingProgram.isDistanceLearning"
       [occupationForms]="occupationForms"
       [trainingProgramCurriculumSectionId]="item.id">
     </app-max-variable-topic-hours>
@@ -22,7 +22,8 @@
     <app-curriculum-topic-child
       [trainingProgram]="trainingProgram"
       [trainingProgramCurriculumSection]="item"
-      [occupationForms]="occupationForms">
+      [occupationForms]="occupationForms"
+      (newTodoValue)="addNewTemplate($event)">
     </app-curriculum-topic-child>
 
   </div>

@@ -9,51 +9,70 @@
 
   <div class="row">
     <div class="col-sm">
-      <h3>Разработчики</h3><br>
-      <div class="addButton">
-        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="addDeveloper()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
-      </div>
-      <br>
-      <div *ngFor="let el of trainingProgramTeacherDeveloper let i = index" >
-        <ng-select *ngIf="teachers.length !== 0 && trainingProgramTeacherDeveloper.length !== 0" [items]="this.teachers" [clearable]="false"
-                   (change)="saveDeveloper($event.id, i)"
-                   bindValue=""
-                   [(ngModel)]="teacherDevelopers[i]"
-                   bindLabel="fullNameForm"
-                   placeholder="Выберите разработчика">
-        </ng-select>
-        <br>
-        <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="removeDeveloper(i, el.id)"
-                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+      <div class="exp">
+        <h3>Разработчики</h3>
+        <div *ngIf="trainingProgramTeacherDeveloper.length === 0" class="addButton">
+          <button type="button" mdbBtn color="gray" size="sm" class="relative waves-light"
+                  (click)="addDeveloper()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
         </div>
         <br>
+        <div *ngFor="let el of trainingProgramTeacherDeveloper let i = index" class="experts">
+          <ng-select *ngIf="teachers.length !== 0 && trainingProgramTeacherDeveloper.length !== 0"
+                     [items]="this.teachers"
+                     [clearable]="false"
+                     (change)="saveDeveloper($event.id, i)"
+                     bindValue=""
+                     [(ngModel)]="teacherDevelopers[i]"
+                     bindLabel="fullNameForm"
+                     placeholder="Выберите разработчика">
+          </ng-select>
+          <div class="addButton">
+            <button *ngIf="i === trainingProgramTeacherDeveloper.length - 1" type="button" mdbBtn color="gray"
+                    size="sm" class="relative waves-light" (click)="addDeveloper()"
+                    mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+          </div>
+          <div class="delButton">
+            <button type="button" mdbBtn color="gray" size="sm" class="relative waves-light" (click)="removeDeveloper(i, el.id)"
+                    mdbWavesEffect><mdb-icon fas icon="trash" size="lg"></mdb-icon></button>
+          </div>
+          <br>
+        </div>
       </div>
     </div>
     <div class="col-sm">
-      <h3>Рецензенты</h3><br>
-      <div class="addButton">
-        <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                (click)="addReviewer()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
-      </div>
-      <br>
-      <div *ngFor="let el of trainingProgramTeacherReviewer; let i = index" >
-        <ng-select *ngIf="teachers.length !== 0" [items]="this.teachers" [clearable]="false"
-                   (change)="saveReviewer($event.id, i)"
-                   bindValue=""
-                   [(ngModel)]="teacherReviewers[i]"
-                   bindLabel="fullNameForm"
-                   placeholder="Выберите рецензента">
-        </ng-select>
-        <br>
-        <div class="delButton">
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
-                  (click)="removeReviewer(i, el.id)" mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+      <div class="exp">
+        <h3>Рецензенты</h3>
+        <div *ngIf="trainingProgramTeacherReviewer.length === 0" class="addButton">
+          <button type="button" mdbBtn color="gray" size="sm" class="relative waves-light"
+                  (click)="addReviewer()"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
         </div>
         <br>
+        <div *ngFor="let el of trainingProgramTeacherReviewer; let i = index" class="experts">
+          <ng-select *ngIf="teachers.length !== 0" [items]="this.teachers" [clearable]="false"
+                     (change)="saveReviewer($event.id, i)"
+                     bindValue=""
+                     [(ngModel)]="teacherReviewers[i]"
+                     bindLabel="fullNameForm"
+                     placeholder="Выберите рецензента">
+          </ng-select>
+          <div class="addButton">
+            <button *ngIf="i === trainingProgramTeacherReviewer.length - 1" type="button" mdbBtn color="gray"
+                    size="sm" class="relative waves-light" (click)="addReviewer()"
+                    mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+          </div>
+          <div class="delButton">
+            <button type="button" mdbBtn color="gray" size="sm" class="relative waves-light"
+                    (click)="removeReviewer(i, el.id)" mdbWavesEffect><mdb-icon fas icon="trash" size="lg"></mdb-icon></button>
+          </div>
+          <br>
+        </div>
       </div>
     </div>
   </div>
+  <br>
+  <button style="float: right" type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="addNewTeacher()"
+          mdbWavesEffect>Добавить нового эксперта</button>
+  <br>
+  <button style="float: left" type="button" [routerLink]="['/' + globals.role +'/trainingProgramIntroductionStep', id]"
+          mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Далее</button><br>
 </div>
-

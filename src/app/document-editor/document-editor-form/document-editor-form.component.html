@@ -1,12 +1,12 @@
 <button routerLink="/trainingProgram" type="button" size="sm" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>
   <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon></button>
-<button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+<button [disabled]="!saveDisable" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
         (click)="saveBlob()" mdbWavesEffect>
   Сохранить
 </button>
 
 <div class="docx">
-  <ejs-documenteditorcontainer #documentEditorContainerComponent [locale]="culture"
+  <ejs-documenteditorcontainer (contentChange)="saveDisableChange()" #documentEditorContainerComponent [locale]="culture"
                                [enableToolbar]=true>
   </ejs-documenteditorcontainer>
 

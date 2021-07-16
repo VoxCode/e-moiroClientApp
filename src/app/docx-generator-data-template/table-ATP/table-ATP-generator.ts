@@ -13,20 +13,24 @@ import {TableCertificationType} from './table-ATP-structure/table-certification-
 import {TableIndividualSessions} from './table-ATP-structure/table-individual-sessions';
 import {TrainingProgramGenerator} from '../../models/generator-models/TrainingProgramGenerator';
 import {CurriculumSectionOccupationFormAllClassHours} from './table-class-hours/curriculum-section-occupation-form-all-class-hours';
+import {TableControlWork} from './table-ATP-structure/table-control-work';
+import {TableVariableOptionalPracticalTraining} from './table-ATP-structure/table-variable-optional-practical-training';
 
 export class TableATPGenerator {
   constructor() {
   }
   public tableATP(
     occupationForms: OccupationForm[],
-    trainingProgram: TrainingProgramGenerator): Table{
+    trainingProgram: TrainingProgramGenerator,
+    isForum: boolean): Table{
     const row: any = [];
-    const firstRow = new TableHeaderFirstRow(occupationForms);
-    const secondRow = new TableHeaderSecondRow(occupationForms);
+    const firstRow = new TableHeaderFirstRow(occupationForms.length);
+    const secondRow = new TableHeaderSecondRow(occupationForms.length);
     const thirdRow = new TableHeaderThirdRow(occupationForms);
     const fourthRow = new TableHeaderFourthRow(occupationForms.length);
     const tableCertificationType = new TableCertificationType(occupationForms.length, trainingProgram.certificationTypeName);
-    const tableIndividualSessions = new TableIndividualSessions(occupationForms, trainingProgram.departmentName);
+    const tableControlWork = new TableControlWork(occupationForms.length);
+    const tableIndividualSessions = new TableIndividualSessions(occupationForms.length, trainingProgram.departmentName);
     const totalTrainingProgramClassHoursList: number[] = [];
     occupationForms.forEach(() => {
       totalTrainingProgramClassHoursList.push(0);
@@ -78,6 +82,10 @@ export class TableATPGenerator {
         let variableTableRow = new TableVariableSection(allOccupationFormsClassHours.variableClassHours);
         row.push(variableTableRow.insert());
         variableTableRow = null;
+        let tableVariableOptionalPracticalTraining = new TableVariableOptionalPracticalTraining(
+          allOccupationFormsClassHours.variableClassHours);
+        row.push(tableVariableOptionalPracticalTraining.insert());
+        tableVariableOptionalPracticalTraining = null;
 
         let j = 0;
         obj.curriculumTopicTrainingPrograms.forEach(curriculumTopic => {
@@ -90,6 +98,9 @@ export class TableATPGenerator {
             j++;
           }
         });
+      }
+      if (trainingProgram.isDistanceLearning) {
+        row.push(tableControlWork.insert(index));
       }
     });
     const tableTotalClassHours = new TableTotalClassHours(totalTrainingProgramClassHoursList);

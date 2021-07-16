@@ -5,12 +5,15 @@ import {MDBModalRef} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-modal-edit',
-  templateUrl: './student-category-edit.component.html',
-  styleUrls: ['../styles/modal-form-style.scss']
-})
-export class StudentCategoryEditComponent implements OnInit{
+  templateUrl: './curriculum-topic-template.component.html',
+  styleUrls: ['../styles/modal-form-style.scss']})
 
-  public editableRow: { id: string, first: string, second: string, last: string, handle: string };
+export class CurriculumTopicTemplateComponent implements OnInit {
+  public editableRow: {
+    id: string,
+    first: string,
+    second: string,
+    last: string};
   public saveButtonClicked: Subject<any> = new Subject<any>();
 
   public form: FormGroup = new FormGroup({
@@ -38,5 +41,4 @@ export class StudentCategoryEditComponent implements OnInit{
   get first(): AbstractControl { return this.form.get('first'); }
   get second(): AbstractControl { return this.form.get('second'); }
   get last(): AbstractControl { return this.form.get('last'); }
-
 }

@@ -14,6 +14,7 @@ export class CurriculumTopicEditComponent implements OnInit{
     id: string,
     first: string,
     second: string,
+    third: boolean,
     last: string,
     handle: string };
   public saveButtonClicked: Subject<any> = new Subject<any>();
@@ -22,6 +23,7 @@ export class CurriculumTopicEditComponent implements OnInit{
     id: new FormControl({value: '', disabled: true}),
     first: new FormControl({value: '', disabled: true}),
     second: new FormControl('', Validators.required),
+    third: new FormControl(''),
     last: new FormControl('', Validators.required)
   });
 
@@ -31,6 +33,7 @@ export class CurriculumTopicEditComponent implements OnInit{
     this.form.controls.id.patchValue(this.editableRow.id);
     this.form.controls.first.patchValue(this.editableRow.first);
     this.form.controls.second.patchValue(this.editableRow.second);
+    this.form.controls.third.patchValue(false);
     this.form.controls.last.patchValue(this.editableRow.last);
   }
 
@@ -42,5 +45,6 @@ export class CurriculumTopicEditComponent implements OnInit{
 
   get first(): AbstractControl { return this.form.get('first'); }
   get second(): AbstractControl { return this.form.get('second'); }
+  get third(): AbstractControl { return this.form.get('third'); }
   get last(): AbstractControl { return this.form.get('last'); }
 }

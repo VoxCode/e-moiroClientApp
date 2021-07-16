@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
-import {MDBModalRef} from 'angular-bootstrap-md';
+import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {DepartmentService} from '../services/department.service';
 import {StudentCategoryService} from '../services/student-category.service';
 import {CertificationTypeService} from '../services/certification-type.service';
@@ -10,6 +10,7 @@ import {StudentCategory} from '../models/StudentCategory';
 import {CertificationType} from '../models/CertificationType';
 import {FormOfEducation} from '../models/FormOfEducation';
 import {FormOfEducationService} from '../services/form-of-education.service';
+import {StudentCategoryEditComponent} from '../student-category/student-category-edit.component';
 
 @Component({
   selector: 'app-modal-edit',
@@ -44,6 +45,7 @@ export class TrainingProgramEditComponent implements OnInit{
     twelfth: string,
     thirteenth: string,
     fourteenth: string,
+    fifteenth: string
     handle: string };
   public saveButtonClicked: Subject<any> = new Subject<any>();
 
@@ -58,15 +60,18 @@ export class TrainingProgramEditComponent implements OnInit{
     seventh: new FormControl('', Validators.required),     // departmentId
     ninth: new FormControl('', Validators.required),       // studentCategoryId
     eleventh: new FormControl('', Validators.required),    // certificationTypeId
-    thirteenth: new FormControl('', Validators.required)   // formOfEducationId
+    thirteenth: new FormControl('', Validators.required),  // formOfEducationId
+    fifteenth: new FormControl('', Validators.required)    // numberOfWeeks
   });
 
   constructor(
     public modalRef: MDBModalRef,
+    public modalRef2: MDBModalRef,
     private departmentService: DepartmentService,
     private studentCategoryService: StudentCategoryService,
     private certificationTypeService: CertificationTypeService,
-    private formOfEducationService: FormOfEducationService
+    private formOfEducationService: FormOfEducationService,
+    private modalService2: MDBModalService
   ) { }
 
 
@@ -87,6 +92,7 @@ export class TrainingProgramEditComponent implements OnInit{
     this.form.controls.ninth.patchValue(this.editableRow.ninth);
     this.form.controls.eleventh.patchValue(this.editableRow.eleventh);
     this.form.controls.thirteenth.patchValue(this.editableRow.thirteenth);
+    this.form.controls.fifteenth.patchValue(this.editableRow.fifteenth);
   }
 
   editRow(): void {
@@ -109,6 +115,7 @@ export class TrainingProgramEditComponent implements OnInit{
   get ninth(): AbstractControl  { return this.form.get('ninth'); }
   get eleventh(): AbstractControl  { return this.form.get('eleventh'); }
   get thirteenth(): AbstractControl  { return this.form.get('thirteenth'); }
+  get fifteenth(): AbstractControl  { return this.form.get('fifteenth'); }
 
   loadDepartment(): void {
     this.departmentService.getValues()
@@ -140,5 +147,41 @@ export class TrainingProgramEditComponent implements OnInit{
 
   changeIsDistanceLearning(el: boolean): void {
     this.isDistanceLearning = el;
+  }
+
+  createStudentCategory(el: any): void {
+    const studentCategory = new StudentCategory(0, el.last, el.second);
+    this.studentCategoryService.createValue(studentCategory)
+      .subscribe((studentCategoryResponse: StudentCategory) => {
+        this.studentCategories.push(studentCategoryResponse);
+        this.form.controls.ninth.patchValue(studentCategoryResponse.id);
+      });
+  }
+
+  addStudentCategory(): void {
+    this.modalRef2 = this.modalService2.show(StudentCategoryEditComponent, this.modalOption(this.emptyEl()));
+    this.modalRef2.content.saveButtonClicked.subscribe((newElement: any) => {
+      this.createStudentCategory(newElement);
+    });
+  }
+
+  emptyEl(): any {
+    return {id: 0, first: '', second: '', last: ''};
+  }
+
+  modalOption(el: any): any {
+    return {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+      show: false,
+      ignoreBackdropClick: true,
+      class: 'modal-fluid',
+      containerClass: '',
+      animated: true,
+      data: {
+        editableRow: el
+      }
+    };
   }
 }
