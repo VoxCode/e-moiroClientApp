@@ -15,7 +15,12 @@ export class FilterPipe implements PipeTransform {
     searchText = searchText.toLocaleLowerCase();
 
     return items.filter(it => {
-      return it.topicTitle.toLocaleLowerCase().includes(searchText);
+      if (it.topicTitle) {
+        return it.topicTitle.toLocaleLowerCase().includes(searchText);
+      }
+      else {
+        return it.content.toLocaleLowerCase().includes(searchText);
+      }
     });
   }
 }

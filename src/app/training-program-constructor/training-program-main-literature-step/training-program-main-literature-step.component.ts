@@ -90,11 +90,24 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
         mainLiteratures.forEach((mainLiterature) => {
           this.todo.push({
             mainLiteratureId: mainLiterature.id,
-            topicTitle: mainLiterature.content
+            content: mainLiterature.content
           });
         });
       }
     });
+  }
+
+  crateMainLiteratureTemplate(content: string): void {
+    const mainLiterature = new MainLiterature();
+    mainLiterature.content = content;
+    this.mainLiteratureService.createValue(mainLiterature)
+      .subscribe((mainLiteratureTemplateResponse: MainLiterature) => {
+        console.log('Save was successful!');
+        this.todo.push({
+          additionalLiteratureId: mainLiteratureTemplateResponse.id,
+          content: mainLiteratureTemplateResponse.content
+        });
+      });
   }
 
   crateTrainingProgramMainLiterature(trainingProgramMainLiterature: TrainingProgramMainLiterature): void {
@@ -150,6 +163,9 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
         this.done.length + 1
       );
       this.crateTrainingProgramMainLiterature(trainingProgramAdditionalLiterature);
+      if (newElement.third) {
+        this.crateMainLiteratureTemplate(newElement.last);
+      }
     });
   }
 

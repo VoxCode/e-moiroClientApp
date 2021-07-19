@@ -6,8 +6,6 @@ import {FinalExaminationService} from '../../services/final-examination.service'
 import {FinalExamination} from '../../models/FinalExamination';
 import {TrainingProgramFinalExaminationService} from '../../services/training-program-final-examination.service';
 import {TrainingProgramFinalExamination} from '../../models/TrainingProgramFinalExamination';
-import {CurriculumTopicTrainingProgram} from '../../models/СurriculumTopicTrainingProgram';
-import {CurriculumTopicTrainingProgramService} from '../../services/curriculum-topic-training-program.service';
 import {CertificationTypeService} from '../../services/certification-type.service';
 import {CertificationType} from '../../models/CertificationType';
 import {Globals} from '../../globals';
@@ -23,7 +21,6 @@ import {TrainingProgramConstructorService} from '../training-program-constructor
   providers: [
     FinalExaminationService,
     TrainingProgramFinalExaminationService,
-    CurriculumTopicTrainingProgramService,
     CertificationTypeService
   ]
 })
@@ -32,8 +29,6 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
   todo = [];
   done = [];
   trainingProgram: TrainingProgram;
-  curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[];
-  curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram;
   finalExamination: FinalExamination = new FinalExamination();
   certificationType: CertificationType = new CertificationType();
   modalRef: MDBModalRef;
@@ -43,7 +38,6 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
     public  trainingProgramConstructorService: TrainingProgramConstructorService,
     private finalExaminationService: FinalExaminationService,
     private trainingProgramFinalExaminationService: TrainingProgramFinalExaminationService,
-    private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private certificationTypeService: CertificationTypeService,
     private route: ActivatedRoute,
     private modalService: MDBModalService,
@@ -52,6 +46,7 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
+    this.loadCertificationType();
   }
 
   drop(event: CdkDragDrop<string[]>): void {
@@ -94,47 +89,26 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
 
   loadCertificationType(): void {
     this.certificationTypeService.getValue(this.trainingProgram.certificationTypeId)
-      .subscribe((data: CertificationType) => {
-        if (data !== undefined){
-          this.certificationType = data;
-          // this.loadCurriculumTopicTrainingProgram();
+      .subscribe((certificationType: CertificationType) => {
+        if (certificationType){
+          this.certificationType = certificationType;
+          this.loadFinalExamination();
         }
       });
   }
 
-  loadCurriculumTopicTrainingProgram(): void {
-    this.curriculumTopicTrainingProgramService.getValue(this.id).subscribe((data: CurriculumTopicTrainingProgram[]) => {
-      if (data !== undefined && data !== null){
-        this.curriculumTopicTrainingPrograms = data;
-        this.loadFinalExamination();
+  loadFinalExamination(): void {
+    this.finalExaminationService.getValue(this.certificationType.id).subscribe((finalExaminations: FinalExamination[]) => {
+      if (finalExaminations.length !== 0) {
+        finalExaminations.sort((a, b) => b.id - a.id);
+        finalExaminations.forEach((finalExamination) => {
+          this.todo.push({
+            finalExaminationId: finalExamination.id,
+            content: finalExamination.content
+          });
+        });
       }
     });
-  }
-
-  loadFinalExamination(): void {
-    // // tslint:disable-next-line:prefer-const
-    // let curriculumTopicIdArray: number[] = [this.curriculumTopicTrainingPrograms.length];
-    // this.curriculumTopicTrainingPrograms.forEach(i => {
-    //   curriculumTopicIdArray.push(i.curriculumTopicId);
-    // });
-    // this.finalExaminationService.getFinalExamination(this.trainingProgram.certificationTypeId, curriculumTopicIdArray)
-    //   .subscribe((data: FinalExamination[]) => {
-    //     if (data !== undefined && data !== null){
-    //       // tslint:disable-next-line:only-arrow-functions typedef
-    //       data.sort(function(a, b) {
-    //         return b.id - a.id;
-    //       });
-    //       data.forEach((tmp) => {
-    //         const tmp2 = this.done.find(a => a.seventh === tmp.id);
-    //         if (tmp2 === undefined){
-    //           this.todo.push({
-    //             first: tmp.id,
-    //             third: tmp.content
-    //           });
-    //         }
-    //       });
-    //     }
-    //   });
   }
 
   crateTrainingProgramFinalExamination(trainingProgramFinalExamination: TrainingProgramFinalExamination): void {

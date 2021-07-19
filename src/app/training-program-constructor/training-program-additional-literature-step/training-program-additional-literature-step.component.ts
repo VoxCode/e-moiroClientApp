@@ -88,11 +88,24 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
         additionalLiteratures.forEach((additionalLiterature) => {
           this.todo.push({
             additionalLiteratureId: additionalLiterature.id,
-            topicTitle: additionalLiterature.content
+            content: additionalLiterature.content
           });
         });
       }
     });
+  }
+
+  crateAdditionalLiteratureTemplate(content: string): void {
+    const additionalLiterature = new AdditionalLiterature();
+    additionalLiterature.content = content;
+    this.additionalLiteratureService.createValue(additionalLiterature)
+      .subscribe((additionalLiteratureTemplateResponse: AdditionalLiterature) => {
+        console.log('Save was successful!');
+        this.todo.push({
+          additionalLiteratureId: additionalLiteratureTemplateResponse.id,
+          content: additionalLiteratureTemplateResponse.content
+        });
+      });
   }
 
   crateTrainingProgramAdditionalLiterature(trainingProgramAdditionalLiterature: TrainingProgramAdditionalLiterature): void {
@@ -148,6 +161,9 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
         this.done.length + 1
       );
       this.crateTrainingProgramAdditionalLiterature(trainingProgramAdditionalLiterature);
+      if (newElement.third) {
+        this.crateAdditionalLiteratureTemplate(newElement.last);
+      }
     });
   }
 
