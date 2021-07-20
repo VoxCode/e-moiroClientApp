@@ -45,7 +45,6 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
-    this.loadCertificationType();
   }
 
   drop(event: CdkDragDrop<string[]>): void {
@@ -66,6 +65,7 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
       .subscribe((trainingProgramResponse: TrainingProgram) => {
         this.trainingProgram = trainingProgramResponse;
         this.loadTrainingProgramFinalExamination();
+        this.loadCertificationType();
       });
   }
 
@@ -156,12 +156,30 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
   save(): void {
     const trainingProgramFinalExaminations: TrainingProgramFinalExamination[] = [];
     this.done.forEach((object, index) => {
-      const trainingProgramFinalExamination: TrainingProgramFinalExamination = new TrainingProgramFinalExamination();
-      trainingProgramFinalExamination.id = +object.id;
-      trainingProgramFinalExamination.trainingProgramId = +object.trainingProgramId;
-      trainingProgramFinalExamination.content = object.content;
-      trainingProgramFinalExamination.serialNumber = ++index;
-      trainingProgramFinalExaminations.push(trainingProgramFinalExamination);
+      if (object.finalExaminationId) {
+        const trainingProgramFinalExamination = new TrainingProgramFinalExamination(
+          0,
+          this.id,
+          object.content,
+          ++index
+        );
+        this.trainingProgramFinalExaminationService.createValue(trainingProgramFinalExamination)
+          .subscribe((trainingProgramFinalExaminationResponse: TrainingProgramFinalExamination) => {
+            object.serialNumber = trainingProgramFinalExaminationResponse.serialNumber;
+            object.id = trainingProgramFinalExaminationResponse.id;
+            object.trainingProgramId = trainingProgramFinalExaminationResponse.trainingProgramId;
+            object.content = trainingProgramFinalExaminationResponse.content;
+            object.finalExaminationId = undefined;
+          });
+      }
+      else {
+        const trainingProgramFinalExamination: TrainingProgramFinalExamination = new TrainingProgramFinalExamination();
+        trainingProgramFinalExamination.id = +object.id;
+        trainingProgramFinalExamination.trainingProgramId = +object.trainingProgramId;
+        trainingProgramFinalExamination.content = object.content;
+        trainingProgramFinalExamination.serialNumber = ++index;
+        trainingProgramFinalExaminations.push(trainingProgramFinalExamination);
+      }
     });
     this.trainingProgramFinalExaminationService.updateSerialNumbers(trainingProgramFinalExaminations).subscribe(() => {
       console.log('Successful!');
@@ -178,7 +196,7 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
         this.done.length + 1
       );
       this.crateTrainingProgramFinalExamination(trainingProgramFinalExamination);
-      if (newElement.third) {
+      if (newElement.fourth) {
         this.crateFinalExaminationTemplate(newElement.last);
       }
     });

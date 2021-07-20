@@ -121,7 +121,7 @@ export class CurriculumTopicChildComponent implements OnInit {
           });
       }
       else {
-        const curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
+        const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
         curriculumTopicTrainingProgram.id = object.curriculumTopicTrainingProgramId;
         curriculumTopicTrainingProgram.isVariable = object.isVariable;
         curriculumTopicTrainingProgram.topicTitle = object.topicTitle;

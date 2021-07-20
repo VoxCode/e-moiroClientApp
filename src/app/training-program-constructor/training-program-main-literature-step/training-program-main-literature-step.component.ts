@@ -142,12 +142,30 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
   save(): void {
     const trainingProgramMainLiteratures: TrainingProgramMainLiterature[] = [];
     this.done.forEach((object, index) => {
-      const trainingProgramMainLiterature: TrainingProgramMainLiterature = new TrainingProgramMainLiterature();
-      trainingProgramMainLiterature.id = +object.id;
-      trainingProgramMainLiterature.trainingProgramId = +object.trainingProgramId;
-      trainingProgramMainLiterature.content = object.content;
-      trainingProgramMainLiterature.serialNumber = ++index;
-      trainingProgramMainLiteratures.push(trainingProgramMainLiterature);
+      if (object.mainLiteratureId) {
+        const trainingProgramMainLiterature = new TrainingProgramMainLiterature(
+          0,
+          this.id,
+          object.content,
+          ++index
+        );
+        this.trainingProgramMainLiteratureService.createValue(trainingProgramMainLiterature)
+          .subscribe((trainingProgramMainLiteratureResponse: TrainingProgramMainLiterature) => {
+            object.serialNumber = trainingProgramMainLiteratureResponse.serialNumber;
+            object.id = trainingProgramMainLiteratureResponse.id;
+            object.trainingProgramId = trainingProgramMainLiteratureResponse.trainingProgramId;
+            object.content = trainingProgramMainLiteratureResponse.content;
+            object.mainLiteratureId = undefined;
+          });
+      }
+      else {
+        const trainingProgramMainLiterature: TrainingProgramMainLiterature = new TrainingProgramMainLiterature();
+        trainingProgramMainLiterature.id = +object.id;
+        trainingProgramMainLiterature.trainingProgramId = +object.trainingProgramId;
+        trainingProgramMainLiterature.content = object.content;
+        trainingProgramMainLiterature.serialNumber = ++index;
+        trainingProgramMainLiteratures.push(trainingProgramMainLiterature);
+      }
     });
     this.trainingProgramMainLiteratureService.updateSerialNumbers(trainingProgramMainLiteratures).subscribe(() => {
       console.log('Successful!');

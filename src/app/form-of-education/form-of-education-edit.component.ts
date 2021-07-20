@@ -10,13 +10,12 @@ import {MDBModalRef} from 'angular-bootstrap-md';
 })
 export class FormOfEducationEditComponent implements OnInit{
 
-  public editableRow: { id: string, first: string,  third: boolean, last: string, handle: string };
+  public editableRow: { id: string, first: string, last: string, handle: string };
   public saveButtonClicked: Subject<any> = new Subject<any>();
 
   public form: FormGroup = new FormGroup({
     id: new FormControl({value: '', disabled: true}),
     first: new FormControl({value: '', disabled: true}),
-    third: new FormControl(''),
     last: new FormControl('', Validators.required)
   });
 
@@ -25,7 +24,6 @@ export class FormOfEducationEditComponent implements OnInit{
   ngOnInit(): void {
     this.form.controls.id.patchValue(this.editableRow.id);
     this.form.controls.first.patchValue(this.editableRow.first);
-    this.form.controls.third.patchValue(false);
     this.form.controls.last.patchValue(this.editableRow.last);
   }
 
@@ -37,6 +35,5 @@ export class FormOfEducationEditComponent implements OnInit{
 
   get first(): AbstractControl { return this.form.get('first'); }
   get last(): AbstractControl { return this.form.get('last'); }
-  get third(): AbstractControl { return this.form.get('third'); }
 
 }

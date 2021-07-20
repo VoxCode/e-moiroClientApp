@@ -140,15 +140,34 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
   save(): void {
     const trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[] = [];
     this.done.forEach((object, index) => {
-      const trainingProgramAdditionalLiterature: TrainingProgramAdditionalLiterature = new TrainingProgramAdditionalLiterature();
-      trainingProgramAdditionalLiterature.id = +object.id;
-      trainingProgramAdditionalLiterature.trainingProgramId = +object.trainingProgramId;
-      trainingProgramAdditionalLiterature.content = object.content;
-      trainingProgramAdditionalLiterature.serialNumber = ++index;
-      trainingProgramAdditionalLiteratures.push(trainingProgramAdditionalLiterature);
-    });
-    this.trainingProgramAdditionalLiteratureService.updateSerialNumbers(trainingProgramAdditionalLiteratures).subscribe(() => {
-      console.log('Successful!');
+      if (object.additionalLiteratureId) {
+        const trainingProgramAdditionalLiterature = new TrainingProgramAdditionalLiterature(
+          0,
+          this.id,
+          object.content,
+          ++index
+        );
+        this.trainingProgramAdditionalLiteratureService.createValue(trainingProgramAdditionalLiterature)
+          .subscribe((trainingProgramAdditionalLiteratureResponse: TrainingProgramAdditionalLiterature) => {
+            object.serialNumber = trainingProgramAdditionalLiteratureResponse.serialNumber;
+            object.id = trainingProgramAdditionalLiteratureResponse.id;
+            object.trainingProgramId = trainingProgramAdditionalLiteratureResponse.trainingProgramId;
+            object.content = trainingProgramAdditionalLiteratureResponse.content;
+            object.additionalLiteratureId = undefined;
+          });
+      }
+      else {
+        const trainingProgramAdditionalLiterature = new TrainingProgramAdditionalLiterature();
+        trainingProgramAdditionalLiterature.id = +object.id;
+        trainingProgramAdditionalLiterature.trainingProgramId = +object.trainingProgramId;
+        trainingProgramAdditionalLiterature.content = object.content;
+        trainingProgramAdditionalLiterature.serialNumber = ++index;
+        trainingProgramAdditionalLiteratures.push(trainingProgramAdditionalLiterature);
+      }
+      this.trainingProgramAdditionalLiteratureService.updateSerialNumbers(trainingProgramAdditionalLiteratures)
+        .subscribe(() => {
+          console.log('Successful!');
+        });
     });
   }
 

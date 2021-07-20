@@ -88,7 +88,7 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
         regulations.forEach((regulation) => {
           this.todo.push({
             regulationId: regulation.id,
-            topicTitle: regulation.content
+            content: regulation.content
           });
         });
       }
@@ -140,29 +140,30 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   save(): void {
     const trainingProgramRegulations: TrainingProgramRegulation[] = [];
     this.done.forEach((object, index) => {
-      const trainingProgramRegulation: TrainingProgramRegulation = new TrainingProgramRegulation();
-      trainingProgramRegulation.id = +object.id;
-      trainingProgramRegulation.trainingProgramId = +object.trainingProgramId;
-      trainingProgramRegulation.content = object.content;
-      trainingProgramRegulation.serialNumber = ++index;
-      trainingProgramRegulations.push(trainingProgramRegulation);
-
-
-      // if (!trainingProgramRegulation.id) {
-      //   this.trainingProgramRegulationService.createValue(trainingProgramRegulation)
-      //     .subscribe((data: TrainingProgramRegulation) => {
-      //       object.fourth = data.id;
-      //       object.fifth = data.trainingProgramId;
-      //       object.seventh = data.regulationId;
-      //       object.eight = data.serialNumber;
-      //       console.log('Save was successful');
-      //       trainingProgramRegulation = null;
-      //     });
-      // }
-      // else {
-      //   this.update(trainingProgramRegulation);
-      //   trainingProgramRegulation = null;
-      // }
+      if (object.regulationId) {
+        const trainingProgramRegulation = new TrainingProgramRegulation(
+          0,
+          this.id,
+          object.content,
+          ++index
+        );
+        this.trainingProgramRegulationService.createValue(trainingProgramRegulation)
+          .subscribe((trainingProgramRegulationResponse: TrainingProgramRegulation) => {
+            object.serialNumber = trainingProgramRegulationResponse.serialNumber;
+            object.id = trainingProgramRegulationResponse.id;
+            object.trainingProgramId = trainingProgramRegulationResponse.trainingProgramId;
+            object.content = trainingProgramRegulationResponse.content;
+            object.regulationId = undefined;
+          });
+      }
+      else {
+        const trainingProgramRegulation: TrainingProgramRegulation = new TrainingProgramRegulation();
+        trainingProgramRegulation.id = +object.id;
+        trainingProgramRegulation.trainingProgramId = +object.trainingProgramId;
+        trainingProgramRegulation.content = object.content;
+        trainingProgramRegulation.serialNumber = ++index;
+        trainingProgramRegulations.push(trainingProgramRegulation);
+      }
     });
     this.trainingProgramRegulationService.updateSerialNumbers(trainingProgramRegulations).subscribe(() => {
       console.log('Successful!');
