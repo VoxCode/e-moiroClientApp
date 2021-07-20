@@ -10,9 +10,8 @@ import {CertificationTypeService} from '../../services/certification-type.servic
 import {CertificationType} from '../../models/CertificationType';
 import {Globals} from '../../globals';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
-import {MainLiteratureEditComponent} from '../../main-literature/main-literature-edit.component';
-import {TrainingProgramAdditionalLiterature} from '../../models/TrainingProgramAdditionalLiterature';
 import {TrainingProgramConstructorService} from '../training-program-constructor.service';
+import {FinalExaminationEditComponent} from '../../final-examination/final-examination-edit.component';
 
 @Component({
   selector: 'app-training-program-certification-step',
@@ -111,6 +110,21 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
     });
   }
 
+  crateFinalExaminationTemplate(content: string): void {
+    const finalExamination = new FinalExamination();
+    finalExamination.content = content;
+    finalExamination.certificationTypeId = this.certificationType.id;
+    finalExamination.authorIndex = this.globals.userId;
+    this.finalExaminationService.createValue(finalExamination)
+      .subscribe((finalExaminationTemplateResponse: FinalExamination) => {
+        console.log('Save was successful!');
+        this.todo.push({
+          finalExaminationId: finalExaminationTemplateResponse.id,
+          content: finalExaminationTemplateResponse.content
+        });
+      });
+  }
+
   crateTrainingProgramFinalExamination(trainingProgramFinalExamination: TrainingProgramFinalExamination): void {
     this.trainingProgramFinalExaminationService.createValue(trainingProgramFinalExamination)
       .subscribe((trainingProgramFinalExaminationResponse: TrainingProgramFinalExamination) => {
@@ -154,23 +168,26 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
     });
   }
 
-  trainingProgramMainLiteratureCrateForm(): void {
-    this.modalRef = this.modalService.show(MainLiteratureEditComponent, this.modalOption(this.emptyEl()));
+  trainingProgramFinalExaminationCrateForm(): void {
+    this.modalRef = this.modalService.show(FinalExaminationEditComponent, this.modalOption(this.emptyEl()));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
-      const trainingProgramAdditionalLiterature = new TrainingProgramAdditionalLiterature(
+      const trainingProgramFinalExamination = new TrainingProgramFinalExamination(
         0,
         this.id,
         newElement.last,
         this.done.length + 1
       );
-      this.crateTrainingProgramFinalExamination(trainingProgramAdditionalLiterature);
+      this.crateTrainingProgramFinalExamination(trainingProgramFinalExamination);
+      if (newElement.third) {
+        this.crateFinalExaminationTemplate(newElement.last);
+      }
     });
   }
 
-  trainingProgramMainLiteratureEditForm(item: any): void {
+  trainingProgramFinalExaminationEditForm(item: any): void {
     const el = this.emptyEl();
     el.last = item.content;
-    this.modalRef = this.modalService.show(MainLiteratureEditComponent, this.modalOption(el));
+    this.modalRef = this.modalService.show(FinalExaminationEditComponent, this.modalOption(el));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       item.content = newElement.last;
       this.updateTrainingProgramFinalExamination(item);

@@ -100,6 +100,7 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
   crateMainLiteratureTemplate(content: string): void {
     const mainLiterature = new MainLiterature();
     mainLiterature.content = content;
+    mainLiterature.authorIndex = this.globals.userId;
     this.mainLiteratureService.createValue(mainLiterature)
       .subscribe((mainLiteratureTemplateResponse: MainLiterature) => {
         console.log('Save was successful!');

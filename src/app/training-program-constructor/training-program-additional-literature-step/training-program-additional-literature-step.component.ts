@@ -98,6 +98,7 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
   crateAdditionalLiteratureTemplate(content: string): void {
     const additionalLiterature = new AdditionalLiterature();
     additionalLiterature.content = content;
+    additionalLiterature.authorIndex = this.globals.userId;
     this.additionalLiteratureService.createValue(additionalLiterature)
       .subscribe((additionalLiteratureTemplateResponse: AdditionalLiterature) => {
         console.log('Save was successful!');

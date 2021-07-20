@@ -95,6 +95,20 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
     });
   }
 
+  crateRegulationTemplate(content: string): void {
+    const regulation = new Regulation();
+    regulation.content = content;
+    regulation.authorIndex = this.globals.userId;
+    this.regulationService.createValue(regulation)
+      .subscribe((regulationTemplateResponse: Regulation) => {
+        console.log('Save was successful!');
+        this.todo.push({
+          regulationId: regulationTemplateResponse.id,
+          content: regulationTemplateResponse.content
+        });
+      });
+  }
+
   crateTrainingProgramRegulation(trainingProgramRegulation: TrainingProgramRegulation): void {
     this.trainingProgramRegulationService.createValue(trainingProgramRegulation)
       .subscribe((trainingProgramRegulationResponse: TrainingProgramRegulation) => {
@@ -165,6 +179,9 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
         this.done.length + 1
       );
       this.crateTrainingProgramRegulation(trainingProgramRegulation);
+      if (newElement.third) {
+        this.crateRegulationTemplate(newElement.last);
+      }
     });
   }
 
