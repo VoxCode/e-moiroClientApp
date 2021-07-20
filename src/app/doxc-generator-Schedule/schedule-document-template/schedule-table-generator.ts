@@ -6,7 +6,7 @@ import {
   TableCell,
   TableRow,
   TextDirection,
-  VerticalAlign,
+  VerticalAlign, VerticalMergeType,
   WidthType
 } from 'docx';
 import {TableScheduleHeader} from './schedule-table-header';
@@ -18,6 +18,7 @@ export class TableScheduleGenerator {
   private child: any = [];
   private header: TableScheduleHeader;
   private size: number;
+  // private c: number;
 
   constructor(
     // private GroupSchedule: GroupScheduleGenerator,
@@ -25,6 +26,7 @@ export class TableScheduleGenerator {
     this.header = new TableScheduleHeader();
     this.child.push(this.header.insert());
     this.size = 24;
+    // this.c = 0;
 
     const tree = new ScheduleRowTree([
       'Date',
@@ -172,40 +174,40 @@ export class TableScheduleGenerator {
     tree.getFields.forEach((field, index) => {
       console.log('index: ' + index);
       cells.push(
-        this.generateTableCell(field, this.size, rowSpan, tree.style), // STYLE HERE PLS!!1
+        this.generateTableCell(field, this.size, rowSpan, tree.style),
       );
       console.log('||||||||' + field + '|||||||||||');
       console.log(rowSpan);
     });
   }
 
-  private generateTableCell(text: string, size: number, rowSpan: number, borders: ITableBordersOptions): TableCell {
-    // let borders: ITableBordersOptions;
-    console.log('OOOOOOOOOO ' + rowSpan.toString() + ' OOOOOOOOOOOO');
-    // if (rowSpan === 1) {
-    //   borders = {top: {style: BorderStyle.DASHED, size: 5, color: '000000'}};
+  private generateTableCell(text: string, size: number, rSpan: number, borders: ITableBordersOptions): TableCell {
+    console.log('OOOOOOOOOO ' + rSpan.toString() + ' OOOOOOOOOOOO');
+    // let vmt: VerticalMergeType;
+    // if (this.c < 8) {
+    //   vmt = VerticalMergeType.RESTART;
     // }
     // else {
-    //   // borders = {top: {style: BorderStyle.NIL, size: 5, color: '000000'}};
+    //   vmt = VerticalMergeType.CONTINUE;
     // }
+    // this.c++;
+
     return new TableCell({
       children: [new Paragraph({
         text,
         alignment: AlignmentType.CENTER,
       })],
+      rowSpan: rSpan,
+      verticalMerge: VerticalMergeType.RESTART,
       borders,
       // columnSpan: this.occupationForms.length,
       verticalAlign: VerticalAlign.TOP,
-      textDirection: TextDirection.BOTTOM_TO_TOP_LEFT_TO_RIGHT,
-      rowSpan
+      // textDirection: TextDirection.BOTTOM_TO_TOP_LEFT_TO_RIGHT,
     });
-    // borders: {
-    //   top: {style: BorderStyle.DOT_DASH, size: 5, color: '000000'},
-    //   bottom: {style: BorderStyle.DOUBLE, size: 5, color: '000000'},
-    // }
   }
 
   public insertTable(): Table {
+    // this.c = 0;
     return new Table({
       rows: this.child,
       width: {
