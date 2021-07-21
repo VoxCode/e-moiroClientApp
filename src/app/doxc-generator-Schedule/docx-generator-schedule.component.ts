@@ -14,12 +14,14 @@ import {ActivatedRoute} from '@angular/router';
 import {TrainingProgramGenerator} from '../models/generator-models/TrainingProgramGenerator';
 import {GroupService} from '../services/group.service';
 import { saveAs } from 'file-saver';
+import {ScheduleDateService} from '../services/schedule-services/schedule-date.service';
 
 @Component({
   selector: 'app-docx-generator',
   templateUrl: './docx-generator-schedule.component.html',
   styleUrls: ['./docx-generator-schedule.component.scss'],
   providers: [
+    ScheduleDateService,
   ]
 })
 

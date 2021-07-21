@@ -37,7 +37,7 @@ export class ScheduleRowTree {
     });
     if (lvl > 0) {
       if (currentIndex > 0) {
-        this._style = {top: {style: BorderStyle.DASHED, size: 5, color: '000000'}};
+        this._style = {top: {style: BorderStyle.DASH_SMALL_GAP, size: 5, color: '000000'}};
       }
     }
   }
