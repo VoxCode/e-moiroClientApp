@@ -54,7 +54,7 @@ export class DocxGeneratorScheduleTemplate {
     });
   }
 
-  public tableScheduleHeader(): Table
+  public scheduleHeader(): Table
   {
     return new Table({
       width: { size: 100, type: WidthType.PERCENTAGE },
@@ -64,20 +64,20 @@ export class DocxGeneratorScheduleTemplate {
             new TableCell({
               width: { size: 4000, type: WidthType.DXA },
               borders: {
-                top: {style: BorderStyle.NONE, size: 0, color: 'FFFFFF'},
-                bottom: {style: BorderStyle.NONE, size: 0, color: 'FFFFFF'},
-                left: {style: BorderStyle.NONE, size: 0, color: 'FFFFFF'},
-                right: {style: BorderStyle.NONE, size: 0, color: 'FFFFFF'},
+                top: {style: BorderStyle.NIL, size: 0, color: 'FFFFFF'},
+                bottom: {style: BorderStyle.NIL, size: 0, color: 'FFFFFF'},
+                left: {style: BorderStyle.NIL, size: 0, color: 'FFFFFF'},
+                right: {style: BorderStyle.NIL, size: 0, color: 'FFFFFF'},
               },
               children: [this.titleMOIROSmall()]
             }),
             new TableCell({
               width: { size: 1800, type: WidthType.DXA },
               borders: {
-                top: {style: BorderStyle.NONE, size: 0, color: 'FFFFFF'},
-                bottom: {style: BorderStyle.NONE, size: 0, color: 'FFFFFF'},
-                left: {style: BorderStyle.NONE, size: 0, color: 'FFFFFF'},
-                right: {style: BorderStyle.NONE, size: 0, color: 'FFFFFF'},
+                top: {style: BorderStyle.NIL, size: 0, color: 'FFFFFF'},
+                bottom: {style: BorderStyle.NIL, size: 0, color: 'FFFFFF'},
+                left: {style: BorderStyle.NIL, size: 0, color: 'FFFFFF'},
+                right: {style: BorderStyle.NIL, size: 0, color: 'FFFFFF'},
               },
               children: [this.approveDean(this.getNowMonthYear())]
             }),
@@ -248,7 +248,7 @@ export class DocxGeneratorScheduleTemplate {
         new TextRun({
           text: `группы № ${grNumber.toString()} повышения квалификации «${grName}» ${teacherCategory} c ${dateStart.toString()} по ${dateEnd.toString()}`,
           size : this.size,
-          allCaps: false
+          allCaps: false,
         }),
       ],
     });

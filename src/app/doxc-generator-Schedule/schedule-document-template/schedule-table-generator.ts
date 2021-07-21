@@ -1,250 +1,219 @@
 import {
-  AlignmentType,
-  convertMillimetersToTwip,
+  AlignmentType, BorderStyle,
+  convertMillimetersToTwip, ITableBordersOptions,
   Paragraph,
   Table,
   TableCell,
   TableRow,
   TextDirection,
-  VerticalAlign,
+  VerticalAlign, VerticalMergeType,
   WidthType
 } from 'docx';
 import {TableScheduleHeader} from './schedule-table-header';
-import {ScheduleDataRow} from './table-schedule-data-objects/table-schedule-row';
-import {ScheduleTheme} from './table-schedule-data-objects/table-schedule-theme';
-import {ScheduleTeacher} from './table-schedule-data-objects/table-schedule-teacher';
 import {ScheduleRowTree} from './table-schedule-data-objects/table-schedule-tree-model';
+import {GroupScheduleGenerator} from '../../models/generator-models/GroupScheduleGenerator';
 
 
 export class TableScheduleGenerator {
   private child: any = [];
   private header: TableScheduleHeader;
-  private scheduleRows: ScheduleDataRow[];
   private size: number;
+  // private c: number;
+
   constructor(
+    // private GroupSchedule: GroupScheduleGenerator,
   ) {
-    this.scheduleRows = [];
     this.header = new TableScheduleHeader();
     this.child.push(this.header.insert());
     this.size = 24;
-
-    const a = new ScheduleDataRow(new Date(Date.now()), '453', [
-      new ScheduleTheme('theme1', [
-        new ScheduleTeacher('teacher1', 12, 'aud1'),
-        new ScheduleTeacher('teacher2', 12, 'aud2'),
-      ]),
-      new ScheduleTheme('theme2', [
-        new ScheduleTeacher('teacher3', 12, 'aud3'),
-        new ScheduleTeacher('teacher4', 12, 'aud4'),
-      ]),
-    ]);
+    // this.c = 0;
 
     const tree = new ScheduleRowTree([
-          'Date',
-          'Day',
+      'Date',
+      'Day',
+      'Time',
       ],
       [
-        {
-          subs: [
             new ScheduleRowTree([
                   'theme1'
               ],
               [
-                {
-                  subs: [
                     new ScheduleRowTree([
                             'teacher1',
                             'f1',
                             'f1',
-                            'f1'
                       ],
-                      [{subs: []}]
+                      []
                     ),
-                    new ScheduleRowTree([
-                            'teacher2',
-                            'f2',
-                            'f2',
-                            'f2'
-                      ],
-                      [{subs: []}]
-                    ),
-                  ]
-                }
+                new ScheduleRowTree([
+                    'teacher2',
+                    'f2',
+                    'f2',
+                  ],
+                  []
+                ),
               ]
             ),
             new ScheduleRowTree([
                     'theme2'
               ],
               [
-                {
-                  subs: [
                     new ScheduleRowTree([
                             'teacher3',
                             'f3',
                             'f3',
-                            'f3'
                       ],
-                      [{subs: []}]
+                      []
                     ),
                     new ScheduleRowTree([
                             'teacher4',
                             'f4',
                             'f4',
-                            'f4'
                       ],
-                      [{subs: []}]
+                      []
                     ),
-                  ]
-                }
+              ]
+            ),
+        new ScheduleRowTree([
+            'theme2'
+          ],
+          [
+            new ScheduleRowTree([
+                'teacher3',
+                'f3',
+                'f3',
+              ],
+              []
+            ),
+            new ScheduleRowTree([
+                'teacher4',
+              ],
+              [
+                new ScheduleRowTree([
+                  'f4',
+                ],
+                [
+                  new ScheduleRowTree([
+                    'f45',
+                  ],
+                  []
+                  ),
+                ]
+                ),
               ]
             ),
           ]
-      }
+        ),
       ]
     );
-    this.generateRows(tree);
-    this.scheduleRows.push(a);
+    console.log('=======================================');
+    // tree.calcRowSpan();
+    // console.log(tree.calcRowSpan());
+    // console.log('=======================================');
+    // console.log(tree);
+    tree.generateSubsStyle();
+    this.generateRows(tree, false, undefined);
+    this.generateRows(tree, false, undefined);
+    // this.scheduleRows.push(a);
     // this.generateTableRow();
   }
 
 
-  public generateRows(rowTree: ScheduleRowTree, isSub: boolean = false, row?: TableRow): boolean{
-    console.log(rowTree);
-    if (row === undefined) {
-      row = new TableRow({
-        children: this.pushFieldsArr(rowTree.getFields, rowTree.calcRowSpan()),
-      });
+  public generateRowTree(GroupSchedule: GroupScheduleGenerator): ScheduleRowTree{
 
-    }
-    else {
-      this.pushFields(rowTree.getFields, row, rowTree.calcRowSpan());
+    // let rowTree: ScheduleRowTree;
+    // GroupSchedule.scheduleDateScheduleBlock.forEach(block =>{
+    //   block.scheduleDate.
+    // });
+    return undefined;
+  }
+
+  public generateRows(rowTree: ScheduleRowTree, isSub: boolean = false, cells: TableCell[]): boolean{
+    console.log('-----------------');
+    console.log(isSub);
+    if (rowTree.getFields.length > 0) {
+      if (cells === undefined) {
+        cells = [];
+      }
+
+      this.pushFields(rowTree, cells, rowTree.calcRowSpan());
     }
 
     if (rowTree.getSubs.length > 0) {
         rowTree.getSubs.forEach(sub => {
+          // console.log('/////////' + isSub + '/////////');
           if (isSub) {
-            this.generateRows(sub, isSub);
+            console.log('P1');
+            // console.log(rowTree.calcRowSpan());
+            this.generateRows(sub, !isSub, undefined);
           }
           else {
-            this.generateRows(sub, isSub, row);
+            console.log('P2');
+            // console.log(rowTree.calcRowSpan());
+            this.generateRows(sub, isSub, cells);
+            isSub = true;
           }
         });
         isSub = false;
     }
     else {
-      this.child.push(row);
+      console.log('push');
+      this.child.push(
+        new TableRow({
+          children: cells,
+        })
+      );
       isSub = true;
     }
+    // console.log(isSub);
     return isSub;
   }
 
   // tslint:disable-next-line:typedef
-  public pushFields(fields: string[], row: TableRow, rowSpan: number){
-    fields.forEach(field => {
-      // row.Children.push(
-      //   this.generateTableCell(field, this.size, rowSpan),
-      // );
-    });
-  }
-
-  public pushFieldsArr(fields: string[], rowSpan: number): any[]{
-    const fl: any = [];
-    fields.forEach(field => {
-      fl.push(
-        this.generateTableCell(field, this.size, rowSpan)
+  public pushFields(tree: ScheduleRowTree, cells: TableCell[], rowSpan: number){
+    tree.getFields.forEach((field, index) => {
+      console.log('index: ' + index);
+      cells.push(
+        this.generateTableCell(field, this.size, rowSpan, tree.style),
       );
-      console.log(field);
+      console.log('||||||||' + field + '|||||||||||');
+      console.log(rowSpan);
     });
-    console.log(fl);
-    return fl;
   }
 
-  // tslint:disable-next-line:typedef
-  public generateTableRow(){
-    let themeIndex = 0;
-    let teacherIndex = 0;
-    this.scheduleRows.forEach( scheduleRow => {
-      let newRow: TableRow;
-      newRow = new TableRow({
-        children: [
-          this.generateTableCell(scheduleRow.date.toDateString(), this.size, scheduleRow.calcRowSpan()),
-          this.generateTableCell(ScheduleDataRow.getDayOfTheWeek(scheduleRow.date), this.size, scheduleRow.calcRowSpan()),
-          this.generateTableCell(scheduleRow.hours, this.size, scheduleRow.calcRowSpan()),
-          this.generateTableCell(scheduleRow.themes[themeIndex].name, this.size, scheduleRow.calcRowSpan()),
-          this.generateTableCell(scheduleRow.themes[themeIndex].teachers[teacherIndex].name, this.size, scheduleRow.calcRowSpan()),
-          this.generateTableCell(scheduleRow.themes[themeIndex].teachers[teacherIndex].hours.toString(),
-            this.size, scheduleRow.calcRowSpan()),
-          this.generateTableCell(scheduleRow.themes[themeIndex].teachers[teacherIndex].audienceNumber,
-            this.size, scheduleRow.calcRowSpan()),
-        ]
-      });
-      themeIndex++;
-      teacherIndex++;
-      let themeSubrow: TableRow;
-      for (; themeIndex < scheduleRow.themes.length; themeIndex++){
-        const theme = scheduleRow.themes[themeIndex];
-        for (; teacherIndex < theme.teachers.length; teacherIndex++){
-          const teacher = theme.teachers[teacherIndex];
-          if (themeSubrow !== undefined) {
-            // themeSubrow.Children.push(
-            //   this.generateTableCell(teacher.name, this.size, teacher.calcRowSpan()),
-            //   this.generateTableCell(teacher.hours.toString(), this.size, teacher.calcRowSpan()),
-            //   this.generateTableCell(teacher.audienceNumber, this.size, teacher.calcRowSpan()),
-            // );
-            this.child.push(themeSubrow);
-          }
-          else {
-            themeSubrow =  new TableRow({
-              children: [
-                this.generateTableCell(teacher.name, this.size, teacher.calcRowSpan()),
-                this.generateTableCell(teacher.hours.toString(), this.size, teacher.calcRowSpan()),
-                this.generateTableCell(teacher.audienceNumber, this.size, teacher.calcRowSpan()),
-            ],
-              }
-            );
-            this.child.push(themeSubrow);
-          }
-          // if (teacherIndex > 10) {
-          //   break;
-          // }
-        }
-        // if (themeIndex > 10) {
-        //   break;
-        // }
-        themeSubrow = new TableRow({
-            children: [
-              this.generateTableCell(theme.name, this.size, theme.calcRowSpan()),
-            ]
-          }
-        );
-        // this.child.push(themeSubrow);
-      }
-      this.child.push(themeSubrow);
-      this.child.push(newRow);
-    } );
-  }
+  private generateTableCell(text: string, size: number, rSpan: number, borders: ITableBordersOptions): TableCell {
+    console.log('OOOOOOOOOO ' + rSpan.toString() + ' OOOOOOOOOOOO');
+    // let vmt: VerticalMergeType;
+    // if (this.c < 8) {
+    //   vmt = VerticalMergeType.RESTART;
+    // }
+    // else {
+    //   vmt = VerticalMergeType.CONTINUE;
+    // }
+    // this.c++;
 
-
-  private generateTableCell(text: string, size: number, rowSpan: number): TableCell {
     return new TableCell({
       children: [new Paragraph({
         text,
         alignment: AlignmentType.CENTER,
       })],
+      rowSpan: rSpan,
+      verticalMerge: VerticalMergeType.RESTART,
+      borders,
       // columnSpan: this.occupationForms.length,
       verticalAlign: VerticalAlign.TOP,
-      textDirection: TextDirection.BOTTOM_TO_TOP_LEFT_TO_RIGHT,
-      rowSpan
+      // textDirection: TextDirection.BOTTOM_TO_TOP_LEFT_TO_RIGHT,
     });
   }
 
   public insertTable(): Table {
+    // this.c = 0;
     return new Table({
       rows: this.child,
       width: {
-        size: convertMillimetersToTwip(284.3),
+        size: convertMillimetersToTwip(250.3), // 284.3
         type: WidthType.DXA
-      }
+      },
     });
   }
 }
