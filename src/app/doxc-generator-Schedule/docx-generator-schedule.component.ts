@@ -13,6 +13,7 @@ import {OccupationFormService} from '../services/occupation-form.service';
 import {ActivatedRoute} from '@angular/router';
 import {TrainingProgramGenerator} from '../models/generator-models/TrainingProgramGenerator';
 import {GroupService} from '../services/group.service';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-docx-generator',
@@ -27,6 +28,7 @@ export class DocxGeneratorScheduleComponent implements OnInit{
   id: number;
   trainingProgram: TrainingProgramGenerator;
   isBLR = false;
+  myDocx: any;
 
   constructor(
     // private trainingProgramService: TrainingProgramService,
@@ -64,6 +66,7 @@ export class DocxGeneratorScheduleComponent implements OnInit{
     const docxTmp = documentCreator.create();
     Packer.toBlob(docxTmp).then(blob => {
       this.docx.push(blob);
+      this.myDocx = blob;
     });
   }
 
@@ -73,5 +76,9 @@ export class DocxGeneratorScheduleComponent implements OnInit{
 
   generateDocBLR(): void {
     this.isBLR = true;
+  }
+
+  downloadDocx(): void {
+    saveAs(this.myDocx, 'расписание.docx');
   }
 }
