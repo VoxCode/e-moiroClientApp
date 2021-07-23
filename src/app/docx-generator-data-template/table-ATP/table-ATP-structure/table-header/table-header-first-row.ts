@@ -3,9 +3,9 @@ import {AlignmentType, convertMillimetersToTwip, Paragraph, TableCell, TableRow,
 export class TableHeaderFirstRow {
   private child: any = [];
   constructor(private readonly occupationFormsLength: number, isDistance?: boolean) {
-    if (isDistance) {
-      this.occupationFormsLength++;
-    }
+    // if (isDistance) {
+    //   this.occupationFormsLength++;
+    // }
     this.child.push(new TableCell({
         children: [new Paragraph({text: 'Названия разделов и тем', alignment: AlignmentType.CENTER} )],
         rowSpan: 3,

@@ -1,4 +1,4 @@
-import {Paragraph, TableCell, TableRow, TextRun} from 'docx';
+import {AlignmentType, Paragraph, TableCell, TableRow, TextRun, VerticalAlign} from 'docx';
 import {TableCellDefaultText} from '../table-cell-templates/table-cell-default-text';
 import {EmptyTableCell} from '../table-cell-templates/empty-table-cell';
 
@@ -21,12 +21,13 @@ export class DistanceTableIndividualSessions {
         new Paragraph({
           children: [
             new TextRun({
-              text: '0,4',
-              size: 20
+              text: '0,4'
             }),
-          ]
+          ],
+          alignment: AlignmentType.LEFT
         })
-      ]
+      ],
+      verticalAlign: VerticalAlign.CENTER
     }));
     for (let i = 0; i < this.occupationFormsLength; i++) {
       child.push(emptyTableCell.insert());

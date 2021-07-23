@@ -1,10 +1,9 @@
-import {Paragraph, TableCell, TableRow, TextRun} from 'docx';
+import {AlignmentType, Paragraph, TableCell, TableRow, TextRun, VerticalAlign} from 'docx';
 import {TableCellDefaultText} from '../table-cell-templates/table-cell-default-text';
 import {EmptyTableCell} from '../table-cell-templates/empty-table-cell';
 
 export class DistanceTableCurrentIndividualSessions {
-  constructor(private occupationFormsLength: number,
-              private departmentName: string) {
+  constructor(private occupationFormsLength: number) {
   }
 
   public insert(isForum: boolean): TableRow {
@@ -21,28 +20,18 @@ export class DistanceTableCurrentIndividualSessions {
         new Paragraph({
           children: [
             new TextRun({
-              text: '0,15',
-              size: 20
+              text: '0,15'
             }),
-          ]
+          ],
+          alignment: AlignmentType.LEFT
         })
-      ]
+      ],
+      verticalAlign: VerticalAlign.CENTER
     }));
     for (let i = 0; i < this.occupationFormsLength; i++) {
       child.push(emptyTableCell.insert());
     }
-    child.push(new TableCell({
-      children: [
-        new Paragraph({
-          children: [
-            new TextRun({
-              text:  this.departmentName.substr(this.departmentName.indexOf(' ') + 1),
-            })
-          ],
-        })
-      ],
-      rowSpan: 2
-    }));
+
 
     return new TableRow({
       children: child,

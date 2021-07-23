@@ -17,8 +17,7 @@ export class TableIndividualSessions {
         new Paragraph({
           children: [
             new TextRun({
-              text: '0,25',
-              size: 20
+              text: '0,25'
             }),
           ]
         })

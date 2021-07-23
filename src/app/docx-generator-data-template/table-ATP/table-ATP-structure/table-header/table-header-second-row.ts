@@ -12,12 +12,12 @@ export class TableHeaderSecondRow {
         columnSpan: occupationFormsLength
       })
     );
-    if (isDistance) {
-      this.child.push(new TableCell({
-          children: [new Paragraph({text: '', alignment: AlignmentType.CENTER} )]
-        })
-      );
-    }
+    // if (isDistance) {
+    //   this.child.push(new TableCell({
+    //       children: [new Paragraph({text: '', alignment: AlignmentType.CENTER} )]
+    //     })
+    //   );
+    // }
   }
   public insert(): TableRow {
 

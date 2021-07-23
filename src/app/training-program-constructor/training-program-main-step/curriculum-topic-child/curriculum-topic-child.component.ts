@@ -127,7 +127,7 @@ export class CurriculumTopicChildComponent implements OnInit {
         curriculumTopicTrainingProgram.topicTitle = object.topicTitle;
         curriculumTopicTrainingProgram.annotation = object.annotation;
         curriculumTopicTrainingProgram.serialNumber = ++index;
-        curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = object.trainingProgramCurriculumSectionId;
+        curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = this.trainingProgramCurriculumSection.id;
         curriculumTopicTrainingProgram.testWorkHours = object.testWorkHours;
         curriculumTopicTrainingPrograms.push(curriculumTopicTrainingProgram);
       }

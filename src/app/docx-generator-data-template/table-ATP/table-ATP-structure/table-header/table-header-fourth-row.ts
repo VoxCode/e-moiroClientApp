@@ -3,12 +3,13 @@ import {AlignmentType, convertMillimetersToTwip, Paragraph, TableCell, TableRow,
 export class TableHeaderFourthRow {
   private child: any = [];
   constructor(occupationFormLength: number, isDistance?: boolean) {
-    if (isDistance) {
-      occupationFormLength = occupationFormLength + 4;
-    }
-    else {
-      occupationFormLength = occupationFormLength + 3;
-    }
+    occupationFormLength = occupationFormLength + 3;
+    // if (isDistance) {
+    //   occupationFormLength = occupationFormLength + 4;
+    // }
+    // else {
+    //   occupationFormLength = occupationFormLength + 3;
+    // }
     for (let i = 1; i <= occupationFormLength; i++){
       this.child.push(new TableCell({
         children: [
