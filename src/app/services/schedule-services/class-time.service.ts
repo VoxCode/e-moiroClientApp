@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
-import {ScheduleDate} from '../../models/schedule-models/ScheduleDate';
+import {ClassTime} from '../../models/schedule-models/ClassTime';
 import {environment} from '../../../environments/environment';
 import {Observable} from 'rxjs';
 
 
-
 @Injectable()
-export class ScheduleDateService {
-  public url = environment.apiUrl + 'api/ScheduleDates';
+export class ClassTimeService {
+  public url = environment.apiUrl + 'api/ClassTimes';
   constructor(private http: HttpClient) { }
 
   getValues(): Observable<any> {
@@ -19,12 +18,12 @@ export class ScheduleDateService {
     return this.http.get(this.url + '/' + id);
   }
 
-  createValue(scheduleDate: ScheduleDate): Observable<any> {
-    return this.http.post(this.url, scheduleDate);
+  createValue(classTime: ClassTime): Observable<any> {
+    return this.http.post(this.url, classTime);
   }
 
-  updateValue(scheduleDate: ScheduleDate): Observable<any> {
-    return this.http.put(this.url, scheduleDate);
+  updateValue(classTime: ClassTime): Observable<any> {
+    return this.http.put(this.url, classTime);
   }
 
   deleteValue(id: number): Observable<any> {
