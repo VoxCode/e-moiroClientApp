@@ -9,8 +9,6 @@ import {TableTotalClassHours} from './table-ATP-structure/table-total-class-hour
 import {TableCertificationType} from './table-ATP-structure/table-certification-type';
 import {TrainingProgramGenerator} from '../../models/generator-models/TrainingProgramGenerator';
 import {TableControlWork} from './table-ATP-structure/table-control-work';
-import {DistanceCurriculumSectionOccupationFormAllClassHours} from './table-class-hours/distance-curriculum-section-occupation-form-all-class-hours';
-import {DistanceTableCurriculumTopic} from './table-ATP-structure/distance-table-curriculum-topic';
 import {DistanceTableIndividualSessions} from './table-ATP-structure/distance-table-individual-sessions';
 import {DistanceTableCurrentIndividualSessions} from './table-ATP-structure/distance-table-current-individual-sessions';
 import {CurriculumSectionOccupationFormAllClassHours} from './table-class-hours/curriculum-section-occupation-form-all-class-hours';
@@ -94,7 +92,9 @@ export class DistanceTableATPGenerator {
         variableTableRow = null;
         let tableVariableOptionalPracticalTraining = new TableVariableOptionalPracticalTraining(
           allOccupationFormsClassHours.variableClassHours);
-        row.push(tableVariableOptionalPracticalTraining.insert());
+        if (!trainingProgram.isDistanceLearning) {
+          row.push(tableVariableOptionalPracticalTraining.insert()); // Практические занятия по выбору
+        }
         tableVariableOptionalPracticalTraining = null;
 
         let j = 0;

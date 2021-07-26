@@ -29,9 +29,7 @@ export class SecondDocumentPart {
       const invariantCurriculumTopicsList = object.curriculumTopicTrainingPrograms.filter(a => !a.isVariable);
       const variableCurriculumTopicsList = object.curriculumTopicTrainingPrograms.filter(a => a.isVariable);
 
-      if (!this.trainingProgram.isDistanceLearning) {
-        this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Инвариантная часть', 0,  true));
-      }
+      this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Инвариантная часть', 0,  true));
 
       let i = 1;
       invariantCurriculumTopicsList.forEach(obj => {
@@ -40,20 +38,20 @@ export class SecondDocumentPart {
           .someTextCurriculumTopics((index + 1) + '.' + i + '. ' + obj.topicTitle, tmpString, 0, true));
         this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
         i++;
-        if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isControlWork) {
-          if (obj.testWorkHours !== 0) {
-            this.children.push(this.docxGeneratorDataTemplate
-              .independentWork('Управляемая самостоятельная работа (' + obj.testWorkHours + ' ' + this.docxGeneratorDataTemplate
-                .classHoursEndingDeclination(obj.testWorkHours) + ')', 720));
-          }
-          else {
-            this.children.push(this.docxGeneratorDataTemplate
-              .independentWork('Управляемая самостоятельная работа', 720));
-          }
-        }
+        // if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isControlWork) {
+        //   if (obj.testWorkHours !== 0) {
+        //     this.children.push(this.docxGeneratorDataTemplate
+        //       .independentWork('Управляемая самостоятельная работа (' + obj.testWorkHours + ' ' + this.docxGeneratorDataTemplate
+        //         .classHoursEndingDeclination(obj.testWorkHours) + ')', 720));
+        //   }
+        //   else {
+        //     this.children.push(this.docxGeneratorDataTemplate
+        //       .independentWork('Управляемая самостоятельная работа', 720));
+        //   }
+        // }
       });
 
-      if (!this.trainingProgram.isDistanceLearning && variableCurriculumTopicsList.length !== 0) {
+      if (variableCurriculumTopicsList.length !== 0) {
         this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Вариативная часть', 0,  true));
       }
 
@@ -64,17 +62,17 @@ export class SecondDocumentPart {
           .someTextCurriculumTopics(obj.topicTitle, tmpString, 0, true));
         this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
         j++;
-        if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isTestWork) {
-          if (obj.testWorkHours !== 0) {
-            this.children.push(this.docxGeneratorDataTemplate
-              .independentWork('Управляемая самостоятельная работа (' + obj.testWorkHours  + ' ' + this.docxGeneratorDataTemplate
-                .classHoursEndingDeclination(obj.testWorkHours) + ')', 720));
-          }
-          else {
-            this.children.push(this.docxGeneratorDataTemplate
-              .independentWork('Управляемая самостоятельная работа', 720));
-          }
-        }
+        // if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isTestWork) {
+        //   if (obj.testWorkHours !== 0) {
+        //     this.children.push(this.docxGeneratorDataTemplate
+        //       .independentWork('Управляемая самостоятельная работа (' + obj.testWorkHours  + ' ' + this.docxGeneratorDataTemplate
+        //         .classHoursEndingDeclination(obj.testWorkHours) + ')', 720));
+        //   }
+        //   else {
+        //     this.children.push(this.docxGeneratorDataTemplate
+        //       .independentWork('Управляемая самостоятельная работа', 720));
+        //   }
+        // }
       });
       if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isControlWork) {
         this.children.push(this.docxGeneratorDataTemplate

@@ -550,6 +550,7 @@ export class DocxGeneratorDataTemplate {
       children: [
         new TextRun({
           text: txt,
+          italics: true,
           break: 1
         })
       ]

@@ -109,12 +109,13 @@ export class DocxGeneratorATPComponent implements OnInit{
     this.trainingProgram.trainingProgramCurriculumSections.forEach((object, index) => {
       this.maxVariableTopicTimeService.getValues(object.id)  // load maxVariableTopicTimes
         .subscribe((maxVariableTopicTimes: MaxVariableTopicTime[]) => {
-          if (!this.trainingProgram.isDistanceLearning) { // заглушка для отключения макс. вариативных часов в УТП
-            this.trainingProgram.trainingProgramCurriculumSections[index].maxVariableTopicTimes = maxVariableTopicTimes;
-          }
-          else {
-            this.trainingProgram.trainingProgramCurriculumSections[index].maxVariableTopicTimes = [];
-          }
+          // if (!this.trainingProgram.isDistanceLearning) { // заглушка для отключения макс. вариативных часов в УТП
+          //
+          // }
+          // else {
+          //   this.trainingProgram.trainingProgramCurriculumSections[index].maxVariableTopicTimes = [];
+          // }
+          this.trainingProgram.trainingProgramCurriculumSections[index].maxVariableTopicTimes = maxVariableTopicTimes;
       });
       this.curriculumTopicTrainingProgramService.getFromTrainingProgramCurriculumSection(object.id)
         .subscribe((data: CurriculumTopicTrainingProgramGenerator[]) => {
