@@ -105,7 +105,7 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
   }
 
   delete(el: any): void {
-    const editableRow = {heading: el.last};
+    const editableRow = {heading: el.second};
     this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       if (newElement) {
