@@ -3,6 +3,7 @@ import { FormOfEducationService } from '../services/form-of-education.service';
 import { FormOfEducation } from '../models/FormOfEducation';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {FormOfEducationEditComponent} from './form-of-education-edit.component';
+import {IsDeleteComponent} from '../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-form-of-education',
@@ -98,10 +99,16 @@ export class FormOfEducationComponent implements OnInit, AfterViewInit {
   }
 
   delete(el: any): void {
-    this.valueService.deleteValue(el.first)
-      .subscribe(() => {
-        this.removeRow(el);
-      });
+    const editableRow = {heading: el.last};
+    this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.valueService.deleteValue(el.first)
+          .subscribe(() => {
+            this.removeRow(el);
+          });
+      }
+    });
   }
 
   removeRow(el: any): void {

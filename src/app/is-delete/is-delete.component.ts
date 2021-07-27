@@ -15,6 +15,7 @@ export class IsDeleteComponent implements OnInit{
   constructor(public modalRef: MDBModalRef) { }
 
   ngOnInit(): void {
+    console.log(this.editableRow.heading);
   }
 
   delete(): void {

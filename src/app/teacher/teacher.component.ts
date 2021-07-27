@@ -5,6 +5,7 @@ import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationCompo
 import {TeacherEditComponent} from './teacher-edit.component';
 import {TeacherDepartmentAddFormComponent} from './teacher-department-add-form/teacher-department-add-form.component';
 import {Globals} from '../globals';
+import {IsDeleteComponent} from '../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-teacher',
@@ -124,10 +125,16 @@ export class TeacherComponent implements OnInit, AfterViewInit {
   }
 
   delete(el: any): void {
-    this.valueService.deleteValue(el.first)
-      .subscribe(() => {
-        this.removeRow(el);
-      });
+    const editableRow = {heading: el.last};
+    this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.valueService.deleteValue(el.first)
+          .subscribe(() => {
+            this.removeRow(el);
+          });
+      }
+    });
   }
 
   removeRow(el: any): void {

@@ -11,6 +11,7 @@ import {TrainingProgramAdditionalLiterature} from '../../models/TrainingProgramA
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {MainLiteratureEditComponent} from '../../main-literature/main-literature-edit.component';
 import {TrainingProgramConstructorService} from '../training-program-constructor.service';
+import {IsDeleteComponent} from '../../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-training-program-main-literature-step',
@@ -132,10 +133,16 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
       });
   }
 
-  deleteTrainingProgramMainLiterature(id: number, index: number): void {
-    this.trainingProgramMainLiteratureService.deleteValue(id).subscribe(() => {
-      this.done.splice(index, 1);
-      console.log('Delete was successful ' + id);
+  deleteTrainingProgramMainLiterature(item: any, index: number): void {
+    const editableRow = {heading: item.content};
+    this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.trainingProgramMainLiteratureService.deleteValue(item.id).subscribe(() => {
+          this.done.splice(index, 1);
+          console.log('Delete was successful');
+        });
+      }
     });
   }
 

@@ -12,6 +12,7 @@ import {Globals} from '../../globals';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {TrainingProgramConstructorService} from '../training-program-constructor.service';
 import {FinalExaminationEditComponent} from '../../final-examination/final-examination-edit.component';
+import {IsDeleteComponent} from '../../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-training-program-certification-step',
@@ -146,10 +147,16 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
       });
   }
 
-  deleteTrainingProgramFinalExamination(id: number, index: number): void {
-    this.trainingProgramFinalExaminationService.deleteValue(id).subscribe(() => {
-      this.done.splice(index, 1);
-      console.log('Delete was successful!');
+  deleteTrainingProgramFinalExamination(item: any, index: number): void {
+    const editableRow = {heading: item.content};
+    this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.trainingProgramFinalExaminationService.deleteValue(item.id).subscribe(() => {
+          this.done.splice(index, 1);
+          console.log('Delete was successful!');
+        });
+      }
     });
   }
 

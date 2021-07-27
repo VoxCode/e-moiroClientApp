@@ -10,6 +10,7 @@ import {Globals} from '../../globals';
 import {RegulationEditComponent} from '../../regulation/regulation-edit.component';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {TrainingProgramConstructorService} from '../training-program-constructor.service';
+import {IsDeleteComponent} from '../../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-training-program-regulation-step',
@@ -130,10 +131,16 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
       });
   }
 
-  deleteTrainingProgramRegulation(id: number, index: number): void {
-    this.trainingProgramRegulationService.deleteValue(id).subscribe(() => {
-      this.done.splice(index, 1);
-      console.log('Delete was successful!');
+  deleteTrainingProgramRegulation(item: any, index: number): void {
+    const editableRow = {heading: item.content};
+    this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.trainingProgramRegulationService.deleteValue(item.id).subscribe(() => {
+          this.done.splice(index, 1);
+          console.log('Delete was successful!');
+        });
+      }
     });
   }
 

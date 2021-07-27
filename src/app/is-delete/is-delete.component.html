@@ -3,7 +3,7 @@
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">×</span>
     </button>
-    <h4 class="modal-title w-100" id="myModalLabel">Вы действительно хотите удалить?</h4>
+    <h4 class="modal-title w-100" id="myModalLabel">Вы действительно хотите удалить?<br> {{editableRow.heading}}</h4>
   </div>
   <div class="modal-body">
 
@@ -12,7 +12,7 @@
     <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
             (click)="cancel()">Отмена
     </button>
-    <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
+    <button type="button" mdbBtn color="danger" class="relative waves-light" mdbWavesEffect
             (click)="delete()">Удалить
     </button>
   </div>

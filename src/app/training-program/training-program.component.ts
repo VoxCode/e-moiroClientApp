@@ -5,6 +5,7 @@ import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationCompo
 import {TrainingProgramEditComponent} from './training-program-edit.component';
 import {AuthService} from '../services/security/auth.service';
 import {Globals} from '../globals';
+import {IsDeleteComponent} from '../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-training-program',
@@ -159,9 +160,16 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   }
 
   delete(el: any): void {
-    this.valueService.deleteValue(el.first).subscribe(() => {
-        this.removeRow(el);
-      });
+    const editableRow = {heading: el.last};
+    this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.valueService.deleteValue(el.first)
+          .subscribe(() => {
+            this.removeRow(el);
+          });
+      }
+    });
   }
 
   removeRow(el: any): void {

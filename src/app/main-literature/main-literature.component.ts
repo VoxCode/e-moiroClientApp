@@ -3,6 +3,7 @@ import { MainLiteratureService } from '../services/main-literature.service';
 import { MainLiterature } from '../models/MainLiterature';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {MainLiteratureEditComponent} from './main-literature-edit.component';
+import {IsDeleteComponent} from '../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-main-literature',
@@ -98,9 +99,16 @@ export class MainLiteratureComponent implements OnInit, AfterViewInit {
   }
 
   delete(el: any): void {
-    this.valueService.deleteValue(el.first).subscribe(() => {
-        this.removeRow(el);
-      });
+    const editableRow = {heading: el.last};
+    this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.valueService.deleteValue(el.first)
+          .subscribe(() => {
+            this.removeRow(el);
+          });
+      }
+    });
   }
 
   removeRow(el: any): void {
