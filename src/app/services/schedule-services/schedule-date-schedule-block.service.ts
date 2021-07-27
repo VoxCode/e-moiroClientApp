@@ -17,7 +17,7 @@ export class ScheduleDateScheduleBlockService {
     return this.http.get(this.url + '/' + id);
   }
 
-  getValuesFromTrainingProgram(scheduleDateId: number): Observable<any> {
+  getValuesFromScheduleBlcok(scheduleDateId: number): Observable<any> {
     return this.http.get(this.url + '/FromScheduleDate/' + scheduleDateId);
   }
 

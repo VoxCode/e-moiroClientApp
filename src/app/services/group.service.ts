@@ -6,7 +6,7 @@ import {Observable} from 'rxjs';
 
 @Injectable()
 export class GroupService {
-  public url = environment.apiUrl + 'api/groups';
+  public url = environment.apiUrl + 'api/Groups';
   constructor(private http: HttpClient) { }
 
   getValues(): Observable<any> {

@@ -13,7 +13,7 @@ import {ClassRoom} from '../schedule-models/ClassRoom';
 export class GroupScheduleGenerator extends Group{
   constructor(
     public trainingProgram?: TrainingProgram,
-    public scheduleDate?: ScheduleDate,
+    public scheduleDate?: ScheduleDate[],
     public scheduleDateScheduleBlock?: ScheduleDateScheduleBlock[],
     public scheduleBlockTeacher?: ScheduleBlockTeacher[],
     public scheduleBlock?: ScheduleBlock[],

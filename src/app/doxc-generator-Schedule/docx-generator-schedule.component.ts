@@ -15,52 +15,62 @@ import {TrainingProgramGenerator} from '../models/generator-models/TrainingProgr
 import {GroupService} from '../services/group.service';
 import { saveAs } from 'file-saver';
 import {ScheduleDateService} from '../services/schedule-services/schedule-date.service';
+import {GroupScheduleGenerator} from '../models/generator-models/GroupScheduleGenerator';
+import {Group} from '../models/Group';
 
 @Component({
   selector: 'app-docx-generator',
   templateUrl: './docx-generator-schedule.component.html',
   styleUrls: ['./docx-generator-schedule.component.scss'],
   providers: [
-    ScheduleDateService,
+    GroupService,
+    TrainingProgramService
   ]
 })
 
 export class DocxGeneratorScheduleComponent implements OnInit{
-  docx: any[] = [];
-  id: number;
-  trainingProgram: TrainingProgramGenerator;
-  isBLR = false;
-  myDocx: any;
 
   constructor(
-    // private trainingProgramService: TrainingProgramService,
-    // private group: GroupService,
-    // private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
-    // private trainingProgramMainLiteratureService: TrainingProgramMainLiteratureService,
-    // private trainingProgramAdditionalLiteratureService: TrainingProgramAdditionalLiteratureService,
-    // private trainingProgramRegulationService: TrainingProgramRegulationService,
-    // private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
-    // private occupationFormClassHourService: OccupationFormClassHourService,
-    // private maxVariableTopicTimeService: MaxVariableTopicTimeService,
-    // private occupationFormService: OccupationFormService,
+    private groupService: GroupService,
+    private trainingProgramService: TrainingProgramService,
     // private route: ActivatedRoute
   ) {
   }
+  docx: any[] = [];
+  id: number;
+  groupSchedule: GroupScheduleGenerator;
+  isBLR = false;
+  myDocx: any;
+
+  load;
 
   ngOnInit(): void {
     const date = new Date();
+    this.id = 1;
+    this.loadGroup();
     this.getDocument();
   }
 
-  // loadTrainingProgram(): void {
-  //   this.trainingProgramService.getValueForDocxGenerator(this.id)
-  //     .subscribe((data: TrainingProgramGenerator) => {
-  //       if (data) {
-  //         this.trainingProgram = data;
-  //       }
-  //     });
-  // }
+  loadGroup(): void{
+    this.groupService.getValue(this.id)
+      .subscribe((data: GroupScheduleGenerator) => {
+        if (data) {
+          this.groupSchedule = data;
+          console.log(this.groupSchedule.groupNumber.toString());
+          console.log(this.groupSchedule.calendarYear);
+          // this.loadTrainingProgram();
+        }
+      });
+  }
 
+  loadTrainingProgram(): void {
+    this.trainingProgramService.getValueForDocxGenerator(this.groupSchedule.trainingProgramId)
+      .subscribe((data: TrainingProgramGenerator) => {
+        if (data) {
+          this.groupSchedule.trainingProgram = data;
+        }
+      });
+  }
   public getDocument(): void {
     const documentCreator = new DocumentCreatorSchedule(
       this.isBLR,

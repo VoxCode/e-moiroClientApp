@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
-import { ScheduleBlockTeacher } from '../../models/schedule-models/ScheduleBlockTeacher';
-import { environment } from '../../../environments/environment';
+import {ScheduleBlockTeacher} from '../../models/schedule-models/ScheduleBlockTeacher';
+import {environment} from '../../../environments/environment';
 import {Observable} from 'rxjs';
+
+
 
 @Injectable()
 export class ScheduleBlockTeacherService {
@@ -17,7 +19,7 @@ export class ScheduleBlockTeacherService {
     return this.http.get(this.url + '/' + id);
   }
 
-  getValuesFromTrainingProgram(scheduleDateId: number): Observable<any> {
+  getValuesFromTeacher(scheduleDateId: number): Observable<any> {
     return this.http.get(this.url + '/FromScheduleDate/' + scheduleDateId);
   }
 
