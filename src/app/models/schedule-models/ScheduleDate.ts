@@ -1,6 +1,6 @@
 export class ScheduleDate {
   constructor(
     public id?: number,
-    public date?: string,
+    public date?: Date,
     public groupId?: number){ }
 }

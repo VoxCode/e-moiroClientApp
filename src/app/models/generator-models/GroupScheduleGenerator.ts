@@ -9,19 +9,12 @@ import {ScheduleBlockClassTime} from '../schedule-models/ScheduleBlockClassTime'
 import {ClassTime} from '../schedule-models/СlassTime';
 import {ScheduleBlockClassRoom} from '../schedule-models/ScheduleBlockClassRoom';
 import {ClassRoom} from '../schedule-models/ClassRoom';
+import {ScheduleDatesGenerator} from "./ScheduleDatesGenerator";
 
 export class GroupScheduleGenerator extends Group{
   constructor(
     public trainingProgram?: TrainingProgram,
-    public scheduleDate?: ScheduleDate[],
-    public scheduleDateScheduleBlock?: ScheduleDateScheduleBlock[],
-    public scheduleBlockTeacher?: ScheduleBlockTeacher[],
-    public scheduleBlock?: ScheduleBlock[],
-    public scheduleBlockCurriculumTopicTrainingProgram?: ScheduleBlockCurriculumTopicTrainingProgram[],
-    public scheduleBlockClassTime?: ScheduleBlockClassTime[],
-    public classTime?: ClassTime[],
-    public scheduleBlockClassRoom?: ScheduleBlockClassRoom[],
-    public classRoom?: ClassRoom[],
+    public scheduleDates?: ScheduleDatesGenerator[],
   ) {
     super();
   }

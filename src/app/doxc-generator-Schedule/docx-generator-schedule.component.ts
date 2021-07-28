@@ -47,7 +47,7 @@ export class DocxGeneratorScheduleComponent implements OnInit{
   ngOnInit(): void {
     const date = new Date();
     this.id = 1;
-    this.loadGroup();
+    // this.loadGroup();
     this.getDocument();
   }
 
@@ -56,8 +56,10 @@ export class DocxGeneratorScheduleComponent implements OnInit{
       .subscribe((data: GroupScheduleGenerator) => {
         if (data) {
           this.groupSchedule = data;
+          let d = new Date(this.groupSchedule.calendarYear.toString());
+          console.log(d.toLocaleTimeString());
           console.log(this.groupSchedule.groupNumber.toString());
-          console.log(this.groupSchedule.calendarYear);
+          console.log(this.groupSchedule.calendarYear.toLocaleDateString());
           // this.loadTrainingProgram();
         }
       });
