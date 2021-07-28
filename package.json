@@ -26,6 +26,7 @@
     "@ng-select/ng-select": "^6.1.0",
     "@syncfusion/ej2-angular-documenteditor": "=19.1.55",
     "@syncfusion/ej2-angular-navigations": "^19.1.63",
+    "@syncfusion/ej2-angular-schedule": "^19.2.49",
     "@syncfusion/ej2-dropdowns": "^19.1.65",
     "@types/chart.js": "^2.9.32",
     "angular-bootstrap-md": "^11.1.0",
