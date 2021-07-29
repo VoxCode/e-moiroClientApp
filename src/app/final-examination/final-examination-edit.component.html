@@ -21,6 +21,9 @@
       </select>
       <mdb-error *ngIf="second.invalid && (second.dirty || second.touched)"></mdb-error>
       <br><br>
+      <div>
+        <mdb-checkbox [default]="true" formControlName="fourth">Добавить в публичный доступ</mdb-checkbox>
+      </div>
 
     </form>
   </div>

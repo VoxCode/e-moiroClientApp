@@ -3,6 +3,7 @@ import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationCompo
 import {FinalExaminationService} from '../services/final-examination.service';
 import {FinalExamination} from '../models/FinalExamination';
 import {FinalExaminationEditComponent} from './final-examination-edit.component';
+import {IsDeleteComponent} from '../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-final-examination',
@@ -105,10 +106,16 @@ export class FinalExaminationComponent implements OnInit, AfterViewInit {
   }
 
   delete(el: any): void {
-    this.valueService.deleteValue(el.first)
-      .subscribe(() => {
-        this.removeRow(el);
-      });
+    const editableRow = {heading: el.last};
+    this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.valueService.deleteValue(el.first)
+          .subscribe(() => {
+            this.removeRow(el);
+          });
+      }
+    });
   }
 
   removeRow(el: any): void {

@@ -11,6 +11,7 @@ import {CurriculumTopicTemplateComponent} from '../../../curriculum-topic/curric
 import {CurriculumTopic} from '../../../models/CurriculumTopic';
 import {Globals} from '../../../globals';
 import {CurriculumTopicService} from '../../../services/curriculum-topic.service';
+import {IsDeleteComponent} from '../../../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-curriculum-topic-child',
@@ -93,10 +94,16 @@ export class CurriculumTopicChildComponent implements OnInit {
       });
   }
 
-  deleteCurriculumTopicTrainingProgram(id: any, index: number): void {
-    this.curriculumTopicTrainingProgramService.deleteValue(id).subscribe(() => {
-      this.done.splice(index, 1);
-      console.log('Delete was successful');
+  deleteCurriculumTopicTrainingProgram(item: any, index: number): void {
+    const editableRow = {heading: item.topicTitle};
+    this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.curriculumTopicTrainingProgramService.deleteValue(item.curriculumTopicTrainingProgramId).subscribe(() => {
+          this.done.splice(index, 1);
+          console.log('Delete was successful');
+        });
+      }
     });
   }
 
@@ -121,13 +128,13 @@ export class CurriculumTopicChildComponent implements OnInit {
           });
       }
       else {
-        const curriculumTopicTrainingProgram: CurriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
+        const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
         curriculumTopicTrainingProgram.id = object.curriculumTopicTrainingProgramId;
         curriculumTopicTrainingProgram.isVariable = object.isVariable;
         curriculumTopicTrainingProgram.topicTitle = object.topicTitle;
         curriculumTopicTrainingProgram.annotation = object.annotation;
         curriculumTopicTrainingProgram.serialNumber = ++index;
-        curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = object.trainingProgramCurriculumSectionId;
+        curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = this.trainingProgramCurriculumSection.id;
         curriculumTopicTrainingProgram.testWorkHours = object.testWorkHours;
         curriculumTopicTrainingPrograms.push(curriculumTopicTrainingProgram);
       }

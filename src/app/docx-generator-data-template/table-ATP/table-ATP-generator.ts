@@ -55,7 +55,7 @@ export class TableATPGenerator {
       row.push(tableCurriculumSection.insert());
       tableCurriculumSection = null;
 
-      // общая сумма часов в рамках инвариантной части (если программа не является дистанционной)
+      // общая сумма часов в рамках инвариантной части
       if (!trainingProgram.isDistanceLearning) {
         let invariantTableRow = new TableInvariantSection(allOccupationFormsClassHours.invariantClassHours);
         row.push(invariantTableRow.insert());
@@ -77,7 +77,7 @@ export class TableATPGenerator {
         }
       });
 
-      // общая сумма часов в рамках вариативной части (если программа не является дистанционной)
+      // общая сумма часов в рамках вариативной части
       if (!trainingProgram.isDistanceLearning && obj.maxVariableTopicTimes.length !== 0) {
         let variableTableRow = new TableVariableSection(allOccupationFormsClassHours.variableClassHours);
         row.push(variableTableRow.insert());

@@ -10,6 +10,7 @@ import {Globals} from '../../globals';
 import {RegulationEditComponent} from '../../regulation/regulation-edit.component';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {TrainingProgramConstructorService} from '../training-program-constructor.service';
+import {IsDeleteComponent} from '../../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-training-program-regulation-step',
@@ -88,11 +89,25 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
         regulations.forEach((regulation) => {
           this.todo.push({
             regulationId: regulation.id,
-            topicTitle: regulation.content
+            content: regulation.content
           });
         });
       }
     });
+  }
+
+  crateRegulationTemplate(content: string): void {
+    const regulation = new Regulation();
+    regulation.content = content;
+    regulation.authorIndex = this.globals.userId;
+    this.regulationService.createValue(regulation)
+      .subscribe((regulationTemplateResponse: Regulation) => {
+        console.log('Save was successful!');
+        this.todo.push({
+          regulationId: regulationTemplateResponse.id,
+          content: regulationTemplateResponse.content
+        });
+      });
   }
 
   crateTrainingProgramRegulation(trainingProgramRegulation: TrainingProgramRegulation): void {
@@ -116,39 +131,46 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
       });
   }
 
-  deleteTrainingProgramRegulation(id: number, index: number): void {
-    this.trainingProgramRegulationService.deleteValue(id).subscribe(() => {
-      this.done.splice(index, 1);
-      console.log('Delete was successful!');
+  deleteTrainingProgramRegulation(item: any, index: number): void {
+    const editableRow = {heading: item.content};
+    this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.trainingProgramRegulationService.deleteValue(item.id).subscribe(() => {
+          this.done.splice(index, 1);
+          console.log('Delete was successful!');
+        });
+      }
     });
   }
 
   save(): void {
     const trainingProgramRegulations: TrainingProgramRegulation[] = [];
     this.done.forEach((object, index) => {
-      const trainingProgramRegulation: TrainingProgramRegulation = new TrainingProgramRegulation();
-      trainingProgramRegulation.id = +object.id;
-      trainingProgramRegulation.trainingProgramId = +object.trainingProgramId;
-      trainingProgramRegulation.content = object.content;
-      trainingProgramRegulation.serialNumber = ++index;
-      trainingProgramRegulations.push(trainingProgramRegulation);
-
-
-      // if (!trainingProgramRegulation.id) {
-      //   this.trainingProgramRegulationService.createValue(trainingProgramRegulation)
-      //     .subscribe((data: TrainingProgramRegulation) => {
-      //       object.fourth = data.id;
-      //       object.fifth = data.trainingProgramId;
-      //       object.seventh = data.regulationId;
-      //       object.eight = data.serialNumber;
-      //       console.log('Save was successful');
-      //       trainingProgramRegulation = null;
-      //     });
-      // }
-      // else {
-      //   this.update(trainingProgramRegulation);
-      //   trainingProgramRegulation = null;
-      // }
+      if (object.regulationId) {
+        const trainingProgramRegulation = new TrainingProgramRegulation(
+          0,
+          this.id,
+          object.content,
+          ++index
+        );
+        this.trainingProgramRegulationService.createValue(trainingProgramRegulation)
+          .subscribe((trainingProgramRegulationResponse: TrainingProgramRegulation) => {
+            object.serialNumber = trainingProgramRegulationResponse.serialNumber;
+            object.id = trainingProgramRegulationResponse.id;
+            object.trainingProgramId = trainingProgramRegulationResponse.trainingProgramId;
+            object.content = trainingProgramRegulationResponse.content;
+            object.regulationId = undefined;
+          });
+      }
+      else {
+        const trainingProgramRegulation: TrainingProgramRegulation = new TrainingProgramRegulation();
+        trainingProgramRegulation.id = +object.id;
+        trainingProgramRegulation.trainingProgramId = +object.trainingProgramId;
+        trainingProgramRegulation.content = object.content;
+        trainingProgramRegulation.serialNumber = ++index;
+        trainingProgramRegulations.push(trainingProgramRegulation);
+      }
     });
     this.trainingProgramRegulationService.updateSerialNumbers(trainingProgramRegulations).subscribe(() => {
       console.log('Successful!');
@@ -165,6 +187,9 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
         this.done.length + 1
       );
       this.crateTrainingProgramRegulation(trainingProgramRegulation);
+      if (newElement.third) {
+        this.crateRegulationTemplate(newElement.last);
+      }
     });
   }
 

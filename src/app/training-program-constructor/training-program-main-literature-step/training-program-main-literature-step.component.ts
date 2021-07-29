@@ -11,6 +11,7 @@ import {TrainingProgramAdditionalLiterature} from '../../models/TrainingProgramA
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {MainLiteratureEditComponent} from '../../main-literature/main-literature-edit.component';
 import {TrainingProgramConstructorService} from '../training-program-constructor.service';
+import {IsDeleteComponent} from '../../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-training-program-main-literature-step',
@@ -90,11 +91,25 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
         mainLiteratures.forEach((mainLiterature) => {
           this.todo.push({
             mainLiteratureId: mainLiterature.id,
-            topicTitle: mainLiterature.content
+            content: mainLiterature.content
           });
         });
       }
     });
+  }
+
+  crateMainLiteratureTemplate(content: string): void {
+    const mainLiterature = new MainLiterature();
+    mainLiterature.content = content;
+    mainLiterature.authorIndex = this.globals.userId;
+    this.mainLiteratureService.createValue(mainLiterature)
+      .subscribe((mainLiteratureTemplateResponse: MainLiterature) => {
+        console.log('Save was successful!');
+        this.todo.push({
+          additionalLiteratureId: mainLiteratureTemplateResponse.id,
+          content: mainLiteratureTemplateResponse.content
+        });
+      });
   }
 
   crateTrainingProgramMainLiterature(trainingProgramMainLiterature: TrainingProgramMainLiterature): void {
@@ -118,22 +133,46 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
       });
   }
 
-  deleteTrainingProgramMainLiterature(id: number, index: number): void {
-    this.trainingProgramMainLiteratureService.deleteValue(id).subscribe(() => {
-      this.done.splice(index, 1);
-      console.log('Delete was successful ' + id);
+  deleteTrainingProgramMainLiterature(item: any, index: number): void {
+    const editableRow = {heading: item.content};
+    this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.trainingProgramMainLiteratureService.deleteValue(item.id).subscribe(() => {
+          this.done.splice(index, 1);
+          console.log('Delete was successful');
+        });
+      }
     });
   }
 
   save(): void {
     const trainingProgramMainLiteratures: TrainingProgramMainLiterature[] = [];
     this.done.forEach((object, index) => {
-      const trainingProgramMainLiterature: TrainingProgramMainLiterature = new TrainingProgramMainLiterature();
-      trainingProgramMainLiterature.id = +object.id;
-      trainingProgramMainLiterature.trainingProgramId = +object.trainingProgramId;
-      trainingProgramMainLiterature.content = object.content;
-      trainingProgramMainLiterature.serialNumber = ++index;
-      trainingProgramMainLiteratures.push(trainingProgramMainLiterature);
+      if (object.mainLiteratureId) {
+        const trainingProgramMainLiterature = new TrainingProgramMainLiterature(
+          0,
+          this.id,
+          object.content,
+          ++index
+        );
+        this.trainingProgramMainLiteratureService.createValue(trainingProgramMainLiterature)
+          .subscribe((trainingProgramMainLiteratureResponse: TrainingProgramMainLiterature) => {
+            object.serialNumber = trainingProgramMainLiteratureResponse.serialNumber;
+            object.id = trainingProgramMainLiteratureResponse.id;
+            object.trainingProgramId = trainingProgramMainLiteratureResponse.trainingProgramId;
+            object.content = trainingProgramMainLiteratureResponse.content;
+            object.mainLiteratureId = undefined;
+          });
+      }
+      else {
+        const trainingProgramMainLiterature: TrainingProgramMainLiterature = new TrainingProgramMainLiterature();
+        trainingProgramMainLiterature.id = +object.id;
+        trainingProgramMainLiterature.trainingProgramId = +object.trainingProgramId;
+        trainingProgramMainLiterature.content = object.content;
+        trainingProgramMainLiterature.serialNumber = ++index;
+        trainingProgramMainLiteratures.push(trainingProgramMainLiterature);
+      }
     });
     this.trainingProgramMainLiteratureService.updateSerialNumbers(trainingProgramMainLiteratures).subscribe(() => {
       console.log('Successful!');
@@ -150,6 +189,9 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
         this.done.length + 1
       );
       this.crateTrainingProgramMainLiterature(trainingProgramAdditionalLiterature);
+      if (newElement.third) {
+        this.crateMainLiteratureTemplate(newElement.last);
+      }
     });
   }
 

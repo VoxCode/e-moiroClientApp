@@ -6,6 +6,7 @@ import {TrainingProgram} from '../../../models/TrainingProgram';
 import {CurriculumSectionEditComponent} from '../../../curriculum-section/curriculum-section-edit.component';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {CurriculumTopic} from '../../../models/CurriculumTopic';
+import {IsDeleteComponent} from '../../../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-curriculum-section-child',
@@ -57,16 +58,17 @@ export class CurriculumSectionChildComponent implements OnInit {
       });
   }
 
-  deleteTrainingProgramCurriculumSection(index: number, id: number): void {
-    this.trainingProgramCurriculumSectionService.deleteValue(id).subscribe(() => {
-      this.trainingProgramCurriculumSections.splice(index, 1);
-      console.log('Delete was successful');
+  deleteTrainingProgramCurriculumSection(item: any, index: number): void {
+    const editableRow = {heading: item.name};
+    this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.trainingProgramCurriculumSectionService.deleteValue(item.id).subscribe(() => {
+          this.trainingProgramCurriculumSections.splice(index, 1);
+          console.log('Delete was successful');
+        });
+      }
     });
-  }
-
-  swapTrainingProgramCurriculumSection(index: number): void {
-    const trainingProgramCurriculumSection = this.trainingProgramCurriculumSectionSelectList[index];
-    console.log(trainingProgramCurriculumSection);
   }
 
   addNewTemplate(newTemplate: CurriculumTopic ): void {

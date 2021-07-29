@@ -10,6 +10,7 @@ import {Globals} from '../../globals';
 import {AdditionalLiteratureEditComponent} from '../../additional-literature/additional-literature-edit.component';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {TrainingProgramConstructorService} from '../training-program-constructor.service';
+import {IsDeleteComponent} from '../../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-training-program-additional-literature-step',
@@ -88,11 +89,25 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
         additionalLiteratures.forEach((additionalLiterature) => {
           this.todo.push({
             additionalLiteratureId: additionalLiterature.id,
-            topicTitle: additionalLiterature.content
+            content: additionalLiterature.content
           });
         });
       }
     });
+  }
+
+  crateAdditionalLiteratureTemplate(content: string): void {
+    const additionalLiterature = new AdditionalLiterature();
+    additionalLiterature.content = content;
+    additionalLiterature.authorIndex = this.globals.userId;
+    this.additionalLiteratureService.createValue(additionalLiterature)
+      .subscribe((additionalLiteratureTemplateResponse: AdditionalLiterature) => {
+        console.log('Save was successful!');
+        this.todo.push({
+          additionalLiteratureId: additionalLiteratureTemplateResponse.id,
+          content: additionalLiteratureTemplateResponse.content
+        });
+      });
   }
 
   crateTrainingProgramAdditionalLiterature(trainingProgramAdditionalLiterature: TrainingProgramAdditionalLiterature): void {
@@ -116,25 +131,50 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
       });
   }
 
-  deleteTrainingProgramAdditionalLiterature(id: number, index: number): void {
-    this.trainingProgramAdditionalLiteratureService.deleteValue(id).subscribe(() => {
-      this.done.splice(index, 1);
-      console.log('Delete was successful!');
+  deleteTrainingProgramAdditionalLiterature(item: any, index: number): void {
+    const editableRow = {heading: item.content};
+    this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.trainingProgramAdditionalLiteratureService.deleteValue(item.id).subscribe(() => {
+          this.done.splice(index, 1);
+          console.log('Delete was successful!');
+        });
+      }
     });
   }
 
   save(): void {
     const trainingProgramAdditionalLiteratures: TrainingProgramAdditionalLiterature[] = [];
     this.done.forEach((object, index) => {
-      const trainingProgramAdditionalLiterature: TrainingProgramAdditionalLiterature = new TrainingProgramAdditionalLiterature();
-      trainingProgramAdditionalLiterature.id = +object.id;
-      trainingProgramAdditionalLiterature.trainingProgramId = +object.trainingProgramId;
-      trainingProgramAdditionalLiterature.content = object.content;
-      trainingProgramAdditionalLiterature.serialNumber = ++index;
-      trainingProgramAdditionalLiteratures.push(trainingProgramAdditionalLiterature);
-    });
-    this.trainingProgramAdditionalLiteratureService.updateSerialNumbers(trainingProgramAdditionalLiteratures).subscribe(() => {
-      console.log('Successful!');
+      if (object.additionalLiteratureId) {
+        const trainingProgramAdditionalLiterature = new TrainingProgramAdditionalLiterature(
+          0,
+          this.id,
+          object.content,
+          ++index
+        );
+        this.trainingProgramAdditionalLiteratureService.createValue(trainingProgramAdditionalLiterature)
+          .subscribe((trainingProgramAdditionalLiteratureResponse: TrainingProgramAdditionalLiterature) => {
+            object.serialNumber = trainingProgramAdditionalLiteratureResponse.serialNumber;
+            object.id = trainingProgramAdditionalLiteratureResponse.id;
+            object.trainingProgramId = trainingProgramAdditionalLiteratureResponse.trainingProgramId;
+            object.content = trainingProgramAdditionalLiteratureResponse.content;
+            object.additionalLiteratureId = undefined;
+          });
+      }
+      else {
+        const trainingProgramAdditionalLiterature = new TrainingProgramAdditionalLiterature();
+        trainingProgramAdditionalLiterature.id = +object.id;
+        trainingProgramAdditionalLiterature.trainingProgramId = +object.trainingProgramId;
+        trainingProgramAdditionalLiterature.content = object.content;
+        trainingProgramAdditionalLiterature.serialNumber = ++index;
+        trainingProgramAdditionalLiteratures.push(trainingProgramAdditionalLiterature);
+      }
+      this.trainingProgramAdditionalLiteratureService.updateSerialNumbers(trainingProgramAdditionalLiteratures)
+        .subscribe(() => {
+          console.log('Successful!');
+        });
     });
   }
 
@@ -148,6 +188,9 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
         this.done.length + 1
       );
       this.crateTrainingProgramAdditionalLiterature(trainingProgramAdditionalLiterature);
+      if (newElement.third) {
+        this.crateAdditionalLiteratureTemplate(newElement.last);
+      }
     });
   }
 

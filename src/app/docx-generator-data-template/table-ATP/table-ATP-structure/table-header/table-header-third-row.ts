@@ -27,9 +27,9 @@ export class TableHeaderThirdRow {
         }
       }));
     });
-    if (isDistance) {
-      this.child.push(this.tableCellText.insertText('Управляемая', 'самостоятельная работа'));
-    }
+    // if (isDistance) {
+    //   this.child.push(this.tableCellText.insertText('Управляемая', 'самостоятельная работа'));
+    // }
   }
 
   public insert(): TableRow

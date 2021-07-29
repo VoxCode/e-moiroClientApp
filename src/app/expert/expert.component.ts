@@ -3,6 +3,7 @@ import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationCompo
 import {ExpertService} from '../services/expert.service';
 import {Expert} from '../models/Expert';
 import {ExpertEditComponent} from './expert-edit.component';
+import {IsDeleteComponent} from '../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-expert',
@@ -98,10 +99,15 @@ export class ExpertComponent implements OnInit, AfterViewInit {
   }
 
   delete(el: any): void {
-    this.valueService.deleteValue(el.first)
-      .subscribe(() => {
-        this.removeRow(el);
-      });
+    const editableRow = {heading: el.last};
+    this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.valueService.deleteValue(el.first).subscribe(() => {
+          this.removeRow(el);
+        });
+      }
+    });
   }
 
   removeRow(el: any): void {

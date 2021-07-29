@@ -19,7 +19,7 @@
         <div class="example-container">
           <h2>Перечень</h2>
           <button *ngIf="done.length === 0" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                  (click)="trainingProgramMainLiteratureCrateForm()" mdbWavesEffect>
+                  (click)="trainingProgramFinalExaminationCrateForm()" mdbWavesEffect>
             <mdb-icon fas icon="plus" size="sm"></mdb-icon>
           </button>
 
@@ -32,16 +32,16 @@
               <br><br>
               <div class="buttons">
                 <button type="button" *ngIf="i == done.length - 1" mdbBtn color="primary" size="sm" class="relative waves-light"
-                        (click)="trainingProgramMainLiteratureCrateForm()" mdbWavesEffect>
+                        (click)="trainingProgramFinalExaminationCrateForm()" mdbWavesEffect>
                   <mdb-icon fas icon="plus" size="lg"></mdb-icon>
                 </button>
                 <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                        (click)="trainingProgramMainLiteratureEditForm(item)" mdbWavesEffect>
+                        (click)="trainingProgramFinalExaminationEditForm(item)" mdbWavesEffect>
                   <mdb-icon fas icon="edit" size="lg"></mdb-icon>
                 </button>
                 <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
-                        (click)="deleteTrainingProgramFinalExamination(item.id, i)" mdbWavesEffect>
-                  <mdb-icon fas icon="times" size="lg"></mdb-icon>
+                        (click)="deleteTrainingProgramFinalExamination(item, i)" mdbWavesEffect>
+                  <mdb-icon fas icon="trash-alt" size="lg"></mdb-icon>
                 </button>
               </div>
             </div>

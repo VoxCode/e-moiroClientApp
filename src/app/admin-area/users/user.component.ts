@@ -6,6 +6,7 @@ import {User} from '../../models/User';
 import {UserEditComponent} from './user-edit.component';
 import {RoleChangeModel} from '../../models/RoleChangeModel';
 import {AuthService} from '../../services/security/auth.service';
+import {IsDeleteComponent} from '../../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-users',
@@ -94,13 +95,29 @@ export class UserComponent implements OnInit, AfterViewInit {
       .subscribe(() => {}, () => { location.reload(); alert('Ошибка изменения роли!'); });
   }
 
-
-
   delete(p: any): void {
-    this.valueService.deleteValue(p.third)
-      .subscribe(() => {
-        this.removeRow(p);
-      });
+    const modalOptions = {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+      show: false,
+      ignoreBackdropClick: true,
+      class: 'modal-fluid',
+      containerClass: '',
+      animated: true,
+      data: {
+        editableRow: { heading: p.second }
+      }
+    };
+    this.modalRef = this.modalService.show(IsDeleteComponent, modalOptions);
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.valueService.deleteValue(p.third)
+          .subscribe(() => {
+            this.removeRow(p);
+          });
+      }
+    });
   }
 
   removeRow(el: any): void {

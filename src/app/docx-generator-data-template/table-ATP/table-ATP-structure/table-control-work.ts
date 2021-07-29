@@ -14,7 +14,8 @@ export class TableControlWork {
         new Paragraph({
           children: [
             new TextRun({
-              text: 'Контрольная работа №' + ++index,
+              text: 'Контрольная работа № ' + ++index,
+              italics: true
             }),
           ]
         })
