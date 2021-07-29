@@ -68,6 +68,8 @@ import {TrainingProgramConstructorModule} from './training-program-constructor/t
 import {DocxGeneratorScheduleComponent} from './doxc-generator-Schedule/docx-generator-schedule.component';
 import {CurriculumTopicTemplateComponent} from './curriculum-topic/curriculum-topic-template.component';
 import { ScheduleComponent } from './schedule/schedule.component';
+import {ScheduleModule} from '@syncfusion/ej2-angular-schedule';
+import { SyncfusionRoomSchedulerComponent } from './syncfusion-room-scheduler/syncfusion-room-scheduler.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -126,6 +128,7 @@ export function tokenGetter(): string {
     ExpertComponent,
     ExpertEditComponent,
     ScheduleComponent,
+    SyncfusionRoomSchedulerComponent,
   ],
   imports: [
     BrowserModule,
@@ -147,7 +150,8 @@ export function tokenGetter(): string {
       config: {
         tokenGetter
       }
-    })
+    }),
+    ScheduleModule
   ],
   providers: [
     AuthService,
