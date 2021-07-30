@@ -1,10 +1,10 @@
-import { Component, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
+import {Component, Inject, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import { extend, isNullOrUndefined, Browser } from '@syncfusion/ej2-base';
 import {
   ScheduleComponent, ActionEventArgs, PopupOpenEventArgs, EventRenderedArgs, RenderCellEventArgs, DragAndDropService,
   TimelineViewsService, GroupModel, EventSettingsModel, ResizeService, TimeScaleModel, WorkHoursModel, View
 } from '@syncfusion/ej2-angular-schedule';
-import { roomData } from './data';
+import {fifaEventsData} from './data';
 
 
 @Component({
@@ -15,7 +15,12 @@ import { roomData } from './data';
   providers: [TimelineViewsService, ResizeService, DragAndDropService]
 })
 
-export class SyncfusionRoomSchedulerComponent {
+
+export class SyncfusionRoomSchedulerComponent implements OnInit
+{
+  @Input()  scheduleData: any[] = [];
+  @Input()  roomData: any[];
+
   public selectedDate: Date = new Date(2018, 7, 1);
   public timeScale: TimeScaleModel = { interval: 60, slotCount: 1 };
   public workHours: WorkHoursModel = { start: '08:00', end: '18:00' };
@@ -24,40 +29,48 @@ export class SyncfusionRoomSchedulerComponent {
     enableCompactView: false,
     resources: ['MeetingRoom']
   };
-  public resourceDataSource: object[] = [
-    { text: 'Jammy', id: 1, color: '#ea7a57', capacity: 20, type: 'Conference' },
-    { text: 'Tweety', id: 2, color: '#7fa900', capacity: 7, type: 'Cabin' },
-    { text: 'Nestle', id: 3, color: '#5978ee', capacity: 5, type: 'Cabin' },
-    { text: 'Phoenix', id: 4, color: '#fec200', capacity: 15, type: 'Conference' },
-    { text: 'Mission', id: 5, color: '#df5286', capacity: 25, type: 'Conference' },
-    { text: 'Hangout', id: 6, color: '#00bdae', capacity: 10, type: 'Cabin' },
-    { text: 'Rick Roll', id: 7, color: '#865fcf', capacity: 20, type: 'Conference' },
-    { text: 'Rainbow', id: 8, color: '#1aaa55', capacity: 8, type: 'Cabin' },
-    { text: 'Swarm', id: 9, color: '#df5286', capacity: 30, type: 'Conference' },
-    { text: 'Photogenic', id: 10, color: '#710193', capacity: 25, type: 'Conference' }
-  ];
+
   public allowMultiple = true;
-  public eventSettings: EventSettingsModel = {
-    dataSource: extend([], roomData, null, true) as object[],
-    fields: {
-      id: 'Id',
-      subject: { title: 'Summary', name: 'Subject' },
-      location: { title: 'Location', name: 'Location' },
-      description: { title: 'Comments', name: 'Description' },
-      startTime: { title: 'From', name: 'StartTime' },
-      endTime: { title: 'To', name: 'EndTime' }
-    }
-  };
+  public eventSettings: EventSettingsModel;
 
   @ViewChild('scheduleObj')
   public scheduleObj: ScheduleComponent;
 
-  constructor() {
+  ngOnInit(): void {
+    // console.log(this.roomData);
+    // this.parsedSchedule = new Array((this.roomData.length));
+    // this.parsedScheduleArray = new Array(this.roomData.length);
+    // this.parseSchedule();
 
-  }
+    // extend([], this.scheduleData, null, true) as object[]
+    this.eventSettings = {
+      dataSource: this.scheduleData,
+      fields: {
+        id: 'Id',
+        subject: { title: 'Summary', name: 'Subject' },
+        location: { title: 'Location', name: 'Location' },
+        description: { title: 'Comments', name: 'Description' },
+        startTime: { title: 'From', name: 'StartTime' },
+        endTime: { title: 'To', name: 'EndTime' },
+      }
+    };
+    }
+
+    // parseSchedule(): void {
+    //
+    // this.scheduleData.forEach((el, index) => {
+    //   this.parsedSchedule.id = ++index;
+    //   this.parsedSchedule.subject = `${el.group} (${el.theme})`;
+    //   this.parsedSchedule.description = el.teacher;
+    //   this.parsedSchedule.startTime = el.startTime;
+    //   this.parsedSchedule.endDate = el.endTime;
+    //   this.parsedSchedule.id = el.roomId;
+    //   this.parsedScheduleArray.push(this.parsedSchedule);
+    // });
+    // }
 
   isReadOnly(endDate: Date): boolean {
-    return (endDate < new Date(2018, 6, 31, 0, 0));
+    return (endDate < new Date(2018, 5, 31, 0, 0));
   }
 
   onPopupOpen(args: PopupOpenEventArgs): void {
@@ -78,6 +91,8 @@ export class SyncfusionRoomSchedulerComponent {
   }
 
   onActionBegin(args: ActionEventArgs): void {
+    console.log('Action begin');
+    console.log(args);
     if (args.requestType === 'eventCreate' || args.requestType === 'eventChange') {
       let data: { [key: string]: object };
       if (args.requestType === 'eventCreate') {
@@ -92,8 +107,10 @@ export class SyncfusionRoomSchedulerComponent {
   }
 
   onRenderCell(args: RenderCellEventArgs): void {
+    console.log('render cell');
+    // console.log(args);
     if (args.element.classList.contains('e-work-cells')) {
-      if (args.date < new Date(2018, 6, 31, 0, 0)) {
+      if (args.date < new Date(2018, 5, 31, 0, 0)) {
         args.element.setAttribute('aria-readonly', 'true');
         args.element.classList.add('e-read-only-cells');
       }
@@ -105,6 +122,8 @@ export class SyncfusionRoomSchedulerComponent {
   }
 
   onEventRendered(args: EventRenderedArgs): void {
+    console.log('event rendered');
+    // console.log(args);
     const data: { [key: string]: object } = args.data;
     if (this.isReadOnly(data.EndTime as Date)) {
       args.element.setAttribute('aria-readonly', 'true');

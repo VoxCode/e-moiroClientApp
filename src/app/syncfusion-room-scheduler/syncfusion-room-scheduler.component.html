@@ -1,10 +1,10 @@
 <div class="control-section">
   <div class="col-lg-12 content-wrapper">
-    <ejs-schedule #scheduleObj width='100%' cssClass='timeline-resource' height='650px' [timeScale]="timeScale" [currentView]="currentView"
+    <ejs-schedule *ngIf="eventSettings" #scheduleObj width='100%' cssClass='timeline-resource' height='800px' [timeScale]="timeScale" [currentView]="currentView"
                   [workHours]="workHours" [selectedDate]="selectedDate" [group]="group" [eventSettings]="eventSettings" (eventRendered)="onEventRendered($event)"
-                  (actionBegin)="onActionBegin($event)" (renderCell)="onRenderCell($event)" (popupOpen)="onPopupOpen($event)">
+                  (actionBegin)="onActionBegin($event)" (renderCell)="onRenderCell($event)" (popupOpen)="onPopupOpen($event)"  >
       <e-resources>
-        <e-resource field='RoomId' title='Room Type' [dataSource]='resourceDataSource' [allowMultiple]='allowMultiple' name='MeetingRoom'
+        <e-resource field='RoomId' title='Room Type' [dataSource]='roomData' [allowMultiple]='allowMultiple' name='MeetingRoom'
                     textField='text' idField='id' colorField='color'>
         </e-resource>
       </e-resources>
