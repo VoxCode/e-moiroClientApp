@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './authorization/login/login.component';
@@ -68,10 +68,13 @@ import {TrainingProgramConstructorModule} from './training-program-constructor/t
 import {DocxGeneratorScheduleComponent} from './doxc-generator-Schedule/docx-generator-schedule.component';
 import {CurriculumTopicTemplateComponent} from './curriculum-topic/curriculum-topic-template.component';
 import {IsDeleteComponent} from './is-delete/is-delete.component';
+import { registerLocaleData } from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
 }
+registerLocaleData(localeRu, 'ru');
 
 @NgModule({
   declarations: [
@@ -162,7 +165,8 @@ export function tokenGetter(): string {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptorService,
       multi: true
-    }
+    },
+    { provide: LOCALE_ID, useValue: 'ru' }
   ],
   bootstrap: [AppComponent]
 })

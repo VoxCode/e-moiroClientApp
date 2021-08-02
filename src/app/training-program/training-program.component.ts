@@ -24,7 +24,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
 
   elements: any = [];
   headElements = ['Номер', 'Название', 'Часы', 'Дист.', 'Кафедра',
-    'Категория слушателей', 'Тип аттестации', 'Форма образования', 'Команда'];
+    'Категория слушателей', 'Тип аттестации', 'Форма образования', 'Дата создания', 'Команда'];
   searchText = '';
   previous: string;
   modalRef: MDBModalRef;
@@ -115,7 +115,8 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
         twelfth: obj.certificationTypeName,
         thirteenth: obj.formOfEducationId,
         fourteenth: obj.formOfEducationName,
-        fifteenth: obj.numberOfWeeks });
+        fifteenth: obj.numberOfWeeks,
+        sixteenth: obj.dateOfCreation});
     });
     this.mdbTable.setDataSource(this.elements);
     this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
@@ -126,6 +127,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   crate(el: any): void {
     const trainingProgram = new TrainingProgram(0, el.second, el.third, el.fifteenth, el.fourth, el.fifth,
       el.sixth, el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
+    trainingProgram.dateOfCreation = new Date();
     this.valueService.createValue(trainingProgram)
       .subscribe((trainingProgramResponse: TrainingProgram) => {
         const index = this.elements.length + 1;
@@ -145,7 +147,8 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
           twelfth: trainingProgramResponse.certificationTypeName,
           thirteenth: trainingProgramResponse.formOfEducationId,
           fourteenth: trainingProgramResponse.formOfEducationName,
-          fifteenth: trainingProgramResponse.numberOfWeeks
+          fifteenth: trainingProgramResponse.numberOfWeeks,
+          sixteenth: trainingProgramResponse.dateOfCreation
         });
         this.mdbTable.setDataSource(this.elements);
       });
@@ -155,6 +158,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     this.valueService.getValue(el.first).subscribe(() => {
       const trainingProgram = new TrainingProgram(el.first, el.second, el.third, el.fifteenth, el.fourth, el.fifth,
         el.sixth, el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
+      trainingProgram.dateOfCreation = el.sixteenth;
       this.valueService.updateValue(trainingProgram).subscribe();
     });
   }
@@ -193,6 +197,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     this.modalRef = this.modalService.show(TrainingProgramEditComponent, this.modalOption(el));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       this.elements[elementIndex] = newElement;
+      newElement.sixteenth = el.sixteenth;
       this.save(newElement);
     });
     this.mdbTable.setDataSource(this.elements);

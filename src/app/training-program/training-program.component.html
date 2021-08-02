@@ -38,6 +38,7 @@
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.tenth}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.twelfth}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.fourteenth}}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.sixteenth | date: 'short'}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
                 <button type="button" mdbBtn color="yellow" size="sm" class="relative waves-light"
                         [routerLink]="['/' + globals.role +'/docxGeneratorTP', el.first]"
@@ -58,7 +59,7 @@
             </tbody>
             <tfoot class="grey lighten-5 w-100">
             <tr>
-              <td colspan="9">
+              <td colspan="10">
                 <mdb-table-pagination [tableEl]="tableEl" paginationAlign="" [searchDataSource]="elements"></mdb-table-pagination>
               </td>
             </tr>

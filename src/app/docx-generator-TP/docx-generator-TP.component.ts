@@ -30,7 +30,6 @@ import {Packer} from 'docx';
 import {Base64ToBlob} from '../base64-to-blob/base64-to-blob';
 import {Globals} from '../globals';
 
-
 @Component({
   selector: 'app-docx-generator',
   templateUrl: './docx-generator-TP.component.html',

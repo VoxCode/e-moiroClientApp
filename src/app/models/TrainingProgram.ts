@@ -16,5 +16,6 @@ export class TrainingProgram {
     public formOfEducationId?: number,
     public formOfEducationName?: string,
     public departmentHeadName?: string,
-    public studentCategoryGenitiveName?: string){ }
+    public studentCategoryGenitiveName?: string,
+    public dateOfCreation?: Date){ }
 }

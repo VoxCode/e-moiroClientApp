@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // apiUrl: 'https://localhost:44358/' // ---IIS
-  apiUrl: 'https://api.smart.moiro.by/'
+  apiUrl: 'https://localhost:44358/' // ---IIS
+  // apiUrl: 'https://api.smart.moiro.by/'
   // apiUrl: 'http://localhost:5009/'  // ---Kestrel
 };
 
@@ -17,4 +17,3 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
-
