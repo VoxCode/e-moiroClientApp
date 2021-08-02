@@ -117,7 +117,8 @@ export class SyncfusionRoomSchedulerComponent implements OnInit
     }
     if (args.elementType === 'emptyCells' && args.element.classList.contains('e-resource-left-td')) {
       const target: HTMLElement = args.element.querySelector('.e-resource-text') as HTMLElement;
-      target.innerHTML = '<div class="name">Rooms</div><div class="type">Type</div><div class="capacity">Capacity</div>';
+      target.innerHTML = '<div style="text-align: center" class="name">Rooms</div>';
+      target.parentElement.style.width = '100px';
     }
   }
 

@@ -27,14 +27,14 @@
 }
 
 .timeline-resource.e-schedule .template-wrap {
-  display: flex;
+
   height: 100%;
   text-align: left;
 }
 
 .timeline-resource.e-schedule .template-wrap>div {
   border-right: 1px solid rgba(0, 0, 0, 0.12);
-  flex: 0 0 33.3%;
+  flex: 0 0 80.3%;
   font-weight: 500;
   line-height: 58px;
   overflow: hidden;
@@ -2169,6 +2169,7 @@
   padding-left: 15px;
   padding-right: 0;
   vertical-align: middle;
+  text-align: center;
 }
 
 .e-schedule .e-timeline-view .e-resource-cells:focus,
@@ -5091,5 +5092,10 @@
   }
 }
 
+.e-resource-text div{
+  position: relative;
+  display: block;
+
+}
 /*! Recurrence-Editor component theme */
 

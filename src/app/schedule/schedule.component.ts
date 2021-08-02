@@ -31,7 +31,8 @@ export class ScheduleComponent implements OnInit {
       Description: 'zxcvbnm,',
       StartTime: new Date(2018, 6, 30, 9, 0),
       EndTime: new Date(2018, 6, 30, 11, 0),
-      RoomId: 1
+      RoomId: 1,
+      booop: 'wabba-labba-dub-dub',
     }];
   }
 
