@@ -10,7 +10,7 @@ import {MDBModalRef} from 'angular-bootstrap-md';
 })
 export class AdditionalLiteratureEditComponent implements OnInit{
 
-  public editableRow: { id: string, first: string, third: boolean, last: string };
+  public editableRow: { id: string, first: string, third: boolean, last: string, isCrate: boolean };
   public saveButtonClicked: Subject<any> = new Subject<any>();
 
   public form: FormGroup = new FormGroup({

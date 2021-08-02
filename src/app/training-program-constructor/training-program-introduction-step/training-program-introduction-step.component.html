@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="backButton">
-    <button [routerLink]="'/' + globals.role +'/trainingProgram'" type="button" size="sm" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>
+    <button [disabled]="!isSave" [routerLink]="'/' + globals.role +'/trainingProgram'" type="button" size="sm" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>
       <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon> Выход
     </button>
     <button (click)="crateTemplate()" type="button" size="sm" mdbBtn color="red" class="relative waves-light" mdbWavesEffect>
@@ -13,12 +13,13 @@
 
   <app-document-editor-form *ngIf="docxContent"
                             [docxContent]="docxContent"
-                            (saveButtonClicked)="saveChanges($event)">
+                            (saveButtonClicked)="saveChanges($event)"
+                            (isSaveFalse)="isSaveChange($event)">
   </app-document-editor-form>
 
   <br>
-  <button style="float: left; border-radius: 5px" type="button" [routerLink]="['/' + globals.role +'/trainingProgramExpertStep', id]"
+  <button [disabled]="!isSave" style="float: left; border-radius: 5px" type="button" [routerLink]="['/' + globals.role +'/trainingProgramExpertStep', id]"
           mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Назад</button>
-  <button style="float: left; border-radius: 5px" type="button" [routerLink]="['/' + globals.role +'/trainingProgramMainStep', id]"
+  <button [disabled]="!isSave" style="float: left; border-radius: 5px" type="button" [routerLink]="['/' + globals.role +'/trainingProgramMainStep', id]"
           mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Далее</button><br>
 </div>

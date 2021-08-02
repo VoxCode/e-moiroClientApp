@@ -187,6 +187,7 @@ export class CurriculumTopicChildComponent implements OnInit {
     const el = this.emptyEl();
     el.second = item.topicTitle;
     el.last = item.annotation;
+    el.isCrate = false;
     this.modalRef = this.modalService.show(CurriculumTopicEditComponent, this.modalOption(el));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       item.topicTitle = newElement.second;
@@ -196,7 +197,7 @@ export class CurriculumTopicChildComponent implements OnInit {
   }
 
   emptyEl(): any {
-    return { id: 0, first: '', second: '', last: '' };
+    return { id: 0, first: '', second: '', last: '', isCrate: true };
   }
 
   modalOption(el: any): any {

@@ -196,6 +196,7 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   trainingProgramRegulationEditForm(item: any): void {
     const el = this.emptyEl();
     el.last = item.content;
+    el.isCrate = false;
     this.modalRef = this.modalService.show(RegulationEditComponent, this.modalOption(el));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       item.content = newElement.last;
@@ -204,7 +205,7 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   }
 
   emptyEl(): any {
-    return {id: 0, first: '', last: ''};
+    return {id: 0, first: '', last: '', isCrate: true};
   }
 
   modalOption(el: any): any {
