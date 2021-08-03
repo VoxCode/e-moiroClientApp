@@ -41,6 +41,7 @@ import {AuthorizationComponent} from './authorization/authorization.component';
 import {ExpertComponent} from './expert/expert.component';
 import {TrainingProgramExpertStepComponent} from './training-program-constructor/training-program-expert-step/training-program-expert-step.component';
 import {DocxGeneratorScheduleComponent} from './doxc-generator-Schedule/docx-generator-schedule.component';
+import {ViewerHelloPageComponent} from './viewer-area/viewer-hello-page.component/viewer-hello-page.component';
 
 const adminRoutes: Routes = [
   { path: 'trainingProgramExpertStep/:id', component: TrainingProgramExpertStepComponent },
@@ -100,7 +101,8 @@ const deanRoutes: Routes = [
 ];
 
 const viewerRoutes: Routes = [
-
+  { path: 'viewerHelloPage', component:  ViewerHelloPageComponent },
+  { path: '**', redirectTo: 'viewerHelloPage'}
 ];
 
 const routes: Routes = [
