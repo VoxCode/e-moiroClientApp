@@ -38,7 +38,7 @@
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.tenth}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.twelfth}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.fourteenth}}</td>
-              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.sixteenth | date: 'short'}}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.sixteenth | date: 'medium'}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
                 <button type="button" mdbBtn color="yellow" size="sm" class="relative waves-light"
                         [routerLink]="['/' + globals.role +'/docxGeneratorTP', el.first]"

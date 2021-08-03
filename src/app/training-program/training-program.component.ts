@@ -127,9 +127,11 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   crate(el: any): void {
     const trainingProgram = new TrainingProgram(0, el.second, el.third, el.fifteenth, el.fourth, el.fifth,
       el.sixth, el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
-    trainingProgram.dateOfCreation = new Date();
+    const date = Date.now();
+    trainingProgram.dateOfCreation = new Date(date + 10800000);
     this.valueService.createValue(trainingProgram)
       .subscribe((trainingProgramResponse: TrainingProgram) => {
+        console.log(trainingProgramResponse);
         const index = this.elements.length + 1;
         this.mdbTable.addRow({
           id: index.toString(),
@@ -148,19 +150,17 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
           thirteenth: trainingProgramResponse.formOfEducationId,
           fourteenth: trainingProgramResponse.formOfEducationName,
           fifteenth: trainingProgramResponse.numberOfWeeks,
-          sixteenth: trainingProgramResponse.dateOfCreation
+          sixteenth: new Date(date)
         });
         this.mdbTable.setDataSource(this.elements);
       });
   }
 
   save(el: any): void {
-    this.valueService.getValue(el.first).subscribe(() => {
-      const trainingProgram = new TrainingProgram(el.first, el.second, el.third, el.fifteenth, el.fourth, el.fifth,
-        el.sixth, el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
-      trainingProgram.dateOfCreation = el.sixteenth;
-      this.valueService.updateValue(trainingProgram).subscribe();
-    });
+    const trainingProgram = new TrainingProgram(el.first, el.second, el.third, el.fifteenth, el.fourth, el.fifth,
+      el.sixth, el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
+    trainingProgram.dateOfCreation = el.sixteenth;
+    this.valueService.updateValue(trainingProgram).subscribe();
   }
 
   delete(el: any): void {
