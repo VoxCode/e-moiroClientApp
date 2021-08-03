@@ -12,7 +12,7 @@ import {fifaEventsData} from './data';
   templateUrl: './syncfusion-room-scheduler.component.html',
   styleUrls: ['./syncfusion-room-scheduler.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [TimelineViewsService, ResizeService, DragAndDropService]
+  providers: [TimelineViewsService, ResizeService, DragAndDropService],
 })
 
 
@@ -69,6 +69,10 @@ export class SyncfusionRoomSchedulerComponent implements OnInit
     // });
     // }
 
+  public dateParser(data: string): Date {
+    return new Date(data);
+  }
+
   isReadOnly(endDate: Date): boolean {
     return (endDate < new Date(2018, 5, 31, 0, 0));
   }
@@ -93,6 +97,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit
   onActionBegin(args: ActionEventArgs): void {
     console.log('Action begin');
     console.log(args);
+
     if (args.requestType === 'eventCreate' || args.requestType === 'eventChange') {
       let data: { [key: string]: object };
       if (args.requestType === 'eventCreate') {

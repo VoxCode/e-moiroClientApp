@@ -5095,7 +5095,13 @@
 .e-resource-text div{
   position: relative;
   display: block;
+}
 
+//.e-popup.e-popup-open
+.e-dialog{
+  width: 1000px !important;
+  height : 600px !important;
+  max-height: 600px !important;
 }
 /*! Recurrence-Editor component theme */
 
