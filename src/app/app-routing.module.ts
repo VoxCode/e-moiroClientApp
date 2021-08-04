@@ -80,8 +80,12 @@ const editorRoutes: Routes = [
 ];
 
 const creatorRoutes: Routes = [
-  { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent },
+  { path: 'curriculumTopic', component: CurriculumTopicComponent },
   { path: 'trainingProgram', component: TrainingProgramComponent },
+  { path: 'finalExamination', component: FinalExaminationComponent },
+  { path: 'additionalLiterature', component: AdditionalLiteratureComponent },
+  { path: 'mainLiterature', component: MainLiteratureComponent },
+  { path: 'regulation', component: RegulationComponent },
   { path: 'trainingProgramExpertStep/:id', component: TrainingProgramExpertStepComponent },
   { path: 'trainingProgramIntroductionStep/:id', component: TrainingProgramIntroductionStepComponent },
   { path: 'trainingProgramMainStep/:id', component: TrainingProgramMainStepComponent },

@@ -1,33 +1,33 @@
 <div class="list-group">
-  <a routerLinkActive="list-group-item-secondary primary-color-dark active" [routerLink]="['/admin/user']"
-     class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Пользователи</a>
-  <a routerLinkActive="list-group-item-secondary primary-color-dark active" [routerLink]="['/admin/expert']"
-     class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Роли Экспертов</a><br>
+  <a routerLinkActive="list-group-item-secondary primary-color-dark active" [routerLink]="['/' + globals.role +'/user']"
+     *ngIf="globals.role === 'admin'" class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Пользователи</a>
+  <a routerLinkActive="list-group-item-secondary primary-color-dark active" [routerLink]="['/' + globals.role +'/expert']"
+     *ngIf="globals.role === 'admin'" class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Роли Экспертов</a><br>
 
-  <a routerLinkActive="list-group-item-secondary default-color-dark active" [routerLink]="['/admin/trainingProgram']"
+  <a routerLinkActive="list-group-item-secondary default-color-dark active" [routerLink]="['/' + globals.role +'/trainingProgram']"
      class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Учебная программа</a>
-  <a routerLinkActive="list-group-item-secondary default-color-dark active" [routerLink]="['/admin/curriculumTopic']"
+  <a routerLinkActive="list-group-item-secondary default-color-dark active" [routerLink]="['/' + globals.role +'/curriculumTopic']"
      class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Темы учебной программы</a>
-  <a routerLinkActive="list-group-item-secondary default-color-dark active" [routerLink]="['/admin/department']"
-     class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Кафедра</a>
-  <a routerLinkActive="list-group-item-secondary default-color-dark active" [routerLink]="['/admin/studentCategory']"
+  <a routerLinkActive="list-group-item-secondary default-color-dark active" [routerLink]="['/' + globals.role +'/department']"
+     *ngIf="globals.role === 'admin'" class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Кафедра</a>
+  <a routerLinkActive="list-group-item-secondary default-color-dark active" [routerLink]="['/' + globals.role +'/studentCategory']"
      class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Категория слушателей</a>
-  <a routerLinkActive="list-group-item-secondary default-color-dark active" [routerLink]="['/admin/teacher']"
+  <a routerLinkActive="list-group-item-secondary default-color-dark active" [routerLink]="['/' + globals.role +'/teacher']"
      class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Преподаватели</a>
-  <a routerLinkActive="list-group-item-secondary default-color-dark active" [routerLink]="['/admin/formOfEducation']"
-     class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Форма получения образования</a>
-  <a routerLinkActive="list-group-item-secondary default-color-dark active" [routerLink]="['/admin/occupationForm']"
-     class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Форма занятия</a>
-  <a routerLinkActive="list-group-item-secondary default-color-dark active" [routerLink]="['/admin/certificationType']"
-     class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Тип аттестации</a><br>
+  <a routerLinkActive="list-group-item-secondary default-color-dark active" [routerLink]="['/' + globals.role +'/formOfEducation']"
+     *ngIf="globals.role === 'admin'" class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Форма получения образования</a>
+  <a routerLinkActive="list-group-item-secondary default-color-dark active" [routerLink]="['/' + globals.role +'/occupationForm']"
+     *ngIf="globals.role === 'admin'" class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Форма занятия</a>
+  <a routerLinkActive="list-group-item-secondary default-color-dark active" [routerLink]="['/' + globals.role +'/certificationType']"
+     *ngIf="globals.role === 'admin'" class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Тип аттестации</a><br>
 
-  <a routerLinkActive="list-group-item-secondary brown darken-1 active" [routerLink]="['/admin/finalExamination']"
+  <a routerLinkActive="list-group-item-secondary brown darken-1 active" [routerLink]="['/' + globals.role +'/finalExamination']"
      class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Итоговая аттестация</a>
-  <a routerLinkActive="list-group-item-secondary brown darken-1 active" [routerLink]="['/admin/mainLiterature']"
+  <a routerLinkActive="list-group-item-secondary brown darken-1 active" [routerLink]="['/' + globals.role +'/mainLiterature']"
      class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Основная литература</a>
-  <a routerLinkActive="list-group-item-secondary brown darken-1 active" [routerLink]="['/admin/additionalLiterature']"
+  <a routerLinkActive="list-group-item-secondary brown darken-1 active" [routerLink]="['/' + globals.role +'/additionalLiterature']"
      class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Дополнительная литература</a>
-  <a routerLinkActive="list-group-item-secondary brown darken-1 active" [routerLink]="['/admin/regulation']"
+  <a routerLinkActive="list-group-item-secondary brown darken-1 active" [routerLink]="['/' + globals.role +'/regulation']"
      class="list-group-item list-group-item-action waves-light" mdbWavesEffect>Нормативные правовые акты</a>
 
 

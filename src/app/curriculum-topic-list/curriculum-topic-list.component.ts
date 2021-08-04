@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Globals} from '../globals';
 
 @Component({
   selector: 'app-curriculum-topic-list',
@@ -6,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./curriculum-topic-list.component.scss']
 })
 export class CurriculumTopicListComponent implements OnInit {
-  constructor() { }
+  constructor(public globals: Globals) { }
 
   ngOnInit(): void {
   }

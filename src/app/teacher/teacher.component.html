@@ -1,7 +1,7 @@
 <h1>Преподаватели</h1>
 
 <div class="row">
-  <div *ngIf="globals.role === 'admin'" class="col-sm-2">
+  <div class="col-sm-2">
     <app-curriculum-topic-list></app-curriculum-topic-list>
   </div>
   <div class="col-sm">
@@ -38,7 +38,7 @@
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
               <mdb-checkbox [disabled]="true" [(ngModel)]="el.seventh" [default]="true"></mdb-checkbox></td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-              <button *ngIf="el.seventh" type="button" mdbBtn color="success" size="sm" class="relative waves-light"
+              <button *ngIf="el.seventh && globals.role === 'admin'" type="button" mdbBtn color="success" size="sm" class="relative waves-light"
                       (click)="addTeacherDepartment(el.first)"
                       mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
               <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"

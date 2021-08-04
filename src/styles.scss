@@ -17,6 +17,33 @@ body{
   width: 100%;
 };
 
+.errorIE {
+  margin: 0 auto;
+  background-color: white;
+  width: 60%; height: 50vh;
+  border-radius: 15px;
+  opacity: 0.9;
+  padding: 15px;
+  margin-top: 20px
+}
+
+#errorIEText {
+  color: #f9572c;
+  font-size: large;
+  margin-top: 5%;
+  text-align: center;
+}
+
+@media screen and (min-width: 640px) {
+
+  #errorIEText {
+    color: #f9572c;
+    font-size: xx-large;
+    margin-top: 5%;
+    text-align: center;
+  }
+}
+
 @import "~@ng-select/ng-select/themes/material.theme.css";
 @import '../node_modules/@syncfusion/ej2-base/styles/material.css';
 @import '../node_modules/@syncfusion/ej2-buttons/styles/material.css';

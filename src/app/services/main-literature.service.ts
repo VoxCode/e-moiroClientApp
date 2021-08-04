@@ -12,23 +12,21 @@ export class MainLiteratureService {
   getValues(): Observable<any> {
     return this.http.get(this.url);
   }
-
   getValue(id: number): Observable<any> {
     return this.http.get(this.url + '/' + id);
   }
-
+  getAuthorValues(author: string): Observable<any> {
+    return this.http.get(this.url + '/Author' + author);
+  }
   getMainLiterature(curriculumTopicIdArray: number[]): Observable<any> {
     return this.http.post(this.url + '/' + 1, curriculumTopicIdArray);
   }
-
   createValue(mainLiterature: MainLiterature): Observable<any> {
     return this.http.post(this.url, mainLiterature);
   }
-
   updateValue(mainLiterature: MainLiterature): Observable<any> {
     return this.http.put(this.url, mainLiterature);
   }
-
   deleteValue(id: number): Observable<any> {
     return this.http.delete(this.url + '/' + id);
   }

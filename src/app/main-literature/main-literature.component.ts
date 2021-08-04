@@ -4,6 +4,7 @@ import { MainLiterature } from '../models/MainLiterature';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {MainLiteratureEditComponent} from './main-literature-edit.component';
 import {IsDeleteComponent} from '../is-delete/is-delete.component';
+import {Globals} from '../globals';
 
 @Component({
   selector: 'app-main-literature',
@@ -26,7 +27,8 @@ export class MainLiteratureComponent implements OnInit, AfterViewInit {
   constructor(
     private valueService: MainLiteratureService,
     private cdRef: ChangeDetectorRef,
-    private modalService: MDBModalService) { }
+    private modalService: MDBModalService,
+    public globals: Globals) { }
 
   @HostListener('input') oninput = () => {
     this.mdbTablePagination.searchText = this.searchText;
@@ -66,35 +68,52 @@ export class MainLiteratureComponent implements OnInit, AfterViewInit {
   }
 
   loadValue(): void {
-    this.valueService.getValues()
-      .subscribe((data: MainLiterature[]) => {
-        data.sort((a, b) => a.id - b.id);
-        data.forEach((obj, index) => {
-          this.elements.push({id: (++index).toString(), first: obj.id, last: obj.content});
+    if (this.globals.role === 'admin') {
+      this.valueService.getValues()
+        .subscribe((data: MainLiterature[]) => {
+          this.pushData(data);
         });
-        this.mdbTable.setDataSource(this.elements);
-        this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
-        this.elements = this.mdbTable.getDataSource();
-        this.previous = this.mdbTable.getDataSource();
-      });
+    }
+    else {
+      this.valueService.getAuthorValues(this.globals.name)
+        .subscribe((data: MainLiterature[]) => {
+          this.pushData(data);
+        });
+    }
+  }
+
+  pushData(data: MainLiterature[]): void {
+    data.sort((a, b) => a.id - b.id);
+    data.forEach((obj, index) => {
+      this.elements.push({
+        id: (++index).toString(),
+        first: obj.id,
+        last: obj.content,
+        author: obj.authorIndex});
+    });
+    this.mdbTable.setDataSource(this.elements);
+    this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
+    this.elements = this.mdbTable.getDataSource();
+    this.previous = this.mdbTable.getDataSource();
   }
 
   crate(el: any): void {
-    const mainLiterature = new MainLiterature(0, el.last);
+    const mainLiterature = new MainLiterature(0, el.last, this.globals.name);
     this.valueService.createValue(mainLiterature)
       .subscribe((mainLiteratureResponse: MainLiterature) => {
         const index = this.elements.length + 1;
         this.mdbTable.addRow({
           id: index.toString(),
           first: mainLiteratureResponse.id,
-          last: mainLiteratureResponse.content
+          last: mainLiteratureResponse.content,
+          author: mainLiteratureResponse.authorIndex
         });
         this.mdbTable.setDataSource(this.elements);
       });
   }
 
   save(el: any): void {
-    const mainLiterature = new MainLiterature(el.first, el.last);
+    const mainLiterature = new MainLiterature(el.first, el.last, el.author);
     this.valueService.updateValue(mainLiterature).subscribe();
   }
 
@@ -132,6 +151,7 @@ export class MainLiteratureComponent implements OnInit, AfterViewInit {
     this.modalRef = this.modalService.show(MainLiteratureEditComponent, this.modalOption(el));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       this.elements[elementIndex] = newElement;
+      newElement.author = el.author;
       this.save(newElement);
     });
     this.mdbTable.setDataSource(this.elements);
