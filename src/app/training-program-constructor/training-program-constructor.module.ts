@@ -23,6 +23,8 @@ import {CurriculumTopicChildComponent} from './training-program-main-step/curric
 import {OccupationFormClassHourChildComponent} from './training-program-main-step/occupation-form-class-hour-child/occupation-form-class-hour-child.component';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {OccupationFormClassTimeEditFormComponent} from './training-program-main-step/occupation-form-class-hour-child/occupation-form-class-time-edit-form.component';
+import {TrainingProgramGuidedTestWorkStepComponent} from './training-program-guided-test-work-step/training-program-guided-test-work-step.component';
+import {GuidedTestWorkTopicChildComponent} from './training-program-guided-test-work-step/guided-test-work-topic-child/guided-test-work-topic-child.component';
 
 @NgModule({
   imports: [
@@ -52,7 +54,9 @@ import {OccupationFormClassTimeEditFormComponent} from './training-program-main-
     MaxVariableTopicHoursComponent,
     CurriculumTopicChildComponent,
     OccupationFormClassHourChildComponent,
-    OccupationFormClassTimeEditFormComponent
+    TrainingProgramGuidedTestWorkStepComponent,
+    OccupationFormClassTimeEditFormComponent,
+    GuidedTestWorkTopicChildComponent
   ],
   exports: [],
   providers: [TrainingProgramConstructorService]

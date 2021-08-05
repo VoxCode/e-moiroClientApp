@@ -1,0 +1,19 @@
+<div
+  *ngIf="done"
+  cdkDropList
+  [cdkDropListData]="done"
+  class="example-list"
+  (cdkDropListDropped)="drop($event)">
+  <button *ngIf="done.length === 0" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+          (click)="GuidedTestWorkAssignmentAddForm()" mdbWavesEffect>
+    <mdb-icon fas icon="plus" size="sm"></mdb-icon> Добавить задание
+  </button>
+  <br>
+
+  <div class="example-box"  *ngFor="let item of done; index as i" cdkDrag>
+    <div id="curriculumTitle"><b>{{i+1}}. {{item.topicTitle}}</b></div><br>
+    <div id="curriculumAnnotation">{{item.annotation}}</div><br>
+
+
+  </div>
+</div>

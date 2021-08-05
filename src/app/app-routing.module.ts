@@ -41,6 +41,7 @@ import {ExpertComponent} from './expert/expert.component';
 import {TrainingProgramExpertStepComponent} from './training-program-constructor/training-program-expert-step/training-program-expert-step.component';
 import {DocxGeneratorScheduleComponent} from './doxc-generator-Schedule/docx-generator-schedule.component';
 import {ViewerHelloPageComponent} from './viewer-area/viewer-hello-page.component/viewer-hello-page.component';
+import {TrainingProgramGuidedTestWorkStepComponent} from './training-program-constructor/training-program-guided-test-work-step/training-program-guided-test-work-step.component';
 
 const adminRoutes: Routes = [
   { path: 'trainingProgramExpertStep/:id', component: TrainingProgramExpertStepComponent },
@@ -50,6 +51,7 @@ const adminRoutes: Routes = [
   { path: 'trainingProgramMainLiteratureStep/:id', component: TrainingProgramMainLiteratureStepComponent },
   { path: 'trainingProgramAdditionalLiteratureStep/:id', component: TrainingProgramAdditionalLiteratureStepComponent },
   { path: 'trainingProgramRegulationStep/:id', component: TrainingProgramRegulationStepComponent },
+  { path: 'trainingProgramGuidedTestWorkStep/:id', component: TrainingProgramGuidedTestWorkStepComponent },
   { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
   { path: 'docxGeneratorATP/:id', component:  DocxGeneratorATPComponent },
   { path: 'docxGeneratorSchedule', component: DocxGeneratorScheduleComponent },
@@ -91,6 +93,7 @@ const creatorRoutes: Routes = [
   { path: 'trainingProgramMainLiteratureStep/:id', component: TrainingProgramMainLiteratureStepComponent },
   { path: 'trainingProgramAdditionalLiteratureStep/:id', component: TrainingProgramAdditionalLiteratureStepComponent },
   { path: 'trainingProgramRegulationStep/:id', component: TrainingProgramRegulationStepComponent },
+  { path: 'trainingProgramGuidedTestWorkStep/:id', component: TrainingProgramGuidedTestWorkStepComponent },
   { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
   { path: 'docxGeneratorATP/:id', component:  DocxGeneratorATPComponent },
   { path: 'studentCategory', component: StudentCategoryComponent },
