@@ -5,6 +5,9 @@
     <app-curriculum-topic-list></app-curriculum-topic-list>
   </div>
   <div class="col-sm">
+    <button size="sm" type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
+            (click)="addRoom()">Добавить Комнату
+    </button>
     <app-syncfusion-room-scheduler
       *ngIf="roomData && scheduleData"
       [roomData]="roomData"
