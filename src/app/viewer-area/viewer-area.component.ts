@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {AuthService} from '../services/security/auth.service';
 
 @Component({
@@ -10,8 +10,7 @@ export class ViewerAreaComponent {
   constructor(
     private authService: AuthService) { }
 
-  // tslint:disable-next-line:typedef
-  userLogout() {
+  userLogout(): void {
     this.authService.logout();
   }
 }

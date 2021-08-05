@@ -1,7 +1,7 @@
 .auth-buttons {
   position: absolute;
   display: flex;
-  top: 40%;
+  top: 60%;
   right: 10%;
   z-index: 2;
   width: 80%;
@@ -22,19 +22,19 @@ button {
   border-radius: 10px;
   padding: 5px;
   border: #cccccc solid 3px;
-  box-shadow: 1px 5px 44px #92b7ee;
+  opacity: 0.9;
 }
 
 button:hover {
-color: mediumblue;
+  opacity: 1;
   border: #4285F4 solid 3px;
-
+  box-shadow: 1px 5px 44px #92b7ee;
 }
 
 a {
-  font-size: 14px;
-
+  font-size: 13px;
   letter-spacing: 1px;
+  font-family: -apple-system, sans-serif;
 }
 
 mdb-carousel img {
@@ -47,15 +47,12 @@ height: 100vh;
   }
 
   a {
-    font-size: 9px;
+    font-size: 8px;
   }
 
   button {
     width: 48%;
     height: 50px;
     padding: 5px;
-    box-shadow: 1px 5px 44px #92b7ee;
   }
 }
-
-

@@ -14,7 +14,6 @@ import {CurriculumSectionComponent} from './curriculum-section/curriculum-sectio
 import {CurriculumTopicComponent} from './curriculum-topic/curriculum-topic.component';
 import {DepartmentComponent} from './department/department.component';
 import {FormOfEducationComponent} from './form-of-education/form-of-education.component';
-import {GroupComponent} from './group/group.component';
 import {MainLiteratureComponent} from './main-literature/main-literature.component';
 import {OccupationFormComponent} from './occupation-form/occupation-form.component';
 import {TeacherComponent} from './teacher/teacher.component';
@@ -93,7 +92,6 @@ registerLocaleData(localeRu, 'ru');
     DepartmentEditComponent,
     FormOfEducationComponent,
     FormOfEducationEditComponent,
-    GroupComponent,
     MainLiteratureComponent,
     MainLiteratureEditComponent,
     OccupationFormComponent,

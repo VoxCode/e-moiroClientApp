@@ -8,7 +8,6 @@ import {RegulationComponent} from './regulation/regulation.component';
 import {CurriculumSectionComponent} from './curriculum-section/curriculum-section.component';
 import {CurriculumTopicComponent} from './curriculum-topic/curriculum-topic.component';
 import {DepartmentComponent} from './department/department.component';
-import {GroupComponent} from './group/group.component';
 import {OccupationFormComponent} from './occupation-form/occupation-form.component';
 import {TeacherComponent} from './teacher/teacher.component';
 import {StudentCategoryComponent} from './student-category/student-category.component';
@@ -62,7 +61,6 @@ const adminRoutes: Routes = [
   { path: 'certificationType', component: CertificationTypeComponent },
   { path: 'department', component: DepartmentComponent },
   { path: 'formOfEducation', component: FormOfEducationComponent },
-  { path: 'group', component: GroupComponent },
   { path: 'mainLiterature', component: MainLiteratureComponent },
   { path: 'occupationForm', component: OccupationFormComponent },
   { path: 'teacher', component: TeacherComponent },

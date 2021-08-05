@@ -2,7 +2,7 @@
 <mdb-navbar SideClass="navbar fixed-top navbar-expand-lg navbar-dark primary-color-dark scrolling-navbar intro-fixed-nav" [containerInside]="false">
 
   <!-- Navbar brand -->
-  <mdb-navbar-brand><a class="navbar-brand" [routerLink]="['/admin/user']">Smart MOIRO</a></mdb-navbar-brand>
+  <mdb-navbar-brand><a class="navbar-brand" [routerLink]="['/viewer/user']">Smart MOIRO</a></mdb-navbar-brand>
 
   <!-- Collapsible content -->
   <links>
@@ -13,7 +13,7 @@
           <div class="btn-group" mdbDropdown>
             <mdb-icon fas icon="sign-out-alt" size="lg" mdbDropdownToggle></mdb-icon>
             <div class="dropdown-menu dropdown-menu-right dropdown-primary">
-              <a class="dropdown-item" (click)="userLogout()" href="#">Выйти</a>
+              <a style="text-align: center" class="dropdown-item" (click)="userLogout()" href="#">Выйти</a>
             </div>
           </div>
         </a>
