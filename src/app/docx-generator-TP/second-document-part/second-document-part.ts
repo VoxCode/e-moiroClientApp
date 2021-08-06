@@ -92,6 +92,13 @@ export class SecondDocumentPart {
     });
     this.children.push(this.docxGeneratorDataTemplate.pageBreak());
 
+    this.children.push(this.docxGeneratorDataTemplate.titleText('Управляемая самостоятельная работа'));
+    this.children.push(this.docxGeneratorDataTemplate.titleText('(перечень заданий)'));
+    this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+    this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Вопросы для проведения зачета', 0 , true));
+    this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+    this.children.push(this.docxGeneratorDataTemplate.pageBreak());
+
     let indx = 0;
     this.children.push(this.docxGeneratorDataTemplate.titleText('список рекомендуемой литературы'));
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());

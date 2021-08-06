@@ -54,6 +54,7 @@ export class GuidedTestWorkTopicChildComponent implements OnInit {
   }
 
   crateGuidedTestWorkAssignment(guidedTestWorkAssignment: GuidedTestWorkAssignment): void {
+    guidedTestWorkAssignment.serialNumber = this.done.length + 1;
     this.guidedTestWorkAssignmentService.createValue(guidedTestWorkAssignment)
       .subscribe((guidedTestWorkAssignmentResponse: GuidedTestWorkAssignment) => {
         if (!guidedTestWorkAssignmentResponse) { return; }

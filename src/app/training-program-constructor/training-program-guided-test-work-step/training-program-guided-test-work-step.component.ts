@@ -73,14 +73,16 @@ export class TrainingProgramGuidedTestWorkStepComponent implements OnInit{
   }
 
   loadGuidedTestWorkAssignments(): void { // Немного захардкодил, очень спешил... По сути тут сплит по CurriculumTopicId
-    const curriculumSectionIdArray: number[] = [];
+    const curriculumTopicIdArray: number[] = [];
     this.curriculumTopicTrainingPrograms.forEach(curriculumTopicTrainingProgram => {
-      curriculumSectionIdArray.push(curriculumTopicTrainingProgram.id);
+      if (!curriculumTopicTrainingProgram.isVariable){
+        curriculumTopicIdArray.push(curriculumTopicTrainingProgram.id);
+      }
     });
-    curriculumSectionIdArray.forEach(() => {
+    curriculumTopicIdArray.forEach(() => {
       this.guidedTestWorkAssignments.push([]);
     });
-    this.guidedTestWorkAssignmentService.getGuidedTestWorkAssignments(curriculumSectionIdArray)
+    this.guidedTestWorkAssignmentService.getGuidedTestWorkAssignments(curriculumTopicIdArray)
       .subscribe((guidedTestWorkAssignmentsResponse: GuidedTestWorkAssignment[]) => {
         if (guidedTestWorkAssignmentsResponse.length !== 0) {
           let i = 0;
