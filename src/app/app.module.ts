@@ -70,6 +70,7 @@ import {IsDeleteComponent} from './is-delete/is-delete.component';
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import {ViewerHelloPageComponent} from './viewer-area/viewer-hello-page.component/viewer-hello-page.component';
+import {GuidedTestWorkAssignmentEditComponent} from './guided-test-work-assignment/guided-test-work-assignment-edit.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -128,7 +129,8 @@ registerLocaleData(localeRu, 'ru');
     ExpertComponent,
     ExpertEditComponent,
     IsDeleteComponent,
-    ViewerHelloPageComponent
+    ViewerHelloPageComponent,
+    GuidedTestWorkAssignmentEditComponent
   ],
   imports: [
     BrowserModule,

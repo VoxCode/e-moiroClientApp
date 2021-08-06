@@ -25,6 +25,7 @@ export class TrainingProgramGuidedTestWorkStepComponent implements OnInit{
   id: number;
   trainingProgram: TrainingProgram;
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
+  guidedTestWorkAssignments: GuidedTestWorkAssignment[][] = [];
 
   constructor(
     public globals: Globals,
@@ -51,31 +52,53 @@ export class TrainingProgramGuidedTestWorkStepComponent implements OnInit{
   loadTrainingProgramCurriculumSections(): void {
     this.trainingProgramCurriculumSectionService.GetFromTrainingProgram(this.id)
       .subscribe((trainingProgramCurriculumSectionsResponse: TrainingProgramCurriculumSection[]) => {
-        const trainingProgramIdArray: number[] = [];
-        trainingProgramCurriculumSectionsResponse.forEach(obj => {
-          trainingProgramIdArray.push(obj.id);
-        });
-        this.loadCurriculumTopicTrainingPrograms(trainingProgramIdArray);
+        if (trainingProgramCurriculumSectionsResponse.length !== 0) {
+          const trainingProgramIdArray: number[] = [];
+          trainingProgramCurriculumSectionsResponse.forEach(obj => {
+            trainingProgramIdArray.push(obj.id);
+          });
+          this.loadCurriculumTopicTrainingPrograms(trainingProgramIdArray);
+        }
       });
   }
 
   loadCurriculumTopicTrainingPrograms(curriculumSectionIdArray: number[]): void {
     this.curriculumTopicTrainingProgramService.getFromCurriculumSection(curriculumSectionIdArray)
       .subscribe((curriculumTopicTrainingProgramsResponse: CurriculumTopicTrainingProgram[]) => {
-        this.curriculumTopicTrainingPrograms = curriculumTopicTrainingProgramsResponse;
-        this.loadGuidedTestWorkAssignments();
+        if (curriculumTopicTrainingProgramsResponse.length !== 0) {
+          this.curriculumTopicTrainingPrograms = curriculumTopicTrainingProgramsResponse;
+          this.loadGuidedTestWorkAssignments();
+        }
       });
   }
 
-  loadGuidedTestWorkAssignments(): void {
+  loadGuidedTestWorkAssignments(): void { // Немного захардкодил, очень спешил... По сути тут сплит по CurriculumTopicId
     const curriculumSectionIdArray: number[] = [];
     this.curriculumTopicTrainingPrograms.forEach(curriculumTopicTrainingProgram => {
       curriculumSectionIdArray.push(curriculumTopicTrainingProgram.id);
     });
+    curriculumSectionIdArray.forEach(() => {
+      this.guidedTestWorkAssignments.push([]);
+    });
     this.guidedTestWorkAssignmentService.getGuidedTestWorkAssignments(curriculumSectionIdArray)
       .subscribe((guidedTestWorkAssignmentsResponse: GuidedTestWorkAssignment[]) => {
-        console.log(guidedTestWorkAssignmentsResponse);
+        if (guidedTestWorkAssignmentsResponse.length !== 0) {
+          let i = 0;
+          guidedTestWorkAssignmentsResponse.forEach((obj, index) => {
+            if (index === 0) {
+              this.guidedTestWorkAssignments[i].push(obj);
+            }
+            else {
+              if (obj.curriculumTopicTrainingProgramId === guidedTestWorkAssignmentsResponse[index - 1].curriculumTopicTrainingProgramId) {
+                this.guidedTestWorkAssignments[i].push(obj);
+              }
+              else {
+                i++;
+                this.guidedTestWorkAssignments[i].push(obj);
+              }
+            }
+          });
+        }
       });
-
   }
 }

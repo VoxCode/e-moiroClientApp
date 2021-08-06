@@ -7,20 +7,21 @@
   <h4 *ngIf="trainingProgram">Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
 
   <app-training-program-stepper *ngIf="trainingProgram" [id]="id" [isDistanceLearning]="trainingProgram.isDistanceLearning"></app-training-program-stepper>
+  <div cdkDropListGroup>
+    <div *ngFor="let item of curriculumTopicTrainingPrograms; index as i ">
 
-  <div *ngFor="let item of curriculumTopicTrainingPrograms; index as i ">
+      <div class="example-container">
+        <h4><strong>Тема {{(i+1)}}</strong></h4>
+        <h5><strong>«{{item.topicTitle.toUpperCase()}}»‎</strong></h5>
 
-    <div class="example-container">
-      <h4><strong>Тема {{(i+1)}}</strong></h4>
-      <h5><strong>«{{item.topicTitle.toUpperCase()}}»‎</strong></h5>
+        <app-guided-test-work-topic-child
+          [curriculumTopicTrainingProgramId]="item.id"
+          [done]="guidedTestWorkAssignments[i]">
+        </app-guided-test-work-topic-child>
 
-      <app-guided-test-work-topic-child></app-guided-test-work-topic-child>
-
-
+      </div>
     </div>
-
   </div>
-
   <br><br>
 
   <button type="button" [routerLink]="['/' + globals.role +'/trainingProgramRegulationStep', id]"

@@ -18,6 +18,9 @@ export class GuidedTestWorkAssignmentService {
   getGuidedTestWorkAssignments(curriculumTopicIdArray: number[]): Observable<any> {
     return this.http.post(this.url + '/FromCurriculumTopics', curriculumTopicIdArray);
   }
+  updateSerialNumbers(guidedTestWorkAssignments: GuidedTestWorkAssignment[]): Observable<any> {
+    return this.http.put(this.url + '/SerialNumbers', guidedTestWorkAssignments);
+  }
   createValue(guidedTestWorkAssignment: GuidedTestWorkAssignment): Observable<any> {
     return this.http.post(this.url, guidedTestWorkAssignment);
   }

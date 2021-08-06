@@ -1,8 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {GuidedTestWorkAssignmentService} from '../../../services/guided-test-work-assignment.service';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {GuidedTestWorkAssignment} from '../../../models/GuidedTestWorkAssignment';
+import {GuidedTestWorkAssignmentEditComponent} from '../../../guided-test-work-assignment/guided-test-work-assignment-edit.component';
+import {IsDeleteComponent} from '../../../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-guided-test-work-topic-child',
@@ -14,8 +16,8 @@ import {GuidedTestWorkAssignment} from '../../../models/GuidedTestWorkAssignment
 })
 
 export class GuidedTestWorkTopicChildComponent implements OnInit {
-  @Input() guidedTestWorkAssignments: GuidedTestWorkAssignment[];
-  done = [];
+  @Input() done: any[] = [];
+  @Input() curriculumTopicTrainingProgramId: number;
 
   modalRef: MDBModalRef;
 
@@ -29,99 +31,88 @@ export class GuidedTestWorkTopicChildComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-
+      this.save();
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-
+      this.save();
     }
   }
 
-  // loadGuidedTestWorkAssignments(): void {
-  //   this.trainingProgramCurriculumSectionService.GetFromTrainingProgram(this.trainingProgram.id)
-  //     .subscribe((trainingProgramCurriculumSections: TrainingProgramCurriculumSection[]) => {
-  //       if (!trainingProgramCurriculumSections || trainingProgramCurriculumSections.length === 0) { return; }
-  //       trainingProgramCurriculumSections.sort((a, b) => a.sectionNumber - b.sectionNumber);
-  //       this.trainingProgramCurriculumSections = trainingProgramCurriculumSections;
-  //       this.trainingProgramCurriculumSectionSelectList = trainingProgramCurriculumSections;
-  //     });
-  // }
-  //
-  // crateGuidedTestWorkAssignment(trainingProgramCurriculumSection: TrainingProgramCurriculumSection): void {
-  //   this.trainingProgramCurriculumSectionService.createValue(trainingProgramCurriculumSection)
-  //     .subscribe((trainingProgramCurriculumSectionResponse: TrainingProgramCurriculumSection) => {
-  //       if (!trainingProgramCurriculumSectionResponse) { return; }
-  //       this.trainingProgramCurriculumSections.push(trainingProgramCurriculumSectionResponse);
-  //       console.log('Crate was successful');
-  //     });
-  // }
-  //
-  // updateTrainingProgramCurriculumSection(trainingProgramCurriculumSection: TrainingProgramCurriculumSection): void {
-  //   this.trainingProgramCurriculumSectionService.updateValue(trainingProgramCurriculumSection).subscribe(() => {
-  //     console.log('Update was successful');
-  //   });
-  // }
-  //
-  // deleteTrainingProgramCurriculumSection(item: any, index: number): void {
-  //   const editableRow = {heading: item.name};
-  //   this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
-  //   this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
-  //     if (newElement) {
-  //       this.trainingProgramCurriculumSectionService.deleteValue(item.id).subscribe(() => {
-  //         this.trainingProgramCurriculumSections.splice(index, 1);
-  //         console.log('Delete was successful');
-  //       });
-  //     }
-  //   });
-  // }
-  //
-  // addNewTemplate(newTemplate: CurriculumTopic ): void {
-  //   this.newTodoValue.emit(newTemplate);
-  // }
-  //
-  // curriculumSectionAddForm(): void {
-  //   this.modalRef = this.modalService.show(CurriculumSectionEditComponent, this.modalOption(this.emptyEl()));
-  //   this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
-  //     const trainingProgramCurriculumSection = new TrainingProgramCurriculumSection(
-  //       0,
-  //       this.trainingProgram.id,
-  //       this.trainingProgramCurriculumSections.length + 1,
-  //       newElement.last);
-  //     this.crateTrainingProgramCurriculumSection(trainingProgramCurriculumSection);
-  //   });
-  // }
-  //
-  // curriculumSectionEditForm(trainingProgramCurriculumSection: TrainingProgramCurriculumSection): void {
-  //   const el = {id: 0, first: '', last: trainingProgramCurriculumSection.name};
-  //   this.modalRef = this.modalService.show(CurriculumSectionEditComponent, this.modalOption(el));
-  //   this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
-  //     trainingProgramCurriculumSection.name = newElement.last;
-  //     this.updateTrainingProgramCurriculumSection(trainingProgramCurriculumSection);
-  //   });
-  // }
-  //
-  // emptyEl(): any {
-  //   return {id: 0, first: '', last: ''};
-  // }
-  //
-  // modalOption(el: any): any {
-  //   return {
-  //     backdrop: true,
-  //     keyboard: true,
-  //     focus: true,
-  //     show: false,
-  //     ignoreBackdropClick: true,
-  //     class: 'modal-fluid',
-  //     containerClass: '',
-  //     animated: true,
-  //     data: {
-  //       editableRow: el
-  //     }
-  //   };
-  // }
-  GuidedTestWorkAssignmentAddForm(): void {
+  save(): void {
+    const guidedTestWorkAssignments: GuidedTestWorkAssignment[] = [];
+    this.done.forEach((object, index) => {
+      object.serialNumber = ++index;
+      object.curriculumTopicTrainingProgramId = this.curriculumTopicTrainingProgramId;
+      guidedTestWorkAssignments.push(object);
+    });
+    this.guidedTestWorkAssignmentService.updateSerialNumbers(guidedTestWorkAssignments).subscribe(() => {
+      console.log('Successful!');
+    });
+  }
 
+  crateGuidedTestWorkAssignment(guidedTestWorkAssignment: GuidedTestWorkAssignment): void {
+    this.guidedTestWorkAssignmentService.createValue(guidedTestWorkAssignment)
+      .subscribe((guidedTestWorkAssignmentResponse: GuidedTestWorkAssignment) => {
+        if (!guidedTestWorkAssignmentResponse) { return; }
+        this.done.push(guidedTestWorkAssignmentResponse);
+        console.log('Crate was successful');
+      });
+  }
+
+  updateGuidedTestWorkAssignment(guidedTestWorkAssignment: GuidedTestWorkAssignment): void {
+    this.guidedTestWorkAssignmentService.updateValue(guidedTestWorkAssignment).subscribe(() => {
+      console.log('Update was successful');
+    });
+  }
+
+  deleteGuidedTestWorkAssignment(item: any, index: number): void {
+    const editableRow = {heading: item.name};
+    this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.guidedTestWorkAssignmentService.deleteValue(item.id).subscribe(() => {
+          this.done.splice(index, 1);
+          console.log('Delete was successful');
+        });
+      }
+    });
+  }
+
+  guidedTestWorkAssignmentAddForm(): void {
+    this.modalRef = this.modalService.show(GuidedTestWorkAssignmentEditComponent, this.modalOption(this.emptyEl()));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      this.crateGuidedTestWorkAssignment(newElement);
+    });
+  }
+
+  guidedTestWorkAssignmentEditForm(el: GuidedTestWorkAssignment): void {
+    this.modalRef = this.modalService.show(GuidedTestWorkAssignmentEditComponent, this.modalOption(el));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      el.content = newElement.content;
+      this.updateGuidedTestWorkAssignment(el);
+    });
+  }
+
+  emptyEl(): any {
+    return {id: 0, content: '', serialNumber: 0, curriculumTopicTrainingProgramId: this.curriculumTopicTrainingProgramId};
+  }
+
+  modalOption(el: any): any {
+    return {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+      show: false,
+      ignoreBackdropClick: true,
+      class: 'modal-fluid',
+      containerClass: '',
+      animated: true,
+      data: {
+        editableRow: el
+      }
+    };
   }
 }
