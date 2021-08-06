@@ -7,6 +7,8 @@ import {CurriculumTopicTrainingProgramService} from '../../services/curriculum-t
 import {CurriculumTopicTrainingProgram} from '../../models/СurriculumTopicTrainingProgram';
 import {TrainingProgramCurriculumSectionService} from '../../services/training-program-curriculum-section.service';
 import {TrainingProgramCurriculumSection} from '../../models/TrainingProgramCurriculumSection';
+import {GuidedTestWorkAssignment} from '../../models/GuidedTestWorkAssignment';
+import {GuidedTestWorkAssignmentService} from '../../services/guided-test-work-assignment.service';
 
 @Component({
   selector: 'app-training-program-guided-test-work',
@@ -14,7 +16,8 @@ import {TrainingProgramCurriculumSection} from '../../models/TrainingProgramCurr
   styleUrls: ['./training-program-guided-test-work-step.component.scss'],
   providers: [
     CurriculumTopicTrainingProgramService,
-    TrainingProgramCurriculumSectionService
+    TrainingProgramCurriculumSectionService,
+    GuidedTestWorkAssignmentService
   ]
 })
 
@@ -28,6 +31,7 @@ export class TrainingProgramGuidedTestWorkStepComponent implements OnInit{
     public  trainingProgramConstructorService: TrainingProgramConstructorService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
+    private guidedTestWorkAssignmentService: GuidedTestWorkAssignmentService,
     private route: ActivatedRoute
   ) { }
 
@@ -59,6 +63,18 @@ export class TrainingProgramGuidedTestWorkStepComponent implements OnInit{
     this.curriculumTopicTrainingProgramService.getFromCurriculumSection(curriculumSectionIdArray)
       .subscribe((curriculumTopicTrainingProgramsResponse: CurriculumTopicTrainingProgram[]) => {
         this.curriculumTopicTrainingPrograms = curriculumTopicTrainingProgramsResponse;
+        this.loadGuidedTestWorkAssignments();
+      });
+  }
+
+  loadGuidedTestWorkAssignments(): void {
+    const curriculumSectionIdArray: number[] = [];
+    this.curriculumTopicTrainingPrograms.forEach(curriculumTopicTrainingProgram => {
+      curriculumSectionIdArray.push(curriculumTopicTrainingProgram.id);
+    });
+    this.guidedTestWorkAssignmentService.getGuidedTestWorkAssignments(curriculumSectionIdArray)
+      .subscribe((guidedTestWorkAssignmentsResponse: GuidedTestWorkAssignment[]) => {
+        console.log(guidedTestWorkAssignmentsResponse);
       });
 
   }

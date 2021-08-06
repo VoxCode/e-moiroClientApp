@@ -6,7 +6,7 @@
   </div><br>
   <h4 *ngIf="trainingProgram">Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
 
-  <app-training-program-stepper [id]="id"></app-training-program-stepper>
+  <app-training-program-stepper *ngIf="trainingProgram" [id]="id" [isDistanceLearning]="trainingProgram.isDistanceLearning"></app-training-program-stepper>
 
   <h3><strong>Перетащите необходимые элементы</strong></h3>
 
@@ -52,8 +52,8 @@
   </div>
   <br><br>
 
-  <button style="float: left; border-radius: 5px" type="button" [routerLink]="['/' + globals.role +'/trainingProgramMainLiteratureStep', id]"
+  <button [routerLink]="['/' + globals.role +'/trainingProgramMainLiteratureStep', id]"
           mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Назад</button>
-  <button style="float: left; border-radius: 5px" type="button" [routerLink]="['/' + globals.role +'/trainingProgramRegulationStep', id]"
+  <button [routerLink]="['/' + globals.role +'/trainingProgramRegulationStep', id]"
           mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Далее</button><br>
 </div>

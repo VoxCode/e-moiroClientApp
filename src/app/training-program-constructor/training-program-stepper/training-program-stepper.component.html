@@ -53,7 +53,7 @@
         </a>
       </li>
 
-      <li [routerLink]="['/' + globals.role +'/trainingProgramGuidedTestWorkStep', id]" routerLinkActive="active">
+      <li *ngIf="isDistanceLearning" [routerLink]="['/' + globals.role +'/trainingProgramGuidedTestWorkStep', id]" routerLinkActive="active">
         <a>
           <span class="circle">7</span>
           <span class="label">Управляемая самостоятельная работа</span>

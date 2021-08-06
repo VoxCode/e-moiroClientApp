@@ -9,7 +9,7 @@
   </div><br>
   <h4 *ngIf="trainingProgram">Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
 
-  <app-training-program-stepper [id]="id"></app-training-program-stepper>
+  <app-training-program-stepper *ngIf="trainingProgram" [id]="id" [isDistanceLearning]="trainingProgram.isDistanceLearning"></app-training-program-stepper>
 
   <app-document-editor-form *ngIf="docxContent"
                             [docxContent]="docxContent"
@@ -18,8 +18,8 @@
   </app-document-editor-form>
 
   <br>
-  <button [disabled]="!isSave" style="float: left; border-radius: 5px" type="button" [routerLink]="['/' + globals.role +'/trainingProgramExpertStep', id]"
+  <button [disabled]="!isSave" type="button" [routerLink]="['/' + globals.role +'/trainingProgramExpertStep', id]"
           mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Назад</button>
-  <button [disabled]="!isSave" style="float: left; border-radius: 5px" type="button" [routerLink]="['/' + globals.role +'/trainingProgramMainStep', id]"
+  <button [disabled]="!isSave" type="button" [routerLink]="['/' + globals.role +'/trainingProgramMainStep', id]"
           mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Далее</button><br>
 </div>

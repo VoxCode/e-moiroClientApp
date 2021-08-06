@@ -6,7 +6,7 @@
   </div><br>
   <h4 *ngIf="trainingProgram">Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
 
-  <app-training-program-stepper [id]="id"></app-training-program-stepper>
+  <app-training-program-stepper *ngIf="trainingProgram" [id]="id" [isDistanceLearning]="trainingProgram.isDistanceLearning"></app-training-program-stepper>
 
   <div *ngFor="let item of curriculumTopicTrainingPrograms; index as i ">
 
@@ -23,5 +23,13 @@
 
   <br><br>
 
+  <button type="button" [routerLink]="['/' + globals.role +'/trainingProgramRegulationStep', id]"
+          mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Назад</button>
+  <button type="button" [routerLink]="'/' + globals.role +'/trainingProgram'"
+          mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Завершить</button>
+  <button type="button" size="sm" [routerLink]="['/' + globals.role +'/docxGeneratorTP', id]" mdbBtn color="orange"
+          class="relative waves-light" mdbWavesEffect>Сгенерировать УП</button>
+  <button type="button" size="sm" [routerLink]="['/' + globals.role +'/docxGeneratorATP', id]" mdbBtn color="orange"
+          class="relative waves-light" mdbWavesEffect>Сгенерировать УТП</button><br>
 
 </div>
