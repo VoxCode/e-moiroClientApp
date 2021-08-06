@@ -67,15 +67,12 @@ export class ScheduleComponent implements OnInit {
   }
 
   createRoom(el: any): void{
-    const room = new ClassRoom();// +el.roomId, el.roomName
-    room.id = 0;
-    room.name = '123';
-    console.log(room);
-    this.classRoomService.createValue(room)
-      .subscribe((roomResponse: ClassRoom) => {
-        // this.roomData.push({text: roomResponse.name, id: roomResponse.id, color: '#543434'});
-        // console.log(roomResponse);
-      });
+    const room = new ClassRoom(+el.roomId, el.roomName);
+    console.log('sent');
+    // this.classRoomService.createValue(room)
+    //   .subscribe((roomResponse: ClassRoom) => {
+    //     this.roomData.push({text: roomResponse.name, id: roomResponse.id, color: '#543434'});
+    //   });
   }
 
   emptyEl(): any {

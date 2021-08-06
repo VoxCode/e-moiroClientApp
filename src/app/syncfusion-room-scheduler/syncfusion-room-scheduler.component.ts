@@ -95,9 +95,6 @@ export class SyncfusionRoomSchedulerComponent implements OnInit
   }
 
   onActionBegin(args: ActionEventArgs): void {
-    console.log('Action begin');
-    console.log(args);
-
     if (args.requestType === 'eventCreate' || args.requestType === 'eventChange') {
       let data: { [key: string]: object };
       if (args.requestType === 'eventCreate') {
