@@ -76,7 +76,7 @@ export class TrainingProgramGuidedTestWorkStepComponent implements OnInit{
       });
   }
 
-  loadGuidedTestWorkAssignments(): void { // Немного захардкодил, очень спешил... По сути тут сплит по CurriculumTopicId
+  loadGuidedTestWorkAssignments(): void {
     const curriculumTopicIdArray: number[] = [];
     this.curriculumTopicTrainingPrograms.forEach(curriculumTopicTrainingProgram => {
       curriculumTopicIdArray.push(curriculumTopicTrainingProgram.id);
