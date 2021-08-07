@@ -66,7 +66,11 @@ export class TrainingProgramGuidedTestWorkStepComponent implements OnInit{
     this.curriculumTopicTrainingProgramService.getFromCurriculumSection(curriculumSectionIdArray)
       .subscribe((curriculumTopicTrainingProgramsResponse: CurriculumTopicTrainingProgram[]) => {
         if (curriculumTopicTrainingProgramsResponse.length !== 0) {
-          this.curriculumTopicTrainingPrograms = curriculumTopicTrainingProgramsResponse;
+          curriculumTopicTrainingProgramsResponse.forEach((obj) => {
+            if (!obj.isVariable) {
+              this.curriculumTopicTrainingPrograms.push(obj);
+            }
+          });
           this.loadGuidedTestWorkAssignments();
         }
       });
@@ -75,9 +79,7 @@ export class TrainingProgramGuidedTestWorkStepComponent implements OnInit{
   loadGuidedTestWorkAssignments(): void { // Немного захардкодил, очень спешил... По сути тут сплит по CurriculumTopicId
     const curriculumTopicIdArray: number[] = [];
     this.curriculumTopicTrainingPrograms.forEach(curriculumTopicTrainingProgram => {
-      if (!curriculumTopicTrainingProgram.isVariable){
-        curriculumTopicIdArray.push(curriculumTopicTrainingProgram.id);
-      }
+      curriculumTopicIdArray.push(curriculumTopicTrainingProgram.id);
     });
     curriculumTopicIdArray.forEach(() => {
       this.guidedTestWorkAssignments.push([]);
@@ -85,20 +87,12 @@ export class TrainingProgramGuidedTestWorkStepComponent implements OnInit{
     this.guidedTestWorkAssignmentService.getGuidedTestWorkAssignments(curriculumTopicIdArray)
       .subscribe((guidedTestWorkAssignmentsResponse: GuidedTestWorkAssignment[]) => {
         if (guidedTestWorkAssignmentsResponse.length !== 0) {
-          let i = 0;
-          guidedTestWorkAssignmentsResponse.forEach((obj, index) => {
-            if (index === 0) {
-              this.guidedTestWorkAssignments[i].push(obj);
-            }
-            else {
-              if (obj.curriculumTopicTrainingProgramId === guidedTestWorkAssignmentsResponse[index - 1].curriculumTopicTrainingProgramId) {
-                this.guidedTestWorkAssignments[i].push(obj);
+          this.curriculumTopicTrainingPrograms.forEach((obj, index) => {
+            guidedTestWorkAssignmentsResponse.forEach((tmp2) => {
+              if (tmp2.curriculumTopicTrainingProgramId === obj.id) {
+                this.guidedTestWorkAssignments[index].push(tmp2);
               }
-              else {
-                i++;
-                this.guidedTestWorkAssignments[i].push(obj);
-              }
-            }
+            });
           });
         }
       });

@@ -217,6 +217,7 @@ export class DocxGeneratorTPComponent implements OnInit{
     this.guidedTestWorkAssignmentService.getGuidedTestWorkAssignments(this.curriculumTopicIdArray)
       .subscribe((guidedTestWorkAssignmentsResponse: GuidedTestWorkAssignment[]) => {
         if (guidedTestWorkAssignmentsResponse.length !== 0) {
+          console.log(guidedTestWorkAssignmentsResponse);
           this.getDocument();
         }
       });
