@@ -63,7 +63,6 @@ export class DocxGeneratorDataTemplate {
   }
 
   public guidedTestWorkAssignmentSomeText(num: number, txt: string): Paragraph{
-    ++num;
     return new Paragraph({
       style: 'default',
       alignment: AlignmentType.JUSTIFIED,

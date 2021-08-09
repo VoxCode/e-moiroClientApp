@@ -117,10 +117,12 @@ export class SecondDocumentPart {
           this.children.push(this.docxGeneratorDataTemplate
             .guidedTestWorkAssignmentSomeTextItalic(obj.testWorkHours, 720));
           i++;
-          for (const [num, guidedTestWorkAssignment] of this.guidedTestWorkAssignments.entries()) {
+          let num = 1;
+          for (const guidedTestWorkAssignment of this.guidedTestWorkAssignments) {
             if (guidedTestWorkAssignment.curriculumTopicTrainingProgramId === obj.id) {
               this.children.push(this.docxGeneratorDataTemplate
                 .guidedTestWorkAssignmentSomeText(num, guidedTestWorkAssignment.content));
+              num++;
             }
           }
           this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
