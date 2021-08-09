@@ -8,6 +8,7 @@ import {Subject} from 'rxjs';
 import {RoomComponent} from '../room/room.component';
 import {StudentCategory} from '../models/StudentCategory';
 import {ClassRoomService} from '../services/schedule-services/class-room.service';
+import {Regulation} from '../models/Regulation';
 
 
 @Component({
@@ -35,14 +36,17 @@ export class ScheduleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.roomData = [
-      {
-        text: 'Room1', id: 1, color: '#ea7a57'
-      },
-      {
-        text: 'room2', id: 2, color: '#ea7a57'
-      }];
+    // this.roomData = [
+    //   {
+    //     text: 'Room1', id: 1, color: '#ea7a57'
+    //   },
+    //   {
+    //     text: 'room2', id: 2, color: '#ea7a57'
+    //   }];
+    this.roomData = [];
+    this.loadRooms();
 
+    console.log(this.roomData);
 
     this.scheduleData = [{
       Id: 1,
@@ -56,23 +60,33 @@ export class ScheduleComponent implements OnInit {
   }
 
 
+  loadRooms(): void{
+    this.classRoomService.getValues()
+      .subscribe((data: ClassRoom[]) => {
+        data.forEach((el, index) => {
+          this.roomData.push({
+            text: el.name, id: index + 1, color: `#${index}1${index}1${index}1`
+          });
+        });
+    });
+  }
+
   addRoom(): void {
-    this.modalRef = this.modalService.show(RoomComponent, this.modalOption(this.emptyEl()));
+    this.modalRef = this.modalService.show(RoomComponent, this.modalOption(this.roomData));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
-      console.log(newElement);
       this.roomData.push({text: newElement.roomName, id: 5, color: '#543434'});
       console.log(this.roomData);
-      this.createRoom(newElement);
+      //this.createRoom(newElement);
     });
   }
 
   createRoom(el: any): void{
     const room = new ClassRoom(+el.roomId, el.roomName);
     console.log('sent');
-    // this.classRoomService.createValue(room)
-    //   .subscribe((roomResponse: ClassRoom) => {
-    //     this.roomData.push({text: roomResponse.name, id: roomResponse.id, color: '#543434'});
-    //   });
+    this.classRoomService.createValue(room)
+      .subscribe((roomResponse: ClassRoom) => {
+        this.roomData.push({text: roomResponse.name, id: roomResponse.id, color: '#543434'});
+      });
   }
 
   emptyEl(): any {

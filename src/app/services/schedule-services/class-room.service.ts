@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
 
 @Injectable()
 export class ClassRoomService {
-  public url = environment.apiUrl + 'api​/ClassRoom';
+  public url = environment.apiUrl + 'api/ClassRooms';
   constructor(private http: HttpClient) { }
 
   getValues(): Observable<any> {

@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, Input, OnInit, OnChanges, ViewChild, ViewEncapsulation, SimpleChanges} from '@angular/core';
 import { extend, isNullOrUndefined, Browser } from '@syncfusion/ej2-base';
 import {
   ScheduleComponent, ActionEventArgs, PopupOpenEventArgs, EventRenderedArgs, RenderCellEventArgs, DragAndDropService,
@@ -37,7 +37,11 @@ export class SyncfusionRoomSchedulerComponent implements OnInit
   public scheduleObj: ScheduleComponent;
 
   ngOnInit(): void {
-    // console.log(this.roomData);
+    setInterval(() => {
+       // this.scheduleObj.resources[0].dataSource = this.roomData;
+       //this.scheduleObj.render();
+    }, 3000);
+
     // this.parsedSchedule = new Array((this.roomData.length));
     // this.parsedScheduleArray = new Array(this.roomData.length);
     // this.parseSchedule();
@@ -54,7 +58,11 @@ export class SyncfusionRoomSchedulerComponent implements OnInit
         endTime: { title: 'To', name: 'EndTime' },
       }
     };
-    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('change');
+  }
 
     // parseSchedule(): void {
     //
@@ -109,7 +117,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit
   }
 
   onRenderCell(args: RenderCellEventArgs): void {
-    console.log('render cell');
+    //console.log('render cell');
     // console.log(args);
     if (args.element.classList.contains('e-work-cells')) {
       if (args.date < new Date(2018, 5, 31, 0, 0)) {
@@ -125,7 +133,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit
   }
 
   onEventRendered(args: EventRenderedArgs): void {
-    console.log('event rendered');
+    //console.log('event rendered');
     // console.log(args);
     const data: { [key: string]: object } = args.data;
     if (this.isReadOnly(data.EndTime as Date)) {
@@ -133,4 +141,5 @@ export class SyncfusionRoomSchedulerComponent implements OnInit
       args.element.classList.add('e-read-only');
     }
   }
+
 }
