@@ -44,6 +44,44 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
+  public guidedTestWorkAssignmentSomeTextItalic(testWorkHours: number, indent?: number): Paragraph {
+    const text = this.classHoursEndingDeclination(testWorkHours);
+    return new Paragraph({
+      style: 'default',
+      alignment: AlignmentType.JUSTIFIED,
+      indent: {
+        left: 0,
+        firstLine: indent,
+      },
+      children: [
+        new TextRun({
+          text: 'Управляемая самостоятельная работа, ' + testWorkHours + ' ' + text,
+          italics: true
+        })
+      ]
+    });
+  }
+
+  public guidedTestWorkAssignmentSomeText(num: number, txt: string): Paragraph{
+    ++num;
+    return new Paragraph({
+      style: 'default',
+      alignment: AlignmentType.JUSTIFIED,
+      indent: {
+        left: 0
+      },
+      children: [
+        new TextRun({
+          text: 'Задание ' + num + ': ',
+          bold: true,
+        }),
+        new TextRun({
+          text: txt
+        }),
+      ]
+    });
+  }
+
   public someTextCurriculumTopics(txt: string, txt2: string, indent?: number, bld?: boolean, caps?: boolean ): Paragraph{
     return new Paragraph({
       style: 'default',
@@ -271,6 +309,33 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
+  public guidedTestWorkTitleText(title: string, numberOfHours: number): Paragraph
+  {
+    const hoursEnding = this.classHoursEndingDeclination(numberOfHours);
+    return new Paragraph({
+      alignment: AlignmentType.CENTER,
+      children: [
+        new TextRun({
+          text: title,
+          size : this.size,
+          bold : true,
+          italics: true
+        }),
+        new TextRun({
+          text: ' (' + numberOfHours + ' ' + hoursEnding + ')',
+          size : this.size,
+          bold : true
+        }),
+        new TextRun({
+          text: '(перечень заданий)',
+          size : this.size,
+          bold : true,
+          break: 1
+        }),
+      ],
+    });
+  }
+
   public classHoursStringBuilder(obj: CurriculumTopicTrainingProgramGenerator, isDist: boolean): string {
     let tmpString = '';
     obj.occupationFormClassHours.forEach((occupationFormClassHour, index) => {
@@ -287,6 +352,27 @@ export class DocxGeneratorDataTemplate {
         else {
           tmpString += occupationFormClassHour.fullName.toString().toLowerCase().split(',')[0] + ',' +
             ' ' + occupationFormClassHour.classHours + ' ' + this.classHoursEndingDeclination(occupationFormClassHour.classHours);
+        }
+      }
+      if (index === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }
+    });
+    return tmpString;
+  }
+
+  public guidedTestWorkAssignmentStringBuilder(obj: CurriculumTopicTrainingProgramGenerator, isDist: boolean): string {
+    let tmpString = '';
+    obj.occupationFormClassHours.forEach((occupationFormClassHour, index) => {
+      if (index === 0) { tmpString += ' ('; }
+      if (index !== 0) { tmpString += '; '; }
+      if (occupationFormClassHour.fullName.toLowerCase() === 'форум') {
+        tmpString += occupationFormClassHour.fullName.toString().toLowerCase();
+      }
+      else {
+        if (isDist) {
+          tmpString += occupationFormClassHour.fullName.toString().toLowerCase().split(',')[0] + ': онлайн';
+        }
+        else {
+          tmpString += occupationFormClassHour.fullName.toString().toLowerCase().split(',')[0] + ',';
         }
       }
       if (index === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }

@@ -1,6 +1,8 @@
 import {convertMillimetersToTwip, Document, Header, PageNumberFormat} from 'docx';
 import {DocxGeneratorDataTemplate} from '../../docx-generator-data-template/docx-generator-data-template';
 import {TrainingProgramGenerator} from '../../models/generator-models/TrainingProgramGenerator';
+import {GuidedTestWorkAssignment} from '../../models/GuidedTestWorkAssignment';
+import {CurriculumTopicTrainingProgramGenerator} from '../../models/generator-models/CurriculumTopicTrainingProgramGenerator';
 
 export class SecondDocumentPart {
 
@@ -8,9 +10,12 @@ export class SecondDocumentPart {
   docxGeneratorDataTemplate: DocxGeneratorDataTemplate = new DocxGeneratorDataTemplate(28);
   sections: any[] = [];
   children: any[] = [];
+  allInvariantCurriculumTopics: CurriculumTopicTrainingProgramGenerator[][] = [];
+  testWorkAllClassHours = 0;
 
   constructor(
     private trainingProgram: TrainingProgramGenerator,
+    private guidedTestWorkAssignments: GuidedTestWorkAssignment[]
   ) { }
 
   public create(): Document {
@@ -21,6 +26,7 @@ export class SecondDocumentPart {
     this.children.push(this.docxGeneratorDataTemplate.titleText('содержание'));
     this.trainingProgram.trainingProgramCurriculumSections.forEach((object, index) =>
     {
+      this.allInvariantCurriculumTopics.push([]);
       this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
       this.children.push(this.docxGeneratorDataTemplate.titleText(index + 1 + '.' + object.name));
       this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
@@ -33,6 +39,8 @@ export class SecondDocumentPart {
 
       let i = 1;
       invariantCurriculumTopicsList.forEach(obj => {
+        this.testWorkAllClassHours += obj.testWorkHours;
+        this.allInvariantCurriculumTopics[index].push(obj);
         const tmpString = this.docxGeneratorDataTemplate.classHoursStringBuilder(obj, this.trainingProgram.isDistanceLearning);
         this.children.push(this.docxGeneratorDataTemplate
           .someTextCurriculumTopics((index + 1) + '.' + i + '. ' + obj.topicTitle, tmpString, 0, true));
@@ -92,12 +100,35 @@ export class SecondDocumentPart {
     });
     this.children.push(this.docxGeneratorDataTemplate.pageBreak());
 
-    this.children.push(this.docxGeneratorDataTemplate.titleText('Управляемая самостоятельная работа'));
-    this.children.push(this.docxGeneratorDataTemplate.titleText('(перечень заданий)'));
-    this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-    this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Вопросы для проведения зачета', 0 , true));
-    this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-    this.children.push(this.docxGeneratorDataTemplate.pageBreak());
+    if (this.trainingProgram.isDistanceLearning) {
+      this.children.push(this.docxGeneratorDataTemplate
+        .guidedTestWorkTitleText('Управляемая самостоятельная работа', this.testWorkAllClassHours));
+      this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+      this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+
+      let j = 1;
+      this.allInvariantCurriculumTopics.forEach(curriculumSection => {
+        let i = 1;
+        curriculumSection.forEach(obj => {
+          const tmpString = this.docxGeneratorDataTemplate
+            .guidedTestWorkAssignmentStringBuilder(obj, this.trainingProgram.isDistanceLearning);
+          this.children.push(this.docxGeneratorDataTemplate
+            .someTextCurriculumTopics((j) + '.' + i + '. ' + obj.topicTitle, tmpString, 0, true));
+          this.children.push(this.docxGeneratorDataTemplate
+            .guidedTestWorkAssignmentSomeTextItalic(obj.testWorkHours, 720));
+          i++;
+          for (const [num, guidedTestWorkAssignment] of this.guidedTestWorkAssignments.entries()) {
+            if (guidedTestWorkAssignment.curriculumTopicTrainingProgramId === obj.id) {
+              this.children.push(this.docxGeneratorDataTemplate
+                .guidedTestWorkAssignmentSomeText(num, guidedTestWorkAssignment.content));
+            }
+          }
+          this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+        });
+        j++;
+      });
+      this.children.push(this.docxGeneratorDataTemplate.pageBreak());
+    }
 
     let indx = 0;
     this.children.push(this.docxGeneratorDataTemplate.titleText('список рекомендуемой литературы'));

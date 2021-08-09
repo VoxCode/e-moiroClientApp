@@ -61,6 +61,7 @@ export class DocxGeneratorTPComponent implements OnInit{
   docx: any[] = [];
   loading: boolean;
   curriculumTopicIdArray: number[] = [];
+  guidedTestWorkAssignments: GuidedTestWorkAssignment[];
   wordDocxType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
   constructor(
@@ -217,7 +218,7 @@ export class DocxGeneratorTPComponent implements OnInit{
     this.guidedTestWorkAssignmentService.getGuidedTestWorkAssignments(this.curriculumTopicIdArray)
       .subscribe((guidedTestWorkAssignmentsResponse: GuidedTestWorkAssignment[]) => {
         if (guidedTestWorkAssignmentsResponse.length !== 0) {
-          console.log(guidedTestWorkAssignmentsResponse);
+          this.guidedTestWorkAssignments = guidedTestWorkAssignmentsResponse;
           this.getDocument();
         }
       });
@@ -229,7 +230,8 @@ export class DocxGeneratorTPComponent implements OnInit{
     );
 
     const secondDocumentPart = new SecondDocumentPart(
-      this.trainingProgram
+      this.trainingProgram,
+      this.guidedTestWorkAssignments
     );
 
     const firstDocxTmp = firstDocumentPart.create();
