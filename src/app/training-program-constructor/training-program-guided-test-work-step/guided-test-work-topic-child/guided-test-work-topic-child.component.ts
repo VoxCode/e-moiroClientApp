@@ -70,7 +70,7 @@ export class GuidedTestWorkTopicChildComponent implements OnInit {
   }
 
   deleteGuidedTestWorkAssignment(item: any, index: number): void {
-    const editableRow = {heading: item.name};
+    const editableRow = {heading: item.content};
     this.modalRef = this.modalService.show(IsDeleteComponent, this.modalOption(editableRow));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       if (newElement) {
