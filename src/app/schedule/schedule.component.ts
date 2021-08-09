@@ -1,14 +1,10 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AgendaService, DayService, MonthService, WeekService, WorkWeekService} from '@syncfusion/ej2-angular-schedule';
 import {ClassRoom} from '../models/schedule-models/ClassRoom';
-import {scheduleData} from '../syncfusion-room-scheduler/data';
-import {StudentCategoryEditComponent} from '../student-category/student-category-edit.component';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {Subject} from 'rxjs';
 import {RoomComponent} from '../room/room.component';
-import {StudentCategory} from '../models/StudentCategory';
 import {ClassRoomService} from '../services/schedule-services/class-room.service';
-import {Regulation} from '../models/Regulation';
 
 
 @Component({
@@ -19,8 +15,8 @@ import {Regulation} from '../models/Regulation';
 })
 export class ScheduleComponent implements OnInit {
 
-  roomData: any[];
-  scheduleData: any[];
+  roomData: any[] = [];
+  scheduleData: any[] = [];
   public modalRef: MDBModalRef;
 
   public room: {
@@ -36,18 +32,7 @@ export class ScheduleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.roomData = [
-    //   {
-    //     text: 'Room1', id: 1, color: '#ea7a57'
-    //   },
-    //   {
-    //     text: 'room2', id: 2, color: '#ea7a57'
-    //   }];
-    this.roomData = [];
     this.loadRooms();
-
-    console.log(this.roomData);
-
     this.scheduleData = [{
       Id: 1,
       Subject: 'asdefrgtyhujikol',
@@ -75,8 +60,9 @@ export class ScheduleComponent implements OnInit {
     this.modalRef = this.modalService.show(RoomComponent, this.modalOption(this.roomData));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       this.roomData.push({text: newElement.roomName, id: 5, color: '#543434'});
+      this.roomData = this.roomData.map(num => num);
       console.log(this.roomData);
-      //this.createRoom(newElement);
+      // this.createRoom(newElement);
     });
   }
 
@@ -100,7 +86,7 @@ export class ScheduleComponent implements OnInit {
       focus: true,
       show: false,
       ignoreBackdropClick: true,
-      class: 'modal-fluid',
+      class: 'modal-dialog',
       containerClass: '',
       animated: true,
       data: {

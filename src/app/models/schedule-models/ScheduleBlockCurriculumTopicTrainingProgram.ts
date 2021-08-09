@@ -3,5 +3,6 @@ export class ScheduleBlockCurriculumTopicTrainingProgram {
     public id?: number,
     public curriculumTopicTrainingProgramm?: number,
     public scheduleBlockId?: number,
-    public serialNumber?: number){ }
+    public serialNumber?: number,
+    public topicTitle?: string){ }
 }

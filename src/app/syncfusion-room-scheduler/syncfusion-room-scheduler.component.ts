@@ -16,10 +16,10 @@ import {fifaEventsData} from './data';
 })
 
 
-export class SyncfusionRoomSchedulerComponent implements OnInit
+export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
 {
   @Input()  scheduleData: any[] = [];
-  @Input()  roomData: any[];
+  @Input()  roomData: any[] = [];
 
   public selectedDate: Date = new Date(2018, 7, 1);
   public timeScale: TimeScaleModel = { interval: 60, slotCount: 1 };
@@ -37,11 +37,6 @@ export class SyncfusionRoomSchedulerComponent implements OnInit
   public scheduleObj: ScheduleComponent;
 
   ngOnInit(): void {
-    setInterval(() => {
-       // this.scheduleObj.resources[0].dataSource = this.roomData;
-       //this.scheduleObj.render();
-    }, 3000);
-
     // this.parsedSchedule = new Array((this.roomData.length));
     // this.parsedScheduleArray = new Array(this.roomData.length);
     // this.parseSchedule();
@@ -61,7 +56,9 @@ export class SyncfusionRoomSchedulerComponent implements OnInit
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('change');
+    if (this.scheduleObj) {
+      this.scheduleObj.render();
+    }
   }
 
     // parseSchedule(): void {

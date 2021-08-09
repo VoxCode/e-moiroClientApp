@@ -71,6 +71,7 @@ import { ScheduleComponent } from './schedule/schedule.component';
 import {ScheduleModule} from '@syncfusion/ej2-angular-schedule';
 import { SyncfusionRoomSchedulerComponent } from './syncfusion-room-scheduler/syncfusion-room-scheduler.component';
 import { RoomComponent } from './room/room.component';
+import { ScheduleBlockComponent } from './schedule-block/schedule-block.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -131,6 +132,7 @@ export function tokenGetter(): string {
     ScheduleComponent,
     SyncfusionRoomSchedulerComponent,
     RoomComponent,
+    ScheduleBlockComponent,
   ],
   imports: [
     BrowserModule,

@@ -6,16 +6,12 @@
     <h4 class="modal-title w-100" id="myModalLabel">Помещения</h4>
   </div>
   <div class="modal-body">
-    <form style="width: 300px" [formGroup]="form">
+    <form [formGroup]="form">
       <div style="display: inline; width: 20px" class="md-textarea">
         <label for="roomName">Название</label>
-        <textarea id="roomName" type="text" class="md-textarea md-textarea-auto form-check-inline"
+        <input id="roomName" type="text" class="form-control"
                   formControlName="roomName" mdbInput mdbValidate [validateSuccess]="false">
-          </textarea>
         <mdb-error *ngIf="roomName.invalid && (roomName.dirty || roomName.touched)"></mdb-error>
-      </div>
-      <div style="display: inline; width: 50%">
-        <input class="form-check-inline" type="checkbox" value="" id="isVisible" checked>
       </div>
 
     </form>

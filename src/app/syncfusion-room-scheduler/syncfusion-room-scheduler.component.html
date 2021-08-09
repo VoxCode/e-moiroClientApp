@@ -22,20 +22,16 @@
         <table *ngIf="data != undefined" class="custom-event-editor" width="100%" cellpadding="5">
           <tbody>
           <tr>
-            <td class="e-textlabel">Тема</td>
-            <td colspan="4">
-              <input id="Subject" class="e-field e-input" type="text" value="{{data.Subject}}"
-                     name="Subject" style="width: 100%" />
+            <td>
+              <app-schedule-block></app-schedule-block>
             </td>
           </tr>
           <tr>
             <td class="e-textlabel">E</td>
             <td colspan="4">
-
               <ejs-dropdownlist id='Status' class="e-field" data-name="Status" placeholder='Choose Status'
                                 [dataSource]='StatusData' [fields]='statusFields' value='{{data.Status}}'>
               </ejs-dropdownlist>
-            </td>
           </tr>
           <tr>
             <td class="e-textlabel">Начало</td>
