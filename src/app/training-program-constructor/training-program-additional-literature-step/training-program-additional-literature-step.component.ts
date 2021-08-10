@@ -28,6 +28,7 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
   trainingProgram: TrainingProgram;
   additionalLiterature: AdditionalLiterature = new AdditionalLiterature();
   modalRef: MDBModalRef;
+  heading = 'Рекомендуемая дополнительная литература';
 
   constructor(
     public globals: Globals,

@@ -32,6 +32,7 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
   finalExamination: FinalExamination = new FinalExamination();
   certificationType: CertificationType = new CertificationType();
   modalRef: MDBModalRef;
+  heading = 'Рекомендуемые вопросы';
 
   constructor(
     public globals: Globals,

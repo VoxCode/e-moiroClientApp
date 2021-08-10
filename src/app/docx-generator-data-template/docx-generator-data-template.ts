@@ -602,6 +602,18 @@ export class DocxGeneratorDataTemplate {
 
   public footerATPDepartmentHead(department: string, departmentHeadName: string): Paragraph
   {
+    let text1 = '';
+    let text2 = '';
+    department = department.substr(department.indexOf(' ') + 1);
+    const textArray: string[] = department.split(' ');
+    textArray.forEach((str, index) => {
+      if (index > 2) {
+        text2 += str + ' ';
+      }
+      else {
+        text1 += str + ' ';
+      }
+    });
     return new Paragraph({
       children: [
         new TextRun({
@@ -610,7 +622,12 @@ export class DocxGeneratorDataTemplate {
           break: 1
         }),
         new TextRun({
-          text: department.substr(department.indexOf(' ') + 1) + '\t' + departmentHeadName,
+          text: text1,
+          size : this.size,
+          break: 1
+        }),
+        new TextRun({
+          text: text2 + '\t' + departmentHeadName,
           size : this.size,
           break: 1
         }),

@@ -29,6 +29,7 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
   trainingProgram: TrainingProgram;
   mainLiterature: MainLiterature = new MainLiterature();
   modalRef: MDBModalRef;
+  heading = 'Рекомендуемая основная литература';
 
   constructor(
     public globals: Globals,

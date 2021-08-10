@@ -28,6 +28,7 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   trainingProgram: TrainingProgram;
   regulation: Regulation = new Regulation();
   modalRef: MDBModalRef;
+  heading = 'Рекомендуемые нормативные правовые акты';
 
   constructor(
     public globals: Globals,

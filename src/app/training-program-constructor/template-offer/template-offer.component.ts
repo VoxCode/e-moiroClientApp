@@ -11,6 +11,7 @@ export class TemplateOfferComponent {
   constructor() { }
 
   @Input() todo: any = [];
+  @Input() heading = '';
   searchText: string;
 
   drop(event: CdkDragDrop<string[]>): void {
