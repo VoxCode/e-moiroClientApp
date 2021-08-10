@@ -96,7 +96,7 @@ export class DocxGeneratorTPComponent implements OnInit{
   }
 
   loadTrainingProgramCurriculumSections(): void {
-    this.trainingProgramCurriculumSectionService.GetFromTrainingProgram(this.id)
+    this.trainingProgramCurriculumSectionService.getFromTrainingProgram(this.id)
       .subscribe((data: TrainingProgramCurriculumSection[]) => {
         if (data.length !== 0) {
           data.sort((a, b) => a.sectionNumber - b.sectionNumber);

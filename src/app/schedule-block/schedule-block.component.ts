@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ScheduleBlockCurriculumTopicTrainingProgramService} from '../services/schedule-services/schedule-block-curriculum-topic-training-program.service';
 import {MDBModalRef} from 'angular-bootstrap-md';
 import {ScheduleBlockCurriculumTopicTrainingProgram} from '../models/schedule-models/ScheduleBlockCurriculumTopicTrainingProgram';
@@ -8,6 +8,10 @@ import {TrainingProgramCurriculumSectionService} from '../services/training-prog
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
 import {ScheduleBlockTeacher} from '../models/schedule-models/ScheduleBlockTeacher';
 import {ScheduleBlockTeacherService} from '../services/schedule-services/schedule-block-teacher.service';
+import {TrainingProgramTeacherService} from '../services/training-program-teacher.service';
+import {TrainingProgramTeacher} from '../models/TrainingProgramTeacher';
+import {TeacherService} from '../services/teacher.service';
+import {Teacher} from '../models/Teacher';
 
 @Component({
   selector: 'app-schedule-block',
@@ -17,29 +21,40 @@ import {ScheduleBlockTeacherService} from '../services/schedule-services/schedul
     ScheduleBlockCurriculumTopicTrainingProgramService,
     CurriculumTopicTrainingProgramService,
     TrainingProgramCurriculumSectionService,
-    ScheduleBlockTeacherService
+    ScheduleBlockTeacherService,
+    TrainingProgramTeacherService,
+    TeacherService,
   ]
 })
 export class ScheduleBlockComponent implements OnInit {
 
-  public scheduleBlock: {id: number, trainingProgramId: number};
-  public selectedTopic: CurriculumTopicTrainingProgram;
 
+  public selectedTopic: CurriculumTopicTrainingProgram;
+  public selectedTeacher: Teacher;
+
+  @Input() scheduleBlock: {id: number, trainingProgramId: number};
+
+  teachers: Teacher[] = [];
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
 
   constructor(
     private scheduleBlockCurriculumTopicTrainingProgramService: ScheduleBlockCurriculumTopicTrainingProgramService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
+    private scheduleBlockTeacherService: ScheduleBlockTeacherService,
+    private trainingProgramTeacherService: TrainingProgramTeacherService,
+    private teacherService: TeacherService,
 
   ) { }
 
   ngOnInit(): void {
+    console.log(this.scheduleBlock);
     this.scheduleBlock = {
       id: 0,
       trainingProgramId: 16};
     //this.loadScheduleBlockCurriculumTopics();
     this.loadCurriculumTopicTrainingPrograms();
+    this.loadTrainingProgramTeachers();
   }
 
   loadScheduleBlockCurriculumTopics(): void {
@@ -52,12 +67,12 @@ export class ScheduleBlockComponent implements OnInit {
   }
 
   loadCurriculumTopicTrainingPrograms(): void{
-    this.trainingProgramCurriculumSectionService.GetFromTrainingProgram(this.scheduleBlock.trainingProgramId)
+    this.trainingProgramCurriculumSectionService.getFromTrainingProgram(this.scheduleBlock.trainingProgramId)
       .subscribe((data: TrainingProgramCurriculumSection[]) => {
         if (data.length > 0){
           data.forEach((obj) => {
             this.curriculumTopicTrainingProgramService.getFromTrainingProgramCurriculumSection(obj.id)
-              .subscribe((topicsData: CurriculumTopicTrainingProgram[]) =>{
+              .subscribe((topicsData: CurriculumTopicTrainingProgram[]) => {
                 if (topicsData.length > 0) {
                   this.curriculumTopicTrainingPrograms = topicsData;
                 }
@@ -65,7 +80,19 @@ export class ScheduleBlockComponent implements OnInit {
           });
         }
       });
+  }
 
+  loadTrainingProgramTeachers(): void {
+    this.teacherService.getValues()
+      .subscribe((teachersData: Teacher[]) => {
+        if (teachersData.length > 0) {
+          teachersData.forEach((teacher: Teacher) => {
+            teacher.fullNameForm = teacher.lastName + ' ' + teacher.firstName + ' ' +
+              teacher.patronymicName + ' (' + teacher.position + ')';
+            this.teachers.push(teacher);
+          });
+        }
+      });
   }
 
   selectTopic(): void {

@@ -1,7 +1,7 @@
-<p>schedule-block works!</p>
-<div *ngFor = "let item of curriculumTopicTrainingPrograms, index as i">
-  <h4>{{i + 1}}. {{item.topicTitle}}</h4>
-</div>
+<!--<p>schedule-block works!</p>-->
+<!--<div *ngFor = "let item of curriculumTopicTrainingPrograms, index as i">-->
+<!--  <h4>{{i + 1}}. {{item.topicTitle}}</h4>-->
+<!--</div>-->
 <ng-select *ngIf="curriculumTopicTrainingPrograms.length !== 0" [items]="this.curriculumTopicTrainingPrograms" [clearable]="false"
            (change)="selectTopic()"
            bindValue=""
@@ -12,10 +12,10 @@
 
 <input *ngIf="selectedTopic">
 
-<ng-select *ngIf="curriculumTopicTrainingPrograms.length !== 0" [items]="this.curriculumTopicTrainingPrograms" [clearable]="false"
+<ng-select *ngIf="teachers.length !== 0" [items]="this.teachers" [clearable]="false"
            (change)="selectTopic()"
            bindValue=""
-           bindLabel="topicTitle"
-           [(ngModel)]="selectedTopic"
+           bindLabel="fullNameForm"
+           [(ngModel)]="selectedTeacher"
            placeholder="Связь учетной записи и преподавателя">
 </ng-select>

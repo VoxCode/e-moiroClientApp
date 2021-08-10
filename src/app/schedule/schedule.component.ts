@@ -19,11 +19,6 @@ export class ScheduleComponent implements OnInit {
   scheduleData: any[] = [];
   public modalRef: MDBModalRef;
 
-  public room: {
-    roomId: string,
-    roomName: string,
-  };
-
   public saveButtonClicked: Subject<any> = new Subject<any>();
 
   constructor(
@@ -61,14 +56,12 @@ export class ScheduleComponent implements OnInit {
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       this.roomData.push({text: newElement.roomName, id: 5, color: '#543434'});
       this.roomData = this.roomData.map(num => num);
-      console.log(this.roomData);
       // this.createRoom(newElement);
     });
   }
 
   createRoom(el: any): void{
     const room = new ClassRoom(+el.roomId, el.roomName);
-    console.log('sent');
     this.classRoomService.createValue(room)
       .subscribe((roomResponse: ClassRoom) => {
         this.roomData.push({text: roomResponse.name, id: roomResponse.id, color: '#543434'});

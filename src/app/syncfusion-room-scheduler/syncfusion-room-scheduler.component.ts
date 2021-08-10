@@ -21,6 +21,8 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   @Input()  scheduleData: any[] = [];
   @Input()  roomData: any[] = [];
 
+  public newEvent: any;
+  public scheduleBlock: any;
   public selectedDate: Date = new Date(2018, 7, 1);
   public timeScale: TimeScaleModel = { interval: 60, slotCount: 1 };
   public workHours: WorkHoursModel = { start: '08:00', end: '18:00' };
@@ -37,11 +39,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   public scheduleObj: ScheduleComponent;
 
   ngOnInit(): void {
-    // this.parsedSchedule = new Array((this.roomData.length));
-    // this.parsedScheduleArray = new Array(this.roomData.length);
-    // this.parseSchedule();
-
-    // extend([], this.scheduleData, null, true) as object[]
+    //extend([], this.scheduleData, null, true) as object[]
     this.eventSettings = {
       dataSource: this.scheduleData,
       fields: {
@@ -53,6 +51,11 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
         endTime: { title: 'To', name: 'EndTime' },
       }
     };
+
+    this.scheduleBlock = {
+      id: 1,
+      trainingProgramId: 16,
+    };
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -60,19 +63,6 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       this.scheduleObj.render();
     }
   }
-
-    // parseSchedule(): void {
-    //
-    // this.scheduleData.forEach((el, index) => {
-    //   this.parsedSchedule.id = ++index;
-    //   this.parsedSchedule.subject = `${el.group} (${el.theme})`;
-    //   this.parsedSchedule.description = el.teacher;
-    //   this.parsedSchedule.startTime = el.startTime;
-    //   this.parsedSchedule.endDate = el.endTime;
-    //   this.parsedSchedule.id = el.roomId;
-    //   this.parsedScheduleArray.push(this.parsedSchedule);
-    // });
-    // }
 
   public dateParser(data: string): Date {
     return new Date(data);
@@ -100,10 +90,13 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   }
 
   onActionBegin(args: ActionEventArgs): void {
+    //console.log(args);
+    //args.data.push(this.newEvent);
     if (args.requestType === 'eventCreate' || args.requestType === 'eventChange') {
       let data: { [key: string]: object };
       if (args.requestType === 'eventCreate') {
         data = (args.data[0] as { [key: string]: object });
+        //console.log(data);
       } else if (args.requestType === 'eventChange') {
         data = (args.data as { [key: string]: object });
       }
@@ -111,6 +104,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
         args.cancel = true;
       }
     }
+    console.log(this.scheduleData);
   }
 
   onRenderCell(args: RenderCellEventArgs): void {

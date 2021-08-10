@@ -15,7 +15,7 @@ export class TrainingProgramCurriculumSectionService {
   getValue(id: number): Observable<any> {
     return this.http.get(this.url + '/' + id);
   }
-  GetFromTrainingProgram(trainingProgramId: number): Observable<any> {
+  getFromTrainingProgram(trainingProgramId: number): Observable<any> {
     return this.http.get(this.url + '/FromTrainingProgram/' + trainingProgramId);
   }
   createValue(trainingProgramCurriculumSection: TrainingProgramCurriculumSection): Observable<any> {

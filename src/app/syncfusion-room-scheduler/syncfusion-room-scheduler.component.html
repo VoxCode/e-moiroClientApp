@@ -23,37 +23,7 @@
           <tbody>
           <tr>
             <td>
-              <app-schedule-block></app-schedule-block>
-            </td>
-          </tr>
-          <tr>
-            <td class="e-textlabel">E</td>
-            <td colspan="4">
-              <ejs-dropdownlist id='Status' class="e-field" data-name="Status" placeholder='Choose Status'
-                                [dataSource]='StatusData' [fields]='statusFields' value='{{data.Status}}'>
-              </ejs-dropdownlist>
-          </tr>
-          <tr>
-            <td class="e-textlabel">Начало</td>
-            <td colspan="4">
-              <ejs-datetimepicker id="StartTime" class="e-field" data-name="StartTime" format="M/dd/yy h:mm a"
-                                  [value]="dateParser(data.startTime || data.StartTime)">
-              </ejs-datetimepicker>
-            </td>
-          </tr>
-          <tr>
-            <td class="e-textlabel">До</td>
-            <td colspan="4">
-              <ejs-datetimepicker id="EndTime" class="e-field" data-name="EndTime" format="M/dd/yy h:mm a"
-                                  [value]='dateParser(data.endTime || data.EndTime)'></ejs-datetimepicker>
-            </td>
-          </tr>
-          <tr>
-            <td class="e-textlabel">Reason</td>
-            <td colspan="4">
-                            <textarea id="Description" class="e-field e-input" name="Description" rows="3" cols="50"
-                                      value="{{data.Description}}"
-                                      style="width: 100%; height: 60px !important; resize: vertical"></textarea>
+              <app-schedule-block [scheduleBlock]="scheduleBlock"></app-schedule-block>
             </td>
           </tr>
           </tbody>

@@ -34,7 +34,7 @@ export class CurriculumSectionChildComponent implements OnInit {
   }
 
   loadTrainingProgramCurriculumSections(): void {
-      this.trainingProgramCurriculumSectionService.GetFromTrainingProgram(this.trainingProgram.id)
+      this.trainingProgramCurriculumSectionService.getFromTrainingProgram(this.trainingProgram.id)
         .subscribe((trainingProgramCurriculumSections: TrainingProgramCurriculumSection[]) => {
           if (!trainingProgramCurriculumSections || trainingProgramCurriculumSections.length === 0) { return; }
           trainingProgramCurriculumSections.sort((a, b) => a.sectionNumber - b.sectionNumber);
