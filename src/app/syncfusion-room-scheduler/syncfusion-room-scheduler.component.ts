@@ -1,10 +1,30 @@
 import {Component, Inject, Input, OnInit, OnChanges, ViewChild, ViewEncapsulation, SimpleChanges} from '@angular/core';
-import { extend, isNullOrUndefined, Browser } from '@syncfusion/ej2-base';
+import { extend, isNullOrUndefined, Browser, L10n } from '@syncfusion/ej2-base';
 import {
   ScheduleComponent, ActionEventArgs, PopupOpenEventArgs, EventRenderedArgs, RenderCellEventArgs, DragAndDropService,
-  TimelineViewsService, GroupModel, EventSettingsModel, ResizeService, TimeScaleModel, WorkHoursModel, View
+  TimelineViewsService, GroupModel, EventSettingsModel, ResizeService, TimeScaleModel, WorkHoursModel, View, MonthService
 } from '@syncfusion/ej2-angular-schedule';
-import {fifaEventsData} from './data';
+import { loadCldr } from '@syncfusion/ej2-base';
+import * as numberingSystems from 'cldr-data/supplemental/numberingSystems.json';
+import * as gregorian from 'cldr-data/main/fr-CH/ca-gregorian.json';
+import * as numbers from 'cldr-data/main/fr-CH/numbers.json';
+import * as timeZoneNames from 'cldr-data/main/fr-CH/timeZoneNames.json';
+
+loadCldr(numberingSystems, gregorian, numbers, timeZoneNames);
+L10n.load({
+  'fr-CH': {
+    schedule: {
+      day: 'лол',
+      week: 'лол',
+      workWeek: 'лол',
+      month: 'лол',
+      today: 'лол'
+    },
+    calendar: {
+      today: 'лол'
+    }
+  }
+});
 
 
 @Component({
@@ -23,10 +43,15 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
 
   public newEvent: any;
   public scheduleBlock: any;
-  public selectedDate: Date = new Date(2018, 7, 1);
+  public selectedDate: Date = new Date();
   public timeScale: TimeScaleModel = { interval: 60, slotCount: 1 };
   public workHours: WorkHoursModel = { start: '08:00', end: '18:00' };
+  public startHour = '08:00';
+  public endHour = '18:00';
+  public timeFormat = 'HH:mm';
   public currentView: View = 'TimelineWeek';
+  public workWeekDays: number[] = [1, 2, 3, 4, 5];
+  public showWeekend = false;
   public group: GroupModel = {
     enableCompactView: false,
     resources: ['MeetingRoom']
@@ -38,8 +63,11 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   @ViewChild('scheduleObj')
   public scheduleObj: ScheduleComponent;
 
+
   ngOnInit(): void {
-    //extend([], this.scheduleData, null, true) as object[]
+    // extend([], this.scheduleData, null, true) as object[]
+    //this.scheduleObj.locale = 'ru';
+    console.log('init');
     this.eventSettings = {
       dataSource: this.scheduleData,
       fields: {
@@ -51,6 +79,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
         endTime: { title: 'To', name: 'EndTime' },
       }
     };
+
 
     this.scheduleBlock = {
       id: 1,
@@ -69,10 +98,15 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   }
 
   isReadOnly(endDate: Date): boolean {
-    return (endDate < new Date(2018, 5, 31, 0, 0));
+    const myCurrentDate = new Date();
+    myCurrentDate.setDate(myCurrentDate.getDate() - 1);
+    return (endDate < myCurrentDate);
   }
 
   onPopupOpen(args: PopupOpenEventArgs): void {
+    if (args.type === 'Editor')  {
+      console.log(args);
+    }
     const data: { [key: string]: object } = args.data as { [key: string]: object };
     if (args.type === 'QuickInfo' || args.type === 'Editor' || args.type === 'RecurrenceAlert' || args.type === 'DeleteAlert') {
       const target: HTMLElement = (args.type === 'RecurrenceAlert' ||
@@ -87,16 +121,17 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
         args.cancel = true;
       }
     }
+    // console.log(args);
   }
 
   onActionBegin(args: ActionEventArgs): void {
-    //console.log(args);
-    //args.data.push(this.newEvent);
+    // console.log(args);
+    // args.data.push(this.newEvent);
     if (args.requestType === 'eventCreate' || args.requestType === 'eventChange') {
       let data: { [key: string]: object };
       if (args.requestType === 'eventCreate') {
         data = (args.data[0] as { [key: string]: object });
-        //console.log(data);
+        // console.log(data);
       } else if (args.requestType === 'eventChange') {
         data = (args.data as { [key: string]: object });
       }
@@ -104,27 +139,27 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
         args.cancel = true;
       }
     }
-    console.log(this.scheduleData);
+    // console.log(this.scheduleData);
   }
 
   onRenderCell(args: RenderCellEventArgs): void {
-    //console.log('render cell');
+    // console.log('render cell');
     // console.log(args);
     if (args.element.classList.contains('e-work-cells')) {
-      if (args.date < new Date(2018, 5, 31, 0, 0)) {
+      if (this.isReadOnly(args.date)) {
         args.element.setAttribute('aria-readonly', 'true');
         args.element.classList.add('e-read-only-cells');
       }
     }
     if (args.elementType === 'emptyCells' && args.element.classList.contains('e-resource-left-td')) {
       const target: HTMLElement = args.element.querySelector('.e-resource-text') as HTMLElement;
-      target.innerHTML = '<div style="text-align: center" class="name">Rooms</div>';
+      target.innerHTML = '<div style="text-align: center" class="name">Аудитория</div>';
       target.parentElement.style.width = '100px';
     }
   }
 
   onEventRendered(args: EventRenderedArgs): void {
-    //console.log('event rendered');
+    // console.log('event rendered');
     // console.log(args);
     const data: { [key: string]: object } = args.data;
     if (this.isReadOnly(data.EndTime as Date)) {
@@ -133,4 +168,15 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     }
   }
 
+  onPopupClose(args: any): void{
+    // args.data = {
+    //   Id: 2,
+    //   Subject: 'asdefrgtyhujikol',
+    //   Description: 'zxcvbnm,',
+    //   StartTime: new Date(2018, 7, 1, 9, 0),
+    //   EndTime: new Date(2018, 7, 1, 12, 0),
+    //   RoomId: 1,
+    //   booop: 'wabba-labba-dub-dub',
+    // };
+  }
 }

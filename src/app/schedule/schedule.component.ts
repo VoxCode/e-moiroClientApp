@@ -39,7 +39,6 @@ export class ScheduleComponent implements OnInit {
     }];
   }
 
-
   loadRooms(): void{
     this.classRoomService.getValues()
       .subscribe((data: ClassRoom[]) => {
@@ -67,6 +66,10 @@ export class ScheduleComponent implements OnInit {
         this.roomData.push({text: roomResponse.name, id: roomResponse.id, color: '#543434'});
       });
   }
+
+  load
+
+
 
   emptyEl(): any {
     return {id: 0, roomId: '', roomName: ''};

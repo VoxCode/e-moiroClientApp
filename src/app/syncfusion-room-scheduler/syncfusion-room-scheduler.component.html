@@ -1,8 +1,17 @@
 <div class="control-section">
   <div class="col-lg-12 content-wrapper">
-    <ejs-schedule *ngIf="eventSettings" #scheduleObj width='100%' cssClass='timeline-resource' height='800px' [timeScale]="timeScale" [currentView]="currentView"
-                  [workHours]="workHours" [selectedDate]="selectedDate" [group]="group" [eventSettings]="eventSettings" (eventRendered)="onEventRendered($event)"
-                  (actionBegin)="onActionBegin($event)" (renderCell)="onRenderCell($event)" (popupOpen)="onPopupOpen($event)"  >
+    <ejs-schedule *ngIf="eventSettings" #scheduleObj width='100%' cssClass='timeline-resource' height='800px'
+                  [workDays]='workWeekDays' [showWeekend]="showWeekend"
+                  [workHours]="workHours" [startHour]='startHour' [endHour]='endHour'
+                  [timeScale]="timeScale" [timeFormat]="timeFormat"
+                  [selectedDate]="selectedDate" [currentView]="currentView" [group]="group"
+                  [eventSettings]="eventSettings"
+                  locale='fr-CH'
+                  (eventRendered)="onEventRendered($event)"
+                  (actionBegin)="onActionBegin($event)"
+                  (renderCell)="onRenderCell($event)"
+                  (popupOpen)="onPopupOpen($event)"
+                  (popupClose)="onPopupClose($event)">
       <e-resources>
         <e-resource field='RoomId' title='Room Type' [dataSource]='roomData' [allowMultiple]='allowMultiple' name='MeetingRoom'
                     textField='text' idField='id' colorField='color'>
@@ -11,6 +20,7 @@
       <e-views>
         <e-view option="TimelineDay"></e-view>
         <e-view option="TimelineWeek"></e-view>
+        <e-view option='Month'></e-view>
       </e-views>
       <ng-template #resourceHeaderTemplate let-data>
         <div class='template-wrap'>
