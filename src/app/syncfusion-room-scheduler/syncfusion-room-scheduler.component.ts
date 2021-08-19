@@ -1,30 +1,19 @@
 import {Component, Inject, Input, OnInit, OnChanges, ViewChild, ViewEncapsulation, SimpleChanges} from '@angular/core';
-import { extend, isNullOrUndefined, Browser, L10n } from '@syncfusion/ej2-base';
+import { extend, isNullOrUndefined, Browser, setCulture, L10n, loadCldr } from '@syncfusion/ej2-base';
 import {
   ScheduleComponent, ActionEventArgs, PopupOpenEventArgs, EventRenderedArgs, RenderCellEventArgs, DragAndDropService,
   TimelineViewsService, GroupModel, EventSettingsModel, ResizeService, TimeScaleModel, WorkHoursModel, View, MonthService
 } from '@syncfusion/ej2-angular-schedule';
-import { loadCldr } from '@syncfusion/ej2-base';
-import * as numberingSystems from 'cldr-data/supplemental/numberingSystems.json';
-import * as gregorian from 'cldr-data/main/fr-CH/ca-gregorian.json';
-import * as numbers from 'cldr-data/main/fr-CH/numbers.json';
-import * as timeZoneNames from 'cldr-data/main/fr-CH/timeZoneNames.json';
+import * as numberingSystems from './localization/numberingSystems.json';
+import * as gregorian from './localization/ru/ca-gregorian.json';
+import * as numbers from './localization/ru/numbers.json';
+import * as timeZoneNames from './localization/ru/timeZoneNames.json';
+import * as dictionary from './localization/dictionary.json';
 
-loadCldr(numberingSystems, gregorian, numbers, timeZoneNames);
-L10n.load({
-  'fr-CH': {
-    schedule: {
-      day: 'лол',
-      week: 'лол',
-      workWeek: 'лол',
-      month: 'лол',
-      today: 'лол'
-    },
-    calendar: {
-      today: 'лол'
-    }
-  }
-});
+loadCldr(numberingSystems['default'], gregorian['default'], numbers['default'], timeZoneNames['default']);
+L10n.load(dictionary['default']);
+//setCulture('ru');
+
 
 
 @Component({
@@ -63,11 +52,25 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   @ViewChild('scheduleObj')
   public scheduleObj: ScheduleComponent;
 
+  doDaThing(): void{
+    console.log(this.scheduleObj);
+    L10n.load(dictionary);
+    this.scheduleObj.locale = 'ru';
+    this.scheduleObj.localeObj.setLocale('ru');
+    // const l10n: L10n = new L10n('schedule', {
+    //   day: 'лол',
+    //   week: 'лол',
+    //   workWeek: 'лол',
+    //   month: 'лол',
+    //   today: 'лол'
+    // });
+    // this.scheduleObj.localeObj = l10n;
+    // this.scheduleObj.render();
+    console.log(this.scheduleObj);
+  }
 
   ngOnInit(): void {
-    // extend([], this.scheduleData, null, true) as object[]
-    //this.scheduleObj.locale = 'ru';
-    console.log('init');
+    L10n.load(dictionary);
     this.eventSettings = {
       dataSource: this.scheduleData,
       fields: {
@@ -85,7 +88,36 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       id: 1,
       trainingProgramId: 16,
     };
+
+    // extend([], this.scheduleData, null, true) as object[]
+    // this.scheduleObj.locale = 'ru';
+    // console.log(numberingSystems);
+    // console.log(gregorian);
+    // console.log(numbers);
+    // console.log(timeZoneNames);
+    // console.log(dictionary);
+    // L10n.load(dictionary);
+    // console.log(this.scheduleObj.localeObj);
+
+    // console.log(this.scheduleObj);
+
+    // this.scheduleObj.localeObj = new L10n('schedule', {
+    //   day: 'лол',
+    //   week: 'лол',
+    //   workWeek: 'лол',
+    //   month: 'лол',
+    //   today: 'лол'
+    // });
+    // this.scheduleObj.localeObj.setLocale('ru');
+    // this.scheduleObj.localeObj.getConstant('today');
+    console.log('init');
+
+
+
+
   }
+
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.scheduleObj) {
