@@ -88,28 +88,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       id: 1,
       trainingProgramId: 16,
     };
-
     // extend([], this.scheduleData, null, true) as object[]
-    // this.scheduleObj.locale = 'ru';
-    // console.log(numberingSystems);
-    // console.log(gregorian);
-    // console.log(numbers);
-    // console.log(timeZoneNames);
-    // console.log(dictionary);
-    // L10n.load(dictionary);
-    // console.log(this.scheduleObj.localeObj);
-
-    // console.log(this.scheduleObj);
-
-    // this.scheduleObj.localeObj = new L10n('schedule', {
-    //   day: 'лол',
-    //   week: 'лол',
-    //   workWeek: 'лол',
-    //   month: 'лол',
-    //   today: 'лол'
-    // });
-    // this.scheduleObj.localeObj.setLocale('ru');
-    // this.scheduleObj.localeObj.getConstant('today');
     console.log('init');
 
 
@@ -158,6 +137,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
 
   onActionBegin(args: ActionEventArgs): void {
     // console.log(args);
+    console.log('onActionBegin');
     // args.data.push(this.newEvent);
     if (args.requestType === 'eventCreate' || args.requestType === 'eventChange') {
       let data: { [key: string]: object };
@@ -171,12 +151,12 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
         args.cancel = true;
       }
     }
-    // console.log(this.scheduleData);
+    //console.log(this.scheduleData);
   }
 
   onRenderCell(args: RenderCellEventArgs): void {
-    // console.log('render cell');
-    // console.log(args);
+    //console.log('render cell');
+    //console.log(args);
     if (args.element.classList.contains('e-work-cells')) {
       if (this.isReadOnly(args.date)) {
         args.element.setAttribute('aria-readonly', 'true');
@@ -192,7 +172,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
 
   onEventRendered(args: EventRenderedArgs): void {
     // console.log('event rendered');
-    // console.log(args);
+    //console.log(args);
     const data: { [key: string]: object } = args.data;
     if (this.isReadOnly(data.EndTime as Date)) {
       args.element.setAttribute('aria-readonly', 'true');

@@ -5,18 +5,23 @@ import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {Subject} from 'rxjs';
 import {RoomComponent} from '../room/room.component';
 import {ClassRoomService} from '../services/schedule-services/class-room.service';
+import {TrainingProgramService} from '../services/training-program.service';
+import {GroupService} from '../services/group.service';
+import {Group} from '../models/Group';
 
 
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
   styleUrls: ['./schedule.component.scss'],
-  providers: [DayService, WeekService, WorkWeekService, MonthService, AgendaService, ClassRoomService]
+  providers: [DayService, WeekService, WorkWeekService, MonthService, AgendaService,
+    ClassRoomService, GroupService, TrainingProgramService]
 })
 export class ScheduleComponent implements OnInit {
 
   roomData: any[] = [];
   scheduleData: any[] = [];
+  groups: Group[];
   public modalRef: MDBModalRef;
 
   public saveButtonClicked: Subject<any> = new Subject<any>();
@@ -24,10 +29,12 @@ export class ScheduleComponent implements OnInit {
   constructor(
     private modalService: MDBModalService,
     private classRoomService: ClassRoomService,
+    private groupService: GroupService,
   ) { }
 
   ngOnInit(): void {
     this.loadRooms();
+    this.loadGroups();
     this.scheduleData = [{
       Id: 1,
       Subject: 'asdefrgtyhujikol',
@@ -67,7 +74,14 @@ export class ScheduleComponent implements OnInit {
       });
   }
 
-  load
+  loadGroups(): void{
+    this.groupService.getValues()
+      .subscribe((data: Group[]) => {
+        if (data.length > 0){
+          this.groups = data;
+        }
+      });
+  }
 
 
 
