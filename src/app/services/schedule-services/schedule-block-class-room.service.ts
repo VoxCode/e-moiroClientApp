@@ -17,7 +17,7 @@ export class ScheduleBlockClassRoomService {
     return this.http.get(this.url + '/' + id);
   }
 
-  getValuesFromClassRoom(scheduleBlockId: number): Observable<any> {
+  getValuesFromScheduleBlock(scheduleBlockId: number): Observable<any> {
     return this.http.get(this.url + '/FromScheduleBlock/' + scheduleBlockId);
   }
 

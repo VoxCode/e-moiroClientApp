@@ -17,7 +17,7 @@ export class ScheduleBlockClassTimeService {
     return this.http.get(this.url + '/' + id);
   }
 
-  getValuesFromClassTime(scheduleBlockId: number): Observable<any> {
+  getValuesFromScheduleBlock(scheduleBlockId: number): Observable<any> {
     return this.http.get(this.url + '/FromScheduleBlock/' + scheduleBlockId);
   }
 

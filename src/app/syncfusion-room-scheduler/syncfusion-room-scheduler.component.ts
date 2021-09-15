@@ -50,7 +50,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   public eventSettings: EventSettingsModel;
 
   @ViewChild('scheduleObj')
-  public scheduleObj: ScheduleComponent;
+  public scheduleObj: any;
 
   doDaThing(): void{
     console.log(this.scheduleObj);
@@ -75,18 +75,18 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       dataSource: this.scheduleData,
       fields: {
         id: 'Id',
-        subject: { title: 'Summary', name: 'Subject' },
-        location: { title: 'Location', name: 'Location' },
-        description: { title: 'Comments', name: 'Description' },
-        startTime: { title: 'From', name: 'StartTime' },
-        endTime: { title: 'To', name: 'EndTime' },
+        subject: { title: 'Summary', name: 'program' },
+        location: { title: 'Location', name: 'location' },
+        description: { title: 'Comments', name: 'topic' },
+        startTime: { title: 'From', name: 'startTime' },
+        endTime: { title: 'To', name: 'endTime' },
       }
     };
 
 
     this.scheduleBlock = {
       id: 1,
-      trainingProgramId: 16,
+      trainingProgramId: 16
     };
     // extend([], this.scheduleData, null, true) as object[]
     console.log('init');
@@ -117,6 +117,9 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   onPopupOpen(args: PopupOpenEventArgs): void {
     if (args.type === 'Editor')  {
       console.log(args);
+      this.scheduleBlock.roomId = args.data.RoomId;
+      this.scheduleBlock.endTime = args.data.endTime;
+      this.scheduleBlock.startTime = args.data.startTime;
     }
     const data: { [key: string]: object } = args.data as { [key: string]: object };
     if (args.type === 'QuickInfo' || args.type === 'Editor' || args.type === 'RecurrenceAlert' || args.type === 'DeleteAlert') {

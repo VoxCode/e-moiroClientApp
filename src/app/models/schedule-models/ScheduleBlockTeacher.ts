@@ -7,6 +7,7 @@ export class ScheduleBlockTeacher {
     public firstName?: string,
     public lastName?: string,
     public patronymicName?: string,
+    public fullNameForm?: string,
     public position?: string,
     ){ }
 }

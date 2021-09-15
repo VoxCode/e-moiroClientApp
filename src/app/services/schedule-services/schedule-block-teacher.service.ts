@@ -19,8 +19,8 @@ export class ScheduleBlockTeacherService {
     return this.http.get(this.url + '/' + id);
   }
 
-  getValuesFromTeacher(scheduleDateId: number): Observable<any> {
-    return this.http.get(this.url + '/FromScheduleDate/' + scheduleDateId);
+  getValuesFromScheduleBlock(scheduleBlockId: number): Observable<any> {
+    return this.http.get(this.url + '/FromScheduleBlock/' + scheduleBlockId);
   }
 
   updateSerialNumbers(scheduleBlockTeachers: ScheduleBlockTeacher[]): Observable<any> {

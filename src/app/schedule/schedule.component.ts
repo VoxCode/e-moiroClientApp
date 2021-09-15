@@ -8,13 +8,20 @@ import {ClassRoomService} from '../services/schedule-services/class-room.service
 import {TrainingProgramService} from '../services/training-program.service';
 import {GroupService} from '../services/group.service';
 import {Group} from '../models/Group';
-import {ScheduleDateService} from "../services/schedule-services/schedule-date.service";
-import {ScheduleDate} from "../models/schedule-models/ScheduleDate";
-import {ScheduleDateScheduleBlockService} from "../services/schedule-services/schedule-date-schedule-block.service";
-import {ScheduleBlockTeacherService} from "../services/schedule-services/schedule-block-teacher.service";
-import {ScheduleBlockCurriculumTopicTrainingProgramService} from "../services/schedule-services/schedule-block-curriculum-topic-training-program.service";
-import {ScheduleBlockClassTimeService} from "../services/schedule-services/schedule-block-class-time.service";
-import {ScheduleBlockClassRoomService} from "../services/schedule-services/schedule-block-class-room.service";
+import {ScheduleDateService} from '../services/schedule-services/schedule-date.service';
+import {ScheduleDate} from '../models/schedule-models/ScheduleDate';
+import {ScheduleDateScheduleBlockService} from '../services/schedule-services/schedule-date-schedule-block.service';
+import {ScheduleBlockTeacherService} from '../services/schedule-services/schedule-block-teacher.service';
+import {ScheduleBlockCurriculumTopicTrainingProgramService} from '../services/schedule-services/schedule-block-curriculum-topic-training-program.service';
+import {ScheduleBlockClassTimeService} from '../services/schedule-services/schedule-block-class-time.service';
+import {ScheduleBlockClassRoomService} from '../services/schedule-services/schedule-block-class-room.service';
+import {ScheduleBlockService} from '../services/schedule-services/schedule-block.service';
+import {ScheduleBlock} from '../models/schedule-models/ScheduleBlock';
+import {ScheduleBlockTeacher} from '../models/schedule-models/ScheduleBlockTeacher';
+import {ScheduleBlockClassTime} from '../models/schedule-models/ScheduleBlockClassTime';
+import {ScheduleBlockClassRoom} from '../models/schedule-models/ScheduleBlockClassRoom';
+import {ScheduleBlockCurriculumTopicTrainingProgram} from '../models/schedule-models/ScheduleBlockCurriculumTopicTrainingProgram';
+import {ScheduleElement} from './schedule-element';
 
 
 @Component({
@@ -22,14 +29,15 @@ import {ScheduleBlockClassRoomService} from "../services/schedule-services/sched
   templateUrl: './schedule.component.html',
   styleUrls: ['./schedule.component.scss'],
   providers: [DayService, WeekService, WorkWeekService, MonthService, AgendaService,
-    ClassRoomService, GroupService, TrainingProgramService, ScheduleDateService,
+    ClassRoomService, GroupService, TrainingProgramService, ScheduleDateService, ScheduleBlockService,
   ScheduleDateScheduleBlockService, ScheduleBlockTeacherService, ScheduleBlockCurriculumTopicTrainingProgramService,
   ScheduleBlockClassTimeService, ScheduleBlockClassRoomService]
 })
 export class ScheduleComponent implements OnInit {
 
   roomData: any[] = [];
-  scheduleData: any[] = [];
+  scheduleData: ScheduleElement[] = [];
+  tempData: ScheduleElement = {};
   groups: Group[];
   public modalRef: MDBModalRef;
 
@@ -46,6 +54,7 @@ export class ScheduleComponent implements OnInit {
     private scheduleDateScheduleBlockService: ScheduleDateScheduleBlockService,
     private scheduleBlockClassTimeService: ScheduleBlockClassTimeService,
     private scheduleBlockClassRoomService: ScheduleBlockClassRoomService,
+    private scheduleBlockService: ScheduleBlockService,
   ) { }
 
   ngOnInit(): void {
@@ -53,13 +62,15 @@ export class ScheduleComponent implements OnInit {
     this.loadGroups();
 
     this.scheduleData = [{
-      Id: 1,
-      Subject: 'asdefrgtyhujikol',
-      Description: 'zxcvbnm,',
-      StartTime: new Date(2018, 6, 30, 9, 0),
-      EndTime: new Date(2018, 6, 30, 11, 0),
-      RoomId: 1,
-      booop: 'wabba-labba-dub-dub',
+      id: 1,
+      program: 'asdefrgtyhujikol',
+      topic: 'zxcvbnm,',
+      teacher: 'lol',
+      group: 'gr',
+      startTime: new Date(2021, 8, 7, 9, 0),
+      endTime: new Date(2021, 8, 7, 11, 0),
+      roomId: 1,
+      meta: 'wabba-labba-dub-dub',
     }];
   }
 
@@ -119,12 +130,70 @@ export class ScheduleComponent implements OnInit {
       .subscribe((data: ScheduleDate[]) => {
         if (data.length > 0){
           data.forEach((el, index) => {
-
+            this.loadScheduleBlocks();
           });
         }
       });
   }
 
+  loadScheduleBlocks(): void{
+    this.scheduleBlockService.getValues()
+      .subscribe((data: ScheduleBlock[]) => {
+        if (data.length > 0){
+          data.forEach((el, index) => {
+            this.loadBlockTopic(el.id); // load topic
+            this.loadBlockTeacher(el.id); // load teacher
+            this.loadBlockClassTime(el.id); // load timing
+            this.loadBlockClassRoom(el.id); // roomid from database
+            const loadErrorState = true;
+            if (!loadErrorState) {
+              this.scheduleData.push(this.tempData);
+              this.tempData = {};
+            }
+          });
+        }
+      });
+  }
+
+  loadBlockTopic(id: number): void{
+    return this.scheduleBlockCurriculumTopicTrainingProgramService.getValuesFromScheduleBlock(id)
+      .subscribe((data: ScheduleBlockCurriculumTopicTrainingProgram) => {
+        if (data) {
+          this.tempData.topic = data.topicTitle;
+        }
+      });
+  }
+
+  loadBlockTeacher(id: number): void{
+    this.scheduleBlockTeacherService.getValuesFromScheduleBlock(id)
+      .subscribe((data: ScheduleBlockTeacher) => {
+        if (data) {
+          data.fullNameForm = data.lastName + ' ' + data.firstName + ' ' +
+            data.patronymicName + ' (' + data.position + ')';
+          this.tempData.teacher = data.fullNameForm;
+        }
+      });
+  }
+
+  loadBlockClassTime(id: number): void{
+    this.scheduleBlockClassTimeService.getValuesFromScheduleBlock(id)
+      .subscribe((data: ScheduleBlockClassTime) => {
+        if (data) {
+          this.tempData.startTime = data.classTimeStart;
+          this.tempData.endTime = data.classTimeEnd;
+        }
+      });
+  }
+
+  loadBlockClassRoom(id: number): void{
+    this.scheduleBlockClassRoomService.getValuesFromScheduleBlock(id)
+      .subscribe((data: ScheduleBlockClassRoom) => {
+        if (data){
+          this.tempData.roomId = data.classRoomId;
+        }
+        return undefined;
+      });
+  }
 
   loadTrainingPrograms(): void{}
 

@@ -2,12 +2,21 @@
 <!--<div *ngFor = "let item of curriculumTopicTrainingPrograms, index as i">-->
 <!--  <h4>{{i + 1}}. {{item.topicTitle}}</h4>-->
 <!--</div>-->
+
+<ng-select *ngIf="groups.length !== 0" [items]="this.groups" [clearable]="false"
+           (change)="selectTopic()"
+           bindValue=""
+           bindLabel="group"
+           [(ngModel)]="selectedGroup"
+           placeholder="группа">
+</ng-select>
+
 <ng-select *ngIf="curriculumTopicTrainingPrograms.length !== 0" [items]="this.curriculumTopicTrainingPrograms" [clearable]="false"
            (change)="selectTopic()"
            bindValue=""
            bindLabel="topicTitle"
            [(ngModel)]="selectedTopic"
-           placeholder="Связь учетной записи и преподавателя">
+           placeholder="Тема">
 </ng-select>
 
 <input *ngIf="selectedTopic">
@@ -17,5 +26,5 @@
            bindValue=""
            bindLabel="fullNameForm"
            [(ngModel)]="selectedTeacher"
-           placeholder="Связь учетной записи и преподавателя">
+           placeholder="Препод">
 </ng-select>

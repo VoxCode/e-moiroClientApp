@@ -12,30 +12,45 @@ import {TrainingProgramTeacherService} from '../services/training-program-teache
 import {TrainingProgramTeacher} from '../models/TrainingProgramTeacher';
 import {TeacherService} from '../services/teacher.service';
 import {Teacher} from '../models/Teacher';
+import {Group} from '../models/Group';
+import {GroupService} from '../services/group.service';
+import {ClassRoom} from '../models/schedule-models/ClassRoom';
+import {ScheduleBlock} from '../models/schedule-models/ScheduleBlock';
+import {ScheduleBlockService} from '../services/schedule-services/schedule-block.service';
+import {ScheduleBlockClassTime} from '../models/schedule-models/ScheduleBlockClassTime';
+import {ScheduleBlockClassRoom} from '../models/schedule-models/ScheduleBlockClassRoom';
+import {ScheduleBlockClassRoomService} from '../services/schedule-services/schedule-block-class-room.service';
+import {ScheduleBlockClassTimeService} from '../services/schedule-services/schedule-block-class-time.service';
 
 @Component({
   selector: 'app-schedule-block',
   templateUrl: './schedule-block.component.html',
   styleUrls: ['./schedule-block.component.scss'],
   providers: [
+    ScheduleBlockService,
     ScheduleBlockCurriculumTopicTrainingProgramService,
     CurriculumTopicTrainingProgramService,
     TrainingProgramCurriculumSectionService,
     ScheduleBlockTeacherService,
     TrainingProgramTeacherService,
     TeacherService,
+    GroupService,
+    ScheduleBlockClassRoomService,
+    ScheduleBlockClassTimeService,
   ]
 })
 export class ScheduleBlockComponent implements OnInit {
 
 
+  public selectedGroup: Group;
   public selectedTopic: CurriculumTopicTrainingProgram;
   public selectedTeacher: Teacher;
 
-  @Input() scheduleBlock: {id: number, trainingProgramId: number};
+  @Input() scheduleBlock: {id: number, trainingProgramId: number, startTime: Date};
 
   teachers: Teacher[] = [];
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
+  groups: Group[] = [];
 
   constructor(
     private scheduleBlockCurriculumTopicTrainingProgramService: ScheduleBlockCurriculumTopicTrainingProgramService,
@@ -44,26 +59,79 @@ export class ScheduleBlockComponent implements OnInit {
     private scheduleBlockTeacherService: ScheduleBlockTeacherService,
     private trainingProgramTeacherService: TrainingProgramTeacherService,
     private teacherService: TeacherService,
+    private groupService: GroupService,
+    private scheduleBlockService: ScheduleBlockService,
+    private scheduleBlockClassRoomService: ScheduleBlockClassRoomService,
+    private scheduleBlockClassTimeService: ScheduleBlockClassTimeService,
 
   ) { }
 
   ngOnInit(): void {
     console.log(this.scheduleBlock);
-    this.scheduleBlock = {
-      id: 0,
-      trainingProgramId: 16};
     //  this.loadScheduleBlockCurriculumTopics();
     this.loadCurriculumTopicTrainingPrograms();
     this.loadTrainingProgramTeachers();
+    this.loadGroups();
   }
 
+  createBlock(el: any): void{
+    const block = new ScheduleBlock(0, 1, 0);
+    this.scheduleBlockService.createValue(block)
+      .subscribe((blockResponse: ScheduleBlock) => {
+        this.createBlockTopic(blockResponse.id, this.selectedTopic.id);
+        this.createBlockClassRoom(blockResponse.id, 0);
+        this.createBlockClassTime(blockResponse.id, 0);
+        this.createBlockTeacher(blockResponse.id, this.selectedTeacher.id);
+    });
+  }
+  createBlockClassTime(blockId: number, timeID: number): void{
+    const blockClassTime  = new ScheduleBlockClassTime();
+    this.scheduleBlockClassTimeService.createValue(blockClassTime)
+      .subscribe((response: ScheduleBlockClassRoom) => {
+        // nothing
+      });
+  }
+  createBlockClassRoom(blockId: number, roomID: number): void{
+    const blockClassRoom = new ScheduleBlockClassRoom();
+    this.scheduleBlockClassRoomService.createValue(blockClassRoom)
+      .subscribe((response: ScheduleBlockClassRoom) => {
+        // nothing
+      });
+  }
+  createBlockTeacher(blockId: number, teacherId: number): void{
+    const blockTeacher = new ScheduleBlockTeacher(0, teacherId, blockId, 0 );
+    this.scheduleBlockTeacherService.createValue(blockTeacher)
+      .subscribe((response: ScheduleBlockTeacher) => {
+       // nothing
+    });
+  }
+
+  createBlockTopic(blockId: number, topicId: number): void{
+    const blockTopic = new ScheduleBlockCurriculumTopicTrainingProgram(0, topicId, blockId, 0);
+    this.scheduleBlockCurriculumTopicTrainingProgramService.createValue(blockTopic)
+      .subscribe((response: ScheduleBlockCurriculumTopicTrainingProgram) => {
+        // nothing
+      });
+  }
+
+
+
   loadScheduleBlockCurriculumTopics(): void {
-  this.scheduleBlockCurriculumTopicTrainingProgramService.getValuesFromCurriculumTopicTrainingProgramm(this.scheduleBlock.id)
+  this.scheduleBlockCurriculumTopicTrainingProgramService.getValuesFromScheduleBlock(this.scheduleBlock.id)
     .subscribe((data: ScheduleBlockCurriculumTopicTrainingProgram[]) => {
       if (data.length > 0) {
         console.log(data);
       }
     });
+  }
+
+  loadGroups(): void{
+    this.groupService.getValues()
+      .subscribe((data: Group[]) => {
+        if (data.length > 0){
+          this.groups = data;
+        }
+      });
   }
 
   loadCurriculumTopicTrainingPrograms(): void{
@@ -94,9 +162,11 @@ export class ScheduleBlockComponent implements OnInit {
         }
       });
   }
-
   selectTopic(): void {
-
+    console.log(this.selectedTopic);
+    console.log(this.selectedTeacher);
+    console.log(this.selectedGroup);
   }
+
 }
 
