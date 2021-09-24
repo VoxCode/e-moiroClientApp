@@ -21,6 +21,8 @@ import {ScheduleBlockClassTime} from '../models/schedule-models/ScheduleBlockCla
 import {ScheduleBlockClassRoom} from '../models/schedule-models/ScheduleBlockClassRoom';
 import {ScheduleBlockClassRoomService} from '../services/schedule-services/schedule-block-class-room.service';
 import {ScheduleBlockClassTimeService} from '../services/schedule-services/schedule-block-class-time.service';
+import {ScheduleElement} from "../schedule/schedule-element";
+import {ClassTime} from "../models/schedule-models/СlassTime";
 
 @Component({
   selector: 'app-schedule-block',
@@ -46,11 +48,13 @@ export class ScheduleBlockComponent implements OnInit {
   public selectedTopic: CurriculumTopicTrainingProgram;
   public selectedTeacher: Teacher;
 
-  @Input() scheduleBlock: {id: number, trainingProgramId: number, startTime: Date};
+  @Input() scheduleElement: ScheduleElement;
 
   teachers: Teacher[] = [];
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
   groups: Group[] = [];
+
+  tempClassTime: ScheduleBlockClassTime;
 
   constructor(
     private scheduleBlockCurriculumTopicTrainingProgramService: ScheduleBlockCurriculumTopicTrainingProgramService,
@@ -64,10 +68,11 @@ export class ScheduleBlockComponent implements OnInit {
     private scheduleBlockClassRoomService: ScheduleBlockClassRoomService,
     private scheduleBlockClassTimeService: ScheduleBlockClassTimeService,
 
+
   ) { }
 
   ngOnInit(): void {
-    console.log(this.scheduleBlock);
+    console.log(this.scheduleElement);
     //  this.loadScheduleBlockCurriculumTopics();
     this.loadCurriculumTopicTrainingPrograms();
     this.loadTrainingProgramTeachers();
@@ -79,8 +84,9 @@ export class ScheduleBlockComponent implements OnInit {
     this.scheduleBlockService.createValue(block)
       .subscribe((blockResponse: ScheduleBlock) => {
         this.createBlockTopic(blockResponse.id, this.selectedTopic.id);
-        this.createBlockClassRoom(blockResponse.id, 0);
-        this.createBlockClassTime(blockResponse.id, 0);
+        this.createBlockClassRoom(blockResponse.id, this.scheduleElement.roomId);
+        this.loadScheduleBlockClassTime(this.scheduleElement.startTime, this.scheduleElement.endTime);
+        this.createBlockClassTime(blockResponse.id, this.tempClassTime.id);
         this.createBlockTeacher(blockResponse.id, this.selectedTeacher.id);
     });
   }
@@ -114,10 +120,18 @@ export class ScheduleBlockComponent implements OnInit {
       });
   }
 
+  loadScheduleBlockClassTime(startTime: Date, endTime: Date): void{
+    this.scheduleBlockClassTimeService.getValue(1)
+      .subscribe((data: ScheduleBlockClassTime) => {
+        if (data){
+          this.tempClassTime = data;
+        }
+      });
+  }
 
 
   loadScheduleBlockCurriculumTopics(): void {
-  this.scheduleBlockCurriculumTopicTrainingProgramService.getValuesFromScheduleBlock(this.scheduleBlock.id)
+  this.scheduleBlockCurriculumTopicTrainingProgramService.getValuesFromScheduleBlock(this.scheduleElement.id)
     .subscribe((data: ScheduleBlockCurriculumTopicTrainingProgram[]) => {
       if (data.length > 0) {
         console.log(data);
@@ -135,7 +149,7 @@ export class ScheduleBlockComponent implements OnInit {
   }
 
   loadCurriculumTopicTrainingPrograms(): void{
-    this.trainingProgramCurriculumSectionService.getFromTrainingProgram(this.scheduleBlock.trainingProgramId)
+    this.trainingProgramCurriculumSectionService.getFromTrainingProgram(this.scheduleElement.trainingProgramId)
       .subscribe((data: TrainingProgramCurriculumSection[]) => {
         if (data.length > 0){
           data.forEach((obj) => {
