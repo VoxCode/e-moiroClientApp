@@ -5,47 +5,43 @@
   </div>
   <div class="col-sm">
     <div class="addButton">
-      <button routerLink="/groupAdd" type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>
-        <mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+      <button type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="addRow()"
+              mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
     </div>
-    <table *ngIf="tableMode; else create" class="table table-striped">
-      <thead>
+    <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" class="z-depth-1">
+      <thead class="sticky-top">
       <tr>
-        <td>Тема</td>
-        <td></td>
+        <th *ngFor="let head of headerElements; let i = index" [mdbTableSort]="elements"
+            [sortBy]="headerElements[i]"
+            scope="col">{{head | titlecase}}
+        </th>
       </tr>
       </thead>
-      <tbody>
-      <tr *ngFor="let p of values">
-        <ng-template [ngIf]="value?.id != p.id" [ngIfElse]="edit">
-          <td>{{p?.theTopicOfContinuingEducation}}</td>
-          <td>
-          </td>
-        </ng-template>
+      <tbody #row>
+      <tr mdbTableCol *ngFor="let el of elements; let i = index">
+        <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{el.groupNumber}}</th>
+        <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.trainingProgram}}</td>
+        <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.calendarYear | date : 'yyyy'}}</td>
+        <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.classStartDate | date : 'dd.MM.yyyy'}}</td>
+        <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.classEndDate | date : 'dd.MM.yyyy'}}</td>
+        <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+          <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
+                  mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
+          <button *ngIf="el.first > 2" type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)"
+                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+        </td>
       </tr>
       </tbody>
+      <tfoot class="grey lighten-5 w-100">
+      <tr>
+        <td colspan="100%">
+          <mdb-table-pagination [tableEl]="tableEl" paginationAlign="" [searchDataSource]="elements"></mdb-table-pagination>
+        </td>
+      </tr>
+      </tfoot>
     </table>
 
-    <!--шаблон для редактирования-->
-    <ng-template #edit>
-      <td>
-        <input type="text" [(ngModel)]="value.theTopicOfContinuingEducation" class="form-control" />
-      </td>
-      <td>
 
-      </td>
-    </ng-template>
-
-    <!--шаблон для добавления-->
-    <ng-template #create>
-      <div class="form-group">
-        <label>Модель</label>
-        <input type="text" [(ngModel)]="value.theTopicOfContinuingEducation" class="form-control" />
-      </div>
-      <div>
-
-      </div>
-    </ng-template>
 
   </div>
 </div>

@@ -131,7 +131,7 @@ export class ScheduleBlockComponent implements OnInit {
 
 
   loadScheduleBlockCurriculumTopics(): void {
-  this.scheduleBlockCurriculumTopicTrainingProgramService.getValuesFromScheduleBlock(this.scheduleElement.id)
+  this.scheduleBlockCurriculumTopicTrainingProgramService.getValuesFromScheduleBlock(this.scheduleElement.scheduleBlockId)
     .subscribe((data: ScheduleBlockCurriculumTopicTrainingProgram[]) => {
       if (data.length > 0) {
         console.log(data);
@@ -149,7 +149,7 @@ export class ScheduleBlockComponent implements OnInit {
   }
 
   loadCurriculumTopicTrainingPrograms(): void{
-    this.trainingProgramCurriculumSectionService.getFromTrainingProgram(this.scheduleElement.trainingProgramId)
+    this.trainingProgramCurriculumSectionService.getFromTrainingProgram(this.scheduleElement.programId)
       .subscribe((data: TrainingProgramCurriculumSection[]) => {
         if (data.length > 0){
           data.forEach((obj) => {

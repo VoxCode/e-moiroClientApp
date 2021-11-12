@@ -72,6 +72,11 @@ import {ScheduleModule} from '@syncfusion/ej2-angular-schedule';
 import { SyncfusionRoomSchedulerComponent } from './syncfusion-room-scheduler/syncfusion-room-scheduler.component';
 import { RoomComponent } from './room/room.component';
 import { ScheduleBlockComponent } from './schedule-block/schedule-block.component';
+import { GroupEditComponent } from './group/group-edit.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -133,6 +138,7 @@ export function tokenGetter(): string {
     SyncfusionRoomSchedulerComponent,
     RoomComponent,
     ScheduleBlockComponent,
+    GroupEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -150,12 +156,17 @@ export function tokenGetter(): string {
     DocumentEditorAllModule,
     TrainingProgramConstructorModule,
     DragDropModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    DatePickerModule,
     JwtModule.forRoot({
       config: {
         tokenGetter
       }
     }),
-    ScheduleModule
+    ScheduleModule,
+    MatDatepickerModule
   ],
   providers: [
     AuthService,

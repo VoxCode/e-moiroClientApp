@@ -62,16 +62,19 @@ export class ScheduleComponent implements OnInit {
     this.loadGroups();
 
     this.scheduleData = [{
-      id: 1,
-      program: 'asdefrgtyhujikol',
+      scheduleBlockId: 1,
+      programId: 17,
+      programName: 'asdefrgtyhujikol',
       topic: 'zxcvbnm,',
       teacher: 'lol',
       group: 'gr',
-      startTime: new Date(2021, 8, 7, 9, 0),
-      endTime: new Date(2021, 8, 7, 11, 0),
+      startTime: new Date(2021, 11, 4, 9, 0),
+      endTime: new Date(2021, 11, 4, 11, 0),
       roomId: 1,
       meta: 'wabba-labba-dub-dub',
     }];
+    this.loadScheduleDates();
+    console.log(this.scheduleData);
   }
 
 

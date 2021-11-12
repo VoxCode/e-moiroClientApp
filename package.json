@@ -24,6 +24,7 @@
     "@auth0/angular-jwt": "^5.0.2",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@ng-select/ng-select": "^6.1.0",
+    "@syncfusion/ej2-angular-calendars": "^19.3.53",
     "@syncfusion/ej2-angular-documenteditor": "=19.1.55",
     "@syncfusion/ej2-angular-navigations": "^19.1.63",
     "@syncfusion/ej2-angular-schedule": "^19.2.56",

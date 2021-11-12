@@ -1,0 +1,36 @@
+<div class="modal-content" >
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">×</span>
+    </button>
+    <h4 class="modal-title w-100" id="myModalLabel">Группа</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form">
+      <div class="md-textarea">
+        <label for="groupNumber">Номер группы</label>
+        <textarea id="groupNumber" type="text" class="md-textarea md-textarea-auto form-control"
+                  formControlName="groupNumber" mdbInput mdbValidate [validateSuccess]="false"></textarea>
+        <mdb-error *ngIf="groupNumber.invalid && (groupNumber.dirty || groupNumber.touched)"></mdb-error>
+      </div>
+      <br>
+      <br>
+      <label for="trainingProgram">Программа</label>
+      <select class="browser-default custom-select" id="trainingProgram" formControlName="trainingProgram" mdbValidate [validateSuccess]="false">
+        <option value="" disabled>Выберите тип аттестации</option>
+        <option *ngFor="let el of trainingPrograms" [ngValue]="el.id">{{el.name}}</option>
+      </select>
+      <mdb-error *ngIf="trainingProgram.invalid && (trainingProgram.dirty || trainingProgram.touched)"></mdb-error>
+      <br><br>
+      <input style="background: #ddecff" [matDatepicker]="basicDatepicker">
+      <mat-datepicker-toggle [for]="basicDatepicker"></mat-datepicker-toggle>
+      <mat-datepicker style="background: #ddecff" #basicDatepicker></mat-datepicker>
+      <ejs-datepicker></ejs-datepicker>`
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
+            [disabled]="form.invalid" (click)="editRow()">Сохранить
+    </button>
+  </div>
+</div>

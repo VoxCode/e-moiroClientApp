@@ -5,5 +5,6 @@ export class Group {
     public calendarYear?: Date,
     public classStartDate?: Date,
     public classEndDate?: Date,
-    public trainingProgramId?: number){ }
+    public trainingProgramId?: number,
+    public trainingProgramName?: string){ }
 }
