@@ -4,6 +4,13 @@
     <app-curriculum-topic-list></app-curriculum-topic-list>
   </div>
   <div class="col-sm">
+    <div class="col-md-4 mx-auto">
+      <div class="md-form">
+        <input type="text" class="form-control" [(ngModel)]="searchText" (keyup)="searchItems()" id="search-input"
+               mdbInput>
+        <label for="search-input">Поиск</label>
+      </div>
+    </div>
     <div class="addButton">
       <button type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="addRow()"
               mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
@@ -27,7 +34,7 @@
         <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
           <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
                   mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
-          <button *ngIf="el.first > 2" type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)"
+          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)"
                   mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
         </td>
       </tr>

@@ -3,7 +3,7 @@ import { GroupService } from '../services/group.service';
 import { Group } from '../models/Group';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {GroupEditComponent} from '../group/group-edit.component';
-import {Expert} from '../models/Expert';
+import {IsDeleteComponent} from '../is-delete/is-delete.component';
 
 @Component({
   selector: 'app-group',
@@ -21,6 +21,8 @@ export class GroupComponent implements OnInit {
   headerElements = ['Номер группы', 'Учебная программа', 'Календарный год', 'Дата начала', 'Дата конца', 'Команда'];
   elements: any = [];
   values: Group[];
+  searchText = '';
+  previous: string;
   modalRef: MDBModalRef;
   tableMode = true;
 
@@ -51,40 +53,102 @@ export class GroupComponent implements OnInit {
         this.mdbTable.setDataSource(this.elements);
         this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
         this.elements = this.mdbTable.getDataSource();
-        // this.previous = this.mdbTable.getDataSource();
+        this.previous = this.mdbTable.getDataSource();
       });
+  }
+
+  searchItems(): void {
+    const prev = this.mdbTable.getDataSource();
+
+    if (!this.searchText) {
+      this.mdbTable.setDataSource(this.previous);
+      this.elements = this.mdbTable.getDataSource();
+    }
+
+    if (this.searchText) {
+      this.elements = this.mdbTable.searchLocalDataBy(this.searchText);
+      this.mdbTable.setDataSource(prev);
+    }
+
+    this.mdbTablePagination.calculateFirstItemIndex();
+    this.mdbTablePagination.calculateLastItemIndex();
+
+    this.mdbTable.searchDataObservable(this.searchText).subscribe(() => {
+      this.mdbTablePagination.calculateFirstItemIndex();
+      this.mdbTablePagination.calculateLastItemIndex();
+    });
   }
 
   create(el: any): void {
     const group = new Group(
       0,
       el.groupNumber,
-      el.calendarYear,
-      el.classStartDate,
-      el.classEndDate,
+      el.calendarYear.toISOString(),
+      el.classStartDate.toISOString(),
+      el.classEndDate.toISOString(),
       el.trainingProgramId);
     this.valueService.createValue(group)
       .subscribe((groupResponse: Group) => {
         const index = this.elements.length + 1;
-        this.mdbTable.addRow(el);
+        this.mdbTable.addRow({
+          id: groupResponse.id,
+          calendarYear: groupResponse.calendarYear,
+          classStartDate: groupResponse.classStartDate,
+          classEndDate: groupResponse.classEndDate,
+          trainingProgramId: groupResponse.trainingProgramId,
+          trainingProgram: groupResponse.trainingProgramName,
+          groupNumber: groupResponse.groupNumber});
         this.mdbTable.setDataSource(this.elements);
       });
   }
 
   addRow(): void {
-    console.log(this.values);
     this.modalRef = this.modalService.show(GroupEditComponent, this.getWideModal(this.emptyEl()));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       this.create(newElement);
     });
   }
 
-  editRow(el: any) {
-
+  editRow(el: any): void {
+    const elementIndex = this.elements.findIndex((elem: any) => el === elem);
+    this.modalRef = this.modalService.show(GroupEditComponent, this.getWideModal(el));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      this.elements[elementIndex] = newElement;
+      this.save(newElement);
+    });
+    this.mdbTable.setDataSource(this.elements);
   }
 
-  delete(el: any) {
+  save(el: any): void {
+    const group = new Group(
+      0,
+      el.groupNumber,
+      el.calendarYear.toISOString(),
+      el.classStartDate.toISOString(),
+      el.classEndDate.toISOString(),
+      el.trainingProgramId);
+    this.valueService.updateValue(group).subscribe();
+  }
 
+  delete(el: any): void {
+    const editableRow = {heading: `Группа: ${el.groupNumber}`};
+    this.modalRef = this.modalService.show(IsDeleteComponent, this.getWideModal(editableRow));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      if (newElement) {
+        this.valueService.deleteValue(el.id)
+          .subscribe(() => {
+            this.removeRow(el);
+          });
+      }
+    });
+  }
+  removeRow(el: any): void {
+    const elementIndex = this.elements.findIndex((elem: any) => el === elem);
+    this.mdbTable.removeRow(elementIndex);
+    this.mdbTable.getDataSource().forEach((value: any, index: any) => {
+      value.id = (index + 1).toString();
+    });
+    this.mdbTable.setDataSource(this.elements);
   }
 
   getWideModal(el: any): any {
@@ -108,7 +172,7 @@ export class GroupComponent implements OnInit {
       calendarYear: '',
       classStartDate: '',
       classEndDate: '',
-      trainingProgramId: 0,
+      trainingProgramId: '',
       trainingProgram: '',
       groupNumber: ''
     };

@@ -7,8 +7,6 @@ import {Subject} from 'rxjs';
 import {IsDeleteComponent} from '../is-delete/is-delete.component';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {TrainingProgramService} from '../services/training-program.service';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
 
 
 @Component({
@@ -27,7 +25,7 @@ export class GroupEditComponent implements OnInit {
     calendarYear: Date,
     classStartDate: Date,
     classEndDate: Date,
-    trainingProgramId: number,
+    trainingProgramId: string,
     trainingProgram: string,
     groupNumber: number };
   public saveButtonClicked: Subject<any> = new Subject<any>();
@@ -37,8 +35,8 @@ export class GroupEditComponent implements OnInit {
     calendarYear: new FormControl('', Validators.required),
     classStartDate: new FormControl('', Validators.required),
     classEndDate: new FormControl('', Validators.required),
-    trainingProgramId: new FormControl({value: '', disabled: true}),
-    trainingProgram: new FormControl('', Validators.required),
+    trainingProgramId: new FormControl('', Validators.required),
+    trainingProgram: new FormControl({value: '', disabled: true}),
     groupNumber: new FormControl('', Validators.required)
   });
 
@@ -62,13 +60,13 @@ export class GroupEditComponent implements OnInit {
     this.modalRef.hide();
   }
 
-  get trainingProgram(): AbstractControl { return this.form.get('trainingProgram'); }
+  get trainingProgramId(): AbstractControl { return this.form.get('trainingProgramId'); }
   get groupNumber(): AbstractControl { return this.form.get('groupNumber'); }
 
 
   loadTrainingPrograms(): void {
     this.trainingProgramService.getValues()
-      .subscribe((data: CertificationType[]) => {
+      .subscribe((data: TrainingProgram[]) => {
         this.trainingPrograms = data;
       });
   }

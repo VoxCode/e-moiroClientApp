@@ -1,5 +1,9 @@
 {
   "ru": {
+    "datepicker": {
+      "placeholder": "чинь-чонь",
+      "today": "уаба-лаба"
+    },
     "schedule": {
       "day": "лол",
       "week": "лол",
