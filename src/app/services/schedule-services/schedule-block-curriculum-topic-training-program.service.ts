@@ -6,7 +6,7 @@ import {Observable} from 'rxjs';
 
 @Injectable()
 export class ScheduleBlockCurriculumTopicTrainingProgramService {
-  public url = environment.apiUrl + 'api/ScheduleBlockTeachers';
+  public url = environment.apiUrl + 'api/ScheduleBlockCurriculumTopicTrainingPrograms';
   constructor(private http: HttpClient) { }
 
   getValues(): Observable<any> {

@@ -6,25 +6,94 @@
 <ng-select *ngIf="groups.length !== 0" [items]="this.groups" [clearable]="false"
            (change)="selectTopic()"
            bindValue=""
-           bindLabel="group"
+           bindLabel="groupNumber"
            [(ngModel)]="selectedGroup"
-           placeholder="группа">
+           placeholder="Группа">
 </ng-select>
 
-<ng-select *ngIf="curriculumTopicTrainingPrograms.length !== 0" [items]="this.curriculumTopicTrainingPrograms" [clearable]="false"
-           (change)="selectTopic()"
-           bindValue=""
-           bindLabel="topicTitle"
-           [(ngModel)]="selectedTopic"
-           placeholder="Тема">
-</ng-select>
 
-<input *ngIf="selectedTopic">
+<ejs-datetimepicker>
 
-<ng-select *ngIf="teachers.length !== 0" [items]="this.teachers" [clearable]="false"
-           (change)="selectTopic()"
-           bindValue=""
-           bindLabel="fullNameForm"
-           [(ngModel)]="selectedTeacher"
-           placeholder="Препод">
-</ng-select>
+</ejs-datetimepicker>
+<mdb-checkbox mdbCheckbox mdbWavesEffect size="sm"
+              (change)="MergeWithSubGroup('divideSubGroups', $event.checked)" >Разделить по подгруппам</mdb-checkbox>
+
+<div class="container" *ngIf="curriculumTopicTrainingPrograms.length !== 0">
+  <div class="left">
+    <ng-select [items]="this.curriculumTopicTrainingPrograms" [clearable]="false"
+               (change)="selectTopic()"
+               bindValue=""
+               bindLabel="topicTitle"
+               [(ngModel)]="selectedTopic"
+               placeholder="Тема">
+    </ng-select>
+  </div>
+  <div class="middle" >
+    <div class="mergeButton">
+      <button *ngIf="divideSubGroups"
+              type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="MergeWithSubGroup('combineTopic')"
+              mdbWavesEffect><mdb-icon fas icon="sign-in-alt" size="lg"></mdb-icon></button>
+    </div>
+  </div>
+  <div class="right" >
+    <ng-select [items]="this.curriculumTopicTrainingPrograms" [clearable]="false" [disabled]="!combineTopic" *ngIf="divideSubGroups"
+               (change)="selectTopic()"
+               bindValue=""
+               bindLabel="topicTitle"
+               [(ngModel)]="selectedTopicAux"
+               placeholder="Тема">
+    </ng-select>
+  </div>
+</div>
+
+<div class="container" *ngIf="teachers.length !== 0">
+  <div class="left">
+    <ng-select [items]="this.teachers" [clearable]="false"
+               (change)="selectTopic()"
+               bindValue=""
+               bindLabel="fullNameForm"
+               [(ngModel)]="selectedTeacher"
+               placeholder="Преподаватель">
+    </ng-select>
+  </div>
+  <div class="middle" >
+    <button *ngIf="divideSubGroups"
+      type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="MergeWithSubGroup('combineTeacher')"
+      mdbWavesEffect><mdb-icon fas icon="sign-in-alt" size="lg"></mdb-icon></button>
+  </div>
+  <div class="right" >
+    <ng-select [items]="this.teachers" [clearable]="false" [disabled]="!combineTeacher" *ngIf="divideSubGroups"
+               (change)="selectTopic()"
+               bindValue=""
+               bindLabel="fullNameForm"
+               [(ngModel)]="selectedTeacherAux"
+               placeholder="Преподаватель">
+    </ng-select>
+  </div>
+</div>
+
+<div class="container" *ngIf="rooms.length !== 0">
+  <div class="left">
+    <ng-select [items]="this.rooms" [clearable]="false"
+               (change)="selectTopic()"
+               bindValue=""
+               bindLabel="name"
+               [(ngModel)]="selectedRoom"
+               placeholder="Преподаватель">
+    </ng-select>
+  </div>
+  <div class="middle">
+    <button *ngIf="divideSubGroups"
+            type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="MergeWithSubGroup('combineRoom')"
+            mdbWavesEffect><mdb-icon fas icon="sign-in-alt" size="lg"></mdb-icon></button>
+  </div>
+  <div class="right">
+    <ng-select [items]="this.rooms" [clearable]="false" [disabled]="!combineRoom" *ngIf="divideSubGroups"
+               (change)="selectTopic()"
+               bindValue=""
+               bindLabel="name"
+               [(ngModel)]="selectedRoomAux"
+               placeholder="Преподаватель">
+    </ng-select>
+  </div>
+</div>

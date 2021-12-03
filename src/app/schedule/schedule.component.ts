@@ -22,6 +22,7 @@ import {ScheduleBlockClassTime} from '../models/schedule-models/ScheduleBlockCla
 import {ScheduleBlockClassRoom} from '../models/schedule-models/ScheduleBlockClassRoom';
 import {ScheduleBlockCurriculumTopicTrainingProgram} from '../models/schedule-models/ScheduleBlockCurriculumTopicTrainingProgram';
 import {ScheduleElement} from './schedule-element';
+import {ScheduleDateScheduleBlock} from '../models/schedule-models/ScheduleDateScheduleBlock';
 
 
 @Component({
@@ -35,7 +36,7 @@ import {ScheduleElement} from './schedule-element';
 })
 export class ScheduleComponent implements OnInit {
 
-  roomData: any[] = [];
+  roomData: ClassRoom[] = [];
   scheduleData: ScheduleElement[] = [];
   tempData: ScheduleElement = {};
   groups: Group[];
@@ -61,42 +62,31 @@ export class ScheduleComponent implements OnInit {
     this.loadRooms();
     this.loadGroups();
 
-    this.scheduleData = [{
-      scheduleBlockId: 1,
-      programId: 17,
-      programName: 'asdefrgtyhujikol',
-      topic: 'zxcvbnm,',
-      teacher: 'lol',
-      group: 'gr',
-      startTime: new Date(2021, 11, 4, 9, 0),
-      endTime: new Date(2021, 11, 4, 11, 0),
-      roomId: 1,
-      meta: 'wabba-labba-dub-dub',
-    }];
+    // this.scheduleData.push({
+    //   scheduleBlockId: 1,
+    //   programId: 17,
+    //   programName: 'asdefrgtyhujikol',
+    //   topic: 'zxcvbnm,',
+    //   teacher: 'lol',
+    //   group: 'gr',
+    //   startTime: new Date(2021, 11, 4, 9, 0),
+    //   endTime: new Date(2021, 11, 4, 11, 0),
+    //   roomId: 1,
+    //   meta: 'wabba-labba-dub-dub',
+    // });
+    // console.log('here');
     this.loadScheduleDates();
-    console.log(this.scheduleData);
+    // setInterval(() => {
+    //   console.log(this.scheduleData);}, 1000);
   }
 
 
-  // Color generator
-  intToRGB(i: number): string{
-    // tslint:disable-next-line:no-bitwise
-    const c: string = (i & 0x00FFFFFF)
-      .toString(16)
-      .toUpperCase();
-    return '00000'.substring(0, 6 - c.length) + c;
-  }
 
   loadRooms(): void{
     this.classRoomService.getValues()
       .subscribe((data: ClassRoom[]) => {
         if (data.length > 0) {
-          if (this.roomData.length > 0) { this.roomData = []; }
-          data.forEach((el, index) => {
-            this.roomData.push({
-              text: el.name, id: index + 1, color: `#${this.intToRGB(3453434 * ((index + 1) * 5))}` // Math.random()
-            });
-          });
+          this.roomData = data;
         }
       });
   }
@@ -115,7 +105,7 @@ export class ScheduleComponent implements OnInit {
     const room = new ClassRoom(+el.roomId, el.roomName);
     this.classRoomService.createValue(room)
       .subscribe((roomResponse: ClassRoom) => {
-        this.roomData.push({text: roomResponse.name, id: roomResponse.id, color: '#543434'});
+        this.roomData.push(roomResponse);
       });
   }
 
@@ -129,29 +119,22 @@ export class ScheduleComponent implements OnInit {
   }
 
   loadScheduleDates(): void{
-    this.scheduleDateService.getValues()
-      .subscribe((data: ScheduleDate[]) => {
+    this.scheduleDateScheduleBlockService.getValues()
+      .subscribe((data: ScheduleDateScheduleBlock[]) => {
         if (data.length > 0){
           data.forEach((el, index) => {
-            this.loadScheduleBlocks();
-          });
-        }
-      });
-  }
-
-  loadScheduleBlocks(): void{
-    this.scheduleBlockService.getValues()
-      .subscribe((data: ScheduleBlock[]) => {
-        if (data.length > 0){
-          data.forEach((el, index) => {
-            this.loadBlockTopic(el.id); // load topic
-            this.loadBlockTeacher(el.id); // load teacher
-            this.loadBlockClassTime(el.id); // load timing
-            this.loadBlockClassRoom(el.id); // roomid from database
-            const loadErrorState = true;
+            const aux: ScheduleElement = {};
+            this.loadBlockTopic(el.scheduleBlockId); // load topic
+            this.loadBlockTeacher(el.scheduleBlockId); // load teacher
+            this.loadBlockClassTime(el.scheduleBlockId, aux); // load timing
+            this.loadBlockClassRoom(el.scheduleBlockId); // roomid from database
+            const loadErrorState = false;
             if (!loadErrorState) {
+              //console.log("temp")
+              //console.log(this.tempData);
               this.scheduleData.push(this.tempData);
-              this.tempData = {};
+              //setTimeout(() => {this.scheduleData.push(this.tempData);}, 1000);
+              //this.tempData = {};
             }
           });
         }
@@ -162,7 +145,7 @@ export class ScheduleComponent implements OnInit {
     return this.scheduleBlockCurriculumTopicTrainingProgramService.getValuesFromScheduleBlock(id)
       .subscribe((data: ScheduleBlockCurriculumTopicTrainingProgram) => {
         if (data) {
-          this.tempData.topic = data.topicTitle;
+          this.tempData.topic = data[0].topicTitle;
         }
       });
   }
@@ -171,19 +154,20 @@ export class ScheduleComponent implements OnInit {
     this.scheduleBlockTeacherService.getValuesFromScheduleBlock(id)
       .subscribe((data: ScheduleBlockTeacher) => {
         if (data) {
-          data.fullNameForm = data.lastName + ' ' + data.firstName + ' ' +
-            data.patronymicName + ' (' + data.position + ')';
-          this.tempData.teacher = data.fullNameForm;
+          this.tempData.teacher = `${data[0].lastName} ${data[0].firstName} ${data[0].patronymicName} (${data[0].position})`;
         }
       });
   }
 
-  loadBlockClassTime(id: number): void{
+  loadBlockClassTime(id: number, ref: ScheduleElement): void{
     this.scheduleBlockClassTimeService.getValuesFromScheduleBlock(id)
       .subscribe((data: ScheduleBlockClassTime) => {
+
         if (data) {
-          this.tempData.startTime = data.classTimeStart;
-          this.tempData.endTime = data.classTimeEnd;
+          this.tempData.startTime = data[0].classTimeStart;
+          this.tempData.endTime = data[0].classTimeEnd;
+          ref.startTime = data[0].classTimeStart;
+          ref.endTime = data[0].classTimeEnd;
         }
       });
   }
@@ -192,14 +176,11 @@ export class ScheduleComponent implements OnInit {
     this.scheduleBlockClassRoomService.getValuesFromScheduleBlock(id)
       .subscribe((data: ScheduleBlockClassRoom) => {
         if (data){
-          this.tempData.roomId = data.classRoomId;
+          this.tempData.roomId = data[0].classRoomId;
         }
         return undefined;
       });
   }
-
-  loadTrainingPrograms(): void{}
-
 
   emptyEl(): any {
     return {id: 0, roomId: '', roomName: ''};

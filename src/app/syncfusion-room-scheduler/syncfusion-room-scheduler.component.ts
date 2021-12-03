@@ -1,18 +1,31 @@
 import {Component, Inject, Input, OnInit, OnChanges, ViewChild, ViewEncapsulation, SimpleChanges} from '@angular/core';
 import { extend, isNullOrUndefined, Browser, setCulture, L10n, loadCldr } from '@syncfusion/ej2-base';
 import {
-  ScheduleComponent, ActionEventArgs, PopupOpenEventArgs, EventRenderedArgs, RenderCellEventArgs, DragAndDropService,
-  TimelineViewsService, GroupModel, EventSettingsModel, ResizeService, TimeScaleModel, WorkHoursModel, View, MonthService
+  ScheduleComponent,
+  ActionEventArgs,
+  PopupOpenEventArgs,
+  EventRenderedArgs,
+  RenderCellEventArgs,
+  DragAndDropService,
+  TimelineViewsService,
+  GroupModel,
+  EventSettingsModel,
+  ResizeService,
+  TimeScaleModel,
+  WorkHoursModel,
+  View,
+  MonthService,
+  WeekService, DayService, AgendaService
 } from '@syncfusion/ej2-angular-schedule';
 import * as numberingSystems from './localization/numberingSystems.json';
 import * as gregorian from './localization/ru/ca-gregorian.json';
 import * as numbers from './localization/ru/numbers.json';
 import * as timeZoneNames from './localization/ru/timeZoneNames.json';
 import * as dictionary from './localization/dictionary.json';
+import {ClassRoom} from '../models/schedule-models/ClassRoom';
 
-loadCldr(numberingSystems['default'], gregorian['default'], numbers['default'], timeZoneNames['default']);
-L10n.load(dictionary['default']);
-//setCulture('ru');
+loadCldr(numberingSystems['default'], gregorian["default"], numbers["default"], timeZoneNames["default"]);
+L10n.load(dictionary["default"]);
 
 
 
@@ -21,16 +34,27 @@ L10n.load(dictionary['default']);
   templateUrl: './syncfusion-room-scheduler.component.html',
   styleUrls: ['./syncfusion-room-scheduler.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [TimelineViewsService, ResizeService, DragAndDropService],
+  providers: [TimelineViewsService, ResizeService, DragAndDropService, DayService, WeekService, TimelineViewsService, MonthService, AgendaService],
 })
 
 
 export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
 {
   @Input()  scheduleData: any[] = [];
-  @Input()  roomData: any[] = [];
+  @Input() public set roomData(val: ClassRoom[]) {
+    this._roomData = val;
+    this.parseRooms();
+  }
+
+  constructor() {}
+
+
+  private _roomData: ClassRoom[] = [];
+
+  convertedRooms: any[] = [];
 
   public newEvent: any;
+  public culture = 'ru';
   public scheduleBlock: any;
   public selectedDate: Date = new Date();
   public timeScale: TimeScaleModel = { interval: 60, slotCount: 1 };
@@ -51,6 +75,11 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
 
   @ViewChild('scheduleObj')
   public scheduleObj: any;
+  loaded: boolean;
+
+  public get roomData(): ClassRoom[]{
+    return this._roomData;
+  }
 
   doDaThing(): void{
     console.log(this.scheduleObj);
@@ -67,10 +96,10 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     // this.scheduleObj.localeObj = l10n;
     // this.scheduleObj.render();
     console.log(this.scheduleObj);
+
   }
 
   ngOnInit(): void {
-    L10n.load(dictionary);
     this.eventSettings = {
       dataSource: this.scheduleData,
       fields: {
@@ -83,7 +112,6 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       }
     };
 
-
     this.scheduleBlock = {
       id: 1,
       trainingProgramId: 16
@@ -92,11 +120,9 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     console.log('init');
 
 
-
+    setTimeout(() => { this.loaded = true; }, 1000);
 
   }
-
-  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.scheduleObj) {
@@ -104,27 +130,35 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     }
   }
 
+  intToRGB(i: number): string{
+    // tslint:disable-next-line:no-bitwise
+    const c: string = (i & 0x00FFFFFF)
+      .toString(16)
+      .toUpperCase();
+    return '00000'.substring(0, 6 - c.length) + c;
+  }
+
+  public parseRooms(): void{
+    this.roomData.forEach((el, index) => {
+      this.convertedRooms.push({
+        text: el.name, id: index + 1, color: `#${this.intToRGB(3453434 * ((index + 1) * 5))}` // Math.random()
+      });
+    });
+  }
+
   public dateParser(data: string): Date {
     return new Date(data);
   }
 
   isReadOnly(endDate: Date): boolean {
-    const myCurrentDate = new Date();
-    myCurrentDate.setDate(myCurrentDate.getDate() - 1);
-    return (endDate < myCurrentDate);
+    return (endDate < new Date(2018, 6, 31, 0, 0));
   }
 
   onPopupOpen(args: PopupOpenEventArgs): void {
-    if (args.type === 'Editor')  {
-      console.log(args);
-      this.scheduleBlock.roomId = args.data.RoomId;
-      this.scheduleBlock.endTime = args.data.endTime;
-      this.scheduleBlock.startTime = args.data.startTime;
-    }
-    const data: { [key: string]: object } = args.data as { [key: string]: object };
+    const data: { [key: string]: Object } = args.data as { [key: string]: Object };
     if (args.type === 'QuickInfo' || args.type === 'Editor' || args.type === 'RecurrenceAlert' || args.type === 'DeleteAlert') {
       const target: HTMLElement = (args.type === 'RecurrenceAlert' ||
-        args.type === 'DeleteAlert') ? args.element[0] : args.target;
+        args.type === 'DeleteAlert') ? (args.data as any).element[0] : args.target;
       if (!isNullOrUndefined(target) && target.classList.contains('e-work-cells')) {
         if ((target.classList.contains('e-read-only-cells')) ||
           (!this.scheduleObj.isSlotAvailable(data))) {
@@ -135,48 +169,37 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
         args.cancel = true;
       }
     }
-    // console.log(args);
   }
 
   onActionBegin(args: ActionEventArgs): void {
-    // console.log(args);
-    console.log('onActionBegin');
-    // args.data.push(this.newEvent);
     if (args.requestType === 'eventCreate' || args.requestType === 'eventChange') {
-      let data: { [key: string]: object };
+      let data: { [key: string]: Object };
       if (args.requestType === 'eventCreate') {
-        data = (args.data[0] as { [key: string]: object });
-        // console.log(data);
+        data = (args.data[0] as { [key: string]: Object });
       } else if (args.requestType === 'eventChange') {
-        data = (args.data as { [key: string]: object });
+        data = (args.data as { [key: string]: Object });
       }
       if (!this.scheduleObj.isSlotAvailable(data)) {
         args.cancel = true;
       }
     }
-    //console.log(this.scheduleData);
   }
 
   onRenderCell(args: RenderCellEventArgs): void {
-    //console.log('render cell');
-    //console.log(args);
     if (args.element.classList.contains('e-work-cells')) {
-      if (this.isReadOnly(args.date)) {
+      if (args.date < new Date(2018, 6, 31, 0, 0)) {
         args.element.setAttribute('aria-readonly', 'true');
         args.element.classList.add('e-read-only-cells');
       }
     }
     if (args.elementType === 'emptyCells' && args.element.classList.contains('e-resource-left-td')) {
       const target: HTMLElement = args.element.querySelector('.e-resource-text') as HTMLElement;
-      target.innerHTML = '<div style="text-align: center" class="name">Аудитория</div>';
-      target.parentElement.style.width = '100px';
+      target.innerHTML = '<div class="name">Rooms</div><div class="type">Type</div><div class="capacity">Capacity</div>';
     }
   }
 
   onEventRendered(args: EventRenderedArgs): void {
-    // console.log('event rendered');
-    //console.log(args);
-    const data: { [key: string]: object } = args.data;
+    const data: { [key: string]: Object } = args.data;
     if (this.isReadOnly(data.EndTime as Date)) {
       args.element.setAttribute('aria-readonly', 'true');
       args.element.classList.add('e-read-only');

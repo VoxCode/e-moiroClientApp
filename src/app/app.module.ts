@@ -76,7 +76,7 @@ import { GroupEditComponent } from './group/group-edit.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
-import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
+import {DatePickerModule, DateTimePickerModule} from '@syncfusion/ej2-angular-calendars';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -140,34 +140,35 @@ export function tokenGetter(): string {
     ScheduleBlockComponent,
     GroupEditComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot(),
-    InputsModule.forRoot(),
-    MDBBootstrapModule.forRoot(),
-    FormsModule,
-    NgSelectModule,
-    NgOptionHighlightModule,
-    DocumentEditorContainerModule,
-    DocumentEditorAllModule,
-    TrainingProgramConstructorModule,
-    DragDropModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    DatePickerModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter
-      }
-    }),
-    ScheduleModule,
-    MatDatepickerModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        ToastrModule.forRoot(),
+        InputsModule.forRoot(),
+        MDBBootstrapModule.forRoot(),
+        FormsModule,
+        NgSelectModule,
+        NgOptionHighlightModule,
+        DocumentEditorContainerModule,
+        DocumentEditorAllModule,
+        TrainingProgramConstructorModule,
+        DragDropModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        DatePickerModule,
+        JwtModule.forRoot({
+            config: {
+                tokenGetter
+            }
+        }),
+        ScheduleModule,
+        MatDatepickerModule,
+        DateTimePickerModule
+    ],
   providers: [
     AuthService,
     Globals,

@@ -1,20 +1,20 @@
 <div class="control-section">
-  <div class="col-lg-12 content-wrapper">
-<!--    *ngIf="eventSettings"-->
+  <div class="col-lg-12 content-wrapper" *ngIf="loaded">
+
     <ejs-schedule  #scheduleObj width='100%' cssClass='timeline-resource' height='800px'
                   [workDays]='workWeekDays' [showWeekend]="showWeekend"
                   [workHours]="workHours" [startHour]='startHour' [endHour]='endHour'
                   [timeScale]="timeScale" [timeFormat]="timeFormat"
                   [selectedDate]="selectedDate" [currentView]="currentView" [group]="group"
                   [eventSettings]="eventSettings"
-                   locale="ru"
+                   [locale]="culture"
                   (eventRendered)="onEventRendered($event)"
                   (actionBegin)="onActionBegin($event)"
                   (renderCell)="onRenderCell($event)"
                   (popupOpen)="onPopupOpen($event)"
                   (popupClose)="onPopupClose($event)">
       <e-resources>
-        <e-resource field='RoomId' title='Room Type' [dataSource]='roomData' [allowMultiple]='allowMultiple' name='MeetingRoom'
+        <e-resource field='RoomId' title='Room Type' [dataSource]='convertedRooms' [allowMultiple]='allowMultiple' name='MeetingRoom'
                     textField='text' idField='id' colorField='color'>
         </e-resource>
       </e-resources>
@@ -34,7 +34,7 @@
           <tbody>
           <tr>
             <td>
-              <app-schedule-block [scheduleElement]="scheduleBlock"></app-schedule-block>
+              <app-schedule-block [scheduleElement]="scheduleBlock" [rooms]="roomData"></app-schedule-block>
             </td>
           </tr>
           </tbody>

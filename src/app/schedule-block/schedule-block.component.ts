@@ -21,8 +21,8 @@ import {ScheduleBlockClassTime} from '../models/schedule-models/ScheduleBlockCla
 import {ScheduleBlockClassRoom} from '../models/schedule-models/ScheduleBlockClassRoom';
 import {ScheduleBlockClassRoomService} from '../services/schedule-services/schedule-block-class-room.service';
 import {ScheduleBlockClassTimeService} from '../services/schedule-services/schedule-block-class-time.service';
-import {ScheduleElement} from "../schedule/schedule-element";
-import {ClassTime} from "../models/schedule-models/СlassTime";
+import {ScheduleElement} from '../schedule/schedule-element';
+import {ClassTime} from '../models/schedule-models/СlassTime';
 
 @Component({
   selector: 'app-schedule-block',
@@ -46,10 +46,19 @@ export class ScheduleBlockComponent implements OnInit {
 
   public selectedGroup: Group;
   public selectedTopic: CurriculumTopicTrainingProgram;
+  public selectedTopicAux: CurriculumTopicTrainingProgram;
   public selectedTeacher: Teacher;
+  public selectedTeacherAux: Teacher;
+  public selectedRoom: ClassRoom;
+  public selectedRoomAux: ClassRoom;
 
+  public combineTopic = false;
+  public combineRoom = false;
+  public combineTeacher = false;
+
+  public divideSubGroups = false;
   @Input() scheduleElement: ScheduleElement;
-
+  @Input() rooms: ClassRoom[] = [];
   teachers: Teacher[] = [];
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
   groups: Group[] = [];
@@ -67,16 +76,15 @@ export class ScheduleBlockComponent implements OnInit {
     private scheduleBlockService: ScheduleBlockService,
     private scheduleBlockClassRoomService: ScheduleBlockClassRoomService,
     private scheduleBlockClassTimeService: ScheduleBlockClassTimeService,
-
-
   ) { }
 
   ngOnInit(): void {
     console.log(this.scheduleElement);
+    this.loadGroups();
     //  this.loadScheduleBlockCurriculumTopics();
     this.loadCurriculumTopicTrainingPrograms();
     this.loadTrainingProgramTeachers();
-    this.loadGroups();
+
   }
 
   createBlock(el: any): void{
@@ -148,20 +156,26 @@ export class ScheduleBlockComponent implements OnInit {
       });
   }
 
+
+
   loadCurriculumTopicTrainingPrograms(): void{
-    this.trainingProgramCurriculumSectionService.getFromTrainingProgram(this.scheduleElement.programId)
-      .subscribe((data: TrainingProgramCurriculumSection[]) => {
-        if (data.length > 0){
-          data.forEach((obj) => {
-            this.curriculumTopicTrainingProgramService.getFromTrainingProgramCurriculumSection(obj.id)
-              .subscribe((topicsData: CurriculumTopicTrainingProgram[]) => {
-                if (topicsData.length > 0) {
-                  this.curriculumTopicTrainingPrograms = topicsData;
-                }
-              });
+    // this.trainingProgramCurriculumSectionService.getFromTrainingProgram(this.scheduleElement.programId)
+    //   .subscribe((data: TrainingProgramCurriculumSection[]) => {
+    //     if (data.length > 0){
+    //       this.curriculumTopicTrainingPrograms = data;
+    //     }
+    //     // {
+    //     //   data.forEach((obj) => {
+    //     //
+    //     //   });
+    //     // }
+    //   });
+    this.curriculumTopicTrainingProgramService.getValues()
+          .subscribe((topicsData: CurriculumTopicTrainingProgram[]) => {
+            if (topicsData.length > 0) {
+              this.curriculumTopicTrainingPrograms = topicsData;
+            }
           });
-        }
-      });
   }
 
   loadTrainingProgramTeachers(): void {
@@ -177,10 +191,34 @@ export class ScheduleBlockComponent implements OnInit {
       });
   }
   selectTopic(): void {
+    console.log('qwe');
     console.log(this.selectedTopic);
     console.log(this.selectedTeacher);
     console.log(this.selectedGroup);
   }
 
+  MergeWithSubGroup(val: string, checked: boolean = true): void {
+    console.log(val);
+    switch (val) {
+      case 'divideSubGroups':
+        this.divideSubGroups = checked;
+        this.combineTopic = checked;
+        this.combineRoom = checked;
+        this.combineTeacher = checked;
+        console.log('div' + this.combineTopic + this.combineRoom + this.combineTeacher);
+        break;
+      case 'combineTopic':
+        this.combineTopic = !this.combineTopic;
+        console.log('Topic' + this.combineTopic + this.combineRoom + this.combineTeacher);
+        break;
+      case 'combineRoom':
+        this.combineRoom = !this.combineRoom;
+        break;
+      case 'combineTeacher':
+        this.combineTeacher = !this.combineTeacher;
+        console.log('teacher' + this.combineTopic + this.combineRoom + this.combineTeacher);
+        break;
+    }
+  }
 }
 
