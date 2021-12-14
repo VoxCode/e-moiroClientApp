@@ -4,19 +4,33 @@
 <!--</div>-->
 
 <ng-select *ngIf="groups.length !== 0" [items]="this.groups" [clearable]="false"
+           id = "Subject"
            (change)="selectTopic()"
            bindValue=""
            bindLabel="groupNumber"
-           [(ngModel)]="selectedGroup"
+           [(ngModel)]="elementData.group"
            placeholder="Группа">
 </ng-select>
 
+<table width="100%">
+  <tr>
+    <td>
+      <ejs-datetimepicker placeholder="Дата начала" [(ngModel)]="elementData.startTime">
 
-<ejs-datetimepicker>
+      </ejs-datetimepicker>
+    </td>
+    <td>
+      <ejs-datetimepicker placeholder="Дата конца" [(ngModel)]="elementData.endTime">
 
-</ejs-datetimepicker>
-<mdb-checkbox mdbCheckbox mdbWavesEffect size="sm"
-              (change)="MergeWithSubGroup('divideSubGroups', $event.checked)" >Разделить по подгруппам</mdb-checkbox>
+      </ejs-datetimepicker>
+    </td>
+  </tr>
+</table>
+
+<div class="normalCheckBox">
+  <mdb-checkbox (change)="MergeWithSubGroup('divideSubGroups', $event.checked)">Разделить по подгруппам</mdb-checkbox>
+</div>
+
 
 <div class="container" *ngIf="curriculumTopicTrainingPrograms.length !== 0">
   <div class="left">
@@ -24,7 +38,7 @@
                (change)="selectTopic()"
                bindValue=""
                bindLabel="topicTitle"
-               [(ngModel)]="selectedTopic"
+               [(ngModel)]="elementData.topic"
                placeholder="Тема">
     </ng-select>
   </div>
@@ -52,11 +66,11 @@
                (change)="selectTopic()"
                bindValue=""
                bindLabel="fullNameForm"
-               [(ngModel)]="selectedTeacher"
+               [(ngModel)]="elementData.teacher"
                placeholder="Преподаватель">
     </ng-select>
   </div>
-  <div class="middle" >
+  <div class="middle">
     <button *ngIf="divideSubGroups"
       type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="MergeWithSubGroup('combineTeacher')"
       mdbWavesEffect><mdb-icon fas icon="sign-in-alt" size="lg"></mdb-icon></button>
@@ -78,7 +92,7 @@
                (change)="selectTopic()"
                bindValue=""
                bindLabel="name"
-               [(ngModel)]="selectedRoom"
+               [(ngModel)]="elementData.room"
                placeholder="Преподаватель">
     </ng-select>
   </div>

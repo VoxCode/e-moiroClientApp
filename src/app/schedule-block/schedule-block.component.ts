@@ -52,12 +52,15 @@ export class ScheduleBlockComponent implements OnInit {
   public selectedRoom: ClassRoom;
   public selectedRoomAux: ClassRoom;
 
+  // public StartDate
+
   public combineTopic = false;
   public combineRoom = false;
   public combineTeacher = false;
 
   public divideSubGroups = false;
   @Input() scheduleElement: ScheduleElement;
+  @Input() elementData: { [key: string]: any };
   @Input() rooms: ClassRoom[] = [];
   teachers: Teacher[] = [];
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
@@ -79,7 +82,7 @@ export class ScheduleBlockComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.scheduleElement);
+    //console.log(this.scheduleElement);
     this.loadGroups();
     //  this.loadScheduleBlockCurriculumTopics();
     this.loadCurriculumTopicTrainingPrograms();

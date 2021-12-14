@@ -103,12 +103,12 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     this.eventSettings = {
       dataSource: this.scheduleData,
       fields: {
-        id: 'Id',
-        subject: { title: 'Summary', name: 'program' },
-        location: { title: 'Location', name: 'location' },
-        description: { title: 'Comments', name: 'topic' },
-        startTime: { title: 'From', name: 'startTime' },
-        endTime: { title: 'To', name: 'endTime' },
+        id: 'id',
+        subject: { title: 'Тема', name: 'topic' },
+        location: { title: 'Преподаватель', name: 'teacher' },
+        description: { title: 'Comments', name: 'metaData' },
+        startTime: { title: 'Начало', name: 'startTime' },
+        endTime: { title: 'Конец', name: 'endTime' },
       }
     };
 
@@ -118,7 +118,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     };
     // extend([], this.scheduleData, null, true) as object[]
     console.log('init');
-
+    console.log(this.scheduleData);
 
     setTimeout(() => { this.loaded = true; }, 1000);
 
@@ -169,6 +169,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
         args.cancel = true;
       }
     }
+    //console.log(args);
   }
 
   onActionBegin(args: ActionEventArgs): void {
@@ -199,6 +200,8 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   }
 
   onEventRendered(args: EventRenderedArgs): void {
+    console.log("event renddered");
+    console.log(args);
     const data: { [key: string]: Object } = args.data;
     if (this.isReadOnly(data.EndTime as Date)) {
       args.element.setAttribute('aria-readonly', 'true');
@@ -216,5 +219,9 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     //   RoomId: 1,
     //   booop: 'wabba-labba-dub-dub',
     // };
+   console.log("popupClose");
+   console.log(args);
+   console.log(this.scheduleData);
   }
+
 }

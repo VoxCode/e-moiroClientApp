@@ -38,6 +38,7 @@ export class ScheduleComponent implements OnInit {
 
   roomData: ClassRoom[] = [];
   scheduleData: ScheduleElement[] = [];
+  tempSchedData: any[] = [];
   tempData: ScheduleElement = {};
   groups: Group[];
   public modalRef: MDBModalRef;
@@ -62,20 +63,36 @@ export class ScheduleComponent implements OnInit {
     this.loadRooms();
     this.loadGroups();
 
-    // this.scheduleData.push({
-    //   scheduleBlockId: 1,
-    //   programId: 17,
-    //   programName: 'asdefrgtyhujikol',
-    //   topic: 'zxcvbnm,',
-    //   teacher: 'lol',
-    //   group: 'gr',
-    //   startTime: new Date(2021, 11, 4, 9, 0),
-    //   endTime: new Date(2021, 11, 4, 11, 0),
-    //   roomId: 1,
-    //   meta: 'wabba-labba-dub-dub',
-    // });
+    this.tempSchedData.push({
+      id: 1,
+      programId: 1,
+      topicTitle: 'topic',
+      teacherId: 1,
+      teacherFullName: 'teacher',
+      description: 'description',
+      startTime: new Date(2021, 11, 14, 9, 0),
+      endTime: new Date(2021, 11, 14, 11, 0),
+      groupId: 1,
+      groupName: 'gr',
+      RoomId: 1,
+      roomName:'sdf',
+      metaData: 'wabba-labba-dub-dub',
+    });
+
+    this.scheduleData.push({
+      scheduleBlockId: 1,
+      programId: 17,
+      programName: 'asdefrgtyhujikol',
+      topic: 'zxcvbnm,',
+      teacher: 'lol',
+      group: 'gr',
+      startTime: new Date(2021, 12, 14, 9, 0),
+      endTime: new Date(2021, 12, 14, 11, 0),
+      roomId: 1,
+      meta: 'wabba-labba-dub-dub',
+    });
     // console.log('here');
-    this.loadScheduleDates();
+    //this.loadScheduleDates();
     // setInterval(() => {
     //   console.log(this.scheduleData);}, 1000);
   }
