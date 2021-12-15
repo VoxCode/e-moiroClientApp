@@ -73,11 +73,26 @@ export class ScheduleComponent implements OnInit {
       startTime: new Date(2021, 11, 14, 9, 0),
       endTime: new Date(2021, 11, 14, 11, 0),
       groupId: 1,
-      groupName: 'gr',
+      groupNumber: 'gr',
       RoomId: 1,
       roomName:'sdf',
       metaData: 'wabba-labba-dub-dub',
-    });
+    },
+      {
+        id: 2,
+        programId: 1,
+        topicTitle: 'topic2',
+        teacherId: 1,
+        teacherFullName: 'teacher2',
+        description: 'description2',
+        startTime: new Date(2021, 11, 14, 9, 0),
+        endTime: new Date(2021, 11, 14, 11, 0),
+        groupId: 1,
+        groupNumber: 'gr2',
+        RoomId: 2,
+        roomName:'room2',
+        metaData: 'wabba-labba-dub-dub2',
+      });
 
     this.scheduleData.push({
       scheduleBlockId: 1,

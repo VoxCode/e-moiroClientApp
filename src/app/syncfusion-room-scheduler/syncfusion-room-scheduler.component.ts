@@ -104,7 +104,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       dataSource: this.scheduleData,
       fields: {
         id: 'id',
-        subject: { title: 'Тема', name: 'topic' },
+        subject: { title: 'Тема', name: 'topicTitle' },
         location: { title: 'Преподаватель', name: 'teacher' },
         description: { title: 'Comments', name: 'metaData' },
         startTime: { title: 'Начало', name: 'startTime' },
@@ -156,6 +156,12 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
 
   onPopupOpen(args: PopupOpenEventArgs): void {
     const data: { [key: string]: Object } = args.data as { [key: string]: Object };
+
+    if(args.elementType === 'cellContent')
+    {
+
+    }
+
     if (args.type === 'QuickInfo' || args.type === 'Editor' || args.type === 'RecurrenceAlert' || args.type === 'DeleteAlert') {
       const target: HTMLElement = (args.type === 'RecurrenceAlert' ||
         args.type === 'DeleteAlert') ? (args.data as any).element[0] : args.target;
@@ -169,10 +175,17 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
         args.cancel = true;
       }
     }
-    //console.log(args);
+    console.log("popup");
+    console.log(args);
   }
 
   onActionBegin(args: ActionEventArgs): void {
+    console.log("action begin");
+    console.log(args);
+    if (args.requestType === 'eventChange') {
+      //args.cancel = true;
+      //this.scheduleObj.eventSettings.dataSource = this.scheduleData;
+    }
     if (args.requestType === 'eventCreate' || args.requestType === 'eventChange') {
       let data: { [key: string]: Object };
       if (args.requestType === 'eventCreate') {
@@ -200,8 +213,6 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   }
 
   onEventRendered(args: EventRenderedArgs): void {
-    console.log("event renddered");
-    console.log(args);
     const data: { [key: string]: Object } = args.data;
     if (this.isReadOnly(data.EndTime as Date)) {
       args.element.setAttribute('aria-readonly', 'true');

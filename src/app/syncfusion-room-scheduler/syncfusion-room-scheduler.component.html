@@ -21,7 +21,7 @@
       <e-views>
         <e-view option="TimelineDay">
           <ng-template #eventTemplate let-data>
-            <div class="time" [style.background]="data.PrimaryColor">{{data.topic.topicTitle}}</div>
+            <div class="time" [style.background]="data.PrimaryColor">{{data.topicTitle}}</div>
           </ng-template>
         </e-view>
         <e-view option="TimelineWeek">
@@ -31,7 +31,7 @@
 <!--              <br>-->
 <!--              {{data.teacher.firstName}}-->
 <!--              <br>-->
-              Группа: {{data.group.groupNumber}}
+              Группа: {{data.groupNumber}}
               <br>
               {{data.startTime | date : 'hh:mm'}} - {{data.endTime | date : 'hh:mm'}}
             </div>
@@ -50,7 +50,7 @@
           <div class="quick-info-header-content"
                [style.background]="data.PrimaryColor"
                [style.color]="data.PrimaryColor">
-            <div class="quick-info-title">{{data.group}}</div>
+            <div class="quick-info-title">{{data.groupNumber}}</div>
             <div class="duration-text"> {{data.startTime | date : 'hh:mm'}} - {{data.endTime | date : 'hh:mm'}}</div>
           </div>
         </div>
@@ -79,15 +79,15 @@
           <div class="event-content">
             <div class="meeting-type-wrap">
               <label>Группа</label>:
-              <span>{{data.group.groupNumber}}</span>
+              <span>{{data.groupNumber}}</span>
             </div>
             <div class="meeting-subject-wrap">
               <label>Преподаватель</label>:
-              <span>{{data.teacher.firstName}}</span>
+              <span>{{data.teacherFullName}}</span>
             </div>
             <div class="notes-wrap">
               <label>Тема</label>:
-              <span>{{data.topic.topicTitle}}</span>
+              <span>{{data.topicTitle}}</span>
             </div>
           </div>
         </div>

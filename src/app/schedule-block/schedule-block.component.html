@@ -8,7 +8,7 @@
            (change)="selectTopic()"
            bindValue=""
            bindLabel="groupNumber"
-           [(ngModel)]="elementData.group"
+           [(ngModel)]="elementData.groupNumber"
            placeholder="Группа">
 </ng-select>
 
@@ -36,9 +36,9 @@
   <div class="left">
     <ng-select [items]="this.curriculumTopicTrainingPrograms" [clearable]="false"
                (change)="selectTopic()"
-               bindValue=""
+               bindValue="topicTitle"
                bindLabel="topicTitle"
-               [(ngModel)]="elementData.topic"
+               [(ngModel)]="elementData.topicTitle"
                placeholder="Тема">
     </ng-select>
   </div>
@@ -66,7 +66,7 @@
                (change)="selectTopic()"
                bindValue=""
                bindLabel="fullNameForm"
-               [(ngModel)]="elementData.teacher"
+               [(ngModel)]="elementData.teacherFullName"
                placeholder="Преподаватель">
     </ng-select>
   </div>
@@ -92,7 +92,7 @@
                (change)="selectTopic()"
                bindValue=""
                bindLabel="name"
-               [(ngModel)]="elementData.room"
+               [(ngModel)]="elementData.roomName"
                placeholder="Преподаватель">
     </ng-select>
   </div>
