@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {ScheduleBlockCurriculumTopicTrainingProgramService} from '../services/schedule-services/schedule-block-curriculum-topic-training-program.service';
 import {MDBModalRef} from 'angular-bootstrap-md';
 import {ScheduleBlockCurriculumTopicTrainingProgram} from '../models/schedule-models/ScheduleBlockCurriculumTopicTrainingProgram';
@@ -23,6 +23,7 @@ import {ScheduleBlockClassRoomService} from '../services/schedule-services/sched
 import {ScheduleBlockClassTimeService} from '../services/schedule-services/schedule-block-class-time.service';
 import {ScheduleElement} from '../schedule/schedule-element';
 import {ClassTime} from '../models/schedule-models/СlassTime';
+import {TimelineMonthService, TimelineViewsService} from "@syncfusion/ej2-angular-schedule";
 
 @Component({
   selector: 'app-schedule-block',
@@ -38,8 +39,8 @@ import {ClassTime} from '../models/schedule-models/СlassTime';
     TeacherService,
     GroupService,
     ScheduleBlockClassRoomService,
-    ScheduleBlockClassTimeService,
-  ]
+    ScheduleBlockClassTimeService, TimelineViewsService, TimelineMonthService],
+  encapsulation: ViewEncapsulation.None
 })
 export class ScheduleBlockComponent implements OnInit {
 
@@ -68,6 +69,8 @@ export class ScheduleBlockComponent implements OnInit {
 
   tempClassTime: ScheduleBlockClassTime;
 
+  public fields: Object = { text: 'name', value: 'id' };
+
   constructor(
     private scheduleBlockCurriculumTopicTrainingProgramService: ScheduleBlockCurriculumTopicTrainingProgramService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
@@ -82,12 +85,39 @@ export class ScheduleBlockComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.elementData.BBBBBBBBBBBBBBBBBBBBBBBBBBB = "shit, im done";
+    console.log("editor init");
+    console.log(this.elementData);
+    // this.elementData = {
+    //   id: 2,
+    //   programId: 1,
+    //   topicTitle: 'topic2',
+    //   teacherId: 1,
+    //   teacherFullName: 'teacher2',
+    //   description: 'description2',
+    //   startTime: new Date(2021, 11, 14, 9, 0),
+    //   endTime: new Date(2021, 11, 14, 11, 0),
+    //   groupId: 1,
+    //   groupNumber: 'gr2',
+    //   RoomId: new Array(1)[3],
+    //   roomName:'room2',
+    //   metaData: 'wabba-labba-dub-dub2',
+    // };
     //console.log(this.scheduleElement);
     this.loadGroups();
     //  this.loadScheduleBlockCurriculumTopics();
     this.loadCurriculumTopicTrainingPrograms();
     this.loadTrainingProgramTeachers();
 
+  }
+  public dateParser(data: string) {
+    return new Date(data);
+  }
+
+  public getResourceValue(data: { [key: string]: Object }) {
+    if (data && Object.keys(data).length > 0) {
+      return data.RoomId;
+    }
   }
 
   createBlock(el: any): void{
@@ -194,10 +224,10 @@ export class ScheduleBlockComponent implements OnInit {
       });
   }
   selectTopic(): void {
-    console.log('qwe');
-    console.log(this.selectedTopic);
-    console.log(this.selectedTeacher);
-    console.log(this.selectedGroup);
+    // console.log('qwe');
+    // console.log(this.selectedTopic);
+    // console.log(this.selectedTeacher);
+    // console.log(this.selectedGroup);
   }
 
   MergeWithSubGroup(val: string, checked: boolean = true): void {
@@ -208,18 +238,18 @@ export class ScheduleBlockComponent implements OnInit {
         this.combineTopic = checked;
         this.combineRoom = checked;
         this.combineTeacher = checked;
-        console.log('div' + this.combineTopic + this.combineRoom + this.combineTeacher);
+        //console.log('div' + this.combineTopic + this.combineRoom + this.combineTeacher);
         break;
       case 'combineTopic':
         this.combineTopic = !this.combineTopic;
-        console.log('Topic' + this.combineTopic + this.combineRoom + this.combineTeacher);
+        //console.log('Topic' + this.combineTopic + this.combineRoom + this.combineTeacher);
         break;
       case 'combineRoom':
         this.combineRoom = !this.combineRoom;
         break;
       case 'combineTeacher':
         this.combineTeacher = !this.combineTeacher;
-        console.log('teacher' + this.combineTopic + this.combineRoom + this.combineTeacher);
+        //console.log('teacher' + this.combineTopic + this.combineRoom + this.combineTeacher);
         break;
     }
   }

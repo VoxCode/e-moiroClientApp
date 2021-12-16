@@ -104,8 +104,8 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       dataSource: this.scheduleData,
       fields: {
         id: 'id',
-        subject: { title: 'Тема', name: 'topicTitle' },
-        location: { title: 'Преподаватель', name: 'teacher' },
+        subject: { title: 'Тема', name: 'topicTitle'},
+        location: { title: 'Преподаватель', name: 'teacherFullName' },
         description: { title: 'Comments', name: 'metaData' },
         startTime: { title: 'Начало', name: 'startTime' },
         endTime: { title: 'Конец', name: 'endTime' },
@@ -157,9 +157,16 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   onPopupOpen(args: PopupOpenEventArgs): void {
     const data: { [key: string]: Object } = args.data as { [key: string]: Object };
 
-    if(args.elementType === 'cellContent')
-    {
+    // if(args.type === 'cellContent')
+    // {
+    //   console.log("cellcontent");
+    // }
 
+
+
+    if (args.type === 'Editor')
+    {
+      data.AAAAAAAAAAAAAAAAAAAAAAAAAA = "AAAAAAAAAAAAAAAAAAAAAAAAAA";
     }
 
     if (args.type === 'QuickInfo' || args.type === 'Editor' || args.type === 'RecurrenceAlert' || args.type === 'DeleteAlert') {

@@ -25,6 +25,34 @@
       </ejs-datetimepicker>
     </td>
   </tr>
+  <tr>
+    <td class="e-textlabel">From</td>
+    <td >
+      <ejs-datetimepicker id="startTime" class="e-field" data-name="startTime" format="M/dd/yy h:mm a"
+                          [value]="dateParser(elementData.startTime)"></ejs-datetimepicker>
+    </td>
+  </tr>
+  <tr>
+    <td class="e-textlabel">To</td>
+    <td>
+      <ejs-datetimepicker id="endTime" class="e-field" data-name="endTime" format="M/dd/yy h:mm a"
+                          [value]='dateParser(elementData.endTime)'></ejs-datetimepicker>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input id="RoomId" class="e-field e-input" type="text" value="{{elementData.RoomId}}" name="RoomId"
+             style="width: 100%" />
+      <ejs-dropdownlist class="e-field" data-name="RoomId" [dataSource]='this.rooms'
+                        [value]='getResourceValue(elementData)' [fields]='fields'></ejs-dropdownlist>
+      <input id="topicTitle" class="e-field e-input" type="text" value="{{elementData.topicTitle}}" name="topicTitle"
+             style="width: 100%" />
+      <input id="teacherFullName" class="e-field e-input" type="text" value="{{elementData.teacherFullName}}" name="teacherFullName"
+             style="width: 100%" />
+      <input id="metaData" class="e-field e-input" type="text" value="{{elementData.metaData}}" name="metaData"
+             style="width: 100%" />
+    </td>
+  </tr>
 </table>
 
 <div class="normalCheckBox">
@@ -104,10 +132,11 @@
   <div class="right">
     <ng-select [items]="this.rooms" [clearable]="false" [disabled]="!combineRoom" *ngIf="divideSubGroups"
                (change)="selectTopic()"
+
                bindValue=""
                bindLabel="name"
                [(ngModel)]="selectedRoomAux"
-               placeholder="Преподаватель">
+               placeholder="Аудитория">
     </ng-select>
   </div>
 </div>
