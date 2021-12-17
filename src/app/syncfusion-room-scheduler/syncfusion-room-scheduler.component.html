@@ -4,8 +4,8 @@
     <ejs-schedule  #scheduleObj width='100%' cssClass='timeline-resource' height='800px'
                   [workDays]='workWeekDays' [showWeekend]="showWeekend"
                   [workHours]="workHours" [startHour]='startHour' [endHour]='endHour'
-                  [timeScale]="timeScale" [timeFormat]="timeFormat"
-                  [selectedDate]="selectedDate" [currentView]="currentView" [group]="group"
+                  [timeScale]="timeScale" [timeFormat]="timeFormat" [rowAutoHeight]="rowAutoHeight"
+                  [selectedDate]="selectedDate" [currentView]="currentView" [group]="groupResource"
                   [eventSettings]="eventSettings"
                    [locale]="culture"
                   (eventRendered)="onEventRendered($event)"
@@ -14,14 +14,14 @@
                   (popupOpen)="onPopupOpen($event)"
                   (popupClose)="onPopupClose($event)">
       <e-resources>
-        <e-resource field='RoomId' title='Room Type' [dataSource]='convertedRooms' [allowMultiple]='allowMultiple' name='MeetingRoom'
+        <e-resource field='roomId' title='Room Type' [dataSource]='convertedRooms' [allowMultiple]='allowMultiple' name='MeetingRoom'
                     textField='text' idField='id' colorField='color'>
         </e-resource>
       </e-resources>
       <e-views>
         <e-view option="TimelineDay">
           <ng-template #eventTemplate let-data>
-            <div class="time" [style.background]="data.PrimaryColor">{{data.topicTitle}}</div>
+            <div class="time" [style.background]="data.PrimaryColor">{{data.topic}}</div>
           </ng-template>
         </e-view>
         <e-view option="TimelineWeek">
@@ -31,7 +31,7 @@
 <!--              <br>-->
 <!--              {{data.teacher.firstName}}-->
 <!--              <br>-->
-              Группа: {{data.groupNumber}}
+              Группа: {{data.group}}
               <br>
               {{data.startTime | date : 'hh:mm'}} - {{data.endTime | date : 'hh:mm'}}
             </div>
@@ -50,7 +50,7 @@
           <div class="quick-info-header-content"
                [style.background]="data.PrimaryColor"
                [style.color]="data.PrimaryColor">
-            <div class="quick-info-title">{{data.groupNumber}}</div>
+            <div class="quick-info-title">{{data.group}}</div>
             <div class="duration-text"> {{data.startTime | date : 'hh:mm'}} - {{data.endTime | date : 'hh:mm'}}</div>
           </div>
         </div>
@@ -79,15 +79,15 @@
           <div class="event-content">
             <div class="meeting-type-wrap">
               <label>Группа</label>:
-              <span>{{data.groupNumber}}</span>
+              <span>{{data.group}}</span>
             </div>
             <div class="meeting-subject-wrap">
               <label>Преподаватель</label>:
-              <span>{{data.teacherFullName}}</span>
+              <span>{{data.teacher}}</span>
             </div>
             <div class="notes-wrap">
               <label>Тема</label>:
-              <span>{{data.topicTitle}}</span>
+              <span>{{data.topic}}</span>
             </div>
           </div>
         </div>

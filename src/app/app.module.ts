@@ -76,6 +76,7 @@ import { GroupEditComponent } from './group/group-edit.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
+import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import {DatePickerModule, DateTimePickerModule} from '@syncfusion/ej2-angular-calendars';
 
 export function tokenGetter(): string {
@@ -160,6 +161,7 @@ export function tokenGetter(): string {
         MatDatepickerModule,
         MatNativeDateModule,
         DatePickerModule,
+        DropDownListModule,
         JwtModule.forRoot({
             config: {
                 tokenGetter

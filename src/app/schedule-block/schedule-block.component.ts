@@ -85,7 +85,6 @@ export class ScheduleBlockComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.elementData.BBBBBBBBBBBBBBBBBBBBBBBBBBB = "shit, im done";
     console.log("editor init");
     console.log(this.elementData);
     // this.elementData = {
@@ -99,7 +98,7 @@ export class ScheduleBlockComponent implements OnInit {
     //   endTime: new Date(2021, 11, 14, 11, 0),
     //   groupId: 1,
     //   groupNumber: 'gr2',
-    //   RoomId: new Array(1)[3],
+    //   roomId: new Array(1)[3],
     //   roomName:'room2',
     //   metaData: 'wabba-labba-dub-dub2',
     // };
@@ -116,7 +115,7 @@ export class ScheduleBlockComponent implements OnInit {
 
   public getResourceValue(data: { [key: string]: Object }) {
     if (data && Object.keys(data).length > 0) {
-      return data.RoomId;
+      return data.roomId;
     }
   }
 
@@ -138,7 +137,7 @@ export class ScheduleBlockComponent implements OnInit {
         // nothing
       });
   }
-  createBlockClassRoom(blockId: number, roomID: number): void{
+  createBlockClassRoom(blockId: number, roomId: number): void{
     const blockClassRoom = new ScheduleBlockClassRoom();
     this.scheduleBlockClassRoomService.createValue(blockClassRoom)
       .subscribe((response: ScheduleBlockClassRoom) => {

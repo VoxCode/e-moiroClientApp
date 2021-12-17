@@ -38,7 +38,6 @@ export class ScheduleComponent implements OnInit {
 
   roomData: ClassRoom[] = [];
   scheduleData: ScheduleElement[] = [];
-  tempSchedData: any[] = [];
   tempData: ScheduleElement = {};
   groups: Group[];
   public modalRef: MDBModalRef;
@@ -63,51 +62,49 @@ export class ScheduleComponent implements OnInit {
     this.loadRooms();
     this.loadGroups();
 
-    this.tempSchedData.push({
+    this.scheduleData.push({
       id: 1,
-      programId: 1,
-      topicTitle: 'topic',
-      teacherId: 1,
-      teacherFullName: 'teacher',
-      description: 'description',
-      startTime: new Date(2021, 11, 14, 9, 0),
-      endTime: new Date(2021, 11, 14, 11, 0),
-      groupId: 1,
-      groupNumber: 'gr',
-      RoomId: 1,
-      roomName:'sdf',
-      metaData: 'wabba-labba-dub-dub',
+        topic: 'topic',
+        teacher: 'teacher',
+      startTime: new Date(2021, 11, 17, 9, 0),
+      endTime: new Date(2021, 11, 17, 12, 0),
+      group: 12,
+      roomId: 1,
     },
       {
         id: 2,
-        programId: 1,
-        topicTitle: 'topic2',
+        topic: 'topic',
+        teacher: 'teacher',
+        startTime: new Date(2021, 11, 17, 9, 0),
+        endTime: new Date(2021, 11, 17, 12, 0),
+        group: 12,
+        roomId: 1,
+      },
+      {
+        id: 3,
+        topic: 'topic',
+        teacher: 'teacher',
+        startTime: new Date(2021, 11, 17, 9, 0),
+        endTime: new Date(2021, 11, 17, 12, 0),
+        group: 12,
+        roomId: 1,
+      },
+      {
+        id: 4,
+        topicId: 1,
+        topic: 'topic2',
         teacherId: 1,
-        teacherFullName: 'teacher2',
-        description: 'description2',
-        startTime: new Date(2021, 11, 14, 9, 0),
-        endTime: new Date(2021, 11, 14, 11, 0),
+        teacher: 'teacher2',
+        startTime: new Date(2021, 11, 17, 9, 0),
+        endTime: new Date(2021, 11, 17, 11, 0),
         groupId: 1,
-        groupNumber: 'gr2',
-        RoomId: 2,
-        roomName:'room2',
+        group: 232,
+        roomId: 3,
+        room: 'room2',
         metaData: 'wabba-labba-dub-dub2',
       });
-
-    this.scheduleData.push({
-      scheduleBlockId: 1,
-      programId: 17,
-      programName: 'asdefrgtyhujikol',
-      topic: 'zxcvbnm,',
-      teacher: 'lol',
-      group: 'gr',
-      startTime: new Date(2021, 12, 14, 9, 0),
-      endTime: new Date(2021, 12, 14, 11, 0),
-      roomId: 1,
-      meta: 'wabba-labba-dub-dub',
-    });
     // console.log('here');
-    //this.loadScheduleDates();
+    // this.loadScheduleDates();
     // setInterval(() => {
     //   console.log(this.scheduleData);}, 1000);
   }
@@ -159,14 +156,14 @@ export class ScheduleComponent implements OnInit {
             this.loadBlockTopic(el.scheduleBlockId); // load topic
             this.loadBlockTeacher(el.scheduleBlockId); // load teacher
             this.loadBlockClassTime(el.scheduleBlockId, aux); // load timing
-            this.loadBlockClassRoom(el.scheduleBlockId); // roomid from database
+            this.loadBlockClassRoom(el.scheduleBlockId); // roomId from database
             const loadErrorState = false;
             if (!loadErrorState) {
-              //console.log("temp")
-              //console.log(this.tempData);
+              // console.log("temp")
+              // console.log(this.tempData);
               this.scheduleData.push(this.tempData);
-              //setTimeout(() => {this.scheduleData.push(this.tempData);}, 1000);
-              //this.tempData = {};
+              // setTimeout(() => {this.scheduleData.push(this.tempData);}, 1000);
+              // this.tempData = {};
             }
           });
         }
@@ -208,7 +205,7 @@ export class ScheduleComponent implements OnInit {
     this.scheduleBlockClassRoomService.getValuesFromScheduleBlock(id)
       .subscribe((data: ScheduleBlockClassRoom) => {
         if (data){
-          this.tempData.roomId = data[0].classRoomId;
+          this.tempData.roomId = data[0].classroomId;
         }
         return undefined;
       });

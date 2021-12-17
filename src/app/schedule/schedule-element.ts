@@ -1,16 +1,17 @@
 export class ScheduleElement {
   constructor(
+    public id?: number,
     public scheduleBlockId?: number,
-    public programName?: string,
-    public programId?: number,
     public topic?: string,
+    public topicId?: number,
     public teacher?: string,
     public teacherId?: number,
-    public group?: string,
+    public group?: number,
     public groupId?: number,
     public startTime?: Date,
     public endTime?: Date,
+    public room?: string,
     public roomId?: number,
-    public meta?: string,
+    public metaData?: string,
   ) { }
 }

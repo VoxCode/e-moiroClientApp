@@ -65,7 +65,8 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   public currentView: View = 'TimelineWeek';
   public workWeekDays: number[] = [1, 2, 3, 4, 5];
   public showWeekend = false;
-  public group: GroupModel = {
+  public rowAutoHeight: true;
+  public groupResource: GroupModel = {
     enableCompactView: false,
     resources: ['MeetingRoom']
   };
@@ -104,12 +105,13 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       dataSource: this.scheduleData,
       fields: {
         id: 'id',
-        subject: { title: 'Тема', name: 'topicTitle'},
-        location: { title: 'Преподаватель', name: 'teacherFullName' },
+        subject: { title: 'Тема', name: 'topic'},
+        location: { title: 'Преподаватель', name: 'teacher' },
         description: { title: 'Comments', name: 'metaData' },
         startTime: { title: 'Начало', name: 'startTime' },
         endTime: { title: 'Конец', name: 'endTime' },
-      }
+      },
+
     };
 
     this.scheduleBlock = {
@@ -141,7 +143,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   public parseRooms(): void{
     this.roomData.forEach((el, index) => {
       this.convertedRooms.push({
-        text: el.name, id: index + 1, color: `#${this.intToRGB(3453434 * ((index + 1) * 5))}` // Math.random()
+        text: el.name, id: el.id, color: `#${this.intToRGB(3453434 * ((index + 1) * 5))}` // Math.random()
       });
     });
   }
@@ -161,13 +163,6 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     // {
     //   console.log("cellcontent");
     // }
-
-
-
-    if (args.type === 'Editor')
-    {
-      data.AAAAAAAAAAAAAAAAAAAAAAAAAA = "AAAAAAAAAAAAAAAAAAAAAAAAAA";
-    }
 
     if (args.type === 'QuickInfo' || args.type === 'Editor' || args.type === 'RecurrenceAlert' || args.type === 'DeleteAlert') {
       const target: HTMLElement = (args.type === 'RecurrenceAlert' ||
@@ -200,9 +195,10 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       } else if (args.requestType === 'eventChange') {
         data = (args.data as { [key: string]: Object });
       }
-      if (!this.scheduleObj.isSlotAvailable(data)) {
-        args.cancel = true;
-      }
+      //restriction to grouping in one room
+      // if (!this.scheduleObj.isSlotAvailable(data)) {
+      //   args.cancel = true;
+      // }
     }
   }
 
@@ -227,6 +223,14 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     }
   }
 
+  CreateScheduleBlock(): void{
+
+  }
+
+  UpdateScheduleBlock(): void{
+
+  }
+
   onPopupClose(args: any): void{
     // args.data = {
     //   Id: 2,
@@ -234,7 +238,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     //   Description: 'zxcvbnm,',
     //   StartTime: new Date(2018, 7, 1, 9, 0),
     //   EndTime: new Date(2018, 7, 1, 12, 0),
-    //   RoomId: 1,
+    //   roomId: 1,
     //   booop: 'wabba-labba-dub-dub',
     // };
    console.log("popupClose");

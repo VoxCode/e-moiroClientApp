@@ -4,11 +4,10 @@
 <!--</div>-->
 
 <ng-select *ngIf="groups.length !== 0" [items]="this.groups" [clearable]="false"
-           id = "Subject"
            (change)="selectTopic()"
-           bindValue=""
+           bindValue="groupNumber"
            bindLabel="groupNumber"
-           [(ngModel)]="elementData.groupNumber"
+           [(ngModel)]="elementData.group"
            placeholder="Группа">
 </ng-select>
 
@@ -25,29 +24,21 @@
       </ejs-datetimepicker>
     </td>
   </tr>
-  <tr>
-    <td class="e-textlabel">From</td>
-    <td >
+  <tr hidden>
+    <td>
       <ejs-datetimepicker id="startTime" class="e-field" data-name="startTime" format="M/dd/yy h:mm a"
                           [value]="dateParser(elementData.startTime)"></ejs-datetimepicker>
-    </td>
-  </tr>
-  <tr>
-    <td class="e-textlabel">To</td>
-    <td>
       <ejs-datetimepicker id="endTime" class="e-field" data-name="endTime" format="M/dd/yy h:mm a"
                           [value]='dateParser(elementData.endTime)'></ejs-datetimepicker>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <input id="RoomId" class="e-field e-input" type="text" value="{{elementData.RoomId}}" name="RoomId"
+      <input id="roomId" class="e-field e-input" type="text" value="{{elementData.roomId}}" name="roomId"
              style="width: 100%" />
-      <ejs-dropdownlist class="e-field" data-name="RoomId" [dataSource]='this.rooms'
+      <input id="group" class="e-field e-input" type="text" value="{{elementData.group}}" name="group"
+             style="width: 100%" />
+      <ejs-dropdownlist class="e-field" data-name="roomId" [dataSource]='this.rooms'
                         [value]='getResourceValue(elementData)' [fields]='fields'></ejs-dropdownlist>
-      <input id="topicTitle" class="e-field e-input" type="text" value="{{elementData.topicTitle}}" name="topicTitle"
+      <input id="topic" class="e-field e-input" type="text" value="{{elementData.topic}}" name="topic"
              style="width: 100%" />
-      <input id="teacherFullName" class="e-field e-input" type="text" value="{{elementData.teacherFullName}}" name="teacherFullName"
+      <input id="teacher" class="e-field e-input" type="text" value="{{elementData.teacher}}" name="teacher"
              style="width: 100%" />
       <input id="metaData" class="e-field e-input" type="text" value="{{elementData.metaData}}" name="metaData"
              style="width: 100%" />
@@ -66,7 +57,7 @@
                (change)="selectTopic()"
                bindValue="topicTitle"
                bindLabel="topicTitle"
-               [(ngModel)]="elementData.topicTitle"
+               [(ngModel)]="elementData.topic"
                placeholder="Тема">
     </ng-select>
   </div>
@@ -92,9 +83,9 @@
   <div class="left">
     <ng-select [items]="this.teachers" [clearable]="false"
                (change)="selectTopic()"
-               bindValue=""
+               bindValue="fullNameForm"
                bindLabel="fullNameForm"
-               [(ngModel)]="elementData.teacherFullName"
+               [(ngModel)]="elementData.teacher"
                placeholder="Преподаватель">
     </ng-select>
   </div>
@@ -118,10 +109,10 @@
   <div class="left">
     <ng-select [items]="this.rooms" [clearable]="false"
                (change)="selectTopic()"
-               bindValue=""
+               bindValue="name"
                bindLabel="name"
-               [(ngModel)]="elementData.roomName"
-               placeholder="Преподаватель">
+               [(ngModel)]="elementData.room"
+               placeholder="Аудитория">
     </ng-select>
   </div>
   <div class="middle">
@@ -132,7 +123,6 @@
   <div class="right">
     <ng-select [items]="this.rooms" [clearable]="false" [disabled]="!combineRoom" *ngIf="divideSubGroups"
                (change)="selectTopic()"
-
                bindValue=""
                bindLabel="name"
                [(ngModel)]="selectedRoomAux"
