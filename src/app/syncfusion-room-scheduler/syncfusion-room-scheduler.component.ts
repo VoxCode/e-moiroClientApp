@@ -15,7 +15,7 @@ import {
   WorkHoursModel,
   View,
   MonthService,
-  WeekService, DayService, AgendaService
+  WeekService, DayService, AgendaService,
 } from '@syncfusion/ej2-angular-schedule';
 import * as numberingSystems from './localization/numberingSystems.json';
 import * as gregorian from './localization/ru/ca-gregorian.json';
@@ -23,6 +23,23 @@ import * as numbers from './localization/ru/numbers.json';
 import * as timeZoneNames from './localization/ru/timeZoneNames.json';
 import * as dictionary from './localization/dictionary.json';
 import {ClassRoom} from '../models/schedule-models/ClassRoom';
+import {ScheduleDateService} from '../services/schedule-services/schedule-date.service';
+import {ScheduleDate} from '../models/schedule-models/ScheduleDate';
+import {ScheduleDateScheduleBlockService} from '../services/schedule-services/schedule-date-schedule-block.service';
+import {ScheduleBlockTeacherService} from '../services/schedule-services/schedule-block-teacher.service';
+import {ScheduleBlockCurriculumTopicTrainingProgramService} from '../services/schedule-services/schedule-block-curriculum-topic-training-program.service';
+import {ScheduleBlockClassTimeService} from '../services/schedule-services/schedule-block-class-time.service';
+import {ScheduleBlockClassRoomService} from '../services/schedule-services/schedule-block-class-room.service';
+import {ScheduleBlockService} from '../services/schedule-services/schedule-block.service';
+import {ScheduleBlockTeacher} from '../models/schedule-models/ScheduleBlockTeacher';
+import {ScheduleBlockClassTime} from '../models/schedule-models/ScheduleBlockClassTime';
+import {ScheduleBlockClassRoom} from '../models/schedule-models/ScheduleBlockClassRoom';
+import {ScheduleBlockCurriculumTopicTrainingProgram} from '../models/schedule-models/ScheduleBlockCurriculumTopicTrainingProgram';
+
+import {ScheduleDateScheduleBlock} from '../models/schedule-models/ScheduleDateScheduleBlock';
+import {ScheduleElement} from "../schedule/schedule-element";
+import {ScheduleBlock} from "../models/schedule-models/ScheduleBlock";
+import {ClassTime} from "../models/schedule-models/СlassTime";
 
 loadCldr(numberingSystems['default'], gregorian["default"], numbers["default"], timeZoneNames["default"]);
 L10n.load(dictionary["default"]);
@@ -34,7 +51,10 @@ L10n.load(dictionary["default"]);
   templateUrl: './syncfusion-room-scheduler.component.html',
   styleUrls: ['./syncfusion-room-scheduler.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [TimelineViewsService, ResizeService, DragAndDropService, DayService, WeekService, TimelineViewsService, MonthService, AgendaService],
+  providers: [TimelineViewsService, ResizeService, DragAndDropService, DayService, WeekService, TimelineViewsService, MonthService, AgendaService,
+    ScheduleDateService, ScheduleBlockService,
+    ScheduleDateScheduleBlockService, ScheduleBlockTeacherService, ScheduleBlockCurriculumTopicTrainingProgramService,
+    ScheduleBlockClassTimeService, ScheduleBlockClassRoomService],
 })
 
 
@@ -170,11 +190,12 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       if (!isNullOrUndefined(target) && target.classList.contains('e-work-cells')) {
         if ((target.classList.contains('e-read-only-cells')) ||
           (!this.scheduleObj.isSlotAvailable(data))) {
-          args.cancel = true;
+          //if cell already have appointment inside
+          //args.cancel = true;
         }
       } else if (!isNullOrUndefined(target) && target.classList.contains('e-appointment') &&
         (this.isReadOnly(data.EndTime as Date))) {
-        args.cancel = true;
+          args.cancel = true;
       }
     }
     console.log("popup");
@@ -195,12 +216,17 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       } else if (args.requestType === 'eventChange') {
         data = (args.data as { [key: string]: Object });
       }
-      //restriction to grouping in one room
+
+      //restriction to generating second appointment in one room
       // if (!this.scheduleObj.isSlotAvailable(data)) {
       //   args.cancel = true;
       // }
     }
   }
+
+
+
+
 
   onRenderCell(args: RenderCellEventArgs): void {
     if (args.element.classList.contains('e-work-cells')) {
@@ -223,13 +249,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     }
   }
 
-  CreateScheduleBlock(): void{
 
-  }
-
-  UpdateScheduleBlock(): void{
-
-  }
 
   onPopupClose(args: any): void{
     // args.data = {
@@ -246,4 +266,35 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
    console.log(this.scheduleData);
   }
 
+  CreateScheduleBlock(args: ScheduleElement): void{
+
+      this.roomData.push({text: newElement.roomName, id: 5, color: '#543434'});
+      this.roomData = this.roomData.map(num => num);
+      this.createRoom(newElement);
+
+      const date = new ScheduleDate(0, args.startTime, args.groupId);
+      const dateBlock = new ScheduleDateScheduleBlock(0, 0, args.scheduleBlockId);
+      const block = new ScheduleBlock(0,0,0);
+      const blockTeacher = new ScheduleBlockTeacher(0, args.teacherId, args.scheduleBlockId, 0);
+      const blockRoom = new ScheduleBlockClassRoom(0,args.scheduleBlockId,args.roomId,0,0);
+      const blockTime = new ScheduleBlockClassTime(0,args.scheduleBlockId,0, 0,0,0);
+      const time = new ClassTime(0, args.startTime, args.endTime);
+
+      this.ScheduleDateService.createValue(date)
+        .subscribe((dateResponse: ScheduleDate) => {
+
+        });
+
+      this.Sche
+
+    const room = new ClassRoom(+el.roomId, el.roomName);
+    this.classRoomService.createValue(room)
+      .subscribe((roomResponse: ClassRoom) => {
+        this.roomData.push(roomResponse);
+      });
+  }
+
+  UpdateScheduleBlock(): void{
+
+  }
 }

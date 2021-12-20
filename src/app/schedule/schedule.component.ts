@@ -16,7 +16,6 @@ import {ScheduleBlockCurriculumTopicTrainingProgramService} from '../services/sc
 import {ScheduleBlockClassTimeService} from '../services/schedule-services/schedule-block-class-time.service';
 import {ScheduleBlockClassRoomService} from '../services/schedule-services/schedule-block-class-room.service';
 import {ScheduleBlockService} from '../services/schedule-services/schedule-block.service';
-import {ScheduleBlock} from '../models/schedule-models/ScheduleBlock';
 import {ScheduleBlockTeacher} from '../models/schedule-models/ScheduleBlockTeacher';
 import {ScheduleBlockClassTime} from '../models/schedule-models/ScheduleBlockClassTime';
 import {ScheduleBlockClassRoom} from '../models/schedule-models/ScheduleBlockClassRoom';
