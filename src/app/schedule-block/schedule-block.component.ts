@@ -114,8 +114,11 @@ export class ScheduleBlockComponent implements OnInit {
   }
 
   public getResourceValue(data: { [key: string]: Object }) {
+    console.log("lololololololo");
     if (data && Object.keys(data).length > 0) {
+      this.elementData.room = data.name;
       return data.roomId;
+      console.log(data);
     }
   }
 
@@ -222,12 +225,7 @@ export class ScheduleBlockComponent implements OnInit {
         }
       });
   }
-  selectTopic(): void {
-    // console.log('qwe');
-    // console.log(this.selectedTopic);
-    // console.log(this.selectedTeacher);
-    // console.log(this.selectedGroup);
-  }
+
 
   MergeWithSubGroup(val: string, checked: boolean = true): void {
     console.log(val);
@@ -251,6 +249,27 @@ export class ScheduleBlockComponent implements OnInit {
         //console.log('teacher' + this.combineTopic + this.combineRoom + this.combineTeacher);
         break;
     }
+  }
+
+  selectTeacher(): void {
+    this.elementData.teacherId = this.selectedTeacher.id;
+    this.elementData.teacher = this.selectedTeacher.fullNameForm;
+  }
+
+  selectTopic(): void {
+    this.elementData.topicId = this.selectedTopic.id;
+    this.elementData.topic = this.selectedTopic.topicTitle;
+  }
+
+  selectRoom(): void {
+    console.log("ololol");
+    this.elementData.roomId = this.selectedRoom.id;
+    this.elementData.room = this.selectedRoom.name;
+  }
+
+  selectGroup(): void {
+    this.elementData.group = this.selectedGroup.groupNumber;
+    this.elementData.groupId = this.selectedGroup.id;
   }
 }
 

@@ -40,6 +40,7 @@ import {ScheduleDateScheduleBlock} from '../models/schedule-models/ScheduleDateS
 import {ScheduleElement} from "../schedule/schedule-element";
 import {ScheduleBlock} from "../models/schedule-models/ScheduleBlock";
 import {ClassTime} from "../models/schedule-models/СlassTime";
+import {ClassTimeService} from "../services/schedule-services/class-time.service";
 
 loadCldr(numberingSystems['default'], gregorian["default"], numbers["default"], timeZoneNames["default"]);
 L10n.load(dictionary["default"]);
@@ -54,7 +55,7 @@ L10n.load(dictionary["default"]);
   providers: [TimelineViewsService, ResizeService, DragAndDropService, DayService, WeekService, TimelineViewsService, MonthService, AgendaService,
     ScheduleDateService, ScheduleBlockService,
     ScheduleDateScheduleBlockService, ScheduleBlockTeacherService, ScheduleBlockCurriculumTopicTrainingProgramService,
-    ScheduleBlockClassTimeService, ScheduleBlockClassRoomService],
+    ScheduleBlockClassTimeService, ScheduleBlockClassRoomService, ClassTimeService]
 })
 
 
@@ -66,7 +67,16 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     this.parseRooms();
   }
 
-  constructor() {}
+  constructor(
+    private scheduleDateService: ScheduleDateService,
+    private scheduleBlockTeacherService: ScheduleBlockTeacherService,
+    private scheduleBlockCurriculumTopicTrainingProgramService: ScheduleBlockCurriculumTopicTrainingProgramService,
+    private scheduleDateScheduleBlockService: ScheduleDateScheduleBlockService,
+    private scheduleBlockClassTimeService: ScheduleBlockClassTimeService,
+    private scheduleBlockClassRoomService: ScheduleBlockClassRoomService,
+    private scheduleBlockService: ScheduleBlockService,
+    private classTimeService: ClassTimeService,
+  ) {}
 
 
   private _roomData: ClassRoom[] = [];
@@ -216,7 +226,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       } else if (args.requestType === 'eventChange') {
         data = (args.data as { [key: string]: Object });
       }
-
+      this.createScheduleBlock(data);
       //restriction to generating second appointment in one room
       // if (!this.scheduleObj.isSlotAvailable(data)) {
       //   args.cancel = true;
@@ -266,31 +276,66 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
    console.log(this.scheduleData);
   }
 
-  CreateScheduleBlock(args: ScheduleElement): void{
-
-      this.roomData.push({text: newElement.roomName, id: 5, color: '#543434'});
-      this.roomData = this.roomData.map(num => num);
-      this.createRoom(newElement);
-
+  createScheduleBlock(args: ScheduleElement): void{
       const date = new ScheduleDate(0, args.startTime, args.groupId);
       const dateBlock = new ScheduleDateScheduleBlock(0, 0, args.scheduleBlockId);
       const block = new ScheduleBlock(0,0,0);
       const blockTeacher = new ScheduleBlockTeacher(0, args.teacherId, args.scheduleBlockId, 0);
-      const blockRoom = new ScheduleBlockClassRoom(0,args.scheduleBlockId,args.roomId,0,0);
-      const blockTime = new ScheduleBlockClassTime(0,args.scheduleBlockId,0, 0,0,0);
+      const blockRoom = new ScheduleBlockClassRoom(0,args.scheduleBlockId, args.roomId,0,0);
+      const blockTime = new ScheduleBlockClassTime(0,args.scheduleBlockId,0, new Date(), new Date(),0);
       const time = new ClassTime(0, args.startTime, args.endTime);
+    console.log("create");
+    console.log(args);
+    // this.scheduleBlockService.createValue(block)
+    //   .subscribe((blockResponse: ScheduleBlock) => {
+    //     this.createScheduleBlockTeacher(new ScheduleBlockTeacher(0, args.teacherId, blockResponse.id));
+    //     this.createScheduleBlockRoom(new ScheduleBlockClassRoom(0, blockResponse.id, args.roomId));
+    //     this.createBlockTopic(new ScheduleBlockCurriculumTopicTrainingProgram(0, args.topicId, blockResponse.id,0));
+    //     this.classTimeService.createValue(time)
+    //       .subscribe((classTimeResponse) => {
+    //         this.createScheduleBlockTime(new ScheduleBlockClassTime(0, blockResponse.id, classTimeResponse.id));
+    //       });
+    //     this.scheduleDateService.createValue(date)
+    //       .subscribe((dateResponse: ScheduleDate) => {
+    //         this.createScheduleDateBlock(new ScheduleDateScheduleBlock(0, dateResponse.id, blockResponse.id);
+    //       });
+    //   });
+  }
 
-      this.ScheduleDateService.createValue(date)
-        .subscribe((dateResponse: ScheduleDate) => {
+  createBlockTopic(blockId: number, topicId: number): void{
+    const blockTopic = new ScheduleBlockCurriculumTopicTrainingProgram(0, topicId, blockId, 0);
+    this.scheduleBlockCurriculumTopicTrainingProgramService.createValue(blockTopic)
+      .subscribe((response: ScheduleBlockCurriculumTopicTrainingProgram) => {
+        // nothing
+      });
+  }
 
-        });
+  createScheduleDateBlock(dateBlock: ScheduleDateScheduleBlock): void{
+    this.scheduleDateScheduleBlockService.createValue(dateBlock)
+      .subscribe((dateBlockResponse: ScheduleDateScheduleBlock) => {
+        // nothing
+      });
+  }
 
-      this.Sche
+  createScheduleBlockTeacher(blockTeacher: ScheduleBlockTeacher): void{
+    this.scheduleBlockService.createValue(blockTeacher)
+      .subscribe((blockResponse) => {
+        // nothing
+      });
+  }
 
-    const room = new ClassRoom(+el.roomId, el.roomName);
-    this.classRoomService.createValue(room)
-      .subscribe((roomResponse: ClassRoom) => {
-        this.roomData.push(roomResponse);
+  createScheduleBlockRoom(blockRoom: ScheduleBlockClassRoom): void{
+    this.scheduleBlockClassRoomService.createValue(blockRoom)
+      .subscribe((blockRoomResponse: ScheduleDate) => {
+        // nothing
+      });
+
+  }
+
+  createScheduleBlockTime(blockTime: ScheduleBlockClassTime): void{
+    this.scheduleBlockClassTimeService.createValue(blockTime)
+      .subscribe((blockClassTimeResponse) => {
+        // nothing
       });
   }
 

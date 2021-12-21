@@ -4,10 +4,10 @@
 <!--</div>-->
 
 <ng-select *ngIf="groups.length !== 0" [items]="this.groups" [clearable]="false"
-           (change)="selectTopic()"
-           bindValue="groupNumber"
+           (change)="selectGroup()"
+           bindValue=""
            bindLabel="groupNumber"
-           [(ngModel)]="elementData.group"
+           [(ngModel)]="selectedGroup"
            placeholder="Группа">
 </ng-select>
 
@@ -32,11 +32,17 @@
                           [value]='dateParser(elementData.endTime)'></ejs-datetimepicker>
       <input id="roomId" class="e-field e-input" type="text" value="{{elementData.roomId}}" name="roomId"
              style="width: 100%" />
+      <input id="groupId" class="e-field e-input" type="text" value="{{elementData.groupId}}" name="groupId"
+             style="width: 100%" />
       <input id="group" class="e-field e-input" type="text" value="{{elementData.group}}" name="group"
              style="width: 100%" />
       <ejs-dropdownlist class="e-field" data-name="roomId" [dataSource]='this.rooms'
-                        [value]='getResourceValue(elementData)' [fields]='fields'></ejs-dropdownlist>
+                        [value]='elementData.roomId' [fields]='fields'></ejs-dropdownlist>
+      <input id="topicId" class="e-field e-input" type="text" value="{{elementData.topicId}}" name="topicId"
+             style="width: 100%" />
       <input id="topic" class="e-field e-input" type="text" value="{{elementData.topic}}" name="topic"
+             style="width: 100%" />
+      <input id="teacherId" class="e-field e-input" type="text" value="{{elementData.teacherId}}" name="teacherId"
              style="width: 100%" />
       <input id="teacher" class="e-field e-input" type="text" value="{{elementData.teacher}}" name="teacher"
              style="width: 100%" />
@@ -55,9 +61,9 @@
   <div class="left">
     <ng-select [items]="this.curriculumTopicTrainingPrograms" [clearable]="false"
                (change)="selectTopic()"
-               bindValue="topicTitle"
+               bindValue=""
                bindLabel="topicTitle"
-               [(ngModel)]="elementData.topic"
+               [(ngModel)]="selectedTopic"
                placeholder="Тема">
     </ng-select>
   </div>
@@ -82,10 +88,10 @@
 <div class="container" *ngIf="teachers.length !== 0">
   <div class="left">
     <ng-select [items]="this.teachers" [clearable]="false"
-               (change)="selectTopic()"
-               bindValue="fullNameForm"
+               (change)="selectTeacher()"
+               bindValue=""
                bindLabel="fullNameForm"
-               [(ngModel)]="elementData.teacher"
+               [(ngModel)]="selectedTeacher"
                placeholder="Преподаватель">
     </ng-select>
   </div>
@@ -108,10 +114,10 @@
 <div class="container" *ngIf="rooms.length !== 0">
   <div class="left">
     <ng-select [items]="this.rooms" [clearable]="false"
-               (change)="selectTopic()"
-               bindValue="name"
+               (change)="selectRoom()"
+               bindValue=""
                bindLabel="name"
-               [(ngModel)]="elementData.room"
+               [(ngModel)]="selectedRoom"
                placeholder="Аудитория">
     </ng-select>
   </div>
