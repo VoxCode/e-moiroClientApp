@@ -60,52 +60,9 @@ export class ScheduleComponent implements OnInit {
   ngOnInit(): void {
     this.loadRooms();
     this.loadGroups();
-
-    this.scheduleData.push({
-      id: 1,
-        topic: 'topic',
-        teacher: 'teacher',
-      startTime: new Date(2021, 11, 17, 9, 0),
-      endTime: new Date(2021, 11, 17, 12, 0),
-      group: 12,
-      roomId: 1,
-    },
-      {
-        id: 2,
-        topic: 'topic',
-        teacher: 'teacher',
-        startTime: new Date(2021, 11, 17, 9, 0),
-        endTime: new Date(2021, 11, 17, 12, 0),
-        group: 12,
-        roomId: 1,
-      },
-      {
-        id: 3,
-        topic: 'topic',
-        teacher: 'teacher',
-        startTime: new Date(2021, 11, 17, 9, 0),
-        endTime: new Date(2021, 11, 17, 12, 0),
-        group: 12,
-        roomId: 1,
-      },
-      {
-        id: 4,
-        topicId: 1,
-        topic: 'topic2',
-        teacherId: 1,
-        teacher: 'teacher2',
-        startTime: new Date(2021, 11, 17, 9, 0),
-        endTime: new Date(2021, 11, 17, 11, 0),
-        groupId: 1,
-        group: 232,
-        roomId: 3,
-        room: 'room2',
-        metaData: 'wabba-labba-dub-dub2',
-      });
-    // console.log('here');
-    // this.loadScheduleDates();
-    // setInterval(() => {
-    //   console.log(this.scheduleData);}, 1000);
+    this.loadScheduleDates();
+    //setInterval(() => {
+    //console.log(this.scheduleData); }, 1000);
   }
 
 
@@ -147,26 +104,47 @@ export class ScheduleComponent implements OnInit {
   }
 
   loadScheduleDates(): void{
-    this.scheduleDateScheduleBlockService.getValues()
-      .subscribe((data: ScheduleDateScheduleBlock[]) => {
-        if (data.length > 0){
-          data.forEach((el, index) => {
-            const aux: ScheduleElement = {};
-            this.loadBlockTopic(el.scheduleBlockId); // load topic
-            this.loadBlockTeacher(el.scheduleBlockId); // load teacher
-            this.loadBlockClassTime(el.scheduleBlockId, aux); // load timing
-            this.loadBlockClassRoom(el.scheduleBlockId); // roomId from database
-            const loadErrorState = false;
-            if (!loadErrorState) {
-              // console.log("temp")
-              // console.log(this.tempData);
-              this.scheduleData.push(this.tempData);
-              // setTimeout(() => {this.scheduleData.push(this.tempData);}, 1000);
-              // this.tempData = {};
+    this.scheduleBlockService.getSchedule()
+      .subscribe((data: any) => {
+        console.log('danewone');
+        console.log(data);
+        data.forEach( el => {
+          this.scheduleData.push({
+              scheduleBlockId: el.scheduleBlockId,
+              topicId: el.curriculumTopicTrainingProgramId,
+              topic: el.topicTitle,
+              teacherId: el.teacherId,
+              teacher: el.lastName,
+              startTime: el.classTimeStart,
+              endTime: el.classTimeEnd,
+              groupId: el.groupId,
+              group: el.groupNumber,
+              roomId: el.classRoomId,
+              room: el.name,
             }
-          });
-        }
+          );
+        });
       });
+    // this.scheduleDateScheduleBlockService.getValues()
+    //   .subscribe((data: ScheduleDateScheduleBlock[]) => {
+    //     if (data.length > 0){
+    //       data.forEach((el, index) => {
+    //         const aux: ScheduleElement = {};
+    //         this.loadBlockTopic(el.scheduleBlockId); // load topic
+    //         this.loadBlockTeacher(el.scheduleBlockId); // load teacher
+    //         this.loadBlockClassTime(el.scheduleBlockId, aux); // load timing
+    //         this.loadBlockClassRoom(el.scheduleBlockId); // roomId from database
+    //         const loadErrorState = false;
+    //         if (!loadErrorState) {
+    //           // console.log("temp")
+    //           // console.log(this.tempData);
+    //           this.scheduleData.push(this.tempData);
+    //           // setTimeout(() => {this.scheduleData.push(this.tempData);}, 1000);
+    //           // this.tempData = {};
+    //         }
+    //       });
+    //     }
+    //   });
   }
 
   loadBlockTopic(id: number): void{
@@ -174,6 +152,7 @@ export class ScheduleComponent implements OnInit {
       .subscribe((data: ScheduleBlockCurriculumTopicTrainingProgram) => {
         if (data) {
           this.tempData.topic = data[0].topicTitle;
+          this.tempData.topicId = data[0].curriculumTopicTrainingProgramId;
         }
       });
   }
@@ -182,7 +161,10 @@ export class ScheduleComponent implements OnInit {
     this.scheduleBlockTeacherService.getValuesFromScheduleBlock(id)
       .subscribe((data: ScheduleBlockTeacher) => {
         if (data) {
+          console.log('yollololololololol');
+          console.log(data);
           this.tempData.teacher = `${data[0].lastName} ${data[0].firstName} ${data[0].patronymicName} (${data[0].position})`;
+          this.tempData.teacherId = data.teacherId;
         }
       });
   }
@@ -205,6 +187,7 @@ export class ScheduleComponent implements OnInit {
       .subscribe((data: ScheduleBlockClassRoom) => {
         if (data){
           this.tempData.roomId = data[0].classroomId;
+          this.tempData.room = data[0].name;
         }
         return undefined;
       });

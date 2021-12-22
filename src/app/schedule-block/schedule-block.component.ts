@@ -87,6 +87,7 @@ export class ScheduleBlockComponent implements OnInit {
   ngOnInit(): void {
     console.log("editor init");
     console.log(this.elementData);
+    this.selectedTopic = this.elementData.topic;
     // this.elementData = {
     //   id: 2,
     //   programId: 1,
@@ -228,25 +229,23 @@ export class ScheduleBlockComponent implements OnInit {
 
 
   MergeWithSubGroup(val: string, checked: boolean = true): void {
-    console.log(val);
+    console.log("sdfdsfsdfsdfs");
+    console.log(this.elementData);
     switch (val) {
       case 'divideSubGroups':
         this.divideSubGroups = checked;
         this.combineTopic = checked;
         this.combineRoom = checked;
         this.combineTeacher = checked;
-        //console.log('div' + this.combineTopic + this.combineRoom + this.combineTeacher);
         break;
       case 'combineTopic':
         this.combineTopic = !this.combineTopic;
-        //console.log('Topic' + this.combineTopic + this.combineRoom + this.combineTeacher);
         break;
       case 'combineRoom':
         this.combineRoom = !this.combineRoom;
         break;
       case 'combineTeacher':
         this.combineTeacher = !this.combineTeacher;
-        //console.log('teacher' + this.combineTopic + this.combineRoom + this.combineTeacher);
         break;
     }
   }
@@ -262,7 +261,6 @@ export class ScheduleBlockComponent implements OnInit {
   }
 
   selectRoom(): void {
-    console.log("ololol");
     this.elementData.roomId = this.selectedRoom.id;
     this.elementData.room = this.selectedRoom.name;
   }

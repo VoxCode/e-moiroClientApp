@@ -30,14 +30,14 @@
                           [value]="dateParser(elementData.startTime)"></ejs-datetimepicker>
       <ejs-datetimepicker id="endTime" class="e-field" data-name="endTime" format="M/dd/yy h:mm a"
                           [value]='dateParser(elementData.endTime)'></ejs-datetimepicker>
-      <input id="roomId" class="e-field e-input" type="text" value="{{elementData.roomId}}" name="roomId"
-             style="width: 100%" />
       <input id="groupId" class="e-field e-input" type="text" value="{{elementData.groupId}}" name="groupId"
              style="width: 100%" />
       <input id="group" class="e-field e-input" type="text" value="{{elementData.group}}" name="group"
              style="width: 100%" />
       <ejs-dropdownlist class="e-field" data-name="roomId" [dataSource]='this.rooms'
                         [value]='elementData.roomId' [fields]='fields'></ejs-dropdownlist>
+      <input id="room" class="e-field e-input" type="text" value="{{elementData.room}}" name="room"
+             style="width: 100%" />
       <input id="topicId" class="e-field e-input" type="text" value="{{elementData.topicId}}" name="topicId"
              style="width: 100%" />
       <input id="topic" class="e-field e-input" type="text" value="{{elementData.topic}}" name="topic"

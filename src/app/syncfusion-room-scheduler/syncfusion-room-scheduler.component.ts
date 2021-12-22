@@ -80,7 +80,6 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
 
 
   private _roomData: ClassRoom[] = [];
-
   convertedRooms: any[] = [];
 
   public newEvent: any;
@@ -152,8 +151,11 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     console.log('init');
     console.log(this.scheduleData);
 
-    setTimeout(() => { this.loaded = true; }, 1000);
-
+    setTimeout(() => {
+      if (this.convertedRooms && this.scheduleData) {
+        this.loaded = true;
+      }
+      }, 1000);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -195,8 +197,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     // }
 
     if (args.type === 'QuickInfo' || args.type === 'Editor' || args.type === 'RecurrenceAlert' || args.type === 'DeleteAlert') {
-      const target: HTMLElement = (args.type === 'RecurrenceAlert' ||
-        args.type === 'DeleteAlert') ? (args.data as any).element[0] : args.target;
+      const target: HTMLElement = (args.type === 'RecurrenceAlert' || args.type === 'DeleteAlert') ? (args.data as any).element[0] : args.target;
       if (!isNullOrUndefined(target) && target.classList.contains('e-work-cells')) {
         if ((target.classList.contains('e-read-only-cells')) ||
           (!this.scheduleObj.isSlotAvailable(data))) {
@@ -215,18 +216,23 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   onActionBegin(args: ActionEventArgs): void {
     console.log("action begin");
     console.log(args);
-    if (args.requestType === 'eventChange') {
-      //args.cancel = true;
-      //this.scheduleObj.eventSettings.dataSource = this.scheduleData;
-    }
-    if (args.requestType === 'eventCreate' || args.requestType === 'eventChange') {
+    if (args.requestType === 'eventCreate' || args.requestType === 'eventChange' || args.requestType === 'eventRemove') {
       let data: { [key: string]: Object };
       if (args.requestType === 'eventCreate') {
         data = (args.data[0] as { [key: string]: Object });
+        this.createScheduleBlock(data);
       } else if (args.requestType === 'eventChange') {
         data = (args.data as { [key: string]: Object });
+      } else if (args.requestType === 'eventRemove'){
+        console.log("remove");
+        console.log(args.data);
+
+        data = (args.data[0] as { [key: string]: Object });
+
+        console.log(data);
+        console.log(data.scheduleBlockId);
+        this.deleteScheduleBlock(data);
       }
-      this.createScheduleBlock(data);
       //restriction to generating second appointment in one room
       // if (!this.scheduleObj.isSlotAvailable(data)) {
       //   args.cancel = true;
@@ -276,36 +282,38 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
    console.log(this.scheduleData);
   }
 
-  createScheduleBlock(args: ScheduleElement): void{
-      const date = new ScheduleDate(0, args.startTime, args.groupId);
-      const dateBlock = new ScheduleDateScheduleBlock(0, 0, args.scheduleBlockId);
-      const block = new ScheduleBlock(0,0,0);
-      const blockTeacher = new ScheduleBlockTeacher(0, args.teacherId, args.scheduleBlockId, 0);
-      const blockRoom = new ScheduleBlockClassRoom(0,args.scheduleBlockId, args.roomId,0,0);
-      const blockTime = new ScheduleBlockClassTime(0,args.scheduleBlockId,0, new Date(), new Date(),0);
-      const time = new ClassTime(0, args.startTime, args.endTime);
-    console.log("create");
+  deleteScheduleBlock(args: ScheduleElement): void{
+    console.log("actualremoving");
     console.log(args);
-    // this.scheduleBlockService.createValue(block)
-    //   .subscribe((blockResponse: ScheduleBlock) => {
-    //     this.createScheduleBlockTeacher(new ScheduleBlockTeacher(0, args.teacherId, blockResponse.id));
-    //     this.createScheduleBlockRoom(new ScheduleBlockClassRoom(0, blockResponse.id, args.roomId));
-    //     this.createBlockTopic(new ScheduleBlockCurriculumTopicTrainingProgram(0, args.topicId, blockResponse.id,0));
-    //     this.classTimeService.createValue(time)
-    //       .subscribe((classTimeResponse) => {
-    //         this.createScheduleBlockTime(new ScheduleBlockClassTime(0, blockResponse.id, classTimeResponse.id));
-    //       });
-    //     this.scheduleDateService.createValue(date)
-    //       .subscribe((dateResponse: ScheduleDate) => {
-    //         this.createScheduleDateBlock(new ScheduleDateScheduleBlock(0, dateResponse.id, blockResponse.id);
-    //       });
-    //   });
+    console.log(args.scheduleBlockId);
+    this.scheduleBlockService.deleteValue(args.scheduleBlockId)
+      .subscribe((response: ScheduleBlock) => {
+
+      });
+  }
+  createScheduleBlock(args: ScheduleElement): void{
+    const date = new ScheduleDate(0, args.startTime, args.groupId);
+    const block = new ScheduleBlock(0, 0, 0);
+    const time = new ClassTime(0, args.startTime, args.endTime);
+    this.scheduleBlockService.createValue(block)
+      .subscribe((blockResponse: ScheduleBlock) => {
+        this.createScheduleBlockTeacher(new ScheduleBlockTeacher(0, args.teacherId, blockResponse.id));
+        this.createScheduleBlockRoom(new ScheduleBlockClassRoom(0, blockResponse.id, args.roomId));
+        this.createBlockTopic(new ScheduleBlockCurriculumTopicTrainingProgram(0, args.topicId, blockResponse.id, 0));
+        this.classTimeService.createValue(time)
+          .subscribe((classTimeResponse) => {
+            this.createScheduleBlockTime(new ScheduleBlockClassTime(0, blockResponse.id, classTimeResponse.id));
+          });
+        this.scheduleDateService.createValue(date)
+          .subscribe((dateResponse: ScheduleDate) => {
+            this.createScheduleDateBlock(new ScheduleDateScheduleBlock(0, dateResponse.id, blockResponse.id));
+          });
+      });
   }
 
-  createBlockTopic(blockId: number, topicId: number): void{
-    const blockTopic = new ScheduleBlockCurriculumTopicTrainingProgram(0, topicId, blockId, 0);
-    this.scheduleBlockCurriculumTopicTrainingProgramService.createValue(blockTopic)
-      .subscribe((response: ScheduleBlockCurriculumTopicTrainingProgram) => {
+  createBlockTopic(blockTopicProgram: ScheduleBlockCurriculumTopicTrainingProgram): void{
+    this.scheduleBlockCurriculumTopicTrainingProgramService.createValue(blockTopicProgram)
+      .subscribe((blockTopicProgramResponse: ScheduleBlockCurriculumTopicTrainingProgram) => {
         // nothing
       });
   }
@@ -318,7 +326,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   }
 
   createScheduleBlockTeacher(blockTeacher: ScheduleBlockTeacher): void{
-    this.scheduleBlockService.createValue(blockTeacher)
+    this.scheduleBlockTeacherService.createValue(blockTeacher)
       .subscribe((blockResponse) => {
         // nothing
       });

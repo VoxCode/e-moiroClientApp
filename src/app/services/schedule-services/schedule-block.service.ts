@@ -18,6 +18,10 @@ export class ScheduleBlockService {
     return this.http.get(this.url + '/' + id);
   }
 
+  getSchedule(): Observable<any> {
+    return this.http.get(this.url + '/ScheduleElements');
+  }
+
   createValue(scheduleBlock: ScheduleBlock): Observable<any> {
     return this.http.post(this.url, scheduleBlock);
   }
@@ -27,6 +31,7 @@ export class ScheduleBlockService {
   }
 
   deleteValue(id: number): Observable<any> {
+    console.log("request");
     return this.http.delete(this.url + '/' + id);
   }
 }
