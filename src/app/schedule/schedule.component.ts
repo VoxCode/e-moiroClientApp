@@ -60,9 +60,24 @@ export class ScheduleComponent implements OnInit {
   ngOnInit(): void {
     this.loadRooms();
     this.loadGroups();
+    // this.scheduleData.push({
+    //     id: 12,
+    //     scheduleBlockId: 0,
+    //     topicId: 0,
+    //     topic: "qwe",
+    //     teacherId: 0,
+    //     teacher: "sdf",
+    //     startTime: new Date(),
+    //     endTime: new Date(),
+    //     groupId: 0,
+    //     group: 12321312,
+    //     roomId: 2,
+    //     room: "dfsdffewr",
+    //   }
+    // );
     this.loadScheduleDates();
-    //setInterval(() => {
-    //console.log(this.scheduleData); }, 1000);
+    setInterval(() => {
+    console.log(this.scheduleData); }, 1000);
   }
 
 
@@ -108,8 +123,10 @@ export class ScheduleComponent implements OnInit {
       .subscribe((data: any) => {
         console.log('danewone');
         console.log(data);
-        data.forEach( el => {
+        data.forEach( (el, index) => {
+          console.log(index);
           this.scheduleData.push({
+              id: index,
               scheduleBlockId: el.scheduleBlockId,
               topicId: el.curriculumTopicTrainingProgramId,
               topic: el.topicTitle,

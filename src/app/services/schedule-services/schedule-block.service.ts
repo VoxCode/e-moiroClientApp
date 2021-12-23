@@ -31,7 +31,6 @@ export class ScheduleBlockService {
   }
 
   deleteValue(id: number): Observable<any> {
-    console.log("request");
     return this.http.delete(this.url + '/' + id);
   }
 }

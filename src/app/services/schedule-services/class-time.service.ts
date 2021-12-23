@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {Observable} from 'rxjs';
-import {ClassTime} from "../../models/schedule-models/СlassTime";
+import {ClassTime} from '../../models/schedule-models/СlassTime';
 
 
 @Injectable()
@@ -19,6 +19,8 @@ export class ClassTimeService {
   }
 
   createValue(classTime: ClassTime): Observable<any> {
+    classTime.classTimeStart.setTime(classTime.classTimeStart.getTime() + (3 * 60 * 60 * 1000));
+    classTime.classTimeEnd.setTime(classTime.classTimeEnd.getTime() + (3 * 60 * 60 * 1000));
     return this.http.post(this.url, classTime);
   }
 

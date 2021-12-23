@@ -214,13 +214,19 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   }
 
   onActionBegin(args: ActionEventArgs): void {
-    console.log("action begin");
-    console.log(args);
+
+    if (args.requestType === "eventCreate" && args.data[0].metaData !== "Valid" && !isNullOrUndefined(document.querySelector('.e-schedule-dialog'))) {
+      this.scheduleObj.uiStateValues.isBlock = true;
+      console.log(args.data[0].metaData);
+      args.cancel = true;
+      alert('Не прошло валидацию!');
+    }
+
     if (args.requestType === 'eventCreate' || args.requestType === 'eventChange' || args.requestType === 'eventRemove') {
       let data: { [key: string]: Object };
       if (args.requestType === 'eventCreate') {
         data = (args.data[0] as { [key: string]: Object });
-        this.createScheduleBlock(data);
+        //this.createScheduleBlock(data);
       } else if (args.requestType === 'eventChange') {
         data = (args.data as { [key: string]: Object });
       } else if (args.requestType === 'eventRemove'){
