@@ -1,8 +1,11 @@
 import {Component, Inject, Input, OnInit, OnChanges, ViewChild, ViewEncapsulation, SimpleChanges} from '@angular/core';
-import { extend, isNullOrUndefined, Browser, setCulture, L10n, loadCldr } from '@syncfusion/ej2-base';
+import { extend, isNullOrUndefined, Browser, setCulture, L10n, loadCldr, Internationalization } from '@syncfusion/ej2-base';
 import {
   ScheduleComponent,
   ActionEventArgs,
+  CurrentAction,
+  EJ2Instance,
+  CellClickEventArgs,
   PopupOpenEventArgs,
   EventRenderedArgs,
   RenderCellEventArgs,
@@ -17,6 +20,8 @@ import {
   MonthService,
   WeekService, DayService, AgendaService,
 } from '@syncfusion/ej2-angular-schedule';
+
+import { DropDownListComponent } from '@syncfusion/ej2-angular-dropdowns';
 import * as numberingSystems from './localization/numberingSystems.json';
 import * as gregorian from './localization/ru/ca-gregorian.json';
 import * as numbers from './localization/ru/numbers.json';
@@ -37,10 +42,10 @@ import {ScheduleBlockClassRoom} from '../models/schedule-models/ScheduleBlockCla
 import {ScheduleBlockCurriculumTopicTrainingProgram} from '../models/schedule-models/ScheduleBlockCurriculumTopicTrainingProgram';
 
 import {ScheduleDateScheduleBlock} from '../models/schedule-models/ScheduleDateScheduleBlock';
-import {ScheduleElement} from "../schedule/schedule-element";
-import {ScheduleBlock} from "../models/schedule-models/ScheduleBlock";
-import {ClassTime} from "../models/schedule-models/СlassTime";
-import {ClassTimeService} from "../services/schedule-services/class-time.service";
+import {ScheduleElement} from '../schedule/schedule-element';
+import {ScheduleBlock} from '../models/schedule-models/ScheduleBlock';
+import {ClassTime} from '../models/schedule-models/СlassTime';
+import {ClassTimeService} from '../services/schedule-services/class-time.service';
 
 loadCldr(numberingSystems['default'], gregorian["default"], numbers["default"], timeZoneNames["default"]);
 L10n.load(dictionary["default"]);
@@ -52,7 +57,8 @@ L10n.load(dictionary["default"]);
   templateUrl: './syncfusion-room-scheduler.component.html',
   styleUrls: ['./syncfusion-room-scheduler.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [TimelineViewsService, ResizeService, DragAndDropService, DayService, WeekService, TimelineViewsService, MonthService, AgendaService,
+  providers: [TimelineViewsService, ResizeService, DragAndDropService, DayService, WeekService,
+    TimelineViewsService, MonthService, AgendaService,
     ScheduleDateService, ScheduleBlockService,
     ScheduleDateScheduleBlockService, ScheduleBlockTeacherService, ScheduleBlockCurriculumTopicTrainingProgramService,
     ScheduleBlockClassTimeService, ScheduleBlockClassRoomService, ClassTimeService]
@@ -81,6 +87,8 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
 
   private _roomData: ClassRoom[] = [];
   convertedRooms: any[] = [];
+
+  private prev: ScheduleElement;
 
   public newEvent: any;
   public culture = 'ru';
@@ -111,24 +119,6 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     return this._roomData;
   }
 
-  doDaThing(): void{
-    console.log(this.scheduleObj);
-    L10n.load(dictionary);
-    this.scheduleObj.locale = 'ru';
-    this.scheduleObj.localeObj.setLocale('ru');
-    // const l10n: L10n = new L10n('schedule', {
-    //   day: 'лол',
-    //   week: 'лол',
-    //   workWeek: 'лол',
-    //   month: 'лол',
-    //   today: 'лол'
-    // });
-    // this.scheduleObj.localeObj = l10n;
-    // this.scheduleObj.render();
-    console.log(this.scheduleObj);
-
-  }
-
   ngOnInit(): void {
     this.eventSettings = {
       dataSource: this.scheduleData,
@@ -155,7 +145,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       if (this.convertedRooms && this.scheduleData) {
         this.loaded = true;
       }
-      }, 1000);
+    }, 1000);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -196,26 +186,35 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     //   console.log("cellcontent");
     // }
 
+    if (args.type === 'Editor')
+    {
+      this.prev = data;
+    }
+    console.log(this.prev);
     if (args.type === 'QuickInfo' || args.type === 'Editor' || args.type === 'RecurrenceAlert' || args.type === 'DeleteAlert') {
       const target: HTMLElement = (args.type === 'RecurrenceAlert' || args.type === 'DeleteAlert') ? (args.data as any).element[0] : args.target;
       if (!isNullOrUndefined(target) && target.classList.contains('e-work-cells')) {
+        if (args.type === 'QuickInfo')
+        {
+          args.cancel = true;
+        }
         if ((target.classList.contains('e-read-only-cells')) ||
           (!this.scheduleObj.isSlotAvailable(data))) {
-          //if cell already have appointment inside
-          //args.cancel = true;
+          // if cell already have appointment inside
+          // args.cancel = true;
         }
       } else if (!isNullOrUndefined(target) && target.classList.contains('e-appointment') &&
         (this.isReadOnly(data.EndTime as Date))) {
-          args.cancel = true;
+        args.cancel = true;
       }
     }
-    console.log("popup");
+    console.log('popup');
     console.log(args);
   }
 
   onActionBegin(args: ActionEventArgs): void {
-
-    if (args.requestType === "eventCreate" && args.data[0].metaData !== "Valid" && !isNullOrUndefined(document.querySelector('.e-schedule-dialog'))) {
+    if (args.requestType === 'eventCreate' && args.data[0].metaData !== 'Valid'
+      && !isNullOrUndefined(document.querySelector('.e-schedule-dialog'))) {
       this.scheduleObj.uiStateValues.isBlock = true;
       console.log(args.data[0].metaData);
       args.cancel = true;
@@ -226,11 +225,16 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       let data: { [key: string]: Object };
       if (args.requestType === 'eventCreate') {
         data = (args.data[0] as { [key: string]: Object });
-        //this.createScheduleBlock(data);
+        // this.createScheduleBlock(data);
       } else if (args.requestType === 'eventChange') {
         data = (args.data as { [key: string]: Object });
+        args.cancel = true;
+        console.log('change');
+        console.log(args);
+        console.log(args.data);
+        this.updateScheduleBlock(data);
       } else if (args.requestType === 'eventRemove'){
-        console.log("remove");
+        console.log('remove');
         console.log(args.data);
 
         data = (args.data[0] as { [key: string]: Object });
@@ -239,7 +243,7 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
         console.log(data.scheduleBlockId);
         this.deleteScheduleBlock(data);
       }
-      //restriction to generating second appointment in one room
+      // restriction to generating second appointment in one room
       // if (!this.scheduleObj.isSlotAvailable(data)) {
       //   args.cancel = true;
       // }
@@ -264,6 +268,8 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
   }
 
   onEventRendered(args: EventRenderedArgs): void {
+    console.log("eventrendered");
+    console.log(args);
     const data: { [key: string]: Object } = args.data;
     if (this.isReadOnly(data.EndTime as Date)) {
       args.element.setAttribute('aria-readonly', 'true');
@@ -283,13 +289,13 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
     //   roomId: 1,
     //   booop: 'wabba-labba-dub-dub',
     // };
-   console.log("popupClose");
-   console.log(args);
-   console.log(this.scheduleData);
+    console.log('popupClose');
+    console.log(args);
+    console.log(this.scheduleData);
   }
 
   deleteScheduleBlock(args: ScheduleElement): void{
-    console.log("actualremoving");
+    console.log('actualremoving');
     console.log(args);
     console.log(args.scheduleBlockId);
     this.scheduleBlockService.deleteValue(args.scheduleBlockId)
@@ -353,7 +359,52 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       });
   }
 
-  UpdateScheduleBlock(): void{
+  updateScheduleBlock(args: ScheduleElement): void{
 
+  }
+
+  public getHeaderStyles(data: Record<string, any>): Record<string, any> {
+    if (data.elementType === 'cell') {
+      return { 'text-align': 'center', 'align-items': 'center', height: '5vh' , color: '#919191' };
+    } else {
+      const color = data.PrimaryColor;
+      return { background: color, color: '#FFFFFF', margin: '1vh' };
+    }
+  }
+
+  public buttonClickActions(e: Event) {
+    const quickPopup: HTMLElement = this.scheduleObj.element.querySelector('.e-quick-popup-wrapper') as HTMLElement;
+    const getSlotData: Function = (): { [key: string]: Object } => {
+      const cellDetails: CellClickEventArgs = this.scheduleObj.getCellDetails(this.scheduleObj.getSelectedElements());
+      const addObj: { [key: string]: Object } = {};
+      addObj.Id = this.scheduleObj.getEventMaxID();
+      addObj.Subject = ((quickPopup.querySelector('#title') as EJ2Instance).ej2_instances[0] as DropDownListComponent).value;
+      addObj.StartTime = new Date(+cellDetails.startTime);
+      addObj.EndTime = new Date(+cellDetails.endTime);
+      addObj.Description = ((quickPopup.querySelector('#notes') as EJ2Instance).ej2_instances[0] as DropDownListComponent).value;
+      addObj.RoomId = ((quickPopup.querySelector('#eventType') as EJ2Instance).ej2_instances[0] as DropDownListComponent).value;
+      return addObj;
+    };
+    if ((e.target as HTMLElement).id === 'add') {
+      const addObj: { [key: string]: Object } = getSlotData();
+      this.scheduleObj.addEvent(addObj);
+    } else if ((e.target as HTMLElement).id === 'delete') {
+      const eventDetails: { [key: string]: Object } = this.scheduleObj.activeEventData.event as { [key: string]: Object };
+      let currentAction: CurrentAction;
+      if (eventDetails.RecurrenceRule) {
+        currentAction = 'DeleteOccurrence';
+      }
+      this.scheduleObj.deleteEvent(eventDetails, currentAction);
+    } else {
+      const isCellPopup: boolean = quickPopup.firstElementChild.classList.contains('e-cell-popup');
+      const eventDetails: { [key: string]: Object } = isCellPopup ? getSlotData() :
+        this.scheduleObj.activeEventData.event as { [key: string]: Object };
+      let currentAction: CurrentAction = isCellPopup ? 'Add' : 'Save';
+      if (eventDetails.RecurrenceRule) {
+        currentAction = 'EditOccurrence';
+      }
+      this.scheduleObj.openEditor(eventDetails, currentAction, true);
+    }
+    this.scheduleObj.closeQuickInfoPopup();
   }
 }

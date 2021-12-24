@@ -2,17 +2,17 @@
   <div class="col-lg-12 content-wrapper" *ngIf="loaded">
 
     <ejs-schedule  #scheduleObj width='100%' cssClass='timeline-resource' height='800px'
-                  [workDays]='workWeekDays' [showWeekend]="showWeekend"
-                  [workHours]="workHours" [startHour]='startHour' [endHour]='endHour'
-                  [timeScale]="timeScale" [timeFormat]="timeFormat" [rowAutoHeight]="rowAutoHeight"
-                  [selectedDate]="selectedDate" [currentView]="currentView" [group]="groupResource"
-                  [eventSettings]="eventSettings"
+                   [workDays]='workWeekDays' [showWeekend]="showWeekend"
+                   [workHours]="workHours" [startHour]='startHour' [endHour]='endHour'
+                   [timeScale]="timeScale" [timeFormat]="timeFormat" [rowAutoHeight]="rowAutoHeight"
+                   [selectedDate]="selectedDate" [currentView]="currentView" [group]="groupResource"
+                   [eventSettings]="eventSettings"
                    [locale]="culture"
-                  (eventRendered)="onEventRendered($event)"
-                  (actionBegin)="onActionBegin($event)"
-                  (renderCell)="onRenderCell($event)"
-                  (popupOpen)="onPopupOpen($event)"
-                  (popupClose)="onPopupClose($event)">
+                   (eventRendered)="onEventRendered($event)"
+                   (actionBegin)="onActionBegin($event)"
+                   (renderCell)="onRenderCell($event)"
+                   (popupOpen)="onPopupOpen($event)"
+                   (popupClose)="onPopupClose($event)">
       <e-resources>
         <e-resource field='roomId' title='Room Type' [dataSource]='convertedRooms' [allowMultiple]='allowMultiple' name='MeetingRoom'
                     textField='text' idField='id' colorField='color'>
@@ -21,37 +21,37 @@
       <e-views>
         <e-view option="TimelineDay">
           <ng-template #eventTemplate let-data>
-            <div class="time" [style.background]="data.PrimaryColor">{{data.topic}}</div>
+            <div [style.background]="getHeaderStyles(data)">
+              Группа: {{data.group}}
+              <br>
+              {{data.startTime | date : 'HH:mm'}} - {{data.endTime | date : 'HH:mm'}}
+            </div>
           </ng-template>
         </e-view>
         <e-view option="TimelineWeek">
           <ng-template #eventTemplate let-data>
-            <div [style.background]="data.PrimaryColor">
-<!--              {{data.topic.topicTitle}}-->
-<!--              <br>-->
-<!--              {{data.teacher.firstName}}-->
-<!--              <br>-->
+            <div [style.background]="getHeaderStyles(data)">
               Группа: {{data.group}}
               <br>
-              {{data.startTime | date : 'hh:mm'}} - {{data.endTime | date : 'hh:mm'}}
+              {{data.startTime | date : 'HH:mm'}} - {{data.endTime | date : 'HH:mm'}}
             </div>
           </ng-template>
         </e-view>
         <e-view option='Month'></e-view>
       </e-views>
-      <ng-template #resourceHeaderTemplate let-data>
-        <div class='template-wrap'>
-          <div class="name">{{data.resourceData.text}}</div>
+      <ng-template #eventTemplate let-data>
+        <div [style.background]="getHeaderStyles(data)">
+          Группа: {{data.group}}
+          <br>
+          {{data.startTime | date : 'HH:mm'}} - {{data.endTime | date : 'HH:mm'}}
         </div>
       </ng-template>
       <!-- Header template -->
       <ng-template #quickInfoTemplatesHeader let-data>
         <div class="quick-info-header">
-          <div class="quick-info-header-content"
-               [style.background]="data.PrimaryColor"
-               [style.color]="data.PrimaryColor">
-            <div class="quick-info-title">{{data.group}}</div>
-            <div class="duration-text"> {{data.startTime | date : 'hh:mm'}} - {{data.endTime | date : 'hh:mm'}}</div>
+          <div class="quick-info-header-content" [ngStyle]="getHeaderStyles(data)">
+            <div class="quick-info-title"><h5>{{(data.elementType === 'cell') ? 'Добавить событие' : 'Детали события'}}</h5></div>
+            <div class="duration-text">{{data.startTime| date : 'dd.MM.yyyy (HH:mm)' }}</div>
           </div>
         </div>
       </ng-template>
@@ -64,7 +64,7 @@
         <div class="quick-info-content">
           <div class="e-cell-content">
             <div class="content-area">
-              <ejs-textbox #titleObj id="title" placeholder="Title"></ejs-textbox>
+              <ejs-textbox #titleObj id="title" placeholder="Title">qwe</ejs-textbox>
             </div>
             <div class="content-area">
             </div>
@@ -91,8 +91,15 @@
             </div>
           </div>
         </div>
+        <div class="e-event-footer" style="text-align: right; margin-top: 20px">
+          <button style="border: none; background: none; margin-left: 5px"
+                  id="delete" cssClass="e-flat" (click)="buttonClickActions($event)"><h5>Удалить</h5></button>
+          <button style="border: none; background: none; margin-left: 5px"
+                  id="more-details" cssClass="e-flat"
+                  (click)="buttonClickActions($event)"><h5>Детали</h5></button>
+        </div>
       </ng-template>
-
+      <!-- Editor Template -->
       <ng-template #editorTemplate let-data>
         <table *ngIf="data != undefined" class="custom-event-editor" width="100%" cellpadding="5">
           <tbody>

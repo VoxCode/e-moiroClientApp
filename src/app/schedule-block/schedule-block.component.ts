@@ -24,7 +24,6 @@ import {ScheduleBlockClassTimeService} from '../services/schedule-services/sched
 import {ScheduleElement} from '../schedule/schedule-element';
 import {ClassTime} from '../models/schedule-models/СlassTime';
 import {TimelineMonthService, TimelineViewsService} from '@syncfusion/ej2-angular-schedule';
-import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-schedule-block',
@@ -53,14 +52,6 @@ export class ScheduleBlockComponent implements OnInit {
   public selectedRoom: ClassRoom;
   public selectedRoomAux: ClassRoom;
 
-  // public StartDate
-
-  // public form: FormGroup = new FormGroup({
-  //   groupNumber: new FormControl('', Validators.required),
-  //   topic: new FormControl('', Validators.required),
-  //   teacher: new FormControl('', Validators.required),
-  //   room: new FormControl('', Validators.required),
-  // });
   groupValid = false;
   groupTouched: boolean;
   teacherValid = false;
@@ -82,12 +73,8 @@ export class ScheduleBlockComponent implements OnInit {
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
   groups: Group[] = [];
 
-  tempClassTime: ScheduleBlockClassTime;
-
   public roomFields: Object = { text: 'name', value: 'id' };
-  public topicFields: Object = { text: 'topicTitle', value: 'id' };
-  public teacherFields: Object = { text: 'teacherFullNameForm', value: 'id' };
-  public groupFields: Object = { text: 'groupNumber', value: 'id' };
+
 
   constructor(
     private scheduleBlockCurriculumTopicTrainingProgramService: ScheduleBlockCurriculumTopicTrainingProgramService,
@@ -105,150 +92,41 @@ export class ScheduleBlockComponent implements OnInit {
   ngOnInit(): void {
     console.log('editor init');
     console.log(this.elementData);
-    if (this.elementData.topic === undefined){
-
-    }
-    this.selectedTopic = this.elementData.topic;
-    this.selectedTeacher = this.elementData.teacher;
-    this.selectedGroup = this.elementData.group;
-    this.selectedRoom = this.elementData.room;
-    // this.form.controls.groupNumber.patchValue(this.selectedGroup.groupNumber);
-    // this.form.controls.topic.patchValue(this.selectedTopic.topicTitle);
-    // this.form.controls.teacher.patchValue(this.selectedTeacher.fullNameForm);
-    // this.form.controls.room.patchValue(this.selectedRoom.name);
-    // this.elementData = {
-    //   id: 2,
-    //   programId: 1,
-    //   topicTitle: 'topic2',
-    //   teacherId: 1,
-    //   teacherFullName: 'teacher2',
-    //   description: 'description2',
-    //   startTime: new Date(2021, 11, 14, 9, 0),
-    //   endTime: new Date(2021, 11, 14, 11, 0),
-    //   groupId: 1,
-    //   groupNumber: 'gr2',
-    //   roomId: new Array(1)[3],
-    //   roomName:'room2',
-    //   metaData: 'wabba-labba-dub-dub2',
-    // };
-    // console.log(this.scheduleElement);
+    this.selectedRoom = this.rooms.filter(u => u.id >= this.elementData.roomId)[0];
     this.loadGroups();
-    //  this.loadScheduleBlockCurriculumTopics();
-    this.loadCurriculumTopicTrainingPrograms();
-    this.loadTrainingProgramTeachers();
+    this.loadCurriculumTopics();
+    this.loadTeachers();
 
   }
-
-  // get groupNumber(): AbstractControl { return this.form.get('groupNumber'); }
-
-
-
 
   public dateParser(data: string) {
     return new Date(data);
   }
 
-  public getResourceValue(data: { [key: string]: Object }) {
-    console.log('lololololololo');
-    if (data && Object.keys(data).length > 0) {
-      this.elementData.room = data.name;
-      return data.roomId;
-      console.log(data);
-    }
-  }
-
-  createBlock(el: any): void{
-    const block = new ScheduleBlock(0, 1, 0);
-    this.scheduleBlockService.createValue(block)
-      .subscribe((blockResponse: ScheduleBlock) => {
-        this.createBlockTopic(blockResponse.id, this.selectedTopic.id);
-        this.createBlockClassRoom(blockResponse.id, this.scheduleElement.roomId);
-        this.loadScheduleBlockClassTime(this.scheduleElement.startTime, this.scheduleElement.endTime);
-        this.createBlockClassTime(blockResponse.id, this.tempClassTime.id);
-        this.createBlockTeacher(blockResponse.id, this.selectedTeacher.id);
-    });
-  }
-  createBlockClassTime(blockId: number, timeID: number): void{
-    const blockClassTime  = new ScheduleBlockClassTime();
-    this.scheduleBlockClassTimeService.createValue(blockClassTime)
-      .subscribe((response: ScheduleBlockClassRoom) => {
-        // nothing
-      });
-  }
-  createBlockClassRoom(blockId: number, roomId: number): void{
-    const blockClassRoom = new ScheduleBlockClassRoom();
-    this.scheduleBlockClassRoomService.createValue(blockClassRoom)
-      .subscribe((response: ScheduleBlockClassRoom) => {
-        // nothing
-      });
-  }
-  createBlockTeacher(blockId: number, teacherId: number): void{
-    const blockTeacher = new ScheduleBlockTeacher(0, teacherId, blockId, 0 );
-    this.scheduleBlockTeacherService.createValue(blockTeacher)
-      .subscribe((response: ScheduleBlockTeacher) => {
-       // nothing
-    });
-  }
-
-  createBlockTopic(blockId: number, topicId: number): void{
-    const blockTopic = new ScheduleBlockCurriculumTopicTrainingProgram(0, topicId, blockId, 0);
-    this.scheduleBlockCurriculumTopicTrainingProgramService.createValue(blockTopic)
-      .subscribe((response: ScheduleBlockCurriculumTopicTrainingProgram) => {
-        // nothing
-      });
-  }
-
-  loadScheduleBlockClassTime(startTime: Date, endTime: Date): void{
-    this.scheduleBlockClassTimeService.getValue(1)
-      .subscribe((data: ScheduleBlockClassTime) => {
-        if (data){
-          this.tempClassTime = data;
-        }
-      });
-  }
-
-
-  loadScheduleBlockCurriculumTopics(): void {
-  this.scheduleBlockCurriculumTopicTrainingProgramService.getValuesFromScheduleBlock(this.scheduleElement.scheduleBlockId)
-    .subscribe((data: ScheduleBlockCurriculumTopicTrainingProgram[]) => {
-      if (data.length > 0) {
-        console.log(data);
-      }
-    });
-  }
 
   loadGroups(): void{
     this.groupService.getValues()
       .subscribe((data: Group[]) => {
         if (data.length > 0){
           this.groups = data;
+          this.selectedGroup = this.groups.filter(u => u.id >= this.elementData.groupId)[0];
         }
       });
   }
 
 
 
-  loadCurriculumTopicTrainingPrograms(): void{
-    // this.trainingProgramCurriculumSectionService.getFromTrainingProgram(this.scheduleElement.programId)
-    //   .subscribe((data: TrainingProgramCurriculumSection[]) => {
-    //     if (data.length > 0){
-    //       this.curriculumTopicTrainingPrograms = data;
-    //     }
-    //     // {
-    //     //   data.forEach((obj) => {
-    //     //
-    //     //   });
-    //     // }
-    //   });
+  loadCurriculumTopics(): void{
     this.curriculumTopicTrainingProgramService.getValues()
-          .subscribe((topicsData: CurriculumTopicTrainingProgram[]) => {
-            if (topicsData.length > 0) {
-              this.curriculumTopicTrainingPrograms = topicsData;
-            }
-          });
+      .subscribe((topicsData: CurriculumTopicTrainingProgram[]) => {
+        if (topicsData.length > 0) {
+          this.curriculumTopicTrainingPrograms = topicsData;
+          this.selectedTopic = this.curriculumTopicTrainingPrograms.filter(u => u.id >= this.elementData.topicId)[0];
+        }
+      });
   }
 
-  loadTrainingProgramTeachers(): void {
+  loadTeachers(): void {
     this.teacherService.getValues()
       .subscribe((teachersData: Teacher[]) => {
         if (teachersData.length > 0) {
@@ -257,14 +135,13 @@ export class ScheduleBlockComponent implements OnInit {
               teacher.patronymicName + ' (' + teacher.position + ')';
             this.teachers.push(teacher);
           });
+          this.selectedTeacher = this.teachers.filter(u => u.id >= this.elementData.teacherId)[0];
         }
       });
   }
 
 
   MergeWithSubGroup(val: string, checked: boolean = true): void {
-    console.log('sdfdsfsdfsdfs');
-    console.log(this.elementData);
     switch (val) {
       case 'divideSubGroups':
         this.divideSubGroups = checked;
@@ -361,9 +238,6 @@ export class ScheduleBlockComponent implements OnInit {
       this.teacherValid = false;
     }
   }
-
-
-
 
   selectTeacher(): void {
     this.elementData.teacherId = this.selectedTeacher.id;

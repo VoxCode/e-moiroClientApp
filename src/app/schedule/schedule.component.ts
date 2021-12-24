@@ -131,7 +131,7 @@ export class ScheduleComponent implements OnInit {
               topicId: el.curriculumTopicTrainingProgramId,
               topic: el.topicTitle,
               teacherId: el.teacherId,
-              teacher: el.lastName,
+              teacher: el.teacherFullName,
               startTime: el.classTimeStart,
               endTime: el.classTimeEnd,
               groupId: el.groupId,

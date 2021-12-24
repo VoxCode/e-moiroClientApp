@@ -1,7 +1,7 @@
 <div class="md-form">
   <ng-select *ngIf="groups.length !== 0" [items]="this.groups" [clearable]="false"
-            (change)="validateGroup()"
-            bindValue=""
+             (change)="validateGroup()"
+             bindValue=""
              bindLabel="groupNumber"
              [(ngModel)]="selectedGroup"
              placeholder="Группа"
