@@ -88,6 +88,7 @@ export class DocumentEdComponent implements OnChanges, AfterViewInit {
       case 1: type = 'УП'; break;
       case 2: type = 'УТП'; break;
       case 3: type = 'Расписание'; break;
+      case 4: type = 'Журнал'; break;
     }
     this.container.documentEditor.save(this.trainingProgramName + '(' + type + ')', 'Docx');
   }

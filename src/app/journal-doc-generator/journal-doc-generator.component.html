@@ -1,0 +1,3 @@
+<button type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="downloadDocx()"
+        mdbWavesEffect>Скачать!!!</button>
+<app-document-ed *ngIf="docx[0]"  [docx]="docx" [docxType]="3" [trainingProgramName]="'тест'"></app-document-ed>

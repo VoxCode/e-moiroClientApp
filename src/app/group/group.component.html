@@ -32,11 +32,20 @@
         <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.classStartDate | date : 'dd.MM.yyyy'}}</td>
         <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.classEndDate | date : 'dd.MM.yyyy'}}</td>
         <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-          <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
-                  mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
-          <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)"
-                  mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
-        </td>
+          <div>
+            <button type="button" mdbBtn color="yellow" size="sm" class="relative waves-light"
+                    style="padding: 0.5rem 0.5rem;"
+                    [routerLink]="['/' + globals.role +'/journalDocxGenerator', el.id]"
+                    mdbWavesEffect><mdb-icon fas icon="file-word" size="sm"></mdb-icon><a class="btn-text"><br>Журнал</a></button>
+          </div>
+          <div>
+            <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
+                    mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
+          </div>
+          <div>
+            <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)"
+                    mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+          </div>
       </tr>
       </tbody>
       <tfoot class="grey lighten-5 w-100">

@@ -16,7 +16,7 @@ export class DocumentCreatorSchedule {
   sections: any[] = [];
 
   constructor(
-    isBLR: boolean
+    isBLR: boolean = false,
   ) { }
 
   public create(): Document {

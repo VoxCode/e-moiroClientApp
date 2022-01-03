@@ -4,6 +4,7 @@ import { Group } from '../models/Group';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {GroupEditComponent} from '../group/group-edit.component';
 import {IsDeleteComponent} from '../is-delete/is-delete.component';
+import {Globals} from '../globals';
 
 @Component({
   selector: 'app-group',
@@ -27,6 +28,7 @@ export class GroupComponent implements OnInit {
   tableMode = true;
 
   constructor(
+    public globals: Globals,
     private valueService: GroupService,
     private modalService: MDBModalService) { }
 

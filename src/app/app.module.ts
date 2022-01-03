@@ -78,6 +78,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import {DatePickerModule, DateTimePickerModule} from '@syncfusion/ej2-angular-calendars';
+import { JournalDocGeneratorComponent } from './journal-doc-generator/journal-doc-generator.component';
+import { JournalComponent } from './journal/journal.component';
+
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -140,6 +143,8 @@ export function tokenGetter(): string {
     RoomComponent,
     ScheduleBlockComponent,
     GroupEditComponent,
+    JournalDocGeneratorComponent,
+    JournalComponent,
   ],
     imports: [
         BrowserModule,
