@@ -31,7 +31,7 @@ export class JournalDocGeneratorComponent implements OnInit {
 
   ngOnInit(): void {
     const date = new Date();
-    this.loadGroup();
+    //this.loadGroup();
     this.getDocument();
   }
 

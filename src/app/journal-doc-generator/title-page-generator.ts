@@ -1,11 +1,14 @@
-import {convertMillimetersToTwip, Document, Footer, Header, PageNumberFormat, Paragraph} from 'docx';
+import {convertMillimetersToTwip, Document, Footer, Header, PageNumberFormat, Paragraph, Table, WidthType} from 'docx';
 import {DocxJournalDataTemplate} from './docx-journal-data-template';
 import {ContentTableHeaderGenerator} from "./content-table-generator/content-table-header-generator";
+import {TableHeaderFirstRow} from "../docx-generator-data-template/table-ATP/table-ATP-structure/table-header/table-header-first-row";
 
 export class TitlePageGenerator {
 
   docxGeneratorDataTemplate: DocxJournalDataTemplate = new DocxJournalDataTemplate(28);
   contentTableHeaderGenerator: ContentTableHeaderGenerator = new ContentTableHeaderGenerator();
+
+  tableHeaderFirstRow: TableHeaderFirstRow = new TableHeaderFirstRow(5, false);
 
   sections: any[] = [];
   children: any[] = [];
@@ -72,21 +75,18 @@ export class TitlePageGenerator {
       properties: {
         page: {
           margin: {
-            left: convertMillimetersToTwip(30),
-            right: convertMillimetersToTwip(10),
-            top: convertMillimetersToTwip(20),
-            bottom: convertMillimetersToTwip(20)
+            left: convertMillimetersToTwip(15),
+            right: convertMillimetersToTwip(15),
+            top: convertMillimetersToTwip(9.5),
+            bottom: convertMillimetersToTwip(15)
           }
         }
       },
       children: [
-        new Paragraph({
-          children: [
-            this.contentTableHeaderGenerator.insert(),
-          ],
-        }),
-      ],
+        this.contentTableHeaderGenerator.insert(),
+      ]
     });
+
     return new Document({
       creator: 'MOIRO',
       title: 'Document of MOIRO',
