@@ -20,7 +20,7 @@ export class ContentTableHeaderGenerator {
           verticalAlign: VerticalAlign.CENTER,
           width: {
             size: convertMillimetersToTwip(size),
-            type: WidthType.PERCENTAGE
+            type: WidthType.DXA
           }
         });
       }
@@ -41,19 +41,8 @@ export class ContentTableHeaderGenerator {
 
         const headerCells: any = [];
         const rowCells: any = [];
-        const bodyRows: any = [];
-        let tb: any = [];
+        const rows: any = [];
 
-        // headerCells.push(
-        //   this.generateTableCell('№ п/п', 6.4),
-        //   this.generateTableCell('Содержание', 70.9),
-        //   this.generateTableCell('Страницы', 22.7),
-        // );
-        // rowCells.push(
-        //   this.generateTableCell('', 6.4),
-        //   this.generateTableCell('', 70.9),
-        //   this.generateTableCell('', 22.7),
-        // );
         headerCells.push(
             this.generateTableCell('№ п/п', 11.9),
             this.generateTableCell('Содержание', 132.5),
@@ -65,46 +54,14 @@ export class ContentTableHeaderGenerator {
           this.generateTableCell('', 42.5),
         );
 
-        tb = [new TableRow({
-          children: [ this.generateTableCell('', 10),
-            this.generateTableCell('', 70),
-            this.generateTableCell('', 20),
-          ]
-        }),
-          new TableRow({
-            children: [ this.generateTableCell('', 10),
-              this.generateTableCell('', 70),
-              this.generateTableCell('', 20),
-            ]
-          }),
-        ];
-        for (let i = 0; i < 5; i++) {
-          console.log(headerCells);
-          // console.log(aux);
-          console.log(bodyRows);
-          // this.bodyRows.push(this.insertBodyRow(this.headerCells));
-          bodyRows.push( this.insertRow(headerCells, 10));
+        rows.push( this.insertRow(headerCells, 10));
+        for (let i = 0; i < 40; i++) {
+         rows.push(this.insertRow(rowCells, 6));
         }
 
-
-
-
-
-
         return new Table({
-          rows: [
-            this.insertRow(headerCells, 10),
-            this.insertRow(rowCells, 0.6),
-            this.insertRow(rowCells, 0.6),
-            this.insertRow(rowCells, 0.6),
-            this.insertRow(rowCells, 0.6),
-            this.insertRow(rowCells, 0.6),
-            this.insertRow(rowCells, 0.6),
-            this.insertRow(rowCells, 0.6),
-            this.insertRow(rowCells, 0.6),
-            // bodyRows,
-            // tb,
-          ],
+          rows,
+          alignment: AlignmentType.LEFT,
           width: {
             size: convertMillimetersToTwip(186.9),
             type: WidthType.DXA
