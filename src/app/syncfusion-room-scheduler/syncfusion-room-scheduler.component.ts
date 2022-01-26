@@ -225,10 +225,10 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       let data: { [key: string]: Object };
       if (args.requestType === 'eventCreate') {
         data = (args.data[0] as { [key: string]: Object });
-        // this.createScheduleBlock(data);
+        this.createScheduleBlock(data);
       } else if (args.requestType === 'eventChange') {
         data = (args.data as { [key: string]: Object });
-        args.cancel = true;
+        //args.cancel = true;
         console.log('change');
         console.log(args);
         console.log(args.data);

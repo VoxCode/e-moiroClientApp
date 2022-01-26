@@ -1,14 +1,26 @@
-import {convertMillimetersToTwip, Document, Footer, Header, PageNumberFormat, Paragraph, Table, WidthType} from 'docx';
+import {
+  convertMillimetersToTwip,
+  Document,
+  Footer,
+  Header,
+  PageBreak,
+  PageNumberFormat,
+  Paragraph,
+  Table,
+  WidthType
+} from 'docx';
 import {DocxJournalDataTemplate} from './docx-journal-data-template';
 import {ContentTableHeaderGenerator} from './content-table-generator/content-table-header-generator';
 import {TableHeaderFirstRow} from '../docx-generator-data-template/table-ATP/table-ATP-structure/table-header/table-header-first-row';
 import {ListenersTableGenerator} from "./content-table-generator/listeners-table-generator";
+import {JournalScheduleTableGenerator} from "./content-table-generator/journal-schedule-table-generator";
 
 export class TitlePageGenerator {
 
   docxGeneratorDataTemplate: DocxJournalDataTemplate = new DocxJournalDataTemplate(28);
   contentTableHeaderGenerator: ContentTableHeaderGenerator = new ContentTableHeaderGenerator();
   listenersTableGenerator: ListenersTableGenerator = new ListenersTableGenerator();
+  journalScheduleTableGenerator: JournalScheduleTableGenerator = new JournalScheduleTableGenerator();
 
   tableHeaderFirstRow: TableHeaderFirstRow = new TableHeaderFirstRow(5, false);
 
@@ -102,6 +114,23 @@ export class TitlePageGenerator {
       },
       children: [
         this.listenersTableGenerator.insert(),
+        this.docxGeneratorDataTemplate.pageBreak()
+      ]
+    });
+
+    this.sections.push({
+      properties: {
+        page: {
+          margin: {
+            left: convertMillimetersToTwip(15),
+            right: convertMillimetersToTwip(15),
+            top: convertMillimetersToTwip(9.5),
+            bottom: convertMillimetersToTwip(15)
+          }
+        }
+      },
+      children: [
+        this.journalScheduleTableGenerator.insert(),
       ]
     });
 

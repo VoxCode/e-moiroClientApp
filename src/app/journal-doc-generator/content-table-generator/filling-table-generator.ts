@@ -11,7 +11,7 @@ import {
   WidthType
 } from 'docx';
 
-export class ListenersTableGenerator {
+export class FillingTableGenerator {
   constructor() {
   }
 
