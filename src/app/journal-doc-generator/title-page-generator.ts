@@ -12,8 +12,9 @@ import {
 import {DocxJournalDataTemplate} from './docx-journal-data-template';
 import {ContentTableHeaderGenerator} from './content-table-generator/content-table-header-generator';
 import {TableHeaderFirstRow} from '../docx-generator-data-template/table-ATP/table-ATP-structure/table-header/table-header-first-row';
-import {ListenersTableGenerator} from "./content-table-generator/listeners-table-generator";
-import {JournalScheduleTableGenerator} from "./content-table-generator/journal-schedule-table-generator";
+import {ListenersTableGenerator} from './content-table-generator/listeners-table-generator';
+import {JournalScheduleTableGenerator} from './content-table-generator/journal-schedule-table-generator';
+import {TeachersCompletedWorkTableGenerator} from './content-table-generator/teachers-completed-work/teachers-completed-work-table-generator';
 
 export class TitlePageGenerator {
 
@@ -21,6 +22,7 @@ export class TitlePageGenerator {
   contentTableHeaderGenerator: ContentTableHeaderGenerator = new ContentTableHeaderGenerator();
   listenersTableGenerator: ListenersTableGenerator = new ListenersTableGenerator();
   journalScheduleTableGenerator: JournalScheduleTableGenerator = new JournalScheduleTableGenerator();
+  teachersCompletedWorkTableGenerator: TeachersCompletedWorkTableGenerator = new TeachersCompletedWorkTableGenerator();
 
   tableHeaderFirstRow: TableHeaderFirstRow = new TableHeaderFirstRow(5, false);
 
@@ -43,44 +45,40 @@ export class TitlePageGenerator {
         }
       },
       children: [
-        new Paragraph({
-          children: [
-            this.docxGeneratorDataTemplate.ministryOfEducation(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.titleMOIRO(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.titleJournal(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.titlePKProgram(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.titleTrainingProgram(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.group(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.educationForm(),
-            this.docxGeneratorDataTemplate.studyDuration(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.startTime(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.endTime(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.methodist(),
-            this.docxGeneratorDataTemplate.emptyParagraph(),
-            this.docxGeneratorDataTemplate.educationalDepartmentChief(),
-          ],
-        }),
+        this.docxGeneratorDataTemplate.ministryOfEducation(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.titleMOIRO(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.titleJournal(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.titlePKProgram(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.titleTrainingProgram(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.group(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.educationForm(),
+        this.docxGeneratorDataTemplate.studyDuration(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.startTime(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.endTime(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.methodist(),
+        this.docxGeneratorDataTemplate.emptyParagraph(),
+        this.docxGeneratorDataTemplate.educationalDepartmentChief(),
       ],
     });
 
@@ -131,6 +129,24 @@ export class TitlePageGenerator {
       },
       children: [
         this.journalScheduleTableGenerator.insert(),
+      ]
+    });
+
+    this.sections.push({
+      properties: {
+        page: {
+          margin: {
+            left: convertMillimetersToTwip(5),
+            right: convertMillimetersToTwip(4),
+            top: convertMillimetersToTwip(5),
+            bottom: convertMillimetersToTwip(5)
+          }
+        }
+      },
+      children: [
+        this.teachersCompletedWorkTableGenerator.insertTableName(),
+        this.teachersCompletedWorkTableGenerator.insert(),
+        this.teachersCompletedWorkTableGenerator.insertCredentials(),
       ]
     });
 

@@ -46,6 +46,7 @@ export class JournalDocGeneratorComponent implements OnInit {
 
   public getDocument(): void {
     const documentCreator = new TitlePageGenerator();
+    //const documentCreator = new DocumentCreatorJournal();
     const docxTmp = documentCreator.create();
     Packer.toBlob(docxTmp).then(blob => {
       this.docx.push(blob);
