@@ -4,15 +4,42 @@
   <div class="col-sm-2">
     <app-curriculum-topic-list></app-curriculum-topic-list>
   </div>
-  <div class="col-sm">
-    <button size="sm" type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
-            (click)="addRoom()">Добавить Комнату
-    </button>
-    <app-syncfusion-room-scheduler
-      *ngIf="roomData && scheduleData"
-      [roomData]="roomData"
-      [scheduleData]="scheduleData"
-    >
-    </app-syncfusion-room-scheduler>
+
+  <div class="backGround">
+    <section>
+      <button aria-label="Example icon button with a home icon">left</button>
+      <button aria-label="Example icon button with a home icon">Right</button>
+    </section>
+
+    <table>
+      <tr>
+        <th>Понедельник</th>
+        <th>Вторник</th>
+        <th>Среда</th>
+        <th>Четверг</th>
+        <th>Пятница</th>
+        <th>Суббота</th>
+      </tr>
+
+      <tr *ngFor="let row of testScheduleData">
+        <td *ngFor="let col of [0,1,2,3,4,5]">
+          <app-schedule-cell scheduleElement="" (click)="onCellClick()"></app-schedule-cell>
+        </td>
+      </tr>
+    </table>
   </div>
+
+
+
+<!--  <div class="col-sm">-->
+<!--    <button size="sm" type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect-->
+<!--            (click)="addRoom()">Добавить Комнату-->
+<!--    </button>-->
+<!--    <app-syncfusion-room-scheduler-->
+<!--      *ngIf="roomData && scheduleData"-->
+<!--      [roomData]="roomData"-->
+<!--      [scheduleData]="scheduleData"-->
+<!--    >-->
+<!--    </app-syncfusion-room-scheduler>-->
+<!--  </div>-->
 </div>

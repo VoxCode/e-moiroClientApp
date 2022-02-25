@@ -1,0 +1,55 @@
+.divCell {
+  border: 1px solid black;
+  border-radius: 10pt;
+  width: 100px;
+}
+
+.divCell:hover {
+  box-shadow: 0 0 3pt 2pt cornflowerblue;
+}
+
+.extra {
+  bottom: 3px;
+  left: 5px;
+  right: 5px;
+  font-size: 13px;
+}
+
+.left, .middle, .right {
+  white-space: nowrap; /* Запрещаем перенос строк */
+  overflow: hidden; /* Обрезаем все, что не помещается в область */
+  display: inline-block;
+  *display: inline;
+  zoom: 1;
+  vertical-align: top;
+  font-size: 12px;
+  margin: 10px;
+}
+
+.left {
+  width: 80%;
+}
+
+.middle {
+  width: 20%;
+  text-align: -webkit-center;
+}
+
+.right {
+  width: 20%;
+  text-align: right;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden; /* Обрезаем все, что не помещается в область */
+  padding: 5px; /* Поля вокруг текста */
+  text-overflow: ellipsis; /* Добавляем многоточие */
+}
+
+
+.clip {
+  background: #fc0; /* Цвет фона */
+  padding: 5px; /* Поля вокруг текста */
+  text-overflow: ellipsis; /* Добавляем многоточие */
+}

@@ -80,6 +80,8 @@ import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import {DatePickerModule, DateTimePickerModule} from '@syncfusion/ej2-angular-calendars';
 import { JournalDocGeneratorComponent } from './journal-doc-generator/journal-doc-generator.component';
 import { JournalComponent } from './journal/journal.component';
+import {MatIconModule} from '@angular/material/icon';
+import { ScheduleCellComponent } from './schedule-cell/schedule-cell.component';
 
 
 export function tokenGetter(): string {
@@ -145,6 +147,7 @@ export function tokenGetter(): string {
     GroupEditComponent,
     JournalDocGeneratorComponent,
     JournalComponent,
+    ScheduleCellComponent,
   ],
     imports: [
         BrowserModule,
@@ -174,7 +177,8 @@ export function tokenGetter(): string {
         }),
         ScheduleModule,
         MatDatepickerModule,
-        DateTimePickerModule
+        DateTimePickerModule,
+        MatIconModule
     ],
   providers: [
     AuthService,

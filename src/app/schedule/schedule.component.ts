@@ -24,6 +24,7 @@ import {ScheduleElement} from './schedule-element';
 import {ScheduleDateScheduleBlock} from '../models/schedule-models/ScheduleDateScheduleBlock';
 
 
+
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
@@ -34,6 +35,52 @@ import {ScheduleDateScheduleBlock} from '../models/schedule-models/ScheduleDateS
   ScheduleBlockClassTimeService, ScheduleBlockClassRoomService]
 })
 export class ScheduleComponent implements OnInit {
+  testScheduleData: ScheduleElement[] = [
+    {id: 0,
+      topic: 'topic1',
+      teacher: 'teacher1',
+      startTime: new Date(),
+      endTime: new Date(),
+      group: 1,
+      room: '1', },
+    {id: 2,
+      topic: 'topic2',
+      teacher: 'teacher2',
+      startTime: new Date(),
+      endTime: new Date(),
+      group: 2,
+      room: '2', },
+    {id: 3,
+      topic: 'topic3',
+      teacher: 'teacher3',
+      startTime: new Date(),
+      endTime: new Date(),
+      group: 3,
+      room: '3', },
+    {id: 4,
+      topic: 'topic4',
+      teacher: 'teacher4',
+      startTime: new Date(),
+      endTime: new Date(),
+      group: 4,
+      room: '4', },
+    {id: 5,
+      topic: 'topic5',
+      teacher: 'teacher5',
+      startTime: new Date(),
+      endTime: new Date(),
+      group: 5,
+      room: '5', },
+    {id: 6,
+      topic: 'topic6',
+      teacher: 'teacher6',
+      startTime: new Date(),
+      endTime: new Date(),
+      group: 6,
+      room: '6', },
+  ];
+
+  algRes: any = [];
 
   roomData: ClassRoom[] = [];
   scheduleData: ScheduleElement[] = [];
@@ -75,14 +122,37 @@ export class ScheduleComponent implements OnInit {
     //     room: "dfsdffewr",
     //   }
     // );
+    this.generateWeekArray();
     this.loadScheduleDates();
     setInterval(() => {
     console.log(this.scheduleData); }, 1000);
   }
 
+  generateWeekArray(): void {
+    //change to loaded timeschedule(first of all create one)
+    [1, 2, 3, 4, 5, 6, 7].forEach((time) => {
+      const auxRow = {
+        rowTime: { timeId: time, time: new Date()},
+        scol: []
+      };
+      [1, 2, 3, 4, 5, 6].forEach((day) => {
+        const auxCol = {
+          day,
+          scell: [],
+        };
+        [5, 5, 5, 5].forEach((el) => {
+          if (day === el && time === el) {
+            auxCol.scell.push(el);
+          }
+        });
+        auxRow.scol.push(auxCol);
+      });
+      this.algRes.push(auxRow);
+    });
+    console.log(this.algRes);
+  }
 
-
-  loadRooms(): void{
+  loadRooms(): void {
     this.classRoomService.getValues()
       .subscribe((data: ClassRoom[]) => {
         if (data.length > 0) {
@@ -228,5 +298,9 @@ export class ScheduleComponent implements OnInit {
         editableRow: el
       }
     };
+  }
+
+  onCellClick(): void {
+    console.log('clicked celllll');
   }
 }
