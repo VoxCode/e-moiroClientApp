@@ -73,15 +73,13 @@ import { SyncfusionRoomSchedulerComponent } from './syncfusion-room-scheduler/sy
 import { RoomComponent } from './room/room.component';
 import { ScheduleBlockComponent } from './schedule-block/schedule-block.component';
 import { GroupEditComponent } from './group/group-edit.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
-import { MatNativeDateModule } from '@angular/material/core';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import {DatePickerModule, DateTimePickerModule} from '@syncfusion/ej2-angular-calendars';
 import { JournalDocGeneratorComponent } from './journal-doc-generator/journal-doc-generator.component';
 import { JournalComponent } from './journal/journal.component';
-import {MatIconModule} from '@angular/material/icon';
 import { ScheduleCellComponent } from './schedule-cell/schedule-cell.component';
+import {AngularMaterialModule} from './angular-material/angular-material.module';
+
 
 
 export function tokenGetter(): string {
@@ -165,9 +163,6 @@ export function tokenGetter(): string {
         DocumentEditorAllModule,
         TrainingProgramConstructorModule,
         DragDropModule,
-        MatInputModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
         DatePickerModule,
         DropDownListModule,
         JwtModule.forRoot({
@@ -176,9 +171,8 @@ export function tokenGetter(): string {
             }
         }),
         ScheduleModule,
-        MatDatepickerModule,
         DateTimePickerModule,
-        MatIconModule
+        AngularMaterialModule,
     ],
   providers: [
     AuthService,

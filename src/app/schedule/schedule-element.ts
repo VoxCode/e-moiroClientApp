@@ -10,6 +10,7 @@ export class ScheduleElement {
     public groupId?: number,
     public startTime?: Date,
     public endTime?: Date,
+    public timeId?: number,
     public room?: string,
     public roomId?: number,
     public metaData?: string,

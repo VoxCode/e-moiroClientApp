@@ -6,13 +6,31 @@
   </div>
 
   <div class="backGround">
+
+    <mat-form-field appearance="fill">
+      <mat-label>Выберете промежуток</mat-label>
+      <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+        <input matStartDate formControlName="start" placeholder="Начальная дата">
+        <input matEndDate formControlName="end" placeholder="Конечная Дата">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+    <p>Selected range: {{range.value | json}}</p>
+
     <section>
-      <button aria-label="Example icon button with a home icon">left</button>
-      <button aria-label="Example icon button with a home icon">Right</button>
+      <button mat-fab color="primary" aria-label="Example icon button with a home icon">
+        <mat-icon>arrow_back_ios</mat-icon>
+      </button>
+      <button mat-fab color="primary" aria-label="Example icon button with a home icon">
+        <mat-icon>arrow_forward_ios</mat-icon>
+      </button>
     </section>
 
     <table>
       <tr>
+        <th>Время\День</th>
         <th>Понедельник</th>
         <th>Вторник</th>
         <th>Среда</th>
@@ -21,9 +39,14 @@
         <th>Суббота</th>
       </tr>
 
-      <tr *ngFor="let row of testScheduleData">
-        <td *ngFor="let col of [0,1,2,3,4,5]">
-          <app-schedule-cell scheduleElement="" (click)="onCellClick()"></app-schedule-cell>
+      <tr *ngFor="let row of algRes">
+        <td> {{row.rowTime.timeStart | date:'HH:mm'}} - {{row.rowTime.timeEnd | date:'HH:mm'}}</td>
+        <td class="fillable" *ngFor="let col of row.scol" style="height: 0">
+          <div *ngFor="let cell of col.scell">
+            <app-schedule-cell [scheduleElement] = "cell" (click)="onCellClick()"></app-schedule-cell>
+          </div>
+          <div class="fill" *ngIf="col.scell.length < 1" (click)="onEmptyCellClick()">
+          </div>
         </td>
       </tr>
     </table>

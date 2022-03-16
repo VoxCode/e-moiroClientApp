@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {ScheduleBlockCurriculumTopicTrainingProgramService} from '../services/schedule-services/schedule-block-curriculum-topic-training-program.service';
 import {MDBModalRef} from 'angular-bootstrap-md';
 import {ScheduleBlockCurriculumTopicTrainingProgram} from '../models/schedule-models/ScheduleBlockCurriculumTopicTrainingProgram';
@@ -24,6 +24,13 @@ import {ScheduleBlockClassTimeService} from '../services/schedule-services/sched
 import {ScheduleElement} from '../schedule/schedule-element';
 import {ClassTime} from '../models/schedule-models/СlassTime';
 import {TimelineMonthService, TimelineViewsService} from '@syncfusion/ej2-angular-schedule';
+import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter
+} from "@angular/material-moment-adapter";
 
 @Component({
   selector: 'app-schedule-block',
@@ -39,7 +46,14 @@ import {TimelineMonthService, TimelineViewsService} from '@syncfusion/ej2-angula
     TeacherService,
     GroupService,
     ScheduleBlockClassRoomService,
-    ScheduleBlockClassTimeService, TimelineViewsService, TimelineMonthService],
+    ScheduleBlockClassTimeService, TimelineViewsService, TimelineMonthService,
+    { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},],
   encapsulation: ViewEncapsulation.None
 })
 export class ScheduleBlockComponent implements OnInit {
@@ -67,16 +81,15 @@ export class ScheduleBlockComponent implements OnInit {
 
   public divideSubGroups = false;
   @Input() scheduleElement: ScheduleElement;
-  @Input() elementData: { [key: string]: any };
   @Input() rooms: ClassRoom[] = [];
   teachers: Teacher[] = [];
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
   groups: Group[] = [];
 
-  public roomFields: Object = { text: 'name', value: 'id' };
-
 
   constructor(
+    public dialogRef: MatDialogRef<ScheduleBlockComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private scheduleBlockCurriculumTopicTrainingProgramService: ScheduleBlockCurriculumTopicTrainingProgramService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
@@ -91,8 +104,6 @@ export class ScheduleBlockComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('editor init');
-    console.log(this.elementData);
-    this.selectedRoom = this.rooms.filter(u => u.id >= this.elementData.roomId)[0];
     this.loadGroups();
     this.loadCurriculumTopics();
     this.loadTeachers();
@@ -109,7 +120,7 @@ export class ScheduleBlockComponent implements OnInit {
       .subscribe((data: Group[]) => {
         if (data.length > 0){
           this.groups = data;
-          this.selectedGroup = this.groups.filter(u => u.id >= this.elementData.groupId)[0];
+          this.selectedGroup = this.groups.filter(u => u.id >= this.scheduleElement.groupId)[0];
         }
       });
   }
@@ -121,7 +132,7 @@ export class ScheduleBlockComponent implements OnInit {
       .subscribe((topicsData: CurriculumTopicTrainingProgram[]) => {
         if (topicsData.length > 0) {
           this.curriculumTopicTrainingPrograms = topicsData;
-          this.selectedTopic = this.curriculumTopicTrainingPrograms.filter(u => u.id >= this.elementData.topicId)[0];
+          this.selectedTopic = this.curriculumTopicTrainingPrograms.filter(u => u.id >= this.scheduleElement.topicId)[0];
         }
       });
   }
@@ -135,7 +146,7 @@ export class ScheduleBlockComponent implements OnInit {
               teacher.patronymicName + ' (' + teacher.position + ')';
             this.teachers.push(teacher);
           });
-          this.selectedTeacher = this.teachers.filter(u => u.id >= this.elementData.teacherId)[0];
+          this.selectedTeacher = this.teachers.filter(u => u.id >= this.scheduleElement.teacherId)[0];
         }
       });
   }
@@ -159,104 +170,6 @@ export class ScheduleBlockComponent implements OnInit {
         this.combineTeacher = !this.combineTeacher;
         break;
     }
-  }
-
-  validateForm(): void {
-    if (this.groupValid && this.roomValid && this.teacherValid && this.topicValid) {
-      this.elementData.metaData = 'Valid';
-    }
-  }
-
-  touchGroup(): void {
-    this.groupTouched = true;
-    this.validateGroup();
-  }
-
-  validateGroup(): void {
-    if (this.selectedGroup !== undefined)
-    {
-      this.groupValid = true;
-      this.selectGroup();
-      this.validateForm();
-    }
-    else
-    {
-      this.groupValid = false;
-    }
-  }
-
-  touchTopic(): void{
-    this.topicTouched = true;
-    this.validateTopic();
-  }
-
-  validateTopic(): void {
-    if (this.selectedTopic !== undefined)
-    {
-      this.topicValid = true;
-      this.selectTopic();
-      this.validateForm();
-    }
-    else
-    {
-      this.topicValid = false;
-    }
-  }
-
-  touchRoom(): void{
-    this.roomTouched = true;
-    this.validateRoom();
-  }
-
-  validateRoom(): void {
-    if (this.selectedRoom !== undefined)
-    {
-      this.roomValid = true;
-      this.selectRoom();
-      this.validateForm();
-    }
-    else
-    {
-      this.roomValid = false;
-    }
-  }
-
-  touchTeacher(): void{
-    this.teacherTouched = true;
-    this.validateTeacher();
-  }
-
-  validateTeacher(): void {
-    if (this.selectedTeacher !== undefined)
-    {
-      this.teacherValid = true;
-      this.selectTeacher();
-      this.validateForm();
-    }
-    else
-    {
-      this.teacherValid = false;
-    }
-  }
-
-  selectTeacher(): void {
-    this.elementData.teacherId = this.selectedTeacher.id;
-    this.elementData.teacher = this.selectedTeacher.fullNameForm;
-  }
-
-  selectTopic(): void {
-    this.elementData.topicId = this.selectedTopic.id;
-    this.elementData.topic = this.selectedTopic.topicTitle;
-  }
-
-  selectRoom(): void {
-    this.elementData.roomId = this.selectedRoom.id;
-    this.elementData.room = this.selectedRoom.name;
-  }
-
-  selectGroup(): void {
-    this.elementData.group = this.selectedGroup.groupNumber;
-    this.elementData.groupId = this.selectedGroup.id;
   }
 }
 

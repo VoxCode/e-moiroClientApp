@@ -1,3 +1,5 @@
+
+
 li:active, li:focus {
   outline: none;
 };
@@ -17,6 +19,16 @@ body{
   width: 100%;
 };
 
+.close-dialog-button{
+  float: right;
+  top:-24px;
+  right:-24px;
+}
+
+.qwe .custom-dialog-container .mat-dialog-container .mat-dialog-title .mat-dialog-content .container ng-star-inserted > div{
+  overflow: visible !important;
+}
+
 @import "~@ng-select/ng-select/themes/material.theme.css";
 @import '../node_modules/@syncfusion/ej2-base/styles/material.css';
 @import '../node_modules/@syncfusion/ej2-buttons/styles/material.css';
@@ -30,3 +42,6 @@ body{
 //@import "../node_modules/@syncfusion/ej2-angular-schedule/styles/material.css";
 @import "../node_modules/@syncfusion/ej2-angular-base/styles/material.css";
 @import "../node_modules/@syncfusion/ej2-calendars/styles/material.css";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

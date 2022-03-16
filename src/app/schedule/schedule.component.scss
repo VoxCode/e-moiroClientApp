@@ -5,6 +5,23 @@ table, th, td {
 table{
   border-collapse: collapse;
 }
+
 div.backGround{
   background: lightcyan;
 }
+
+div.fillable{
+  height: 0;
+}
+
+.fill {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.fill:hover {
+  box-shadow: inset 0 0 4px 0px green, 0 0 0px 1px green;;
+}
+
+
+

@@ -5,7 +5,6 @@
 }
 .normalCheckBox {
   padding: 20px;
-
 }
 .left, .middle, .right {
   display: inline-block;
@@ -23,4 +22,8 @@
 }
 .right {
   width: 40%;
+}
+
+mat-dialog-container{
+  overflow: visible !important;
 }

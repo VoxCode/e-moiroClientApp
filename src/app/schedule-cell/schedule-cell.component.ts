@@ -10,11 +10,6 @@ export class ScheduleCellComponent implements OnInit {
 
   constructor() { }
 
-  Teacher: any = 'Teacher';
-  Group: any = 'Group';
-  Room: any = 'Room';
-  topic: any = 'Topic';
-
   colspan = 0;
 
   @Input() scheduleElement: ScheduleElement;

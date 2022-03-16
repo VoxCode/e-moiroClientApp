@@ -1,7 +1,9 @@
 .divCell {
   border: 1px solid black;
   border-radius: 10pt;
-  width: 100px;
+  width: 160px;
+  height: 70px;
+  margin: 5px;
 }
 
 .divCell:hover {
@@ -12,44 +14,29 @@
   bottom: 3px;
   left: 5px;
   right: 5px;
-  font-size: 13px;
+  font-size: 12px;
 }
 
-.left, .middle, .right {
-  white-space: nowrap; /* Запрещаем перенос строк */
-  overflow: hidden; /* Обрезаем все, что не помещается в область */
+.left, .right {
   display: inline-block;
   *display: inline;
-  zoom: 1;
   vertical-align: top;
   font-size: 12px;
-  margin: 10px;
 }
 
 .left {
-  width: 80%;
-}
-
-.middle {
-  width: 20%;
-  text-align: -webkit-center;
+  width: 105px;
+  margin-left: 5px;
 }
 
 .right {
-  width: 20%;
+  width: 40px;
   text-align: right;
+  margin-right: 5px;
 }
 
 .ellipsis {
   white-space: nowrap;
   overflow: hidden; /* Обрезаем все, что не помещается в область */
-  padding: 5px; /* Поля вокруг текста */
-  text-overflow: ellipsis; /* Добавляем многоточие */
-}
-
-
-.clip {
-  background: #fc0; /* Цвет фона */
-  padding: 5px; /* Поля вокруг текста */
   text-overflow: ellipsis; /* Добавляем многоточие */
 }

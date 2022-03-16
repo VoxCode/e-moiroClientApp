@@ -21,7 +21,13 @@ import {ScheduleBlockClassTime} from '../models/schedule-models/ScheduleBlockCla
 import {ScheduleBlockClassRoom} from '../models/schedule-models/ScheduleBlockClassRoom';
 import {ScheduleBlockCurriculumTopicTrainingProgram} from '../models/schedule-models/ScheduleBlockCurriculumTopicTrainingProgram';
 import {ScheduleElement} from './schedule-element';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import 'moment/locale/ru';
 import {ScheduleDateScheduleBlock} from '../models/schedule-models/ScheduleDateScheduleBlock';
+import {FormControl, FormGroup} from '@angular/forms';
+import {ScheduleBlockComponent} from '../schedule-block/schedule-block.component';
+import {MatDialog} from "@angular/material/dialog";
 
 
 
@@ -31,16 +37,25 @@ import {ScheduleDateScheduleBlock} from '../models/schedule-models/ScheduleDateS
   styleUrls: ['./schedule.component.scss'],
   providers: [DayService, WeekService, WorkWeekService, MonthService, AgendaService,
     ClassRoomService, GroupService, TrainingProgramService, ScheduleDateService, ScheduleBlockService,
-  ScheduleDateScheduleBlockService, ScheduleBlockTeacherService, ScheduleBlockCurriculumTopicTrainingProgramService,
-  ScheduleBlockClassTimeService, ScheduleBlockClassRoomService]
+    ScheduleDateScheduleBlockService, ScheduleBlockTeacherService, ScheduleBlockCurriculumTopicTrainingProgramService,
+    ScheduleBlockClassTimeService, ScheduleBlockClassRoomService,
+    { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}, ],
+
 })
 export class ScheduleComponent implements OnInit {
-  testScheduleData: ScheduleElement[] = [
+  testScheduleData: ScheduleElement[] = [   // ScheduleElement
     {id: 0,
       topic: 'topic1',
       teacher: 'teacher1',
-      startTime: new Date(),
+      startTime: new Date(0, 0, 15, 11, 0, 0, 0),
       endTime: new Date(),
+      timeId: 1,
       group: 1,
       room: '1', },
     {id: 2,
@@ -48,6 +63,7 @@ export class ScheduleComponent implements OnInit {
       teacher: 'teacher2',
       startTime: new Date(),
       endTime: new Date(),
+      timeId: 2,
       group: 2,
       room: '2', },
     {id: 3,
@@ -55,6 +71,7 @@ export class ScheduleComponent implements OnInit {
       teacher: 'teacher3',
       startTime: new Date(),
       endTime: new Date(),
+      timeId: 2,
       group: 3,
       room: '3', },
     {id: 4,
@@ -62,6 +79,7 @@ export class ScheduleComponent implements OnInit {
       teacher: 'teacher4',
       startTime: new Date(),
       endTime: new Date(),
+      timeId: 3,
       group: 4,
       room: '4', },
     {id: 5,
@@ -69,6 +87,7 @@ export class ScheduleComponent implements OnInit {
       teacher: 'teacher5',
       startTime: new Date(),
       endTime: new Date(),
+      timeId: 0,
       group: 5,
       room: '5', },
     {id: 6,
@@ -76,10 +95,39 @@ export class ScheduleComponent implements OnInit {
       teacher: 'teacher6',
       startTime: new Date(),
       endTime: new Date(),
+      timeId: 0,
       group: 6,
       room: '6', },
   ];
 
+  testTimes = [
+    {
+      timeStart: new Date(0, 0, 0, 11, 0, 0, 0),
+      timeEnd: new Date(0, 0, 0, 12, 25, 0, 0),
+      id: 0,
+    },
+    {
+      timeStart: new Date(0, 0, 0, 12, 55, 0, 0),
+      timeEnd: new Date(0, 0, 0, 14, 20, 0, 0),
+      id: 1,
+    },
+    {
+      timeStart: new Date(0, 0, 0, 14, 30, 0, 0),
+      timeEnd: new Date(0, 0, 0, 15, 55, 0, 0),
+      id: 2,
+    },
+    {
+      timeStart: new Date(0, 0, 0, 16, 5, 0, 0),
+      timeEnd: new Date(0, 0, 0, 17, 30, 0, 0),
+      id: 3,
+    },
+  ];
+
+
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+  });
   algRes: any = [];
 
   roomData: ClassRoom[] = [];
@@ -91,6 +139,7 @@ export class ScheduleComponent implements OnInit {
   public saveButtonClicked: Subject<any> = new Subject<any>();
 
   constructor(
+    private matDialog: MatDialog,
     private modalService: MDBModalService,
     private trainingProgramService: TrainingProgramService,
     private classRoomService: ClassRoomService,
@@ -105,6 +154,7 @@ export class ScheduleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
     this.loadRooms();
     this.loadGroups();
     // this.scheduleData.push({
@@ -125,14 +175,15 @@ export class ScheduleComponent implements OnInit {
     this.generateWeekArray();
     this.loadScheduleDates();
     setInterval(() => {
-    console.log(this.scheduleData); }, 1000);
+      console.log(this.scheduleData); }, 1000);
   }
 
   generateWeekArray(): void {
-    //change to loaded timeschedule(first of all create one)
-    [1, 2, 3, 4, 5, 6, 7].forEach((time) => {
+
+    // change to loaded timeschedule(first of all create one)
+    this.testTimes.forEach((time) => {
       const auxRow = {
-        rowTime: { timeId: time, time: new Date()},
+        rowTime: time, // { timeId: time, time: new Date()}
         scol: []
       };
       [1, 2, 3, 4, 5, 6].forEach((day) => {
@@ -140,8 +191,9 @@ export class ScheduleComponent implements OnInit {
           day,
           scell: [],
         };
-        [5, 5, 5, 5].forEach((el) => {
-          if (day === el && time === el) {
+        this.testScheduleData.forEach((el) => {
+          if (day === el.startTime.getDay()
+            && el.timeId === time.id) {
             auxCol.scell.push(el);
           }
         });
@@ -151,6 +203,9 @@ export class ScheduleComponent implements OnInit {
     });
     console.log(this.algRes);
   }
+
+
+
 
   loadRooms(): void {
     this.classRoomService.getValues()
@@ -168,6 +223,15 @@ export class ScheduleComponent implements OnInit {
       // this.roomData = this.roomData.map(num => num);
       // this.createRoom(newElement);
       this.loadRooms();
+    });
+  }
+  addBlock(): void {
+    this.modalRef = this.modalService.show(ScheduleBlockComponent, this.modalOption(new ScheduleElement()));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      // this.roomData.push({text: newElement.roomName, id: 5, color: '#543434'});
+      // this.roomData = this.roomData.map(num => num);
+      // this.createRoom(newElement);
+
     });
   }
 
@@ -291,16 +355,33 @@ export class ScheduleComponent implements OnInit {
       focus: true,
       show: false,
       ignoreBackdropClick: true,
-      class: 'modal-dialog',
+      class: 'modal-fluid',
       containerClass: '',
       animated: true,
       data: {
-        editableRow: el
+        scheduleElement: el
       }
     };
   }
 
   onCellClick(): void {
+    this.matDialog.open(ScheduleBlockComponent, {
+      minWidth: "800px",
+      data: {
+        title: 'Изменить запись'
+      }
+    });
     console.log('clicked celllll');
+  }
+
+  onEmptyCellClick(): void {
+    // this.addBlock();
+    this.matDialog.open(ScheduleBlockComponent, {
+      minWidth: "800px",
+      data: {
+        title: 'Добавить запись'
+      }
+    });
+    console.log('bababuy');
   }
 }
