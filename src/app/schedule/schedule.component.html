@@ -43,9 +43,9 @@
         <td> {{row.rowTime.timeStart | date:'HH:mm'}} - {{row.rowTime.timeEnd | date:'HH:mm'}}</td>
         <td class="fillable" *ngFor="let col of row.scol" style="height: 0">
           <div *ngFor="let cell of col.scell">
-            <app-schedule-cell [scheduleElement] = "cell" (click)="onCellClick()"></app-schedule-cell>
+            <app-schedule-cell [scheduleElement] = "cell" (click)="onCellClick('cell', cell)"></app-schedule-cell>
           </div>
-          <div class="fill" *ngIf="col.scell.length < 1" (click)="onEmptyCellClick()">
+          <div class="fill" *ngIf="col.scell.length < 1" (click)="onCellClick('empty div')">
           </div>
         </td>
       </tr>

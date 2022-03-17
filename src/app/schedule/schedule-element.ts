@@ -8,6 +8,7 @@ export class ScheduleElement {
     public teacherId?: number,
     public group?: number,
     public groupId?: number,
+    public subgroup?: number,
     public startTime?: Date,
     public endTime?: Date,
     public timeId?: number,

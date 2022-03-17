@@ -27,7 +27,11 @@ import 'moment/locale/ru';
 import {ScheduleDateScheduleBlock} from '../models/schedule-models/ScheduleDateScheduleBlock';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ScheduleBlockComponent} from '../schedule-block/schedule-block.component';
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog} from '@angular/material/dialog';
+import {Teacher} from '../models/Teacher';
+import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
+import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
+import {TeacherService} from '../services/teacher.service';
 
 
 
@@ -36,7 +40,8 @@ import {MatDialog} from "@angular/material/dialog";
   templateUrl: './schedule.component.html',
   styleUrls: ['./schedule.component.scss'],
   providers: [DayService, WeekService, WorkWeekService, MonthService, AgendaService,
-    ClassRoomService, GroupService, TrainingProgramService, ScheduleDateService, ScheduleBlockService,
+    ClassRoomService, GroupService, CurriculumTopicTrainingProgramService, TeacherService, TrainingProgramService,
+    ScheduleDateService, ScheduleBlockService,
     ScheduleDateScheduleBlockService, ScheduleBlockTeacherService, ScheduleBlockCurriculumTopicTrainingProgramService,
     ScheduleBlockClassTimeService, ScheduleBlockClassRoomService,
     { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
@@ -57,6 +62,7 @@ export class ScheduleComponent implements OnInit {
       endTime: new Date(),
       timeId: 1,
       group: 1,
+      groupId: 1,
       room: '1', },
     {id: 2,
       topic: 'topic2',
@@ -65,6 +71,7 @@ export class ScheduleComponent implements OnInit {
       endTime: new Date(),
       timeId: 2,
       group: 2,
+      groupId: 3,
       room: '2', },
     {id: 3,
       topic: 'topic3',
@@ -73,6 +80,7 @@ export class ScheduleComponent implements OnInit {
       endTime: new Date(),
       timeId: 2,
       group: 3,
+      groupId: 3,
       room: '3', },
     {id: 4,
       topic: 'topic4',
@@ -81,6 +89,7 @@ export class ScheduleComponent implements OnInit {
       endTime: new Date(),
       timeId: 3,
       group: 4,
+      groupId: 3,
       room: '4', },
     {id: 5,
       topic: 'topic5',
@@ -89,6 +98,7 @@ export class ScheduleComponent implements OnInit {
       endTime: new Date(),
       timeId: 0,
       group: 5,
+      groupId: 3,
       room: '5', },
     {id: 6,
       topic: 'topic6',
@@ -97,6 +107,7 @@ export class ScheduleComponent implements OnInit {
       endTime: new Date(),
       timeId: 0,
       group: 6,
+      groupId: 3,
       room: '6', },
   ];
 
@@ -130,10 +141,11 @@ export class ScheduleComponent implements OnInit {
   });
   algRes: any = [];
 
+  teachers: Teacher[] = [];
+  curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
+  groups: Group[] = [];
   roomData: ClassRoom[] = [];
   scheduleData: ScheduleElement[] = [];
-  tempData: ScheduleElement = {};
-  groups: Group[];
   public modalRef: MDBModalRef;
 
   public saveButtonClicked: Subject<any> = new Subject<any>();
@@ -144,6 +156,8 @@ export class ScheduleComponent implements OnInit {
     private trainingProgramService: TrainingProgramService,
     private classRoomService: ClassRoomService,
     private groupService: GroupService,
+    private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
+    private teacherService: TeacherService,
     private scheduleDateService: ScheduleDateService,
     private scheduleBlockTeacherService: ScheduleBlockTeacherService,
     private scheduleBlockCurriculumTopicTrainingProgramService: ScheduleBlockCurriculumTopicTrainingProgramService,
@@ -154,28 +168,15 @@ export class ScheduleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.loadRooms();
     this.loadGroups();
-    // this.scheduleData.push({
-    //     id: 12,
-    //     scheduleBlockId: 0,
-    //     topicId: 0,
-    //     topic: "qwe",
-    //     teacherId: 0,
-    //     teacher: "sdf",
-    //     startTime: new Date(),
-    //     endTime: new Date(),
-    //     groupId: 0,
-    //     group: 12321312,
-    //     roomId: 2,
-    //     room: "dfsdffewr",
-    //   }
-    // );
-    this.generateWeekArray();
+    this.loadTeachers();
+    this.loadCurriculumTopics();
     this.loadScheduleDates();
-    setInterval(() => {
-      console.log(this.scheduleData); }, 1000);
+    this.generateWeekArray();
+
+    // setInterval(() => {
+    //   console.log(this.scheduleData); }, 1000);
   }
 
   generateWeekArray(): void {
@@ -205,8 +206,6 @@ export class ScheduleComponent implements OnInit {
   }
 
 
-
-
   loadRooms(): void {
     this.classRoomService.getValues()
       .subscribe((data: ClassRoom[]) => {
@@ -216,38 +215,33 @@ export class ScheduleComponent implements OnInit {
       });
   }
 
-  addRoom(): void {
-    this.modalRef = this.modalService.show(RoomComponent, this.modalOption(this.roomData));
-    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
-      // this.roomData.push({text: newElement.roomName, id: 5, color: '#543434'});
-      // this.roomData = this.roomData.map(num => num);
-      // this.createRoom(newElement);
-      this.loadRooms();
-    });
-  }
-  addBlock(): void {
-    this.modalRef = this.modalService.show(ScheduleBlockComponent, this.modalOption(new ScheduleElement()));
-    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
-      // this.roomData.push({text: newElement.roomName, id: 5, color: '#543434'});
-      // this.roomData = this.roomData.map(num => num);
-      // this.createRoom(newElement);
-
-    });
-  }
-
-  createRoom(el: any): void{
-    const room = new ClassRoom(+el.roomId, el.roomName);
-    this.classRoomService.createValue(room)
-      .subscribe((roomResponse: ClassRoom) => {
-        this.roomData.push(roomResponse);
-      });
-  }
-
   loadGroups(): void{
     this.groupService.getValues()
       .subscribe((data: Group[]) => {
         if (data.length > 0){
           this.groups = data;
+        }
+      });
+  }
+
+  loadTeachers(): void {
+    this.teacherService.getValues()
+      .subscribe((teachersData: Teacher[]) => {
+        if (teachersData.length > 0) {
+          teachersData.forEach((teacher: Teacher) => {
+            teacher.fullNameForm = teacher.lastName + ' ' + teacher.firstName + ' ' +
+              teacher.patronymicName + ' (' + teacher.position + ')';
+            this.teachers.push(teacher);
+          });
+        }
+      });
+  }
+
+  loadCurriculumTopics(): void{
+    this.curriculumTopicTrainingProgramService.getValues()
+      .subscribe((topicsData: CurriculumTopicTrainingProgram[]) => {
+        if (topicsData.length > 0) {
+          this.curriculumTopicTrainingPrograms = topicsData;
         }
       });
   }
@@ -270,77 +264,30 @@ export class ScheduleComponent implements OnInit {
               endTime: el.classTimeEnd,
               groupId: el.groupId,
               group: el.groupNumber,
+              subgroup: el.subgroup,
               roomId: el.classRoomId,
               room: el.name,
             }
           );
         });
       });
-    // this.scheduleDateScheduleBlockService.getValues()
-    //   .subscribe((data: ScheduleDateScheduleBlock[]) => {
-    //     if (data.length > 0){
-    //       data.forEach((el, index) => {
-    //         const aux: ScheduleElement = {};
-    //         this.loadBlockTopic(el.scheduleBlockId); // load topic
-    //         this.loadBlockTeacher(el.scheduleBlockId); // load teacher
-    //         this.loadBlockClassTime(el.scheduleBlockId, aux); // load timing
-    //         this.loadBlockClassRoom(el.scheduleBlockId); // roomId from database
-    //         const loadErrorState = false;
-    //         if (!loadErrorState) {
-    //           // console.log("temp")
-    //           // console.log(this.tempData);
-    //           this.scheduleData.push(this.tempData);
-    //           // setTimeout(() => {this.scheduleData.push(this.tempData);}, 1000);
-    //           // this.tempData = {};
-    //         }
-    //       });
-    //     }
-    //   });
   }
 
-  loadBlockTopic(id: number): void{
-    return this.scheduleBlockCurriculumTopicTrainingProgramService.getValuesFromScheduleBlock(id)
-      .subscribe((data: ScheduleBlockCurriculumTopicTrainingProgram) => {
-        if (data) {
-          this.tempData.topic = data[0].topicTitle;
-          this.tempData.topicId = data[0].curriculumTopicTrainingProgramId;
-        }
-      });
+  addRoom(): void {
+    this.modalRef = this.modalService.show(RoomComponent, this.modalOption(this.roomData));
+    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+      // this.roomData.push({text: newElement.roomName, id: 5, color: '#543434'});
+      // this.roomData = this.roomData.map(num => num);
+      // this.createRoom(newElement);
+      this.loadRooms();
+    });
   }
 
-  loadBlockTeacher(id: number): void{
-    this.scheduleBlockTeacherService.getValuesFromScheduleBlock(id)
-      .subscribe((data: ScheduleBlockTeacher) => {
-        if (data) {
-          console.log('yollololololololol');
-          console.log(data);
-          this.tempData.teacher = `${data[0].lastName} ${data[0].firstName} ${data[0].patronymicName} (${data[0].position})`;
-          this.tempData.teacherId = data.teacherId;
-        }
-      });
-  }
-
-  loadBlockClassTime(id: number, ref: ScheduleElement): void{
-    this.scheduleBlockClassTimeService.getValuesFromScheduleBlock(id)
-      .subscribe((data: ScheduleBlockClassTime) => {
-
-        if (data) {
-          this.tempData.startTime = data[0].classTimeStart;
-          this.tempData.endTime = data[0].classTimeEnd;
-          ref.startTime = data[0].classTimeStart;
-          ref.endTime = data[0].classTimeEnd;
-        }
-      });
-  }
-
-  loadBlockClassRoom(id: number): void{
-    this.scheduleBlockClassRoomService.getValuesFromScheduleBlock(id)
-      .subscribe((data: ScheduleBlockClassRoom) => {
-        if (data){
-          this.tempData.roomId = data[0].classroomId;
-          this.tempData.room = data[0].name;
-        }
-        return undefined;
+  createRoom(el: any): void{
+    const room = new ClassRoom(+el.roomId, el.roomName);
+    this.classRoomService.createValue(room)
+      .subscribe((roomResponse: ClassRoom) => {
+        this.roomData.push(roomResponse);
       });
   }
 
@@ -364,11 +311,16 @@ export class ScheduleComponent implements OnInit {
     };
   }
 
-  onCellClick(): void {
+  onCellClick(title: string, el: ScheduleElement = new ScheduleElement()): void {
     this.matDialog.open(ScheduleBlockComponent, {
-      minWidth: "800px",
+      minWidth: '800px',
       data: {
-        title: 'Изменить запись'
+        title,
+        groups: this.groups,
+        rooms: this.roomData,
+        topics: this.curriculumTopicTrainingPrograms,
+        teachers: this.teachers,
+        scheduleElement: el,
       }
     });
     console.log('clicked celllll');
@@ -377,7 +329,7 @@ export class ScheduleComponent implements OnInit {
   onEmptyCellClick(): void {
     // this.addBlock();
     this.matDialog.open(ScheduleBlockComponent, {
-      minWidth: "800px",
+      minWidth: '800px',
       data: {
         title: 'Добавить запись'
       }
