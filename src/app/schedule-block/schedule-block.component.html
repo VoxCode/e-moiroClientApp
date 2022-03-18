@@ -15,24 +15,27 @@
                  placeholder="Группа">
       </ng-select>
       <mat-error *ngIf="groupId.invalid && (groupId.dirty || groupId.touched)">Обязательно для заполнения</mat-error>
-<!--      <div style="color: red" *ngIf="groupId.invalid && (groupId.dirty || groupId.touched)">Обязательно для заполнения</div>-->
-<!--      <mdb-error *ngIf="groupId.invalid && (groupId.dirty || groupId.touched)">Обязательно для заполнения</mdb-error>-->
+      <!--      <div style="color: red" *ngIf="groupId.invalid && (groupId.dirty || groupId.touched)">Обязательно для заполнения</div>-->
+      <!--      <mdb-error *ngIf="groupId.invalid && (groupId.dirty || groupId.touched)">Обязательно для заполнения</mdb-error>-->
     </div>
 
 
-<!--    <div>-->
-<!--      <div style="display: inline-block">-->
-<!--        <mat-form-field appearance="fill">-->
-<!--          <mat-label>Дата проведения</mat-label>-->
-<!--          <input matInput [matDatepicker]="picker">-->
-<!--          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>-->
-<!--          <mat-datepicker #picker></mat-datepicker>-->
-<!--        </mat-form-field>-->
-<!--      </div>-->
-<!--      <div style="display: inline-block; margin-left: 50px">-->
-<!--        <mdb-checkbox (change)="MergeWithSubGroup('divideSubGroups', $event.checked)">Разделить по подгруппам</mdb-checkbox>-->
-<!--      </div>-->
-<!--    </div>-->
+    <div *ngIf="form.get('date') as date">
+      <div style="display: inline-block">
+        <mat-form-field appearance="fill">
+          <mat-label>Дата проведения</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div style="display: inline-block; margin-left: 50px;  vertical-align: center;">
+        <mdb-checkbox (change)="MergeWithSubGroup('divideSubGroups', $event.checked)">Разделить по подгруппам</mdb-checkbox>
+      </div>
+      <div>
+        <mat-error *ngIf="date.invalid && (date.dirty || date.touched)">Обязательно для заполнения</mat-error>
+      </div>
+    </div>
 
 
 
@@ -40,30 +43,30 @@
     <div class="container" *ngIf="curriculumTopicTrainingPrograms.length !== 0">
       <div class="left">
         <div >
-        <ng-select [items]="this.curriculumTopicTrainingPrograms" [clearable]="false"
-                   formControlName="topicId"
-                   bindValue="id"
-                   bindLabel="topicTitle"
-                   placeholder="Тема">
-        </ng-select>
+          <ng-select [items]="this.curriculumTopicTrainingPrograms" [clearable]="false"
+                     formControlName="topicId"
+                     bindValue="id"
+                     bindLabel="topicTitle"
+                     placeholder="Тема">
+          </ng-select>
           <div style="color: red" *ngIf="topicId.invalid && (topicId.dirty || topicId.touched)">Обязательно для заполнения</div>
         </div>
       </div>
-<!--      <div class="middle" >-->
-<!--        <div class="mergeButton">-->
-<!--          <button *ngIf="divideSubGroups"-->
-<!--                  type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="MergeWithSubGroup('combineTopic')"-->
-<!--                  mdbWavesEffect><mdb-icon fas icon="sign-in-alt" size="lg"></mdb-icon></button>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="right" >-->
-<!--        <ng-select [items]="this.curriculumTopicTrainingPrograms" [clearable]="false" [disabled]="!combineTopic" *ngIf="divideSubGroups"-->
-<!--                   bindValue=""-->
-<!--                   bindLabel="topicTitle"-->
-<!--                   [(ngModel)]="selectedTopicAux"-->
-<!--                   placeholder="Тема">-->
-<!--        </ng-select>-->
-<!--      </div>-->
+      <!--      <div class="middle" >-->
+      <!--        <div class="mergeButton">-->
+      <!--          <button *ngIf="divideSubGroups"-->
+      <!--                  type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="MergeWithSubGroup('combineTopic')"-->
+      <!--                  mdbWavesEffect><mdb-icon fas icon="sign-in-alt" size="lg"></mdb-icon></button>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--      <div class="right" >-->
+      <!--        <ng-select [items]="this.curriculumTopicTrainingPrograms" [clearable]="false" [disabled]="!combineTopic" *ngIf="divideSubGroups"-->
+      <!--                   bindValue=""-->
+      <!--                   bindLabel="topicTitle"-->
+      <!--                   [(ngModel)]="selectedTopicAux"-->
+      <!--                   placeholder="Тема">-->
+      <!--        </ng-select>-->
+      <!--      </div>-->
     </div>
 
     <div class="container" *ngIf="teachers.length !== 0">
@@ -76,19 +79,19 @@
         </ng-select>
         <div style="color: red" *ngIf="teacherId.invalid && (teacherId.dirty || teacherId.touched)">Обязательно для заполнения</div>
       </div>
-<!--      <div class="middle">-->
-<!--        <button *ngIf="divideSubGroups"-->
-<!--                type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="MergeWithSubGroup('combineTeacher')"-->
-<!--                mdbWavesEffect><mdb-icon fas icon="sign-in-alt" size="lg"></mdb-icon></button>-->
-<!--      </div>-->
-<!--      <div class="right" >-->
-<!--        <ng-select [items]="this.teachers" [clearable]="false" [disabled]="!combineTeacher" *ngIf="divideSubGroups"-->
-<!--                   bindValue=""-->
-<!--                   bindLabel="fullNameForm"-->
-<!--                   [(ngModel)]="selectedTeacherAux"-->
-<!--                   placeholder="Преподаватель">-->
-<!--        </ng-select>-->
-<!--      </div>-->
+      <!--      <div class="middle">-->
+      <!--        <button *ngIf="divideSubGroups"-->
+      <!--                type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="MergeWithSubGroup('combineTeacher')"-->
+      <!--                mdbWavesEffect><mdb-icon fas icon="sign-in-alt" size="lg"></mdb-icon></button>-->
+      <!--      </div>-->
+      <!--      <div class="right" >-->
+      <!--        <ng-select [items]="this.teachers" [clearable]="false" [disabled]="!combineTeacher" *ngIf="divideSubGroups"-->
+      <!--                   bindValue=""-->
+      <!--                   bindLabel="fullNameForm"-->
+      <!--                   [(ngModel)]="selectedTeacherAux"-->
+      <!--                   placeholder="Преподаватель">-->
+      <!--        </ng-select>-->
+      <!--      </div>-->
     </div>
 
     <div class="container" *ngIf="rooms.length !== 0">
@@ -101,24 +104,24 @@
         </ng-select>
         <div style="color: red" *ngIf="roomId.invalid && (roomId.dirty || roomId.touched)">Обязательно для заполнения</div>
       </div>
-<!--      <div class="middle">-->
-<!--        <button *ngIf="divideSubGroups"-->
-<!--                type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="MergeWithSubGroup('combineRoom')"-->
-<!--                mdbWavesEffect><mdb-icon fas icon="sign-in-alt" size="lg"></mdb-icon></button>-->
-<!--      </div>-->
-<!--      <div class="right">-->
-<!--        <ng-select [items]="this.rooms" [clearable]="false" [disabled]="!combineRoom" *ngIf="divideSubGroups"-->
-<!--                   bindValue=""-->
-<!--                   bindLabel="name"-->
-<!--                   [(ngModel)]="selectedRoomAux"-->
-<!--                   placeholder="Аудитория">-->
-<!--        </ng-select>-->
-<!--      </div>-->
+      <!--      <div class="middle">-->
+      <!--        <button *ngIf="divideSubGroups"-->
+      <!--                type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="MergeWithSubGroup('combineRoom')"-->
+      <!--                mdbWavesEffect><mdb-icon fas icon="sign-in-alt" size="lg"></mdb-icon></button>-->
+      <!--      </div>-->
+      <!--      <div class="right">-->
+      <!--        <ng-select [items]="this.rooms" [clearable]="false" [disabled]="!combineRoom" *ngIf="divideSubGroups"-->
+      <!--                   bindValue=""-->
+      <!--                   bindLabel="name"-->
+      <!--                   [(ngModel)]="selectedRoomAux"-->
+      <!--                   placeholder="Аудитория">-->
+      <!--        </ng-select>-->
+      <!--      </div>-->
     </div>
   </form>
 </div>
 
 <div mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Отмена</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Сохранить</button>
+  <button mat-button [mat-dialog-close]="true" [disabled]="form.invalid"  cdkFocusInitial>Сохранить</button>
 </div>

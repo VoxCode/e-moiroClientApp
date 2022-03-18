@@ -86,6 +86,7 @@ export class ScheduleBlockComponent implements OnInit {
     topicId: new FormControl('', Validators.required),
     teacherId: new FormControl('', Validators.required),
     roomId: new FormControl('', Validators.required),
+    date: new FormControl('', Validators.required),
   });
 
   get groupId(): AbstractControl { return this.form.get('groupId'); }
@@ -129,6 +130,7 @@ export class ScheduleBlockComponent implements OnInit {
     this.form.controls.topicId.patchValue(this.scheduleElement.topicId);
     this.form.controls.teacherId.patchValue(this.scheduleElement.teacherId);
     this.form.controls.roomId.patchValue(this.scheduleElement.roomId);
+    this.form.controls.date.patchValue(this.scheduleElement.date);
 
     console.log(this.scheduleElement);
   }
