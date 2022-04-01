@@ -146,6 +146,7 @@ export class ScheduleComponent implements OnInit {
     end: new FormControl(),
   });
   algRes: any = [];
+  algResGeneric: any = [];
 
   teachers: Teacher[] = [];
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
@@ -180,6 +181,7 @@ export class ScheduleComponent implements OnInit {
     this.loadCurriculumTopics();
     this.loadScheduleDates();
     this.generateWeekArray();
+    this.generateGenericWeekArray();
 
     // setInterval(() => {
     //   console.log(this.scheduleData); }, 1000);
@@ -211,6 +213,23 @@ export class ScheduleComponent implements OnInit {
     console.log(this.algRes);
   }
 
+  generateGenericWeekArray(): void {
+
+    // change to loaded timeschedule(first of all create one)
+    [1, 2, 3, 4, 5, 6].forEach((day) => {
+      const auxCol = {
+        day,
+        scell: [],
+      };
+      this.testScheduleData.forEach((el) => {
+        if (day === el.startTime.getDay()) {
+          auxCol.scell.push(el);
+        }
+      });
+      this.algResGeneric.push(auxCol);
+    });
+    console.log(this.algResGeneric);
+  }
 
   loadRooms(): void {
     this.classRoomService.getValues()

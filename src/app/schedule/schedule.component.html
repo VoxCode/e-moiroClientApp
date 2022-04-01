@@ -5,7 +5,7 @@
     <app-curriculum-topic-list></app-curriculum-topic-list>
   </div>
 
-  <div class="backGround">
+  <div class="backGround col-sm">
 
     <mat-form-field appearance="fill">
       <mat-label>Выберете промежуток</mat-label>
@@ -19,17 +19,15 @@
 
     <p>Selected range: {{range.value | json}}</p>
 
-    <section>
-      <button mat-fab color="primary" aria-label="Example icon button with a home icon">
-        <mat-icon>arrow_back_ios</mat-icon>
-      </button>
-      <button mat-fab color="primary" aria-label="Example icon button with a home icon">
-        <mat-icon>arrow_forward_ios</mat-icon>
-      </button>
-    </section>
 
-    <table>
-      <tr>
+    <table class="mainSchedule">
+
+      <tr style="text-align: center">
+        <td style="border: none" rowspan="100">
+          <button mat-fab color="primary" aria-label="Example icon button with a home icon">
+            <mat-icon>arrow_back_ios</mat-icon>
+          </button>
+        </td>
         <th>Время\День</th>
         <th>Понедельник</th>
         <th>Вторник</th>
@@ -37,6 +35,11 @@
         <th>Четверг</th>
         <th>Пятница</th>
         <th>Суббота</th>
+        <td style="border: none" rowspan="100">
+          <button mat-fab color="primary" aria-label="Example icon button with a home icon">
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
+        </td>
       </tr>
 
       <tr *ngFor="let row of algRes">
@@ -49,6 +52,41 @@
           </div>
         </td>
       </tr>
+
+    </table>
+
+    <table class="mainSchedule">
+
+      <tr style="text-align: center">
+        <td style="border: none" rowspan="100">
+          <button mat-fab color="primary" aria-label="Example icon button with a home icon">
+            <mat-icon>arrow_back_ios</mat-icon>
+          </button>
+        </td>
+        <th>Понедельник</th>
+        <th>Вторник</th>
+        <th>Среда</th>
+        <th>Четверг</th>
+        <th>Пятница</th>
+        <th>Суббота</th>
+        <td style="border: none" rowspan="100">
+          <button mat-fab color="primary" aria-label="Example icon button with a home icon">
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="fillable" *ngFor="let col of algResGeneric" style="height: 0; padding-bottom: 70px; vertical-align: top;">
+          <div class="fill"  (click)="onCellClick('empty div')">
+          <div *ngFor="let cell of col.scell" style="display: flex; justify-content: center;" >
+            <app-schedule-cell [scheduleElement] = "cell" (click)="onCellClick('cell', cell)"></app-schedule-cell>
+          </div>
+
+          </div>
+        </td>
+      </tr>
+
     </table>
   </div>
 

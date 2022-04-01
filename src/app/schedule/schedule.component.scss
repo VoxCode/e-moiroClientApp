@@ -1,9 +1,16 @@
-table, th, td {
-  border: 1px solid black;
+th, td {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+td {
+  border-top: none;
+  border-bottom: 1px solid black;
 }
 
-table{
-  border-collapse: collapse;
+.mainSchedule{
+  border-collapse: separate;
+  border-spacing: 10px 0px;
+  width: 100%;
 }
 
 div.backGround{
