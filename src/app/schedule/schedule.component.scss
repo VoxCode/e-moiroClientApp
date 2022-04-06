@@ -13,6 +13,13 @@ td {
   width: 100%;
 }
 
+.row-eq-height {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  display:flex;
+}
+
 div.backGround{
   background: lightcyan;
 }

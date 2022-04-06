@@ -22,7 +22,11 @@ import {ScheduleBlockClassRoom} from '../models/schedule-models/ScheduleBlockCla
 import {ScheduleBlockCurriculumTopicTrainingProgram} from '../models/schedule-models/ScheduleBlockCurriculumTopicTrainingProgram';
 import {ScheduleElement} from './schedule-element';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS
+} from '@angular/material-moment-adapter';
 import 'moment/locale/ru';
 import {ScheduleDateScheduleBlock} from '../models/schedule-models/ScheduleDateScheduleBlock';
 import {FormControl, FormGroup} from '@angular/forms';
@@ -32,9 +36,10 @@ import {Teacher} from '../models/Teacher';
 import {CurriculumTopicTrainingProgram} from '../models/СurriculumTopicTrainingProgram';
 import {CurriculumTopicTrainingProgramService} from '../services/curriculum-topic-training-program.service';
 import {TeacherService} from '../services/teacher.service';
-import {ScheduleBlock} from "../models/schedule-models/ScheduleBlock";
-import {ClassTime} from "../models/schedule-models/СlassTime";
-
+import {ScheduleBlock} from '../models/schedule-models/ScheduleBlock';
+import {ClassTime} from '../models/schedule-models/СlassTime';
+import {ClassTimeService} from '../services/schedule-services/class-time.service';
+import {ScheduleClassTimes} from "./schedule-class-times";
 
 
 @Component({
@@ -45,8 +50,8 @@ import {ClassTime} from "../models/schedule-models/СlassTime";
     ClassRoomService, GroupService, CurriculumTopicTrainingProgramService, TeacherService, TrainingProgramService,
     ScheduleDateService, ScheduleBlockService,
     ScheduleDateScheduleBlockService, ScheduleBlockTeacherService, ScheduleBlockCurriculumTopicTrainingProgramService,
-    ScheduleBlockClassTimeService, ScheduleBlockClassRoomService,
-    { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
+    ScheduleBlockClassTimeService, ScheduleBlockClassRoomService, ClassTimeService,
+    {provide: MAT_DATE_LOCALE, useValue: 'ru-RU'},
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
@@ -57,8 +62,9 @@ import {ClassTime} from "../models/schedule-models/СlassTime";
 })
 export class ScheduleComponent implements OnInit {
   testScheduleData: ScheduleElement[] = [   // ScheduleElement
-    {id: 0,
-      //topicId: 10,
+    {
+      id: 0,
+      // topicId: 10,
       topic: 'topic1',
       teacherId: 5,
       teacher: 'teacher1',
@@ -68,53 +74,69 @@ export class ScheduleComponent implements OnInit {
       timeId: 1,
       group: 1,
       groupId: 1,
-      //roomId: 3,
-      room: '1', },
-    {id: 2,
+      // roomId: 3,
+      room: '1',
+    },
+    {
+      id: 2,
       topic: 'topic2',
+      teacherId: 15,
       teacher: 'teacher2',
       startTime: new Date(),
       endTime: new Date(),
       timeId: 2,
       group: 2,
       groupId: 3,
-      room: '2', },
-    {id: 3,
+      room: '2',
+    },
+    {
+      id: 3,
       topic: 'topic3',
+      teacherId: 16,
       teacher: 'teacher3',
       startTime: new Date(),
       endTime: new Date(),
       timeId: 2,
       group: 3,
       groupId: 3,
-      room: '3', },
-    {id: 4,
+      room: '3',
+    },
+    {
+      id: 4,
       topic: 'topic4',
+      teacherId: 17,
       teacher: 'teacher4',
       startTime: new Date(),
       endTime: new Date(),
       timeId: 3,
       group: 4,
       groupId: 3,
-      room: '4', },
-    {id: 5,
+      room: '4',
+    },
+    {
+      id: 5,
       topic: 'topic5',
+      teacherId: 18,
       teacher: 'teacher5',
       startTime: new Date(),
       endTime: new Date(),
       timeId: 0,
       group: 5,
       groupId: 3,
-      room: '5', },
-    {id: 6,
+      room: '5',
+    },
+    {
+      id: 6,
       topic: 'topic6',
+      teacherId: 19,
       teacher: 'teacher6',
       startTime: new Date(),
       endTime: new Date(),
       timeId: 0,
       group: 6,
       groupId: 3,
-      room: '6', },
+      room: '6',
+    },
   ];
 
   testTimes = [
@@ -146,7 +168,10 @@ export class ScheduleComponent implements OnInit {
     end: new FormControl(),
   });
   algRes: any = [];
+  timedMonday: any = [];
   algResGeneric: any = [];
+
+  displayTime: any;
 
   teachers: Teacher[] = [];
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
@@ -156,6 +181,7 @@ export class ScheduleComponent implements OnInit {
   public modalRef: MDBModalRef;
 
   public saveButtonClicked: Subject<any> = new Subject<any>();
+
 
   constructor(
     private matDialog: MatDialog,
@@ -172,7 +198,9 @@ export class ScheduleComponent implements OnInit {
     private scheduleBlockClassTimeService: ScheduleBlockClassTimeService,
     private scheduleBlockClassRoomService: ScheduleBlockClassRoomService,
     private scheduleBlockService: ScheduleBlockService,
-  ) { }
+    private classTimeService: ClassTimeService,
+  ) {
+  }
 
   ngOnInit(): void {
     this.loadRooms();
@@ -180,14 +208,45 @@ export class ScheduleComponent implements OnInit {
     this.loadTeachers();
     this.loadCurriculumTopics();
     this.loadScheduleDates();
-    this.generateWeekArray();
+    this.generateTimedMonday();
+    this.generateTimedWeekArray();
     this.generateGenericWeekArray();
 
     // setInterval(() => {
     //   console.log(this.scheduleData); }, 1000);
   }
 
-  generateWeekArray(): void {
+  generateTimedMonday(): void {
+    const monday = 1;
+    ScheduleClassTimes.mondayFirstShift.forEach((time) => {
+      const auxRow = {
+        rowTime: time, // { timeId: time, time: new Date()}
+        scol: []
+      };
+      const auxCol = {
+        day: monday,
+        scell: [],
+      };
+      this.testScheduleData.forEach((el) => {
+        if (el.startTime.getDay() === monday
+          && el.timeId === time.id) { // change to monday time schedule
+          auxCol.scell.push(el);
+        }
+      });
+      auxRow.scol.push(auxCol);
+      this.timedMonday.push(auxRow);
+    });
+    console.log(this.timedMonday);
+  }
+
+  createTimes(time: ClassTime): void {
+    this.classTimeService.createValue(time)
+      .subscribe((response: ClassTime) => {
+        console.log(ClassTime);
+      });
+  }
+
+  generateTimedWeekArray(): void {
 
     // change to loaded timeschedule(first of all create one)
     this.testTimes.forEach((time) => {
@@ -195,7 +254,7 @@ export class ScheduleComponent implements OnInit {
         rowTime: time, // { timeId: time, time: new Date()}
         scol: []
       };
-      [1, 2, 3, 4, 5, 6].forEach((day) => {
+      [2, 3, 4, 5, 6].forEach((day) => {
         const auxCol = {
           day,
           scell: [],
@@ -240,10 +299,10 @@ export class ScheduleComponent implements OnInit {
       });
   }
 
-  loadGroups(): void{
+  loadGroups(): void {
     this.groupService.getValues()
       .subscribe((data: Group[]) => {
-        if (data.length > 0){
+        if (data.length > 0) {
           this.groups = data;
         }
       });
@@ -262,7 +321,7 @@ export class ScheduleComponent implements OnInit {
       });
   }
 
-  loadCurriculumTopics(): void{
+  loadCurriculumTopics(): void {
     this.curriculumTopicTrainingProgramService.getValues()
       .subscribe((topicsData: CurriculumTopicTrainingProgram[]) => {
         if (topicsData.length > 0) {
@@ -271,12 +330,12 @@ export class ScheduleComponent implements OnInit {
       });
   }
 
-  loadScheduleDates(): void{
+  loadScheduleDates(): void {
     this.scheduleBlockService.getSchedule()
       .subscribe((data: any) => {
         console.log('danewone');
         console.log(data);
-        data.forEach( (el, index) => {
+        data.forEach((el, index) => {
           console.log(index);
           this.scheduleData.push({
               id: index,
@@ -308,7 +367,7 @@ export class ScheduleComponent implements OnInit {
     });
   }
 
-  createRoom(el: any): void{
+  createRoom(el: any): void {
     const room = new ClassRoom(+el.roomId, el.roomName);
     this.classRoomService.createValue(room)
       .subscribe((roomResponse: ClassRoom) => {
@@ -316,7 +375,7 @@ export class ScheduleComponent implements OnInit {
       });
   }
 
-  deleteScheduleBlock(args: ScheduleElement): void{
+  deleteScheduleBlock(args: ScheduleElement): void {
     console.log('actualremoving');
     console.log(args);
     console.log(args.scheduleBlockId);
@@ -325,7 +384,8 @@ export class ScheduleComponent implements OnInit {
 
       });
   }
-  createScheduleBlock(args: ScheduleElement): void{
+
+  createScheduleBlock(args: ScheduleElement): void {
     const date = new ScheduleDate(0, args.startTime, args.groupId);
     const block = new ScheduleBlock(0, 0, 0);
     const time = new ClassTime(0, args.startTime, args.endTime);
@@ -345,28 +405,28 @@ export class ScheduleComponent implements OnInit {
       });
   }
 
-  createBlockTopic(blockTopicProgram: ScheduleBlockCurriculumTopicTrainingProgram): void{
+  createBlockTopic(blockTopicProgram: ScheduleBlockCurriculumTopicTrainingProgram): void {
     this.scheduleBlockCurriculumTopicTrainingProgramService.createValue(blockTopicProgram)
       .subscribe((blockTopicProgramResponse: ScheduleBlockCurriculumTopicTrainingProgram) => {
         // nothing
       });
   }
 
-  createScheduleDateBlock(dateBlock: ScheduleDateScheduleBlock): void{
+  createScheduleDateBlock(dateBlock: ScheduleDateScheduleBlock): void {
     this.scheduleDateScheduleBlockService.createValue(dateBlock)
       .subscribe((dateBlockResponse: ScheduleDateScheduleBlock) => {
         // nothing
       });
   }
 
-  createScheduleBlockTeacher(blockTeacher: ScheduleBlockTeacher): void{
+  createScheduleBlockTeacher(blockTeacher: ScheduleBlockTeacher): void {
     this.scheduleBlockTeacherService.createValue(blockTeacher)
       .subscribe((blockResponse) => {
         // nothing
       });
   }
 
-  createScheduleBlockRoom(blockRoom: ScheduleBlockClassRoom): void{
+  createScheduleBlockRoom(blockRoom: ScheduleBlockClassRoom): void {
     this.scheduleBlockClassRoomService.createValue(blockRoom)
       .subscribe((blockRoomResponse: ScheduleDate) => {
         // nothing
@@ -374,7 +434,7 @@ export class ScheduleComponent implements OnInit {
 
   }
 
-  createScheduleBlockTime(blockTime: ScheduleBlockClassTime): void{
+  createScheduleBlockTime(blockTime: ScheduleBlockClassTime): void {
     this.scheduleBlockClassTimeService.createValue(blockTime)
       .subscribe((blockClassTimeResponse) => {
         // nothing
