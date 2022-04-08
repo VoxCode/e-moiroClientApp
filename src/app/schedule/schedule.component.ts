@@ -40,6 +40,7 @@ import {ScheduleBlock} from '../models/schedule-models/ScheduleBlock';
 import {ClassTime} from '../models/schedule-models/СlassTime';
 import {ClassTimeService} from '../services/schedule-services/class-time.service';
 import {ScheduleClassTimes} from "./schedule-class-times";
+import {log} from "util";
 
 
 @Component({
@@ -84,7 +85,7 @@ export class ScheduleComponent implements OnInit {
       teacher: 'teacher2',
       startTime: new Date(),
       endTime: new Date(),
-      timeId: 2,
+      timeId: 8,
       group: 2,
       groupId: 3,
       room: '2',
@@ -96,7 +97,7 @@ export class ScheduleComponent implements OnInit {
       teacher: 'teacher3',
       startTime: new Date(),
       endTime: new Date(),
-      timeId: 2,
+      timeId: 9,
       group: 3,
       groupId: 3,
       room: '3',
@@ -108,7 +109,7 @@ export class ScheduleComponent implements OnInit {
       teacher: 'teacher4',
       startTime: new Date(),
       endTime: new Date(),
-      timeId: 3,
+      timeId: 10,
       group: 4,
       groupId: 3,
       room: '4',
@@ -116,11 +117,11 @@ export class ScheduleComponent implements OnInit {
     {
       id: 5,
       topic: 'topic5',
-      teacherId: 18,
+      teacherId: 17,
       teacher: 'teacher5',
       startTime: new Date(),
       endTime: new Date(),
-      timeId: 0,
+      timeId: 12,
       group: 5,
       groupId: 3,
       room: '5',
@@ -128,39 +129,17 @@ export class ScheduleComponent implements OnInit {
     {
       id: 6,
       topic: 'topic6',
-      teacherId: 19,
+      teacherId: 18,
       teacher: 'teacher6',
       startTime: new Date(),
       endTime: new Date(),
-      timeId: 0,
+      timeId: 12,
       group: 6,
       groupId: 3,
       room: '6',
     },
   ];
 
-  testTimes = [
-    {
-      timeStart: new Date(0, 0, 0, 11, 0, 0, 0),
-      timeEnd: new Date(0, 0, 0, 12, 25, 0, 0),
-      id: 0,
-    },
-    {
-      timeStart: new Date(0, 0, 0, 12, 55, 0, 0),
-      timeEnd: new Date(0, 0, 0, 14, 20, 0, 0),
-      id: 1,
-    },
-    {
-      timeStart: new Date(0, 0, 0, 14, 30, 0, 0),
-      timeEnd: new Date(0, 0, 0, 15, 55, 0, 0),
-      id: 2,
-    },
-    {
-      timeStart: new Date(0, 0, 0, 16, 5, 0, 0),
-      timeEnd: new Date(0, 0, 0, 17, 30, 0, 0),
-      id: 3,
-    },
-  ];
 
 
   range = new FormGroup({
@@ -170,7 +149,8 @@ export class ScheduleComponent implements OnInit {
   algRes: any = [];
   timedMonday: any = [];
   algResGeneric: any = [];
-
+  tm: ClassTime;
+  times: ClassTime[];
   displayTime: any;
 
   teachers: Teacher[] = [];
@@ -212,10 +192,41 @@ export class ScheduleComponent implements OnInit {
     this.generateTimedWeekArray();
     this.generateGenericWeekArray();
 
-    // setInterval(() => {
-    //   console.log(this.scheduleData); }, 1000);
+    console.log('set');
+    //console.log(ScheduleClassTimes.mondayFirstShift[0].FirstClassTimeStart);
+    console.log(ScheduleClassTimes.mondayFirstShift[0].FirstClassTimeStart.toLocaleTimeString());
+    console.log(ScheduleClassTimes.mondayFirstShift[0].FirstClassTimeStart.toUTCString());
+    console.log(ScheduleClassTimes.mondayFirstShift[0].FirstClassTimeStart.toISOString());
+
+    this.gentimes();
+
+    this.getTimes();
+
+
+    setInterval(() => {
+      console.log('get');
+        console.log(this.tm);
+        console.log(this.times);
+      console.log(new Date(this.times[0].classTimeStart).toLocaleTimeString());
+      console.log(new Date(this.times[0].classTimeStart).toUTCString());
+      console.log(new Date(this.times[0].classTimeStart).toISOString());
+      }, 1000);
   }
 
+  gentimes(): void {
+    ScheduleClassTimes.mondayFirstShift.forEach((time) => {
+      this.createTimes(new ClassTime(0, time.FirstClassTimeStart, time.FirstClassTimeEnd));
+    });
+    // ScheduleClassTimes.mondaySecondShift.forEach((time) => {
+    //   this.createTimes(new ClassTime(0, time.FirstClassTimeStart, time.FirstClassTimeEnd));
+    // });
+    // ScheduleClassTimes.genericFirstShift.forEach((time) => {
+    //   this.createTimes(new ClassTime(0, time.FirstClassTimeStart, time.FirstClassTimeEnd));
+    // });
+    // ScheduleClassTimes.genericSecondShift.forEach((time) => {
+    //   this.createTimes(new ClassTime(0, time.FirstClassTimeStart, time.FirstClassTimeEnd));
+    // });
+  }
   generateTimedMonday(): void {
     const monday = 1;
     ScheduleClassTimes.mondayFirstShift.forEach((time) => {
@@ -236,20 +247,27 @@ export class ScheduleComponent implements OnInit {
       auxRow.scol.push(auxCol);
       this.timedMonday.push(auxRow);
     });
+    console.log('tmonday');
     console.log(this.timedMonday);
   }
 
   createTimes(time: ClassTime): void {
     this.classTimeService.createValue(time)
       .subscribe((response: ClassTime) => {
-        console.log(ClassTime);
+        this.tm = response;
+      });
+  }
+  getTimes(): void{
+    this.classTimeService.getValues()
+      .subscribe((data: ClassTime[]) => {
+        this.times = data;
       });
   }
 
   generateTimedWeekArray(): void {
 
     // change to loaded timeschedule(first of all create one)
-    this.testTimes.forEach((time) => {
+    ScheduleClassTimes.genericFirstShift.forEach((time) => {
       const auxRow = {
         rowTime: time, // { timeId: time, time: new Date()}
         scol: []
@@ -269,6 +287,7 @@ export class ScheduleComponent implements OnInit {
       });
       this.algRes.push(auxRow);
     });
+    console.log('tarr');
     console.log(this.algRes);
   }
 
@@ -287,6 +306,7 @@ export class ScheduleComponent implements OnInit {
       });
       this.algResGeneric.push(auxCol);
     });
+    console.log('garr');
     console.log(this.algResGeneric);
   }
 

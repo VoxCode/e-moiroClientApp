@@ -19,8 +19,8 @@ export class ClassTimeService {
   }
 
   createValue(classTime: ClassTime): Observable<any> {
-    classTime.classTimeStart.setTime(classTime.classTimeStart.getTime() + (3 * 60 * 60 * 1000));
-    classTime.classTimeEnd.setTime(classTime.classTimeEnd.getTime() + (3 * 60 * 60 * 1000));
+    // classTime.classTimeStart.setTime(classTime.classTimeStart.getTime() + (3 * 60 * 60 * 1000));
+    // classTime.classTimeEnd.setTime(classTime.classTimeEnd.getTime() + (3 * 60 * 60 * 1000));
     return this.http.post(this.url, classTime);
   }
 

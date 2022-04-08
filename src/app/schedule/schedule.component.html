@@ -38,7 +38,8 @@
             </tr>
             </thead>
             <tr *ngFor="let row of timedMonday">
-              <td> {{row.rowTime.FirstClassTimeStart | date:'HH:mm'}} - {{row.FirstClassTimeEnd.timeEnd | date:'HH:mm'}}</td>
+              <td> {{row.rowTime.FirstClassTimeStart | date:'HH:mm'}} - {{row.rowTime.FirstClassTimeEnd | date:'HH:mm'}}<br>
+                {{row.rowTime.SecondClassTimeStart | date:'HH:mm'}} - {{row.rowTime.SecondClassTimeEnd | date:'HH:mm'}}</td>
               <td class="fillable" *ngFor="let col of row.scol" style="height: 0">
                 <div *ngFor="let cell of col.scell">
                   <app-schedule-cell [scheduleElement]="cell" (click)="onCellClick('cell', cell)"></app-schedule-cell>
@@ -60,7 +61,8 @@
             </tr>
             </thead>
             <tr *ngFor="let row of algRes">
-              <td> {{row.rowTime.timeStart | date:'HH:mm'}} - {{row.rowTime.timeEnd | date:'HH:mm'}}</td>
+              <td> {{row.rowTime.FirstClassTimeStart | date:'HH:mm'}} - {{row.rowTime.FirstClassTimeEnd | date:'HH:mm'}}<br>
+                {{row.rowTime.SecondClassTimeStart | date:'HH:mm'}} - {{row.rowTime.SecondClassTimeEnd | date:'HH:mm'}}</td>
               <td class="fillable" *ngFor="let col of row.scol" style="height: 0">
                 <div *ngFor="let cell of col.scell">
                   <app-schedule-cell [scheduleElement]="cell" (click)="onCellClick('cell', cell)"></app-schedule-cell>
