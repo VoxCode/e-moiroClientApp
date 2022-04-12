@@ -8,7 +8,7 @@
   <form [formGroup]="form">
 
     <div class="md-form" *ngIf="groups.length !== 0">
-      <ng-select mdbValidate  [items]="this.groups" [clearable]="false"
+      <ng-select mdbValidate [items]="this.groups" [clearable]="false"
                  formControlName="groupId"
                  bindValue="id"
                  bindLabel="groupNumber"
@@ -30,26 +30,84 @@
         </mat-form-field>
       </div>
       <div style="display: inline-block; margin-left: 50px;  vertical-align: center;">
-        <mdb-checkbox (change)="MergeWithSubGroup('divideSubGroups', $event.checked)">Разделить по подгруппам</mdb-checkbox>
+        <mdb-checkbox (change)="MergeWithSubGroup('divideSubGroups', $event.checked)">Разделить по подгруппам
+        </mdb-checkbox>
       </div>
       <div>
         <mat-error *ngIf="date.invalid && (date.dirty || date.touched)">Обязательно для заполнения</mat-error>
       </div>
     </div>
 
+    <div *ngIf="form.get('subgroup') as subgroup">
+      <mat-form-field>
+        <mat-label>Подгруппа</mat-label>
+        <mat-select formControlName="subgroup">
+          <mat-option [value]="0">
+            Вся группа
+          </mat-option>
+          <mat-option [value]="1">
+            Первая подгруппа
+          </mat-option>
+          <mat-option [value]="2">
+            Вторая подгруппа
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="subgroup.invalid && (subgroup.dirty || subgroup.touched)">Обязательно для заполнения
+        </mat-error>
+      </mat-form-field>
+    </div>
 
+    <div *ngIf="form.get('timeId') as timeField">
+      <mat-form-field>
+        <mat-label>Время</mat-label>
+        <mat-select formControlName="timeId">
+          <ng-container *ngIf="dayOfTheWeek() === 1">
+            <mat-optgroup [label]="'Первая смена(понедельник)'">
+              <mat-option *ngFor="let time of scheduleClassTimes.mondayFirstShift" [value]="time.id">
+                {{time.FirstClassTimeStart | date:'HH:mm'}} - {{time.FirstClassTimeEnd | date:'HH:mm'}}
+                {{time.SecondClassTimeStart | date:'HH:mm'}} - {{time.SecondClassTimeEnd | date:'HH:mm'}}
+              </mat-option>
+            </mat-optgroup>
+            <mat-optgroup [label]="'Вторая смена(понедельник)'">
+              <mat-option *ngFor="let time of scheduleClassTimes.mondaySecondShift" [value]="time.id">
+                {{time.FirstClassTimeStart | date:'HH:mm'}} - {{time.FirstClassTimeEnd | date:'HH:mm'}}
+                {{time.SecondClassTimeStart | date:'HH:mm'}} - {{time.SecondClassTimeEnd | date:'HH:mm'}}
+              </mat-option>
+            </mat-optgroup>
+          </ng-container>
+          <ng-container *ngIf="dayOfTheWeek() >= 2 && dayOfTheWeek() <= 6">
+            <mat-optgroup [label]="'Первая смена'">
+              <mat-option *ngFor="let time of scheduleClassTimes.genericFirstShift" [value]="time.id">
+                {{time.FirstClassTimeStart | date:'HH:mm'}} - {{time.FirstClassTimeEnd | date:'HH:mm'}}
+                {{time.SecondClassTimeStart | date:'HH:mm'}} - {{time.SecondClassTimeEnd | date:'HH:mm'}}
+              </mat-option>
+            </mat-optgroup>
+            <mat-optgroup [label]="'Вторая смена'">
+              <mat-option *ngFor="let time of scheduleClassTimes.genericSecondShift" [value]="time.id">
+                {{time.FirstClassTimeStart | date:'HH:mm'}} - {{time.FirstClassTimeEnd | date:'HH:mm'}}
+                {{time.SecondClassTimeStart | date:'HH:mm'}} - {{time.SecondClassTimeEnd | date:'HH:mm'}}
+              </mat-option>
+            </mat-optgroup>
+          </ng-container>
+        </mat-select>
+        <mat-error *ngIf="timeField.invalid && (timeField.dirty || timeField.touched)">Обязательно для заполнения
+        </mat-error>
+      </mat-form-field>
+    </div>
 
 
     <div class="container" *ngIf="curriculumTopicTrainingPrograms.length !== 0">
       <div class="left">
-        <div >
+        <div>
           <ng-select [items]="this.curriculumTopicTrainingPrograms" [clearable]="false"
                      formControlName="topicId"
                      bindValue="id"
                      bindLabel="topicTitle"
                      placeholder="Тема">
           </ng-select>
-          <div style="color: red" *ngIf="topicId.invalid && (topicId.dirty || topicId.touched)">Обязательно для заполнения</div>
+          <div style="color: red" *ngIf="topicId.invalid && (topicId.dirty || topicId.touched)">Обязательно для
+            заполнения
+          </div>
         </div>
       </div>
       <!--      <div class="middle" >-->
@@ -77,7 +135,9 @@
                    bindLabel="fullNameForm"
                    placeholder="Преподаватель">
         </ng-select>
-        <div style="color: red" *ngIf="teacherId.invalid && (teacherId.dirty || teacherId.touched)">Обязательно для заполнения</div>
+        <div style="color: red" *ngIf="teacherId.invalid && (teacherId.dirty || teacherId.touched)">Обязательно для
+          заполнения
+        </div>
       </div>
       <!--      <div class="middle">-->
       <!--        <button *ngIf="divideSubGroups"-->
@@ -102,7 +162,8 @@
                    bindLabel="name"
                    placeholder="Аудитория">
         </ng-select>
-        <div style="color: red" *ngIf="roomId.invalid && (roomId.dirty || roomId.touched)">Обязательно для заполнения</div>
+        <div style="color: red" *ngIf="roomId.invalid && (roomId.dirty || roomId.touched)">Обязательно для заполнения
+        </div>
       </div>
       <!--      <div class="middle">-->
       <!--        <button *ngIf="divideSubGroups"-->
@@ -123,5 +184,5 @@
 
 <div mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Отмена</button>
-  <button mat-button [mat-dialog-close]="true" [disabled]="form.invalid"  cdkFocusInitial>Сохранить</button>
+  <button mat-button (click)="save()" [disabled]="form.invalid" cdkFocusInitial>Сохранить</button>
 </div>

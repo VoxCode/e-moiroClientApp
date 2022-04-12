@@ -33,6 +33,12 @@ import {
 } from '@angular/material-moment-adapter';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
+import {ScheduleClassTimes} from '../schedule/schedule-class-times';
+import DateTimeFormat = Intl.DateTimeFormat;
+import {ScheduleDate} from '../models/schedule-models/ScheduleDate';
+import {ScheduleDateScheduleBlock} from '../models/schedule-models/ScheduleDateScheduleBlock';
+import {ScheduleDateScheduleBlockService} from '../services/schedule-services/schedule-date-schedule-block.service';
+import {ScheduleDateService} from '../services/schedule-services/schedule-date.service';
 
 @Component({
   selector: 'app-schedule-block',
@@ -40,6 +46,8 @@ import {Subject} from 'rxjs';
   styleUrls: ['./schedule-block.component.scss'],
   providers: [
     ScheduleBlockService,
+    ScheduleDateService,
+    ScheduleDateScheduleBlockService,
     ScheduleBlockCurriculumTopicTrainingProgramService,
     CurriculumTopicTrainingProgramService,
     TrainingProgramCurriculumSectionService,
@@ -49,7 +57,7 @@ import {Subject} from 'rxjs';
     GroupService,
     ScheduleBlockClassRoomService,
     ScheduleBlockClassTimeService, TimelineViewsService, TimelineMonthService,
-    { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
+    {provide: MAT_DATE_LOCALE, useValue: 'ru-RU'},
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
@@ -78,7 +86,7 @@ export class ScheduleBlockComponent implements OnInit {
   teachers: Teacher[] = [];
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
   groups: Group[] = [];
-  public saveButtonClicked: Subject<any> = new Subject<any>();
+  scheduleClassTimes: any = ScheduleClassTimes;
 
   public form: FormGroup = new FormGroup({
     id: new FormControl({value: '', disabled: true}),
@@ -87,12 +95,26 @@ export class ScheduleBlockComponent implements OnInit {
     teacherId: new FormControl('', Validators.required),
     roomId: new FormControl('', Validators.required),
     date: new FormControl('', Validators.required),
+    timeId: new FormControl('', Validators.required),
+    subgroup: new FormControl('', Validators.required),
   });
 
-  get groupId(): AbstractControl { return this.form.get('groupId'); }
-  get topicId(): AbstractControl { return this.form.get('topicId'); }
-  get teacherId(): AbstractControl { return this.form.get('teacherId'); }
-  get roomId(): AbstractControl { return this.form.get('roomId'); }
+
+  get groupId(): AbstractControl {
+    return this.form.get('groupId');
+  }
+
+  get topicId(): AbstractControl {
+    return this.form.get('topicId');
+  }
+
+  get teacherId(): AbstractControl {
+    return this.form.get('teacherId');
+  }
+
+  get roomId(): AbstractControl {
+    return this.form.get('roomId');
+  }
 
   constructor(
     public dialogRef: MatDialogRef<ScheduleBlockComponent>,
@@ -101,13 +123,16 @@ export class ScheduleBlockComponent implements OnInit {
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
     private trainingProgramCurriculumSectionService: TrainingProgramCurriculumSectionService,
     private scheduleBlockTeacherService: ScheduleBlockTeacherService,
+    private scheduleDateScheduleBlockService: ScheduleDateScheduleBlockService,
+    private scheduleDateService: ScheduleDateService,
     private trainingProgramTeacherService: TrainingProgramTeacherService,
     private teacherService: TeacherService,
     private groupService: GroupService,
     private scheduleBlockService: ScheduleBlockService,
     private scheduleBlockClassRoomService: ScheduleBlockClassRoomService,
     private scheduleBlockClassTimeService: ScheduleBlockClassTimeService,
-  ) { }
+  ) {
+  }
 
 
   ngOnInit(): void {
@@ -116,13 +141,13 @@ export class ScheduleBlockComponent implements OnInit {
     this.curriculumTopicTrainingPrograms = this.data.topics;
     this.teachers = this.data.teachers;
 
-    if (this.data.scheduleElement !== undefined) {
-      this.scheduleElement = this.data.scheduleElement;
-      this.selectedGroup = this.groups.filter(u => u.id >= this.scheduleElement.groupId)[0];
-      this.selectedTopic = this.curriculumTopicTrainingPrograms.filter(u => u.id >= this.scheduleElement.topicId)[0];
-      this.selectedTeacher = this.teachers.filter(u => u.id >= this.scheduleElement.teacherId)[0];
-    }
-
+    this.scheduleElement = this.data.scheduleElement;
+    // if (this.data.scheduleElement !== undefined) {
+    //   this.scheduleElement = this.data.scheduleElement;
+    //   this.selectedGroup = this.groups.filter(u => u.id >= this.scheduleElement.groupId)[0];
+    //   this.selectedTopic = this.curriculumTopicTrainingPrograms.filter(u => u.id >= this.scheduleElement.topicId)[0];
+    //   this.selectedTeacher = this.teachers.filter(u => u.id >= this.scheduleElement.teacherId)[0];
+    // }
 
     console.log('editor init');
     this.form.controls.id.patchValue(this.scheduleElement.id);
@@ -131,15 +156,17 @@ export class ScheduleBlockComponent implements OnInit {
     this.form.controls.teacherId.patchValue(this.scheduleElement.teacherId);
     this.form.controls.roomId.patchValue(this.scheduleElement.roomId);
     this.form.controls.date.patchValue(this.scheduleElement.date);
+    this.form.controls.timeId.patchValue(this.scheduleElement.timeId);
+    this.form.controls.subgroup.patchValue(this.scheduleElement.subgroup);
 
     console.log(this.scheduleElement);
+
+    // const codCtrl = this.form.get('date');
+    // codCtrl.valueChanges.subscribe(date => {
+    //   this.dayOfTheWeek = new Date(date).getDay();
+    // });
+
   }
-
-  public dateParser(data: string) {
-    return new Date(data);
-  }
-
-
 
   MergeWithSubGroup(val: string, checked: boolean = true): void {
     switch (val) {
@@ -161,10 +188,65 @@ export class ScheduleBlockComponent implements OnInit {
     }
   }
 
-  editRow(): void {
-    this.scheduleElement = this.form.getRawValue();
-    this.saveButtonClicked.next(this.scheduleElement);
+  save(): void {
+    //this.scheduleElement.topic = "qwewedsfdsfdsfwe";
+    this.createScheduleBlock(this.form.value);
   }
 
+  dayOfTheWeek(): number {
+    return new Date(this.form.get('date').value).getDay();
+  }
+
+  createScheduleBlock(args: ScheduleElement): void {
+    const date = new ScheduleDate(0, args.date, args.groupId);
+    const block = new ScheduleBlock(0, args.subgroup, 0);
+    this.scheduleBlockService.createValue(block)
+      .subscribe((blockResponse: ScheduleBlock) => {
+        this.createScheduleBlockTeacher(new ScheduleBlockTeacher(0, args.teacherId, blockResponse.id));
+        this.createScheduleBlockRoom(new ScheduleBlockClassRoom(0, blockResponse.id, args.roomId));
+        this.createBlockTopic(new ScheduleBlockCurriculumTopicTrainingProgram(0, args.topicId, blockResponse.id, 0));
+        this.createScheduleBlockTime(new ScheduleBlockClassTime(0, blockResponse.id, args.timeId));
+        this.scheduleDateService.createValue(date)
+          .subscribe((dateResponse: ScheduleDate) => {
+            this.createScheduleDateBlock(new ScheduleDateScheduleBlock(0, dateResponse.id, blockResponse.id));
+          });
+      });
+  }
+
+  createBlockTopic(blockTopicProgram: ScheduleBlockCurriculumTopicTrainingProgram): void {
+    this.scheduleBlockCurriculumTopicTrainingProgramService.createValue(blockTopicProgram)
+      .subscribe((blockTopicProgramResponse: ScheduleBlockCurriculumTopicTrainingProgram) => {
+        // nothing
+      });
+  }
+
+  createScheduleDateBlock(dateBlock: ScheduleDateScheduleBlock): void {
+    this.scheduleDateScheduleBlockService.createValue(dateBlock)
+      .subscribe((dateBlockResponse: ScheduleDateScheduleBlock) => {
+        this.dialogRef.close(this.form.value);
+      });
+  }
+
+  createScheduleBlockTeacher(blockTeacher: ScheduleBlockTeacher): void {
+    this.scheduleBlockTeacherService.createValue(blockTeacher)
+      .subscribe((blockResponse) => {
+        // nothing
+      });
+  }
+
+  createScheduleBlockRoom(blockRoom: ScheduleBlockClassRoom): void {
+    this.scheduleBlockClassRoomService.createValue(blockRoom)
+      .subscribe((blockRoomResponse: ScheduleDate) => {
+        // nothing
+      });
+
+  }
+
+  createScheduleBlockTime(blockTime: ScheduleBlockClassTime): void {
+    this.scheduleBlockClassTimeService.createValue(blockTime)
+      .subscribe((blockClassTimeResponse) => {
+        // nothing
+      });
+  }
 }
 
