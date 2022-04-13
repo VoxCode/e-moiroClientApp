@@ -39,8 +39,7 @@ import {TeacherService} from '../services/teacher.service';
 import {ScheduleBlock} from '../models/schedule-models/ScheduleBlock';
 import {ClassTime} from '../models/schedule-models/СlassTime';
 import {ClassTimeService} from '../services/schedule-services/class-time.service';
-import {ScheduleClassTimes} from "./schedule-class-times";
-import {log} from "util";
+import {ScheduleClassTimes} from './schedule-class-times';
 
 
 @Component({
@@ -58,98 +57,21 @@ import {log} from "util";
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},],
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}, ],
 
 })
 export class ScheduleComponent implements OnInit {
-  testScheduleData: ScheduleElement[] = [   // ScheduleElement
-    {
-      id: 0,
-      topicId: 10,
-      topic: 'topic1',
-      teacherId: 5,
-      teacher: 'teacher1',
-      date: new Date(),
-      startTime: new Date(0, 0, 15, 11, 0, 0, 0),
-      endTime: new Date(),
-      timeId: 1,
-      group: 1,
-      groupId: 1,
-      roomId: 3,
-      room: '1',
-    },
-    {
-      id: 2,
-      topic: 'topic2',
-      teacherId: 15,
-      teacher: 'teacher2',
-      date: new Date(),
-      startTime: new Date(),
-      endTime: new Date(),
-      timeId: 8,
-      group: 2,
-      groupId: 3,
-      room: '2',
-    },
-    {
-      id: 3,
-      topic: 'topic3',
-      teacherId: 16,
-      teacher: 'teacher3',
-      startTime: new Date(),
-      endTime: new Date(),
-      timeId: 9,
-      group: 3,
-      groupId: 3,
-      room: '3',
-    },
-    {
-      id: 4,
-      topic: 'topic4',
-      teacherId: 17,
-      teacher: 'teacher4',
-      startTime: new Date(),
-      endTime: new Date(),
-      timeId: 10,
-      group: 4,
-      groupId: 3,
-      room: '4',
-    },
-    {
-      id: 5,
-      topic: 'topic5',
-      teacherId: 17,
-      teacher: 'teacher5',
-      startTime: new Date(),
-      endTime: new Date(),
-      timeId: 12,
-      group: 5,
-      groupId: 3,
-      room: '5',
-    },
-    {
-      id: 6,
-      topic: 'topic6',
-      teacherId: 18,
-      teacher: 'teacher6',
-      startTime: new Date(),
-      endTime: new Date(),
-      timeId: 12,
-      group: 6,
-      groupId: 3,
-      room: '6',
-    },
-  ];
 
-
-  range = new FormGroup({
+  settings = new FormGroup({
+    filterElement: new FormControl(),
     start: new FormControl(),
     end: new FormControl(),
   });
+
+  selectedFilter: any;
   algRes: any = [];
   timedMonday: any = [];
   algResGeneric: any = [];
-  tm: ClassTime;
   times: ClassTime[];
 
   teachers: Teacher[] = [];
@@ -160,6 +82,8 @@ export class ScheduleComponent implements OnInit {
   public modalRef: MDBModalRef;
 
   public saveButtonClicked: Subject<any> = new Subject<any>();
+  formatTeacherName: any = Teacher.getFullName;
+
 
 
   constructor(
@@ -181,61 +105,33 @@ export class ScheduleComponent implements OnInit {
   ) {
   }
 
+
+
   ngOnInit(): void {
+    this.settings.setControl('start', new FormControl(
+      this.getFirstDayOfWeek(new Date())
+    ));
+    this.settings.setControl('end', new FormControl(
+      new Date(new Date().setDate(this.getFirstDayOfWeek(new Date()).getDate() + 6))
+    ));
+
+
     this.loadRooms();
     this.loadGroups();
     this.loadTeachers();
     this.loadCurriculumTopics();
     this.loadScheduleDates();
-
-
-    console.log('set');
-    //console.log(ScheduleClassTimes.mondayFirstShift[0].FirstClassTimeStart);
-    console.log(ScheduleClassTimes.mondayFirstShift[0].FirstClassTimeStart.toLocaleTimeString());
-    console.log(ScheduleClassTimes.mondayFirstShift[0].FirstClassTimeStart.toUTCString());
-    console.log(ScheduleClassTimes.mondayFirstShift[0].FirstClassTimeStart.toISOString());
-
-    //this.gentimes();
-
-    this.getTimes();
-
-
-    setInterval(() => {
-      console.log('get');
-      console.log(this.scheduleData);
-      }, 1000);
-    setTimeout(() => {
-
-    }, 5000);
   }
 
-  gentimes(): void {
-    ScheduleClassTimes.mondayFirstShift.forEach((time) => {
-      this.createTimes(new ClassTime(time.id, time.FirstClassTimeStart, time.FirstClassTimeEnd));
-    });
-    ScheduleClassTimes.mondaySecondShift.forEach((time) => {
-      this.createTimes(new ClassTime(time.id, time.FirstClassTimeStart, time.FirstClassTimeEnd));
-    });
-    ScheduleClassTimes.genericFirstShift.forEach((time) => {
-      this.createTimes(new ClassTime(time.id, time.FirstClassTimeStart, time.FirstClassTimeEnd));
-    });
-    ScheduleClassTimes.genericSecondShift.forEach((time) => {
-      this.createTimes(new ClassTime(time.id, time.FirstClassTimeStart, time.FirstClassTimeEnd));
-    });
+  getFirstDayOfWeek(d: Date): Date {
+    const date = new Date(d);
+    const day = date.getDay();
+    const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(date.setDate(diff));
   }
 
-  createTimes(time: ClassTime): void {
-    this.classTimeService.createValue(time)
-      .subscribe((response: ClassTime) => {
-        this.tm = response;
-      });
-  }
+  loadScheduleForRange(s: Date, e: Date): void{
 
-  getTimes(): void {
-    this.classTimeService.getValues()
-      .subscribe((data: ClassTime[]) => {
-        this.times = data;
-      });
   }
 
   generateTimedMonday(): void {
@@ -293,7 +189,7 @@ export class ScheduleComponent implements OnInit {
 
   generateGenericWeekArray(): void {
 
-    // change to loaded timeschedule(first of all create one)
+    // modify to get time from elements for context pupup
     [1, 2, 3, 4, 5, 6].forEach((day) => {
       const auxCol = {
         day,

@@ -10,139 +10,184 @@
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
-            Расписание для: {{range.value | json}}
+            Расписание для:
+            {{settings.value.start | date : 'dd.MM.yyyy'}} -
+            {{settings.value.end | date : 'dd.MM.yyyy'}}
           </mat-panel-title>
           <mat-panel-description>
             Настройки расписания!
-            <mat-icon>date_range</mat-icon>
+            <mat-icon class="icon-right">settings</mat-icon>
           </mat-panel-description>
         </mat-expansion-panel-header>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Выберете промежуток</mat-label>
-          <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-            <input matStartDate formControlName="start" placeholder="Начальная дата">
-            <input matEndDate formControlName="end" placeholder="Конечная Дата">
-          </mat-date-range-input>
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-date-range-picker #picker></mat-date-range-picker>
-        </mat-form-field>
-
-        <p>Selected range: {{range.value | json}}</p>
+        <div class="set-el">
+          <mat-form-field appearance="fill">
+            <mat-label>Выберете промежуток</mat-label>
+            <mat-date-range-input [formGroup]="settings" [rangePicker]="picker">
+              <input matStartDate formControlName="start" placeholder="Начальная дата">
+              <input matEndDate formControlName="end" placeholder="Конечная Дата">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </div>
+        <div class="set-el ng-select-align-top">
+          <div class="set-el">
+            <ng-select mdbValidate [clearable]="false"
+                       placeholder="Поиск"
+                       [appendTo]="'body'"
+                       [(ngModel)]="selectedFilter">
+              <ng-option *ngFor="let option of this.groups" [value]="option.id">ПК - {{option.groupNumber}}</ng-option>
+              <ng-option *ngFor="let option of this.teachers" [value]="option.id">{{option.fullNameForm}}</ng-option>
+              <ng-option *ngFor="let option of this.roomData" [value]="option.id">Аудитория {{option.name}}</ng-option>
+            </ng-select>
+          </div>
+          <div class="set-el">
+            <button mat-mini-fab color="primary">
+              <mat-icon>search</mat-icon>
+            </button>
+          </div>
+        </div>
       </mat-expansion-panel>
 
     </div>
     <mat-tab-group mat-align-tabs="center">
       <mat-tab label="Неделя">
-        <div style="display: table">
-          <div style="display: table-cell; vertical-align: middle">
-            <button mat-fab color="primary" aria-label="Example icon button with a home icon">
-              <mat-icon>arrow_back_ios</mat-icon>
-            </button>
-          </div>
-          <div style="display: table-cell; width: 100%; vertical-align: middle">
-            <div class="row-eq-height">
-              <table class="mainSchedule">
-                <thead>
-                <tr style="text-align: center;">
-                  <th>Время\День</th>
-                  <th>Понедельник</th>
-                </tr>
-                </thead>
-                <tr *ngFor="let row of timedMonday">
-                  <td> {{row.rowTime.FirstClassTimeStart | date:'HH:mm'}}
-                    - {{row.rowTime.FirstClassTimeEnd | date:'HH:mm'}}<br>
-                    {{row.rowTime.SecondClassTimeStart | date:'HH:mm'}}
-                    - {{row.rowTime.SecondClassTimeEnd | date:'HH:mm'}}</td>
-                  <td class="fillable" *ngFor="let col of row.scol" style="height: 0">
-                    <div *ngFor="let cell of col.scell">
-                      <app-schedule-cell [scheduleElement]="cell"
-                                         (click)="onCellClick('cell', cell)"></app-schedule-cell>
-                    </div>
-                    <div class="fill" *ngIf="col.scell.length < 1" (click)="onCellClick('empty div')">
-                    </div>
-                  </td>
-                </tr>
-              </table>
-              <table class="mainSchedule">
-                <thead>
-                <tr style="text-align: center">
-                  <th>Время\День</th>
-                  <th>Вторник</th>
-                  <th>Среда</th>
-                  <th>Четверг</th>
-                  <th>Пятница</th>
-                  <th>Суббота</th>
-                </tr>
-                </thead>
-                <tr *ngFor="let row of algRes">
-                  <td> {{row.rowTime.FirstClassTimeStart | date:'HH:mm'}}
-                    - {{row.rowTime.FirstClassTimeEnd | date:'HH:mm'}}<br>
-                    {{row.rowTime.SecondClassTimeStart | date:'HH:mm'}}
-                    - {{row.rowTime.SecondClassTimeEnd | date:'HH:mm'}}</td>
-                  <td class="fillable" *ngFor="let col of row.scol" style="height: 0">
-                    <div *ngFor="let cell of col.scell">
-                      <app-schedule-cell [scheduleElement]="cell"
-                                         (click)="onCellClick('cell', cell)"></app-schedule-cell>
-                    </div>
-                    <div class="fill" *ngIf="col.scell.length < 1" (click)="onCellClick('empty div')">
-                    </div>
-                  </td>
-                </tr>
-              </table>
+        <mat-menu #menu="matMenu" >
+          <ng-template matMenuContent
+                       let-cell="cell"
+                       let-menuTrigger="menuTrigger">
+            <div style="margin: 10px" (click)="$event.stopPropagation();">
+              <div style="text-align: center">
+                <h2 style="background: #4285f4">Занятие</h2>
+                <h5>{{cell.date | date : 'dd.MM.yyyy'}}</h5>
+                <h5>{{cell.startTime | date:'HH:mm'}}</h5>
+              </div>
+              <div style="margin: 15px 10px">
+              Группа: {{cell.group}} <br>
+              Тема: {{cell.topic}}<br>
+              Преподаватель: {{formatTeacherName(cell.teacher)}}<br>
+              Кабинет: {{cell.room}}<br>
+              </div>
+              <button mat-menu-item (click)="menuTrigger.closeMenu();">close</button>
+            </div>
+          </ng-template>
+        </mat-menu>
+        <ng-template matTabContent>
+          <div style="display: table">
+            <div style="display: table-cell; vertical-align: middle">
+              <button mat-fab color="primary" aria-label="Example icon button with a home icon">
+                <mat-icon>arrow_back_ios</mat-icon>
+              </button>
+            </div>
+            <div style="display: table-cell; width: 100%; vertical-align: middle">
+              <div class="row-eq-height">
+                <table class="mainSchedule">
+                  <thead>
+                  <tr style="text-align: center">
+                    <th>Понедельник</th>
+                    <th>Вторник</th>
+                    <th>Среда</th>
+                    <th>Четверг</th>
+                    <th>Пятница</th>
+                    <th>Суббота</th>
+                  </tr>
+                  </thead>
+                  <tr>
+                    <td class="fillable" *ngFor="let col of algResGeneric"
+                        style="height: 0; vertical-align: top;">
+                      <div class="fill">
+                        <div *ngFor="let cell of col.scell" style="display: flex; justify-content: center;">
+                          <app-schedule-cell [scheduleElement]="cell"
+                                             [matMenuTriggerFor]="menu"
+                                             [matMenuTriggerData]="{menuTrigger: menuTrigger, cell: cell}"
+                                             #menuTrigger="matMenuTrigger"
+                          ></app-schedule-cell>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div style="display: table-cell; vertical-align: middle">
+              <button mat-fab color="primary" aria-label="Example icon button with a home icon">
+                <mat-icon>arrow_forward_ios</mat-icon>
+              </button>
             </div>
           </div>
-          <div style="display: table-cell; vertical-align: middle">
-            <button mat-fab color="primary" aria-label="Example icon button with a home icon">
-              <mat-icon>arrow_forward_ios</mat-icon>
-            </button>
-          </div>
-        </div>
+        </ng-template>
       </mat-tab>
       <mat-tab label="Неделя (с разделением по времени)">
-        <div style="display: table">
-          <div style="display: table-cell; vertical-align: middle">
-            <button mat-fab color="primary" aria-label="Example icon button with a home icon">
-              <mat-icon>arrow_back_ios</mat-icon>
-            </button>
-          </div>
-          <div style="display: table-cell; width: 100%; vertical-align: middle">
-            <div class="row-eq-height">
-              <table class="mainSchedule">
-                <thead>
-                <tr style="text-align: center">
-                  <th>Понедельник</th>
-                  <th>Вторник</th>
-                  <th>Среда</th>
-                  <th>Четверг</th>
-                  <th>Пятница</th>
-                  <th>Суббота</th>
-                </tr>
-                </thead>
-                <tr>
-                  <td class="fillable" *ngFor="let col of algResGeneric"
-                      style="height: 0; vertical-align: top;">
-                    <div class="fill" (click)="onCellClick('empty div')">
-                      <div *ngFor="let cell of col.scell" style="display: flex; justify-content: center;">
+        <ng-template matTabContent>
+          <div style="display: table">
+            <div style="display: table-cell; vertical-align: middle">
+              <button mat-fab color="primary" aria-label="Example icon button with a home icon">
+                <mat-icon>arrow_back_ios</mat-icon>
+              </button>
+            </div>
+            <div style="display: table-cell; width: 100%; vertical-align: middle">
+              <div class="row-eq-height">
+                <table class="mainSchedule">
+                  <thead>
+                  <tr style="text-align: center;">
+                    <th>Время\День</th>
+                    <th>Понедельник</th>
+                  </tr>
+                  </thead>
+                  <tr *ngFor="let row of timedMonday">
+                    <td> {{row.rowTime.FirstClassTimeStart | date:'HH:mm'}}
+                      - {{row.rowTime.FirstClassTimeEnd | date:'HH:mm'}}<br>
+                      {{row.rowTime.SecondClassTimeStart | date:'HH:mm'}}
+                      - {{row.rowTime.SecondClassTimeEnd | date:'HH:mm'}}</td>
+                    <td class="fillable" *ngFor="let col of row.scol" style="height: 0">
+                      <div *ngFor="let cell of col.scell">
                         <app-schedule-cell [scheduleElement]="cell"
-                                           (click)="onCellClick('cell', cell);$event.stopPropagation()"></app-schedule-cell>
+                                           (click)="onCellClick('cell', cell)"></app-schedule-cell>
                       </div>
-
-                    </div>
-                  </td>
-                </tr>
-              </table>
+                      <div class="fill" *ngIf="col.scell.length < 1" (click)="onCellClick('empty div')">
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                <table class="mainSchedule">
+                  <thead>
+                  <tr style="text-align: center">
+                    <th>Время\День</th>
+                    <th>Вторник</th>
+                    <th>Среда</th>
+                    <th>Четверг</th>
+                    <th>Пятница</th>
+                    <th>Суббота</th>
+                  </tr>
+                  </thead>
+                  <tr *ngFor="let row of algRes">
+                    <td> {{row.rowTime.FirstClassTimeStart | date:'HH:mm'}}
+                      - {{row.rowTime.FirstClassTimeEnd | date:'HH:mm'}}<br>
+                      {{row.rowTime.SecondClassTimeStart | date:'HH:mm'}}
+                      - {{row.rowTime.SecondClassTimeEnd | date:'HH:mm'}}</td>
+                    <td class="fillable" *ngFor="let col of row.scol" style="height: 0">
+                      <div *ngFor="let cell of col.scell">
+                        <app-schedule-cell [scheduleElement]="cell"
+                                           (click)="onCellClick('cell', cell)"></app-schedule-cell>
+                      </div>
+                      <div class="fill" *ngIf="col.scell.length < 1" (click)="onCellClick('empty div')">
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div style="display: table-cell; vertical-align: middle">
+              <button mat-fab color="primary" aria-label="Example icon button with a home icon">
+                <mat-icon>arrow_forward_ios</mat-icon>
+              </button>
             </div>
           </div>
-          <div style="display: table-cell; vertical-align: middle">
-            <button mat-fab color="primary" aria-label="Example icon button with a home icon">
-              <mat-icon>arrow_forward_ios</mat-icon>
-            </button>
-          </div>
-        </div>
+        </ng-template>
       </mat-tab>
       <mat-tab label="Месяц">
-
+        <ng-template matTabContent>
+        </ng-template>
       </mat-tab>
     </mat-tab-group>
   </div>

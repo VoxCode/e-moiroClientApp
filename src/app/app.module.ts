@@ -82,6 +82,7 @@ import {AngularMaterialModule} from './angular-material/angular-material.module'
 
 
 
+
 export function tokenGetter(): string {
   return localStorage.getItem('token');
 }
@@ -147,33 +148,33 @@ export function tokenGetter(): string {
     JournalComponent,
     ScheduleCellComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        ToastrModule.forRoot(),
-        InputsModule.forRoot(),
-        MDBBootstrapModule.forRoot(),
-        FormsModule,
-        NgSelectModule,
-        NgOptionHighlightModule,
-        DocumentEditorContainerModule,
-        DocumentEditorAllModule,
-        TrainingProgramConstructorModule,
-        DragDropModule,
-        DatePickerModule,
-        DropDownListModule,
-        JwtModule.forRoot({
-            config: {
-                tokenGetter
-            }
-        }),
-        ScheduleModule,
-        DateTimePickerModule,
-        AngularMaterialModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+    InputsModule.forRoot(),
+    MDBBootstrapModule.forRoot(),
+    FormsModule,
+    NgSelectModule,
+    NgOptionHighlightModule,
+    DocumentEditorContainerModule,
+    DocumentEditorAllModule,
+    TrainingProgramConstructorModule,
+    DragDropModule,
+    DatePickerModule,
+    DropDownListModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter
+      }
+    }),
+    ScheduleModule,
+    DateTimePickerModule,
+    AngularMaterialModule,
+  ],
   providers: [
     AuthService,
     Globals,

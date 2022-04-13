@@ -26,8 +26,28 @@ td {
   margin-bottom: 20px;
 }
 
-div.backGround {
-  background: lightcyan;
+mat-icon.icon-right {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+div.set-el {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.ng-select-align-top{
+  vertical-align: top;
+  margin-top: 1px;
+}
+
+div.set-el > button{
+  vertical-align: text-top;
+}
+
+div.set-el > ng-select{
+  max-width: 600px;
+  min-width: 300px;
 }
 
 div.fillable {
@@ -41,6 +61,11 @@ div.fillable {
 
 .fill:hover {
   box-shadow: inset 0 0 4px 0px green, 0 0 0px 1px green;;
+}
+
+::ng-deep.mat-menu-panel {
+  max-width:none  !important;
+  width: 500px;
 }
 
 
