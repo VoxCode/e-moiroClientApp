@@ -304,12 +304,12 @@ export class SyncfusionRoomSchedulerComponent implements OnInit, OnChanges
       });
   }
   createScheduleBlock(args: ScheduleElement): void{
-    const date = new ScheduleDate(0, args.startTime, args.groupId);
+    const date = new ScheduleDate(0, args.time.classTimeStart, args.groupId);
     const block = new ScheduleBlock(0, 0, 0);
-    const time = new ClassTime(0, args.startTime, args.endTime);
+    const time = new ClassTime(0, args.time.classTimeStart, args.time.classTimeEnd);
     this.scheduleBlockService.createValue(block)
       .subscribe((blockResponse: ScheduleBlock) => {
-        this.createScheduleBlockTeacher(new ScheduleBlockTeacher(0, args.teacherId, blockResponse.id));
+        this.createScheduleBlockTeacher(new ScheduleBlockTeacher(0, args.teacher.id, blockResponse.id));
         this.createScheduleBlockRoom(new ScheduleBlockClassRoom(0, blockResponse.id, args.roomId));
         this.createBlockTopic(new ScheduleBlockCurriculumTopicTrainingProgram(0, args.topicId, blockResponse.id, 0));
         this.classTimeService.createValue(time)

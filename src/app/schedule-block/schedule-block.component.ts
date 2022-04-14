@@ -153,10 +153,10 @@ export class ScheduleBlockComponent implements OnInit {
     this.form.controls.id.patchValue(this.scheduleElement.id);
     this.form.controls.groupId.patchValue(this.scheduleElement.groupId);
     this.form.controls.topicId.patchValue(this.scheduleElement.topicId);
-    this.form.controls.teacherId.patchValue(this.scheduleElement.teacherId);
+    this.form.controls.teacherId.patchValue(this.scheduleElement.teacher.id);
     this.form.controls.roomId.patchValue(this.scheduleElement.roomId);
     this.form.controls.date.patchValue(this.scheduleElement.date);
-    this.form.controls.timeId.patchValue(this.scheduleElement.timeId);
+    this.form.controls.timeId.patchValue(this.scheduleElement.time.id);
     this.form.controls.subgroup.patchValue(this.scheduleElement.subgroup);
 
     console.log(this.scheduleElement);
@@ -202,10 +202,10 @@ export class ScheduleBlockComponent implements OnInit {
     const block = new ScheduleBlock(0, args.subgroup, 0);
     this.scheduleBlockService.createValue(block)
       .subscribe((blockResponse: ScheduleBlock) => {
-        this.createScheduleBlockTeacher(new ScheduleBlockTeacher(0, args.teacherId, blockResponse.id));
+        this.createScheduleBlockTeacher(new ScheduleBlockTeacher(0, args.teacher.id, blockResponse.id));
         this.createScheduleBlockRoom(new ScheduleBlockClassRoom(0, blockResponse.id, args.roomId));
         this.createBlockTopic(new ScheduleBlockCurriculumTopicTrainingProgram(0, args.topicId, blockResponse.id, 0));
-        this.createScheduleBlockTime(new ScheduleBlockClassTime(0, blockResponse.id, args.timeId));
+        this.createScheduleBlockTime(new ScheduleBlockClassTime(0, blockResponse.id, args.time.id));
         this.scheduleDateService.createValue(date)
           .subscribe((dateResponse: ScheduleDate) => {
             this.createScheduleDateBlock(new ScheduleDateScheduleBlock(0, dateResponse.id, blockResponse.id));

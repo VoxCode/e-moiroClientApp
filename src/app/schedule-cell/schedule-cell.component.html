@@ -1,7 +1,7 @@
 <div class="divCell" *ngIf="scheduleElement != undefined;">
   <div class="left">
     <div class="ellipsis">{{scheduleElement.topic}}</div>
-    <div class="ellipsis">{{scheduleElement.teacher}}</div>
+    <div class="ellipsis">{{formatTeacherName(scheduleElement.teacher)}}</div>
   </div>
   <div class="right">
     <div>ПК-{{scheduleElement.group}}</div>

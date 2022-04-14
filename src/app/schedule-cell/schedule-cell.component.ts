@@ -1,5 +1,6 @@
 import {Component, HostListener, Input, OnInit} from '@angular/core';
 import {ScheduleElement} from '../schedule/schedule-element';
+import {Teacher} from "../models/Teacher";
 
 @Component({
   selector: 'app-schedule-cell',
@@ -10,6 +11,7 @@ export class ScheduleCellComponent implements OnInit {
 
   constructor() { }
 
+  formatTeacherName: any = Teacher.getName;
   colspan = 0;
 
   @Input() scheduleElement: ScheduleElement;

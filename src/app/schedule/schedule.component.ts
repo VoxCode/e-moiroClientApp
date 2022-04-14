@@ -85,7 +85,6 @@ export class ScheduleComponent implements OnInit {
   formatTeacherName: any = Teacher.getFullName;
 
 
-
   constructor(
     private matDialog: MatDialog,
     private modalService: MDBModalService,
@@ -106,7 +105,6 @@ export class ScheduleComponent implements OnInit {
   }
 
 
-
   ngOnInit(): void {
     this.settings.setControl('start', new FormControl(
       this.getFirstDayOfWeek(new Date())
@@ -115,13 +113,21 @@ export class ScheduleComponent implements OnInit {
       new Date(new Date().setDate(this.getFirstDayOfWeek(new Date()).getDate() + 6))
     ));
 
-
+    this.loadTimes();
     this.loadRooms();
     this.loadGroups();
     this.loadTeachers();
     this.loadCurriculumTopics();
     this.loadScheduleDates();
   }
+
+  loadTimes(): void {
+    this.classTimeService.getValues()
+      .subscribe((data: ClassTime[]) => {
+        this.times = data;
+      });
+  }
+
 
   getFirstDayOfWeek(d: Date): Date {
     const date = new Date(d);
@@ -130,7 +136,7 @@ export class ScheduleComponent implements OnInit {
     return new Date(date.setDate(diff));
   }
 
-  loadScheduleForRange(s: Date, e: Date): void{
+  loadScheduleForRange(s: Date, e: Date): void {
 
   }
 
@@ -147,7 +153,7 @@ export class ScheduleComponent implements OnInit {
       };
       this.scheduleData.forEach((el) => {
         if (el.date.getDay() === monday
-          && el.timeId === time.id) { // change to monday time schedule
+          && el.time.id === time.id) { // change to monday time schedule
           auxCol.scell.push(el);
         }
       });
@@ -157,7 +163,6 @@ export class ScheduleComponent implements OnInit {
     console.log('tmonday');
     console.log(this.timedMonday);
   }
-
 
 
   generateTimedWeekArray(): void {
@@ -175,7 +180,7 @@ export class ScheduleComponent implements OnInit {
         };
         this.scheduleData.forEach((el) => {
           if (day === el.date.getDay()
-            && el.timeId === time.id) {
+            && el.time.id === time.id) {
             auxCol.scell.push(el);
           }
         });
@@ -206,6 +211,7 @@ export class ScheduleComponent implements OnInit {
     console.log(this.algResGeneric);
   }
 
+
   loadRooms(): void {
     this.classRoomService.getValues()
       .subscribe((data: ClassRoom[]) => {
@@ -229,8 +235,7 @@ export class ScheduleComponent implements OnInit {
       .subscribe((teachersData: Teacher[]) => {
         if (teachersData.length > 0) {
           teachersData.forEach((teacher: Teacher) => {
-            teacher.fullNameForm = teacher.lastName + ' ' + teacher.firstName + ' ' +
-              teacher.patronymicName + ' (' + teacher.position + ')';
+            teacher.fullNameForm = Teacher.getFullNameWithPosition(teacher);
             this.teachers.push(teacher);
           });
         }
@@ -260,11 +265,12 @@ export class ScheduleComponent implements OnInit {
               topic: el.topicTitle,
               dateId: el.scheduleDateId,
               date: new Date(el.date),
-              teacherId: el.teacherId,
-              teacher: el.teacherFullName,
-              timeId: el.classTimeId,
-              startTime: new Date(el.classTimeStart),
-              endTime: new Date(el.classTimeEnd),
+              // teacherId: el.teacherId,
+              teacher: el.teacherobj,
+              time: el.time,
+              // timeId: el.classTimeId,
+              // startTime: new Date(el.classTimeStart),
+              // endTime: new Date(el.classTimeEnd),
               groupId: el.groupId,
               group: el.groupNumber,
               subgroup: el.subgroupNumber,
@@ -307,6 +313,10 @@ export class ScheduleComponent implements OnInit {
       });
   }
 
+  deleteCell(cell: ScheduleElement): void {
+    console.log('deleted');
+  }
+
   emptyEl(): any {
     return {id: 0, roomId: '', roomName: ''};
   }
@@ -330,12 +340,14 @@ export class ScheduleComponent implements OnInit {
   onCellClick(title: string, el: ScheduleElement = new ScheduleElement()): void {
     const dialogRef = this.matDialog.open(ScheduleBlockComponent, {
       minWidth: '800px',
+      maxWidth: '800px',
       data: {
         title,
         groups: this.groups,
         rooms: this.roomData,
         topics: this.curriculumTopicTrainingPrograms,
         teachers: this.teachers,
+        times: this.times,
         scheduleElement: el,
       }
     });
@@ -343,6 +355,7 @@ export class ScheduleComponent implements OnInit {
       console.log('dialog closed');
       console.log(result);
     });
-    console.log('clicked celllll');
   }
+
+
 }

@@ -5,6 +5,40 @@
     <app-curriculum-topic-list></app-curriculum-topic-list>
   </div>
 
+  <mat-menu #menu="matMenu">
+    <ng-template matMenuContent
+                 let-cell="cell"
+                 let-menuTrigger="menuTrigger">
+      <div style="margin: 10px" (click)="$event.stopPropagation();">
+        <div style="text-align: center;">
+          <h2 style="background: #4285f4">Занятие</h2>
+          <div style="background:whitesmoke; text-align: center;">
+            {{cell.date | date : 'dd.MM.yyyy'}}<br>
+            {{cell.time.classTimeStart | date:'HH:mm'}} - {{cell.time.classTimeEnd | date:'HH:mm'}}<br>
+            {{cell.time.secondTimeStart | date:'HH:mm'}} - {{cell.time.secondTimeEnd | date:'HH:mm'}}<br>
+          </div>
+        </div>
+        <div style="margin: 15px 10px">
+          <h4><strong>Группа:</strong> ПК - {{cell.group}}  <strong>Кабинет:</strong> {{cell.room}}</h4>
+          <h4><strong>Преподаватель:</strong> {{formatTeacherName(cell.teacher)}}</h4>
+          <h4><strong>Тема:</strong> {{cell.topic}}</h4>
+        </div>
+        <div style="text-align: right">
+          <!--              <button mat-menu-item (click)="menuTrigger.closeMenu();">close</button>-->
+          <button style="margin: 0px 5px"
+                  (click)="deleteCell(cell);menuTrigger.closeMenu();"
+                  mat-flat-button color="warn">Удалить</button>
+          <button style="margin: 0px 5px"
+                  (click)="onCellClick('cell', cell);menuTrigger.closeMenu();"
+                  mat-flat-button color="primary">Редактировать</button>
+          <button style="margin: 0px 5px"
+                  (click)="onCellClick('empty div');menuTrigger.closeMenu();"
+                  mat-flat-button color="primary">Добавить новую запись</button>
+        </div>
+      </div>
+    </ng-template>
+  </mat-menu>
+
   <div class="col-sm">
     <div class="settings-full">
       <mat-expansion-panel>
@@ -32,7 +66,7 @@
         </div>
         <div class="set-el ng-select-align-top">
           <div class="set-el">
-            <ng-select mdbValidate [clearable]="false"
+            <ng-select mdbValidate [clearable]="true"
                        placeholder="Поиск"
                        [appendTo]="'body'"
                        [(ngModel)]="selectedFilter">
@@ -48,34 +82,13 @@
           </div>
         </div>
       </mat-expansion-panel>
-
     </div>
     <mat-tab-group mat-align-tabs="center">
       <mat-tab label="Неделя">
-        <mat-menu #menu="matMenu" >
-          <ng-template matMenuContent
-                       let-cell="cell"
-                       let-menuTrigger="menuTrigger">
-            <div style="margin: 10px" (click)="$event.stopPropagation();">
-              <div style="text-align: center">
-                <h2 style="background: #4285f4">Занятие</h2>
-                <h5>{{cell.date | date : 'dd.MM.yyyy'}}</h5>
-                <h5>{{cell.startTime | date:'HH:mm'}}</h5>
-              </div>
-              <div style="margin: 15px 10px">
-              Группа: {{cell.group}} <br>
-              Тема: {{cell.topic}}<br>
-              Преподаватель: {{formatTeacherName(cell.teacher)}}<br>
-              Кабинет: {{cell.room}}<br>
-              </div>
-              <button mat-menu-item (click)="menuTrigger.closeMenu();">close</button>
-            </div>
-          </ng-template>
-        </mat-menu>
         <ng-template matTabContent>
           <div style="display: table">
             <div style="display: table-cell; vertical-align: middle">
-              <button mat-fab color="primary" aria-label="Example icon button with a home icon">
+              <button mat-fab color="primary">
                 <mat-icon>arrow_back_ios</mat-icon>
               </button>
             </div>
@@ -95,12 +108,13 @@
                   <tr>
                     <td class="fillable" *ngFor="let col of algResGeneric"
                         style="height: 0; vertical-align: top;">
-                      <div class="fill">
+                      <div class="fill" (click)="onCellClick('empty div',{date: col.date});">
                         <div *ngFor="let cell of col.scell" style="display: flex; justify-content: center;">
                           <app-schedule-cell [scheduleElement]="cell"
                                              [matMenuTriggerFor]="menu"
                                              [matMenuTriggerData]="{menuTrigger: menuTrigger, cell: cell}"
                                              #menuTrigger="matMenuTrigger"
+                                             (click)="$event.stopPropagation()"
                           ></app-schedule-cell>
                         </div>
                       </div>
@@ -110,7 +124,7 @@
               </div>
             </div>
             <div style="display: table-cell; vertical-align: middle">
-              <button mat-fab color="primary" aria-label="Example icon button with a home icon">
+              <button mat-fab color="primary">
                 <mat-icon>arrow_forward_ios</mat-icon>
               </button>
             </div>
@@ -140,11 +154,16 @@
                       {{row.rowTime.SecondClassTimeStart | date:'HH:mm'}}
                       - {{row.rowTime.SecondClassTimeEnd | date:'HH:mm'}}</td>
                     <td class="fillable" *ngFor="let col of row.scol" style="height: 0">
-                      <div *ngFor="let cell of col.scell">
-                        <app-schedule-cell [scheduleElement]="cell"
-                                           (click)="onCellClick('cell', cell)"></app-schedule-cell>
-                      </div>
-                      <div class="fill" *ngIf="col.scell.length < 1" (click)="onCellClick('empty div')">
+
+                      <div class="fill" (click)="onCellClick('empty div')">
+                        <div *ngFor="let cell of col.scell" style="display: flex; justify-content: center;" >
+                          <app-schedule-cell [scheduleElement]="cell"
+                                             [matMenuTriggerFor]="menu"
+                                             [matMenuTriggerData]="{menuTrigger: menuTrigger, cell: cell}"
+                                             #menuTrigger="matMenuTrigger"
+                                             (click)="$event.stopPropagation()"
+                          ></app-schedule-cell>
+                        </div>
                       </div>
                     </td>
                   </tr>
