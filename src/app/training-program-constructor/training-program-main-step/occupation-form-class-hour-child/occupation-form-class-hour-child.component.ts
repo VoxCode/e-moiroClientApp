@@ -31,20 +31,23 @@ export class OccupationFormClassHourChildComponent implements OnInit {
   constructor(
     private occupationFormClassHourService: OccupationFormClassHourService,
     private modalService: MDBModalService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.loadOccupationFormClassHours();
   }
 
   loadOccupationFormClassHours(): void {
-    if (!this.curriculumTopicTrainingProgramId) { return; }
+    if (!this.curriculumTopicTrainingProgramId) {
+      return;
+    }
     this.occupationFormClassHourService.getValues(this.curriculumTopicTrainingProgramId)
       .subscribe((occupationFormClassHours: OccupationFormClassHour[]) => {
-      if (occupationFormClassHours.length !== 0) {
-        this.occupationFormClassHours = occupationFormClassHours;
-      }
-    });
+        if (occupationFormClassHours.length !== 0) {
+          this.occupationFormClassHours = occupationFormClassHours;
+        }
+      });
   }
 
   crateOccupationFormClassHours(occupationFormClassHour: OccupationFormClassHour): void {
@@ -53,6 +56,27 @@ export class OccupationFormClassHourChildComponent implements OnInit {
         this.occupationFormClassHours.push(occupationFormClassHour);
         console.log('Create was successful');
       });
+  }
+
+  editSelectedOccupationFormClassHour(occupationFormClassHour: any): void {
+    this.modalRef = this.modalService.show(OccupationFormClassTimeEditFormComponent, this.modalOption(occupationFormClassHour));
+    this.modalRef.content.saveButtonClicked.subscribe((fromResponse: any) => {
+      this.occupationFormClassHourService.deleteValue(occupationFormClassHour)
+        .subscribe(() => {
+          const aux = new OccupationFormClassHour();
+          aux.occupationFormId = fromResponse.occupationFormId;
+          aux.curriculumTopicTrainingProgramId = occupationFormClassHour.curriculumTopicTrainingProgramId;
+          aux.classHours = fromResponse.classHours;
+          aux.serialNumber = occupationFormClassHour.serialNumber;
+          this.occupationFormClassHourService.createValue(aux).subscribe(() => {
+            console.log('Update was successful');
+             // service do not return response, because implemented on server post returns only OK
+            occupationFormClassHour.fullName = fromResponse.fullName;
+            occupationFormClassHour.classHours = fromResponse.classHours;
+            occupationFormClassHour.occupationFormId = fromResponse.occupationFormId;
+          });
+        });
+    });
   }
 
   deleteOccupationFormClassHours(occupationFormClassHour: OccupationFormClassHour, index): void {
@@ -81,8 +105,7 @@ export class OccupationFormClassHourChildComponent implements OnInit {
       occupationFormClassHour.fullName = newElement.fullName;
       if (this.occupationFormClassHours.length === 0) {
         occupationFormClassHour.serialNumber = this.occupationFormClassHours.length + 1;
-      }
-      else {
+      } else {
         occupationFormClassHour.serialNumber = this.occupationFormClassHours[this.occupationFormClassHours.length - 1].classHours + 1;
       }
       this.crateOccupationFormClassHours(occupationFormClassHour);

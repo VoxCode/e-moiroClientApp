@@ -37,7 +37,7 @@ export class TrainingProgramExpertStepComponent implements OnInit {
     private trainingProgramTeacherService: TrainingProgramTeacherService,
     private teacherService: TeacherService,
     private route: ActivatedRoute,
-    private modalService: MDBModalService
+    private modalService: MDBModalService,
   ) { }
 
   ngOnInit(): void {
@@ -189,6 +189,38 @@ export class TrainingProgramExpertStepComponent implements OnInit {
       this.createTeacher(newElement);
     });
   }
+
+
+  editSelectedTeacher(value: Teacher): void {
+    const conv = {
+      id: '-1',
+      first: value.id,
+      second: value.firstName,
+      third: value.lastName,
+      fourth: value.patronymicName,
+      fifth: value.position,
+      sixth: value.academicRank,
+      seventh: value.isCathedral
+    };
+    this.modalRef = this.modalService.show(TeacherEditComponent, this.modalOption(conv));
+    this.modalRef.content.saveButtonClicked.subscribe((el: any) => {
+      const teacher = new Teacher(
+        el.first,
+        el.second,
+        el.third,
+        el.fourth,
+        el.fifth,
+        el.sixth,
+        el.seventh);
+      this.teacherService.updateValue(teacher).subscribe(() => {
+        this.teacherDevelopers = [];
+        this.teacherReviewers = [];
+        this.teachers = [];
+        this.loadTrainingProgram();
+      });
+    });
+  }
+
 
   emptyEl(): any {
     return {

@@ -17,6 +17,9 @@
       </button>
 
       <button type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
+              (click)="editSelectedOccupationFormClassHour(item)" mdbWavesEffect>
+        <mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
+      <button type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
               (click)="deleteOccupationFormClassHours(item, i)" mdbWavesEffect>
         <mdb-icon fas icon="trash" size="lg"></mdb-icon>
       </button>

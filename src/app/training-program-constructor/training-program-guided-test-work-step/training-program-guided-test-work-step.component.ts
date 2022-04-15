@@ -50,7 +50,7 @@ export class TrainingProgramGuidedTestWorkStepComponent implements OnInit{
   }
 
   loadTrainingProgramCurriculumSections(): void {
-    this.trainingProgramCurriculumSectionService.GetFromTrainingProgram(this.id)
+    this.trainingProgramCurriculumSectionService.getFromTrainingProgram(this.id)
       .subscribe((trainingProgramCurriculumSectionsResponse: TrainingProgramCurriculumSection[]) => {
         if (trainingProgramCurriculumSectionsResponse.length !== 0) {
           const trainingProgramIdArray: number[] = [];
