@@ -16,6 +16,9 @@ export class CurriculumTopicService {
   getValuesFromFilter(studentCategoryId: number, departmentId: number, authorIndex: string): Observable<any> {
     return this.http.get(this.url + '/' + studentCategoryId + '/' + departmentId + '/' + authorIndex);
   }
+  getAuthorValues(author: string): Observable<any> {
+    return this.http.get(this.url + '/Author' + author);
+  }
   getFromTrainingProgram(trainingProgramId: number): Observable<any> {
     return this.http.get(this.url + '/TrainingProgram/' + trainingProgramId);
   }

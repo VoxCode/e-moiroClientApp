@@ -23,6 +23,7 @@ export class TrainingProgramMainStepComponent implements OnInit{
   trainingProgram: TrainingProgram;
   occupationForms: OccupationForm[];
   todo = [];
+  heading = 'Рекомендуемые темы';
 
   constructor(
     public globals: Globals,

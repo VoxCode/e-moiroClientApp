@@ -12,23 +12,21 @@ export class FinalExaminationService {
   getValues(): Observable<any> {
     return this.http.get(this.url);
   }
-
   getValue(id: number): Observable<any> {
     return this.http.get(this.url + '/' + id);
   }
-
+  getAuthorValues(author: string): Observable<any> {
+    return this.http.get(this.url + '/Author' + author);
+  }
   getFinalExamination(certificationTypeId: number, curriculumTopicIdArray: number[]): Observable<any> {
     return this.http.post(this.url + '/' + certificationTypeId, curriculumTopicIdArray);
   }
-
   createValue(finalExamination: FinalExamination): Observable<any> {
     return this.http.post(this.url, finalExamination);
   }
-
   updateValue(finalExamination: FinalExamination): Observable<any> {
     return this.http.put(this.url, finalExamination);
   }
-
   deleteValue(id: number): Observable<any> {
     return this.http.delete(this.url + '/' + id);
   }

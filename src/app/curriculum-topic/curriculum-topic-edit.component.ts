@@ -16,7 +16,7 @@ export class CurriculumTopicEditComponent implements OnInit{
     second: string,
     third: boolean,
     last: string,
-    handle: string };
+    isCrate: boolean };
   public saveButtonClicked: Subject<any> = new Subject<any>();
 
   public form: FormGroup = new FormGroup({

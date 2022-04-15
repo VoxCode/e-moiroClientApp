@@ -4,6 +4,7 @@ import { Regulation } from '../models/Regulation';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {RegulationEditComponent} from './regulation-edit.component';
 import {IsDeleteComponent} from '../is-delete/is-delete.component';
+import {Globals} from '../globals';
 
 @Component({
   selector: 'app-regulation',
@@ -26,7 +27,8 @@ export class RegulationComponent implements OnInit, AfterViewInit {
   constructor(
     private valueService: RegulationService,
     private cdRef: ChangeDetectorRef,
-    private modalService: MDBModalService) { }
+    private modalService: MDBModalService,
+    public globals: Globals) { }
 
   @HostListener('input') oninput = () => {
     this.mdbTablePagination.searchText = this.searchText;
@@ -66,35 +68,52 @@ export class RegulationComponent implements OnInit, AfterViewInit {
   }
 
   loadValue(): void {
-    this.valueService.getValues()
-      .subscribe((data: Regulation[]) => {
-        data.sort((a, b) => a.id - b.id);
-        data.forEach((obj, index) => {
-          this.elements.push({id: (++index).toString(), first: obj.id, last: obj.content});
+    if (this.globals.role === 'admin') {
+      this.valueService.getValues()
+        .subscribe((data: Regulation[]) => {
+          this.pushData(data);
         });
-        this.mdbTable.setDataSource(this.elements);
-        this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
-        this.elements = this.mdbTable.getDataSource();
-        this.previous = this.mdbTable.getDataSource();
-      });
+    }
+    else {
+      this.valueService.getAuthorValues(this.globals.name)
+        .subscribe((data: Regulation[]) => {
+          this.pushData(data);
+        });
+    }
+  }
+
+  pushData(data: Regulation[]): void {
+    data.sort((a, b) => a.id - b.id);
+    data.forEach((obj, index) => {
+      this.elements.push({
+        id: (++index).toString(),
+        first: obj.id,
+        last: obj.content,
+        author: obj.authorIndex});
+    });
+    this.mdbTable.setDataSource(this.elements);
+    this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
+    this.elements = this.mdbTable.getDataSource();
+    this.previous = this.mdbTable.getDataSource();
   }
 
   crate(el: any): void {
-    const regulation = new Regulation(0, el.last);
+    const regulation = new Regulation(0, el.last, this.globals.name);
     this.valueService.createValue(regulation)
       .subscribe((regulationResponse: Regulation) => {
         const index = this.elements.length + 1;
         this.mdbTable.addRow({
           id: index.toString(),
           first: regulationResponse.id,
-          last: regulationResponse.content
+          last: regulationResponse.content,
+          author: regulationResponse.authorIndex
         });
         this.mdbTable.setDataSource(this.elements);
       });
   }
 
   save(el: any): void {
-    const regulation = new Regulation(el.first, el.last);
+    const regulation = new Regulation(el.first, el.last, el.author);
     this.valueService.updateValue(regulation).subscribe();
   }
 
@@ -132,6 +151,7 @@ export class RegulationComponent implements OnInit, AfterViewInit {
     this.modalRef = this.modalService.show(RegulationEditComponent, this.modalOption(el));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       this.elements[elementIndex] = newElement;
+      newElement.author = el.author;
       this.save(newElement);
     });
     this.mdbTable.setDataSource(this.elements);

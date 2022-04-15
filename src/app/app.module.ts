@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './authorization/login/login.component';
@@ -80,12 +80,16 @@ import { JournalComponent } from './journal/journal.component';
 import { ScheduleCellComponent } from './schedule-cell/schedule-cell.component';
 import {AngularMaterialModule} from './angular-material/angular-material.module';
 
-
-
+import {IsDeleteComponent} from './is-delete/is-delete.component';
+import { registerLocaleData } from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
+import {ViewerHelloPageComponent} from './viewer-area/viewer-hello-page.component/viewer-hello-page.component';
+import {GuidedTestWorkAssignmentEditComponent} from './guided-test-work-assignment/guided-test-work-assignment-edit.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
 }
+registerLocaleData(localeRu, 'ru');
 
 @NgModule({
   declarations: [
@@ -147,6 +151,9 @@ export function tokenGetter(): string {
     JournalDocGeneratorComponent,
     JournalComponent,
     ScheduleCellComponent,
+    IsDeleteComponent,
+    ViewerHelloPageComponent,
+    GuidedTestWorkAssignmentEditComponent
   ],
   imports: [
     BrowserModule,
@@ -188,7 +195,8 @@ export function tokenGetter(): string {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptorService,
       multi: true
-    }
+    },
+    { provide: LOCALE_ID, useValue: 'ru' }
   ],
   bootstrap: [AppComponent]
 })

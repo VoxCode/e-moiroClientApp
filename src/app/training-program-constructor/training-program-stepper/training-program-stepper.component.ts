@@ -8,6 +8,7 @@ import {Globals} from '../../globals';
 })
 export class TrainingProgramStepperComponent implements OnInit {
   @Input() id: number;
+  @Input() isDistanceLearning = false;
 
   constructor(public globals: Globals) { }
 

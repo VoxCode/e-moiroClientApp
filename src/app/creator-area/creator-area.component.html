@@ -11,13 +11,7 @@
     <!-- Links -->
     <ul class="navbar-nav mr-auto">
       <li class="nav-item" routerLinkActive="active" [routerLink]="['/creator/trainingProgram']">
-        <a class="nav-link waves-light" mdbWavesEffect>Программы учебных занятий</a>
-      </li>
-      <li class="nav-item" routerLinkActive="active" [routerLink]="['/creator/studentCategory']">
-        <a class="nav-link waves-light" mdbWavesEffect>Категория слушателей</a>
-      </li>
-      <li class="nav-item" routerLinkActive="active" [routerLink]="['/creator/teacher']">
-        <a class="nav-link waves-light" mdbWavesEffect>Преподаватели</a>
+        <a class="nav-link waves-light" mdbWavesEffect>Конструктор УПД</a>
       </li>
     </ul>
 
@@ -28,7 +22,7 @@
           <div class="btn-group" mdbDropdown>
             <mdb-icon fas icon="sign-out-alt" size="lg" mdbDropdownToggle></mdb-icon>
             <div class="dropdown-menu dropdown-menu-right dropdown-primary">
-              <a class="dropdown-item" (click)="userLogout()" href="#">Выйти</a>
+              <a style="text-align: center" class="dropdown-item" (click)="userLogout()" href="#">Выйти</a>
             </div>
           </div>
         </a>

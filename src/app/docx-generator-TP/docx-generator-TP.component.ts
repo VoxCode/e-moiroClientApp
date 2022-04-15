@@ -29,7 +29,8 @@ import {SecondDocumentPart} from './second-document-part/second-document-part';
 import {Packer} from 'docx';
 import {Base64ToBlob} from '../base64-to-blob/base64-to-blob';
 import {Globals} from '../globals';
-
+import {GuidedTestWorkAssignment} from '../models/GuidedTestWorkAssignment';
+import {GuidedTestWorkAssignmentService} from '../services/guided-test-work-assignment.service';
 
 @Component({
   selector: 'app-docx-generator',
@@ -48,6 +49,7 @@ import {Globals} from '../globals';
     TrainingProgramIndependentWorkQuestionService,
     CurriculumTopicTrainingProgramService,
     OccupationFormClassHourService,
+    GuidedTestWorkAssignmentService,
     WordToSfdtService,
     DocxMergeService
   ]
@@ -58,6 +60,8 @@ export class DocxGeneratorTPComponent implements OnInit{
   trainingProgram: TrainingProgramGenerator;
   docx: any[] = [];
   loading: boolean;
+  curriculumTopicIdArray: number[] = [];
+  guidedTestWorkAssignments: GuidedTestWorkAssignment[];
   wordDocxType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
   constructor(
@@ -73,6 +77,7 @@ export class DocxGeneratorTPComponent implements OnInit{
     private trainingProgramTestWorkService: TrainingProgramTestWorkService,
     private trainingProgramIndependentWorkQuestionService: TrainingProgramIndependentWorkQuestionService,
     private occupationFormClassHourService: OccupationFormClassHourService,
+    private guidedTestWorkAssignmentService: GuidedTestWorkAssignmentService,
     private htmlToDocxService: WordToSfdtService,
     private docxMergeService: DocxMergeService,
     private route: ActivatedRoute,
@@ -115,6 +120,11 @@ export class DocxGeneratorTPComponent implements OnInit{
             data.sort((a, b) => a.serialNumber - b.serialNumber);
             this.trainingProgram.trainingProgramCurriculumSections[index].curriculumTopicTrainingPrograms = data;
             checkLength.push(index);
+            data.forEach(obj => {
+              if (!obj.isVariable) {
+                this.curriculumTopicIdArray.push(obj.id);
+              }
+            });
 
             this.occupationFormClassHourService.getValuesFromCurriculumSection(object.id)
               .subscribe((occupationFormClassHours: OccupationFormClassHour[]) => {
@@ -194,6 +204,21 @@ export class DocxGeneratorTPComponent implements OnInit{
       .subscribe((data: TrainingProgramIntroduction) => {
         if (data) {
           this.trainingProgram.trainingProgramIntroduction = data;
+          if (this.trainingProgram.isDistanceLearning) {
+            this.loadGuidedTestWorkAssignment();
+          }
+          else {
+            this.getDocument();
+          }
+        }
+      });
+  }
+
+  loadGuidedTestWorkAssignment(): void {
+    this.guidedTestWorkAssignmentService.getGuidedTestWorkAssignments(this.curriculumTopicIdArray)
+      .subscribe((guidedTestWorkAssignmentsResponse: GuidedTestWorkAssignment[]) => {
+        if (guidedTestWorkAssignmentsResponse.length !== 0) {
+          this.guidedTestWorkAssignments = guidedTestWorkAssignmentsResponse;
           this.getDocument();
         }
       });
@@ -205,7 +230,8 @@ export class DocxGeneratorTPComponent implements OnInit{
     );
 
     const secondDocumentPart = new SecondDocumentPart(
-      this.trainingProgram
+      this.trainingProgram,
+      this.guidedTestWorkAssignments
     );
 
     const firstDocxTmp = firstDocumentPart.create();

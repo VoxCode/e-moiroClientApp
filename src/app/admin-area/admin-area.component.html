@@ -12,8 +12,11 @@
       <li class="nav-item" routerLinkActive="active" [routerLink]="['/admin/trainingProgram']">
         <a class="nav-link waves-light" mdbWavesEffect>Конструктор УПД</a>
       </li>
-      <li class="nav-item" routerLinkActive="active" [routerLink]="['/admin/docxGeneratorSchedule']">
+      <li class="disabled" routerLinkActive="active" [routerLink]="['/admin/docxGeneratorSchedule']">
         <a class="nav-link waves-light" mdbWavesEffect>Генератор расписания</a>
+      </li>
+      <li class="disabled" routerLinkActive="active" disabled="true">
+        <a class="nav-link waves-light" mdbWavesEffect>Электронный журнал</a>
       </li>
     </ul>
 
@@ -24,7 +27,7 @@
           <div class="btn-group" mdbDropdown>
             <mdb-icon fas icon="sign-out-alt" size="lg" mdbDropdownToggle></mdb-icon>
             <div class="dropdown-menu dropdown-menu-right dropdown-primary">
-              <a class="dropdown-item" (click)="userLogout()" href="#">Выйти</a>
+              <a style="text-align: center" class="dropdown-item" (click)="userLogout()" href="#">Выйти</a>
             </div>
           </div>
         </a>
@@ -41,9 +44,7 @@
 <div class="main" style="min-height:100vh;">
   <main>
     <div class="container-fluid">
-
       <router-outlet></router-outlet>
-
     </div>
   </main>
 </div>

@@ -37,6 +37,7 @@ export class DocumentEditorFormComponent implements OnChanges, AfterViewInit {
 
   @Input() docxContent: Blob;
   @Output() saveButtonClicked: EventEmitter<any> = new EventEmitter<any>();
+  @Output() isSaveFalse: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('documentEditorContainerComponent')
   public container: DocumentEditorContainerComponent;
   public path: string;
@@ -93,5 +94,6 @@ export class DocumentEditorFormComponent implements OnChanges, AfterViewInit {
 
   saveDisableChange(): void {
     this.saveDisable = true;
+    this.isSaveFalse.emit(false);
   }
 }

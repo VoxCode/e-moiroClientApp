@@ -41,6 +41,8 @@ import {AuthorizationComponent} from './authorization/authorization.component';
 import {ExpertComponent} from './expert/expert.component';
 import {TrainingProgramExpertStepComponent} from './training-program-constructor/training-program-expert-step/training-program-expert-step.component';
 import {DocxGeneratorScheduleComponent} from './doxc-generator-Schedule/docx-generator-schedule.component';
+import {ViewerHelloPageComponent} from './viewer-area/viewer-hello-page.component/viewer-hello-page.component';
+import {TrainingProgramGuidedTestWorkStepComponent} from './training-program-constructor/training-program-guided-test-work-step/training-program-guided-test-work-step.component';
 import {ScheduleComponent} from './schedule/schedule.component';
 import {JournalDocGeneratorComponent} from './journal-doc-generator/journal-doc-generator.component';
 import {JournalComponent} from './journal/journal.component';
@@ -53,6 +55,7 @@ const adminRoutes: Routes = [
   { path: 'trainingProgramMainLiteratureStep/:id', component: TrainingProgramMainLiteratureStepComponent },
   { path: 'trainingProgramAdditionalLiteratureStep/:id', component: TrainingProgramAdditionalLiteratureStepComponent },
   { path: 'trainingProgramRegulationStep/:id', component: TrainingProgramRegulationStepComponent },
+  { path: 'trainingProgramGuidedTestWorkStep/:id', component: TrainingProgramGuidedTestWorkStepComponent },
   { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
   { path: 'docxGeneratorATP/:id', component:  DocxGeneratorATPComponent },
   { path: 'docxGeneratorSchedule', component: DocxGeneratorScheduleComponent },
@@ -85,8 +88,12 @@ const editorRoutes: Routes = [
 ];
 
 const creatorRoutes: Routes = [
-  { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent },
+  { path: 'curriculumTopic', component: CurriculumTopicComponent },
   { path: 'trainingProgram', component: TrainingProgramComponent },
+  { path: 'finalExamination', component: FinalExaminationComponent },
+  { path: 'additionalLiterature', component: AdditionalLiteratureComponent },
+  { path: 'mainLiterature', component: MainLiteratureComponent },
+  { path: 'regulation', component: RegulationComponent },
   { path: 'trainingProgramExpertStep/:id', component: TrainingProgramExpertStepComponent },
   { path: 'trainingProgramIntroductionStep/:id', component: TrainingProgramIntroductionStepComponent },
   { path: 'trainingProgramMainStep/:id', component: TrainingProgramMainStepComponent },
@@ -94,6 +101,7 @@ const creatorRoutes: Routes = [
   { path: 'trainingProgramMainLiteratureStep/:id', component: TrainingProgramMainLiteratureStepComponent },
   { path: 'trainingProgramAdditionalLiteratureStep/:id', component: TrainingProgramAdditionalLiteratureStepComponent },
   { path: 'trainingProgramRegulationStep/:id', component: TrainingProgramRegulationStepComponent },
+  { path: 'trainingProgramGuidedTestWorkStep/:id', component: TrainingProgramGuidedTestWorkStepComponent },
   { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
   { path: 'docxGeneratorATP/:id', component:  DocxGeneratorATPComponent },
   { path: 'studentCategory', component: StudentCategoryComponent },
@@ -106,7 +114,8 @@ const deanRoutes: Routes = [
 ];
 
 const viewerRoutes: Routes = [
-
+  { path: 'viewerHelloPage', component:  ViewerHelloPageComponent },
+  { path: '**', redirectTo: 'viewerHelloPage'}
 ];
 
 const routes: Routes = [

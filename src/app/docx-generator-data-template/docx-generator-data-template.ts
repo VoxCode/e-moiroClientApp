@@ -44,6 +44,43 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
+  public guidedTestWorkAssignmentSomeTextItalic(testWorkHours: number, indent?: number): Paragraph {
+    const text = this.classHoursEndingDeclination(testWorkHours);
+    return new Paragraph({
+      style: 'default',
+      alignment: AlignmentType.JUSTIFIED,
+      indent: {
+        left: 0,
+        firstLine: indent,
+      },
+      children: [
+        new TextRun({
+          text: 'Управляемая самостоятельная работа, ' + testWorkHours + ' ' + text,
+          italics: true
+        })
+      ]
+    });
+  }
+
+  public guidedTestWorkAssignmentSomeText(num: number, txt: string): Paragraph{
+    return new Paragraph({
+      style: 'default',
+      alignment: AlignmentType.JUSTIFIED,
+      indent: {
+        left: 0
+      },
+      children: [
+        new TextRun({
+          text: 'Задание ' + num + ': ',
+          bold: true,
+        }),
+        new TextRun({
+          text: txt
+        }),
+      ]
+    });
+  }
+
   public someTextCurriculumTopics(txt: string, txt2: string, indent?: number, bld?: boolean, caps?: boolean ): Paragraph{
     return new Paragraph({
       style: 'default',
@@ -271,6 +308,33 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
+  public guidedTestWorkTitleText(title: string, numberOfHours: number): Paragraph
+  {
+    const hoursEnding = this.classHoursEndingDeclination(numberOfHours);
+    return new Paragraph({
+      alignment: AlignmentType.CENTER,
+      children: [
+        new TextRun({
+          text: title,
+          size : this.size,
+          bold : true,
+          italics: true
+        }),
+        new TextRun({
+          text: ' (' + numberOfHours + ' ' + hoursEnding + ')',
+          size : this.size,
+          bold : true
+        }),
+        new TextRun({
+          text: '(перечень заданий)',
+          size : this.size,
+          bold : true,
+          break: 1
+        }),
+      ],
+    });
+  }
+
   public classHoursStringBuilder(obj: CurriculumTopicTrainingProgramGenerator, isDist: boolean): string {
     let tmpString = '';
     obj.occupationFormClassHours.forEach((occupationFormClassHour, index) => {
@@ -287,6 +351,27 @@ export class DocxGeneratorDataTemplate {
         else {
           tmpString += occupationFormClassHour.fullName.toString().toLowerCase().split(',')[0] + ',' +
             ' ' + occupationFormClassHour.classHours + ' ' + this.classHoursEndingDeclination(occupationFormClassHour.classHours);
+        }
+      }
+      if (index === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }
+    });
+    return tmpString;
+  }
+
+  public guidedTestWorkAssignmentStringBuilder(obj: CurriculumTopicTrainingProgramGenerator, isDist: boolean): string {
+    let tmpString = '';
+    obj.occupationFormClassHours.forEach((occupationFormClassHour, index) => {
+      if (index === 0) { tmpString += ' ('; }
+      if (index !== 0) { tmpString += '; '; }
+      if (occupationFormClassHour.fullName.toLowerCase() === 'форум') {
+        tmpString += occupationFormClassHour.fullName.toString().toLowerCase();
+      }
+      else {
+        if (isDist) {
+          tmpString += occupationFormClassHour.fullName.toString().toLowerCase().split(',')[0] + ': онлайн';
+        }
+        else {
+          tmpString += occupationFormClassHour.fullName.toString().toLowerCase().split(',')[0] + ',';
         }
       }
       if (index === obj.occupationFormClassHours.length - 1) { tmpString += ')'; }
@@ -437,34 +522,22 @@ export class DocxGeneratorDataTemplate {
       text: 'Примечание:',
       break: 1
     }));
-    if (!isDistanceLearning) {
-      child.push(
-        new TextRun({
-          text: '1. При проведении практических занятий группа может делиться на две' +
-            ' подгруппы численностью слушателей не менее 12 человек.',
-          break: 1
-        }),
-        new TextRun({
-          text: '2. В проведении круглого стола, тематической дискуссии, конференции принимают участие' +
-            ' 2 преподавателя, деловой игры – до 3 преподавателей.',
-          break: 1
-        }));
-    }
-    else {
-      child.push(new TextRun({
-        text: child.length + '. Расчет часов за проверку контрольных работ осуществляется из расчета 0,3 часа за одну работу.',
+
+    child.push(
+      new TextRun({
+        text: '1. При проведении практических занятий, тренингов группа может делиться на две' +
+          ' подгруппы численностью слушателей не менее 12 человек.',
+        break: 1
+      }),
+      new TextRun({
+        text: '2. В проведении конференции, круглого стола, тренинга принимают участие' +
+          ' 2 преподавателя, деловой игры – до 3 преподавателей.',
         break: 1
       }));
-      if (isForum) {
-        child.push(new TextRun({
-          text: child.length + '. Расчет часов за проведение форума (текущих консультаций слушателей дистанционной формы' +
-            ' получения образования) осуществляется из расчета 0,15 часа на одного слушателя.',
-          break: 1
-        }));
-      }
+
+    if (isDistanceLearning) {
       child.push(new TextRun({
-        text: child.length + '. По запросам слушателей проводятся индивидуальные консультации из расчета 0,4 часа ' +
-          'на одного слушателя за весь заочный (дистанционный) курс.',
+        text: child.length + '. Расчет часов за проверку контрольных работ осуществляется из расчета 0,3 часа за одну работу.',
         break: 1
       }));
       child.push(new TextRun({
@@ -517,6 +590,18 @@ export class DocxGeneratorDataTemplate {
 
   public footerATPDepartmentHead(department: string, departmentHeadName: string): Paragraph
   {
+    let text1 = '';
+    let text2 = '';
+    department = department.substr(department.indexOf(' ') + 1);
+    const textArray: string[] = department.split(' ');
+    textArray.forEach((str, index) => {
+      if (index > 2) {
+        text2 += str + ' ';
+      }
+      else {
+        text1 += str + ' ';
+      }
+    });
     return new Paragraph({
       children: [
         new TextRun({
@@ -525,7 +610,12 @@ export class DocxGeneratorDataTemplate {
           break: 1
         }),
         new TextRun({
-          text: department.substr(department.indexOf(' ') + 1) + '\t' + departmentHeadName,
+          text: text1,
+          size : this.size,
+          break: 1
+        }),
+        new TextRun({
+          text: text2 + '\t' + departmentHeadName,
           size : this.size,
           break: 1
         }),
@@ -535,7 +625,7 @@ export class DocxGeneratorDataTemplate {
           type: TabStopType.LEFT,
           position: 6000,
         },
-        ]
+      ]
     });
   }
 

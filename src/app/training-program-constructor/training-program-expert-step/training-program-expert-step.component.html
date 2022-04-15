@@ -5,7 +5,7 @@
   </div><br>
   <h4 *ngIf="trainingProgram">Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4>
 
-  <app-training-program-stepper [id]="id"></app-training-program-stepper>
+  <app-training-program-stepper *ngIf="trainingProgram" [id]="id" [isDistanceLearning]="trainingProgram.isDistanceLearning"></app-training-program-stepper>
 
   <div class="row">
     <div class="col-sm">
@@ -73,6 +73,6 @@
   <button style="float: right" type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="addNewTeacher()"
           mdbWavesEffect>Добавить нового эксперта</button>
   <br>
-  <button style="float: left" type="button" [routerLink]="['/' + globals.role +'/trainingProgramIntroductionStep', id]"
+  <button type="button" [routerLink]="['/' + globals.role +'/trainingProgramIntroductionStep', id]"
           mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Далее</button><br>
 </div>

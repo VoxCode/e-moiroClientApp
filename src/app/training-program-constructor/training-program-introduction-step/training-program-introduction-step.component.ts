@@ -23,6 +23,7 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
   trainingProgram: TrainingProgram;
   trainingProgramIntroduction: TrainingProgramIntroduction = new TrainingProgramIntroduction();
   docxContent: Blob;
+  isSave = true;
 
   constructor(
     public globals: Globals,
@@ -64,6 +65,7 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
       .subscribe((trainingProgramIntroduction: TrainingProgramIntroduction) => {
         this.trainingProgramIntroduction = trainingProgramIntroduction;
         console.log('Crate was successful');
+        this.isSave = true;
       });
   }
 
@@ -73,6 +75,7 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
       .subscribe((trainingProgramIntroduction: TrainingProgramIntroduction) => {
         this.trainingProgramIntroduction = trainingProgramIntroduction;
         console.log('Update was successful');
+        this.isSave = true;
     });
   }
 
@@ -90,5 +93,9 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
     Packer.toBlob(introductionTemplate).then(blobResult => {
       this.docxContent = blobResult;
     });
+  }
+
+  isSaveChange($event: any): void {
+    this.isSave = $event;
   }
 }

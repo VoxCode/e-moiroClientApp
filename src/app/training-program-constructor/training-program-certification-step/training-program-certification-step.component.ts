@@ -32,6 +32,7 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
   finalExamination: FinalExamination = new FinalExamination();
   certificationType: CertificationType = new CertificationType();
   modalRef: MDBModalRef;
+  heading = 'Рекомендуемые вопросы';
 
   constructor(
     public globals: Globals,
@@ -212,6 +213,7 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
   trainingProgramFinalExaminationEditForm(item: any): void {
     const el = this.emptyEl();
     el.last = item.content;
+    el.isCrate = false;
     this.modalRef = this.modalService.show(FinalExaminationEditComponent, this.modalOption(el));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       item.content = newElement.last;
@@ -220,7 +222,7 @@ export class TrainingProgramCertificationStepComponent implements OnInit {
   }
 
   emptyEl(): any {
-    return {id: 0, first: '', last: ''};
+    return {id: 0, first: '', second: this.certificationType.id, last: '', isCrate: true};
   }
 
   modalOption(el: any): any {

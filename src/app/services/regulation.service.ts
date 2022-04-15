@@ -15,6 +15,9 @@ export class RegulationService {
   getValue(id: number): Observable<any>{
     return this.http.get(this.url + '/' + id);
   }
+  getAuthorValues(author: string): Observable<any> {
+    return this.http.get(this.url + '/Author' + author);
+  }
   getByCurriculumTopics(curriculumTopicIdArray: number[]): Observable<any> {
     return this.http.post(this.url + '/CurriculumTopics', curriculumTopicIdArray);
   }

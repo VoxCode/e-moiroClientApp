@@ -14,7 +14,7 @@ import {CertificationType} from '../models/CertificationType';
 export class FinalExaminationEditComponent implements OnInit{
   certificationTypes: CertificationType[];
   public editableRow: {
-    id: number, first: number, second: string, third: string, fourth: boolean, last: string, handle: string };
+    id: number, first: number, second: string, third: string, fourth: boolean, last: string, isCrate: boolean };
   public saveButtonClicked: Subject<any> = new Subject<any>();
 
   public form: FormGroup = new FormGroup({
