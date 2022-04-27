@@ -24,7 +24,7 @@
       <div style="display: inline-block">
         <mat-form-field appearance="fill">
           <mat-label>Дата проведения</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="date">
+          <input matInput [matDatepickerFilter]="sundayDatesFilter" [matDatepicker]="picker" formControlName="date">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
@@ -63,29 +63,29 @@
         <mat-select formControlName="timeId">
           <ng-container *ngIf="dayOfTheWeek() === 1">
             <mat-optgroup [label]="'Первая смена(понедельник)'">
-              <mat-option *ngFor="let time of scheduleClassTimes.mondayFirstShift" [value]="time.id">
-                {{time.FirstClassTimeStart | date:'HH:mm'}} - {{time.FirstClassTimeEnd | date:'HH:mm'}}
-                {{time.SecondClassTimeStart | date:'HH:mm'}} - {{time.SecondClassTimeEnd | date:'HH:mm'}}
+              <mat-option *ngFor="let time of parsedTimes.mondayFirstShift" [value]="time.id">
+                {{time.classTimeStart | date:'HH:mm'}} - {{time.classTimeEnd | date:'HH:mm'}}
+                {{time.secondTimeStart | date:'HH:mm'}} - {{time.secondTimeEnd | date:'HH:mm'}}
               </mat-option>
             </mat-optgroup>
             <mat-optgroup [label]="'Вторая смена(понедельник)'">
-              <mat-option *ngFor="let time of scheduleClassTimes.mondaySecondShift" [value]="time.id">
-                {{time.FirstClassTimeStart | date:'HH:mm'}} - {{time.FirstClassTimeEnd | date:'HH:mm'}}
-                {{time.SecondClassTimeStart | date:'HH:mm'}} - {{time.SecondClassTimeEnd | date:'HH:mm'}}
+              <mat-option *ngFor="let time of parsedTimes.mondaySecondShift" [value]="time.id">
+                {{time.classTimeStart | date:'HH:mm'}} - {{time.classTimeEnd | date:'HH:mm'}}
+                {{time.secondTimeStart | date:'HH:mm'}} - {{time.secondTimeEnd | date:'HH:mm'}}
               </mat-option>
             </mat-optgroup>
           </ng-container>
           <ng-container *ngIf="dayOfTheWeek() >= 2 && dayOfTheWeek() <= 6">
             <mat-optgroup [label]="'Первая смена'">
-              <mat-option *ngFor="let time of scheduleClassTimes.genericFirstShift" [value]="time.id">
-                {{time.FirstClassTimeStart | date:'HH:mm'}} - {{time.FirstClassTimeEnd | date:'HH:mm'}}
-                {{time.SecondClassTimeStart | date:'HH:mm'}} - {{time.SecondClassTimeEnd | date:'HH:mm'}}
+              <mat-option *ngFor="let time of parsedTimes.genericFirstShift" [value]="time.id">
+                {{time.classTimeStart | date:'HH:mm'}} - {{time.classTimeEnd | date:'HH:mm'}}
+                {{time.secondTimeStart | date:'HH:mm'}} - {{time.secondTimeEnd | date:'HH:mm'}}
               </mat-option>
             </mat-optgroup>
             <mat-optgroup [label]="'Вторая смена'">
-              <mat-option *ngFor="let time of scheduleClassTimes.genericSecondShift" [value]="time.id">
-                {{time.FirstClassTimeStart | date:'HH:mm'}} - {{time.FirstClassTimeEnd | date:'HH:mm'}}
-                {{time.SecondClassTimeStart | date:'HH:mm'}} - {{time.SecondClassTimeEnd | date:'HH:mm'}}
+              <mat-option *ngFor="let time of parsedTimes.genericSecondShift" [value]="time.id">
+                {{time.classTimeStart | date:'HH:mm'}} - {{time.classTimeEnd | date:'HH:mm'}}
+                {{time.secondTimeStart | date:'HH:mm'}} - {{time.secondTimeEnd | date:'HH:mm'}}
               </mat-option>
             </mat-optgroup>
           </ng-container>

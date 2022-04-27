@@ -63,7 +63,7 @@ import {ScheduleDateService} from '../services/schedule-services/schedule-date.s
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}, ],
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},],
   encapsulation: ViewEncapsulation.None
 })
 export class ScheduleBlockComponent implements OnInit {
@@ -81,12 +81,20 @@ export class ScheduleBlockComponent implements OnInit {
   public combineTeacher = false;
   public divideSubGroups = false;
 
+  prevDate: Date;
+
   scheduleElement: ScheduleElement;
   rooms: ClassRoom[] = [];
   teachers: Teacher[] = [];
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
   groups: Group[] = [];
-  scheduleClassTimes: any = ScheduleClassTimes;
+  times: ClassTime[] = [];
+  parsedTimes: {
+    mondayFirstShift: ClassTime[],
+    mondaySecondShift: ClassTime[],
+    genericFirstShift: ClassTime[],
+    genericSecondShift: ClassTime[]
+  };
 
   public form: FormGroup = new FormGroup({
     id: new FormControl({value: '', disabled: true}),
@@ -116,6 +124,11 @@ export class ScheduleBlockComponent implements OnInit {
     return this.form.get('roomId');
   }
 
+  sundayDatesFilter = (d: Date): boolean => {
+    const day = new Date(d).getDay();
+    return day !== 0 ;
+  }
+
   constructor(
     public dialogRef: MatDialogRef<ScheduleBlockComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -140,8 +153,40 @@ export class ScheduleBlockComponent implements OnInit {
     this.rooms = this.data.rooms;
     this.curriculumTopicTrainingPrograms = this.data.topics;
     this.teachers = this.data.teachers;
+    this.times = this.data.times;
 
+    this.prevDate = new Date(this.form.get('date').value);
+
+    this.parsedTimes = {
+      mondayFirstShift: [],
+      mondaySecondShift: [],
+      genericFirstShift: [],
+      genericSecondShift: []
+    };
+    this.parseTimes();
     this.scheduleElement = this.data.scheduleElement;
+
+    this.form.get('date').valueChanges.subscribe(x => {
+      console.log(new Date(x).getDay());
+      console.log(this.prevDate);
+      const prevDay = this.prevDate.getDay();
+      const newDay = new Date(x).getDay();
+      if (newDay !== prevDay) {
+        if (newDay !== 1 && prevDay === 1)
+        {
+          this.form.controls.timeId.patchValue(undefined);
+          this.form.controls.timeId.markAsTouched();
+        }
+        if (newDay === 1 && prevDay !== 1)
+        {
+          this.form.controls.timeId.patchValue(undefined);
+          this.form.controls.timeId.markAsTouched();
+        }
+      }
+      this.prevDate = new Date(x);
+    });
+
+
     // if (this.data.scheduleElement !== undefined) {
     //   this.scheduleElement = this.data.scheduleElement;
     //   this.selectedGroup = this.groups.filter(u => u.id >= this.scheduleElement.groupId)[0];
@@ -150,14 +195,16 @@ export class ScheduleBlockComponent implements OnInit {
     // }
 
     console.log('editor init');
-    this.form.controls.id.patchValue(this.scheduleElement.id);
-    this.form.controls.groupId.patchValue(this.scheduleElement.groupId);
-    this.form.controls.topicId.patchValue(this.scheduleElement.topicId);
-    this.form.controls.teacherId.patchValue(this.scheduleElement.teacher.id);
-    this.form.controls.roomId.patchValue(this.scheduleElement.roomId);
-    this.form.controls.date.patchValue(this.scheduleElement.date);
-    this.form.controls.timeId.patchValue(this.scheduleElement.time.id);
-    this.form.controls.subgroup.patchValue(this.scheduleElement.subgroup);
+    if (this.scheduleElement.scheduleBlockId) {
+      this.form.controls.id.patchValue(this.scheduleElement.scheduleBlockId);
+      this.form.controls.groupId.patchValue(this.scheduleElement.groupId);
+      this.form.controls.topicId.patchValue(this.scheduleElement.topicId);
+      this.form.controls.teacherId.patchValue(this.scheduleElement.teacher.id);
+      this.form.controls.roomId.patchValue(this.scheduleElement.roomId);
+      this.form.controls.date.patchValue(this.scheduleElement.date);
+      this.form.controls.timeId.patchValue(this.scheduleElement.time.id);
+      this.form.controls.subgroup.patchValue(this.scheduleElement.subgroup);
+    }
 
     console.log(this.scheduleElement);
 
@@ -166,6 +213,14 @@ export class ScheduleBlockComponent implements OnInit {
     //   this.dayOfTheWeek = new Date(date).getDay();
     // });
 
+  }
+
+  private parseTimes(): void {
+    this.parsedTimes.mondayFirstShift = this.times.filter(x => x.shift === 1 && x.dayOfTheWeek === 1);
+    this.parsedTimes.mondaySecondShift = this.times.filter(x => x.shift === 2 && x.dayOfTheWeek === 1);
+    this.parsedTimes.genericFirstShift = this.times.filter(x => x.shift === 1 && x.dayOfTheWeek !== 1);
+    this.parsedTimes.genericSecondShift = this.times.filter(x => x.shift === 2 && x.dayOfTheWeek !== 1);
+    console.log(this.times);
   }
 
   MergeWithSubGroup(val: string, checked: boolean = true): void {
@@ -189,13 +244,99 @@ export class ScheduleBlockComponent implements OnInit {
   }
 
   save(): void {
-    //this.scheduleElement.topic = "qwewedsfdsfdsfwe";
-    this.createScheduleBlock(this.form.value);
+    // this.scheduleElement.topic = "qwewedsfdsfdsfwe";
+    if (this.scheduleElement.scheduleBlockId !== undefined) {
+      console.log('nicuuuuoooooo');
+      this.updateScheduleBlock(this.form.value, this.scheduleElement);
+    } else {
+      // this.createScheduleBlock(this.form.value);
+      console.log('nicich');
+    }
   }
 
   dayOfTheWeek(): number {
     return new Date(this.form.get('date').value).getDay();
   }
+
+  updateScheduleBlock(args: any, argsPrev: ScheduleElement): void {
+    console.log(args);
+    if (args.date !== argsPrev.date || args.groupId !== argsPrev.groupId) {
+      if (argsPrev.dateId !== undefined) {
+        this.scheduleDateService.updateValue(new ScheduleDate(argsPrev.dateId, args.date, args.groupId)).subscribe(
+          (updateResponse: ScheduleDate) => {
+            this.scheduleElement.date = new Date(updateResponse.date);
+            this.scheduleElement.dateId = updateResponse.id;
+            this.scheduleElement.groupId = args.groupId;
+            this.scheduleElement.group = this.groups.filter(x => x.id === args.groupId)[0].groupNumber;
+            console.log(updateResponse);
+          });
+      } else {
+        this.throwError('', '');
+        return;
+      }
+    }
+    if (args.subgroup !== argsPrev.subgroup) {
+      this.scheduleBlockService.updateValue(new ScheduleBlock(argsPrev.scheduleBlockId, args.subgroup))
+        .subscribe((updateResponse: ScheduleBlock) => {
+          this.scheduleElement.subgroup = updateResponse.subgroupNumber;
+        });
+    }
+    if (args.teacherId !== argsPrev.teacher.id) {
+      this.scheduleBlockTeacherService.getValuesFromScheduleBlock(argsPrev.scheduleBlockId)
+        .subscribe((getResponse: ScheduleBlockTeacher[]) => {
+          if (getResponse.length !== 0) {
+            getResponse[0].teacherId = args.teacherId;
+            this.scheduleBlockTeacherService.updateValue(getResponse[0])
+              .subscribe((updateResponse: ScheduleBlockTeacher) => {
+                this.scheduleElement.teacher = this.teachers.filter(x => x.id === updateResponse.teacherId)[0];
+              });
+          }
+        });
+    }
+    if (args.timeId !== argsPrev.time.id) {
+      this.scheduleBlockClassTimeService.getValuesFromScheduleBlock(argsPrev.scheduleBlockId)
+        .subscribe((getResponse: ScheduleBlockClassTime[]) => {
+          if (getResponse.length !== 0) {
+            getResponse[0].classTimeId = args.timeId;
+            this.scheduleBlockClassTimeService.updateValue(getResponse[0])
+              .subscribe((updateResponse: ScheduleBlockClassTime) => {
+                this.scheduleElement.time = this.times.filter(x => x.id === updateResponse.classTimeId)[0];
+              });
+          }
+        });
+    }
+    if (args.topicId !== argsPrev.topicId) {
+      this.scheduleBlockCurriculumTopicTrainingProgramService.getValuesFromScheduleBlock(argsPrev.scheduleBlockId)
+        .subscribe((getResponse: ScheduleBlockCurriculumTopicTrainingProgram[]) => {
+          if (getResponse.length !== 0) {
+            getResponse[0].curriculumTopicTrainingProgramId = args.topicId;
+            this.scheduleBlockCurriculumTopicTrainingProgramService.updateValue(getResponse[0])
+              .subscribe((updateResponse: ScheduleBlockCurriculumTopicTrainingProgram) => {
+                const aux = this.curriculumTopicTrainingPrograms.filter(x => x.id === updateResponse.curriculumTopicTrainingProgramId)[0];
+                this.scheduleElement.topicId = aux.id;
+                this.scheduleElement.topic = aux.topicTitle;
+              });
+          }
+        });
+    }
+    if (args.roomId !== argsPrev.roomId) {
+      this.scheduleBlockClassRoomService.getValuesFromScheduleBlock(argsPrev.scheduleBlockId)
+        .subscribe((getResponse: ScheduleBlockClassRoom[]) => {
+          if (getResponse.length !== 0) {
+            getResponse[0].classRoomId = args.roomId;
+            this.scheduleBlockClassRoomService.updateValue(getResponse[0])
+              .subscribe((updateResponse: ScheduleBlockClassRoom) => {
+                const aux = this.rooms.filter(x => x.id === updateResponse.classRoomId)[0];
+                this.scheduleElement.roomId = aux.id;
+                this.scheduleElement.room = aux.name;
+              });
+          }
+        });
+    }
+    console.log(this.form.getRawValue());
+    this.dialogRef.close();
+  }
+
 
   createScheduleBlock(args: ScheduleElement): void {
     const date = new ScheduleDate(0, args.date, args.groupId);
@@ -248,5 +389,11 @@ export class ScheduleBlockComponent implements OnInit {
         // nothing
       });
   }
+
+  throwError(text: string, title: string): void {
+    console.log(text + title);
+  }
+
+
 }
 
