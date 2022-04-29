@@ -116,13 +116,15 @@ export class ScheduleComponent implements OnInit {
     ));
     this.settings.setControl('shift', new FormControl(0));
 
-
     this.selectedShift = 0;
     // all other load procs is inside this one
-    this.loadScheduleDates();
+    // this.loadScheduleDates();
+    this.loadScheduleDatesRange(this.settings.value.start, this.settings.value.end);
   }
 
-
+  applySearch(): void {
+    this.loadScheduleDatesRange(this.settings.value.start, this.settings.value.end);
+  }
 
   getFirstDayOfWeek(d: Date): Date {
     const date = new Date(d);
@@ -131,32 +133,28 @@ export class ScheduleComponent implements OnInit {
     return new Date(date.setDate(diff));
   }
 
-  loadScheduleForRange(s: Date, e: Date): void {
-
-  }
-
   generateTimedMonday(): void {
     this.timedMonday = [];
     const monday = 1;
     this.times.filter(x => x.dayOfTheWeek === 1 && (x.shift === this.selectedShift || this.selectedShift === 0))
       .forEach((time) => {
-      const auxRow = {
-        rowTime: time,
-        scol: []
-      };
-      const auxCol = {
-        day: monday,
-        scell: [],
-      };
-      this.scheduleData.forEach((el) => {
-        if (el.date.getDay() === monday
-          && el.time.id === time.id) { // change to monday time schedule
-          auxCol.scell.push(el);
-        }
+        const auxRow = {
+          rowTime: time,
+          scol: []
+        };
+        const auxCol = {
+          day: monday,
+          scell: [],
+        };
+        this.scheduleData.forEach((el) => {
+          if (el.date.getDay() === monday
+            && el.time.id === time.id) { // change to monday time schedule
+            auxCol.scell.push(el);
+          }
+        });
+        auxRow.scol.push(auxCol);
+        this.timedMonday.push(auxRow);
       });
-      auxRow.scol.push(auxCol);
-      this.timedMonday.push(auxRow);
-    });
     console.log('tmonday');
     console.log(this.timedMonday);
   }
@@ -209,7 +207,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   compare(a: number, b: number): number {
-    if (a < b ) {
+    if (a < b) {
       return -1;
     }
     if (a > b) {
@@ -221,7 +219,7 @@ export class ScheduleComponent implements OnInit {
   loadTimes(): void {
     this.classTimeService.getValues()
       .subscribe((data: ClassTime[]) => {
-        this.times =  data.sort((a, b) =>  this.compare(a.id, b.id) );
+        this.times = data.sort((a, b) => this.compare(a.id, b.id));
         this.generateTimedMonday();
         this.generateTimedWeekArray();
         this.generateGenericWeekArray();
@@ -271,29 +269,20 @@ export class ScheduleComponent implements OnInit {
   loadScheduleDates(): void {
     this.scheduleBlockService.getSchedule()
       .subscribe((data: any) => {
-        console.log('danewone');
-        console.log(data);
-        data.forEach((el, index) => {
-          this.scheduleData.push({
-              scheduleBlockId: el.scheduleBlockId,
-              topicId: el.curriculumTopicTrainingProgramId,
-              topic: el.topicTitle,
-              dateId: el.scheduleDateId,
-              date: new Date(el.date),
-              // teacherId: el.teacherId,
-              teacher: el.teacherobj,
-              time: el.time,
-              // timeId: el.classTimeId,
-              // startTime: new Date(el.classTimeStart),
-              // endTime: new Date(el.classTimeEnd),
-              groupId: el.groupId,
-              group: el.groupNumber,
-              subgroup: el.subgroupNumber,
-              roomId: el.classRoomId,
-              room: el.name,
-            }
-          );
-        });
+        this.parseScheduleElements(data);
+        this.loadTimes();
+        this.loadRooms();
+        this.loadGroups();
+        this.loadTeachers();
+        this.loadCurriculumTopics();
+      });
+  }
+
+
+  loadScheduleDatesRange(s: Date, e: Date): void {
+    this.scheduleBlockService.getScheduleRange(s, e)
+      .subscribe((data: any) => {
+        this.parseScheduleElements(data);
         this.loadTimes();
         this.loadRooms();
         this.loadGroups();
@@ -377,8 +366,42 @@ export class ScheduleComponent implements OnInit {
     });
   }
 
-
-  getElementsByShift(shift: number): any[] {
-    return this.algRes.filter( x => x.rowTime.shift === this.settings.value.shift);
+  parseScheduleElements(data: any[]): void {
+    console.log('danewone');
+    console.log(data);
+    this.scheduleData = [];
+    data.forEach((el, index) => {
+      this.scheduleData.push({
+          scheduleBlockId: el.scheduleBlockId,
+          topicId: el.curriculumTopicTrainingProgramId,
+          topic: el.topicTitle,
+          dateId: el.scheduleDateId,
+          date: new Date(el.date),
+          // teacherId: el.teacherId,
+          teacher: el.teacherobj,
+          time: el.time,
+          // timeId: el.classTimeId,
+          // startTime: new Date(el.classTimeStart),
+          // endTime: new Date(el.classTimeEnd),
+          groupId: el.groupId,
+          group: el.groupNumber,
+          subgroup: el.subgroupNumber,
+          roomId: el.classRoomId,
+          room: el.name,
+        }
+      );
+    });
   }
+
+  getElementsByShift(schedule: any[], shift: number): any[] {
+    if (shift === 0) {
+      return schedule;
+    }
+    else {
+      return schedule.filter(x => x.rowTime.shift === this.settings.value.shift);
+    }
+    // return this.algResGeneric.filter(x => x.rowTime.shift === this.settings.value.shift);
+  }
+
+
 }

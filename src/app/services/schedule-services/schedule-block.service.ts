@@ -22,6 +22,10 @@ export class ScheduleBlockService {
     return this.http.get(this.url + '/ScheduleElements');
   }
 
+  getScheduleRange(s: Date, e: Date): Observable<any> {
+    return this.http.get(this.url + '/ScheduleElementsRange' + '?' + `s=${s.toISOString()}&e=${e.toISOString()}`);
+  }
+
   createValue(scheduleBlock: ScheduleBlock): Observable<any> {
     return this.http.post(this.url, scheduleBlock);
   }
