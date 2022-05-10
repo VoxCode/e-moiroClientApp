@@ -5,5 +5,9 @@ export class ScheduleBlockClassTime {
     public classTimeId?: number,
     public classTimeStart?: Date,
     public classTimeEnd?: Date,
+    public secondTimeStart?: Date,
+    public secondTimeEnd?: Date,
+    public shift?: number,
+    public dayOfTheWeek?: number,
     public serialNumber?: number){ }
 }

@@ -57,7 +57,7 @@ import {ScheduleClassTimes} from './schedule-class-times';
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}, ],
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},],
 
 })
 export class ScheduleComponent implements OnInit {
@@ -70,9 +70,11 @@ export class ScheduleComponent implements OnInit {
   });
 
   selectedFilter: any;
-  algRes: any = [];
+  timedWeek: any = [];
   timedMonday: any = [];
-  algResGeneric: any = [];
+  timedWeekGeneric: any = [];
+  timedWeekFirstShift: any = [];
+  timedWeekSecondShift: any = [];
   times: ClassTime[];
 
   teachers: Teacher[] = [];
@@ -161,7 +163,7 @@ export class ScheduleComponent implements OnInit {
 
 
   generateTimedWeekArray(): void {
-    this.algRes = [];
+    this.timedWeek = [];
     this.times.filter(x => x.dayOfTheWeek !== 1 && (x.shift === this.selectedShift || this.selectedShift === 0)).forEach((time) => {
       const auxRow = {
         rowTime: time,
@@ -180,15 +182,17 @@ export class ScheduleComponent implements OnInit {
         });
         auxRow.scol.push(auxCol);
       });
-      this.algRes.push(auxRow);
+      this.timedWeek.push(auxRow);
     });
+
     console.log('tarr');
-    console.log(this.algRes);
+    console.log(this.timedWeek);
+    this.divideWeekElementsByShift();
   }
 
   generateGenericWeekArray(): void {
 
-    this.algResGeneric = [];
+    this.timedWeekGeneric = [];
     // modify to get time from elements for context pupup
     [1, 2, 3, 4, 5, 6].forEach((day) => {
       const auxCol = {
@@ -200,10 +204,10 @@ export class ScheduleComponent implements OnInit {
           auxCol.scell.push(el);
         }
       });
-      this.algResGeneric.push(auxCol);
+      this.timedWeekGeneric.push(auxCol);
     });
     console.log('garr');
-    console.log(this.algResGeneric);
+    console.log(this.timedWeekGeneric);
   }
 
   compare(a: number, b: number): number {
@@ -239,7 +243,6 @@ export class ScheduleComponent implements OnInit {
     this.groupService.getValues()
       .subscribe((data: Group[]) => {
         if (data.length > 0) {
-          console.log(data);
           this.groups = data;
         }
       });
@@ -269,6 +272,7 @@ export class ScheduleComponent implements OnInit {
   loadScheduleDates(): void {
     this.scheduleBlockService.getSchedule()
       .subscribe((data: any) => {
+        this.scheduleData = [];
         this.parseScheduleElements(data);
         this.loadTimes();
         this.loadRooms();
@@ -282,6 +286,7 @@ export class ScheduleComponent implements OnInit {
   loadScheduleDatesRange(s: Date, e: Date): void {
     this.scheduleBlockService.getScheduleRange(s, e)
       .subscribe((data: any) => {
+        this.scheduleData = [];
         this.parseScheduleElements(data);
         this.loadTimes();
         this.loadRooms();
@@ -310,17 +315,13 @@ export class ScheduleComponent implements OnInit {
   }
 
   deleteScheduleBlock(args: ScheduleElement): void {
-    console.log('actualremoving');
-    console.log(args);
-    console.log(args.scheduleBlockId);
     this.scheduleBlockService.deleteValue(args.scheduleBlockId)
-      .subscribe((response: ScheduleBlock) => {
-
+      .subscribe((blockDeleteResponse: ScheduleBlock) => {
+        this.scheduleDateService.deleteValue(args.dateId).subscribe((dateDeleteResponse: ScheduleDate) => {
+          // reload schedule data or update the arrays
+          this.scheduleData = this.scheduleData.filter((x) =>  x.scheduleBlockId !== args.scheduleBlockId);
+        });
       });
-  }
-
-  deleteCell(cell: ScheduleElement): void {
-    console.log('deleted');
   }
 
   emptyEl(): any {
@@ -357,10 +358,27 @@ export class ScheduleComponent implements OnInit {
         scheduleElement: el,
       }
     });
+    // status 0 - none, 1 - element added, 2 - element updated
+
     dialogRef.afterClosed().subscribe(result => {
-      this.generateTimedMonday();
-      this.generateTimedWeekArray();
-      this.generateGenericWeekArray();
+      switch (result.status) {
+        case 0:
+          console.log('dialog result status 0');
+          break;
+        case 1:
+          this.loadScheduleDatesRange(this.settings.value.start, this.settings.value.end);
+          break;
+        case 2:
+          setTimeout(() => {
+            this.generateTimedMonday();
+            this.generateTimedWeekArray();
+            this.generateGenericWeekArray();
+          }, 100);
+          break;
+        default:
+          console.log('dialog result default');
+          break;
+      }
       console.log('dialog closed');
       console.log(result);
     });
@@ -369,7 +387,6 @@ export class ScheduleComponent implements OnInit {
   parseScheduleElements(data: any[]): void {
     console.log('danewone');
     console.log(data);
-    this.scheduleData = [];
     data.forEach((el, index) => {
       this.scheduleData.push({
           scheduleBlockId: el.scheduleBlockId,
@@ -393,14 +410,18 @@ export class ScheduleComponent implements OnInit {
     });
   }
 
+  divideWeekElementsByShift(): void {
+    this.timedWeekFirstShift = this.getElementsByShift(this.timedWeek, 1);
+    this.timedWeekSecondShift = this.getElementsByShift(this.timedWeek, 2);
+  }
+
   getElementsByShift(schedule: any[], shift: number): any[] {
     if (shift === 0) {
       return schedule;
+    } else {
+      return schedule.filter(x => x.rowTime.shift === shift || x.rowTime.shift === undefined);
     }
-    else {
-      return schedule.filter(x => x.rowTime.shift === this.settings.value.shift);
-    }
-    // return this.algResGeneric.filter(x => x.rowTime.shift === this.settings.value.shift);
+    // return this.timedWeekGeneric.filter(x => x.rowTime.shift === this.settings.value.shift);
   }
 
 

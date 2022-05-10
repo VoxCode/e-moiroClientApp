@@ -246,11 +246,11 @@ export class ScheduleBlockComponent implements OnInit {
   save(): void {
     // this.scheduleElement.topic = "qwewedsfdsfdsfwe";
     if (this.scheduleElement.scheduleBlockId !== undefined) {
-      console.log('nicuuuuoooooo');
+      console.log('Updading');
       this.updateScheduleBlock(this.form.value, this.scheduleElement);
     } else {
-      // this.createScheduleBlock(this.form.value);
-      console.log('nicich');
+      this.createScheduleBlock(this.form.value);
+      console.log('Created');
     }
   }
 
@@ -304,6 +304,8 @@ export class ScheduleBlockComponent implements OnInit {
               });
           }
         });
+      console.log('sdfsdf');
+      console.log(this.scheduleElement);
     }
     if (args.topicId !== argsPrev.topicId) {
       this.scheduleBlockCurriculumTopicTrainingProgramService.getValuesFromScheduleBlock(argsPrev.scheduleBlockId)
@@ -333,20 +335,22 @@ export class ScheduleBlockComponent implements OnInit {
           }
         });
     }
+    console.log('wtf is this');
     console.log(this.form.getRawValue());
-    this.dialogRef.close();
+    this.dialogRef.close({status: 2, meta: this.scheduleElement});
   }
 
 
-  createScheduleBlock(args: ScheduleElement): void {
+  createScheduleBlock(args: any): void {
     const date = new ScheduleDate(0, args.date, args.groupId);
     const block = new ScheduleBlock(0, args.subgroup, 0);
     this.scheduleBlockService.createValue(block)
       .subscribe((blockResponse: ScheduleBlock) => {
-        this.createScheduleBlockTeacher(new ScheduleBlockTeacher(0, args.teacher.id, blockResponse.id));
+        this.scheduleElement.scheduleBlockId = blockResponse.id;
+        this.createScheduleBlockTeacher(new ScheduleBlockTeacher(0, args.teacherId, blockResponse.id));
         this.createScheduleBlockRoom(new ScheduleBlockClassRoom(0, blockResponse.id, args.roomId));
         this.createBlockTopic(new ScheduleBlockCurriculumTopicTrainingProgram(0, args.topicId, blockResponse.id, 0));
-        this.createScheduleBlockTime(new ScheduleBlockClassTime(0, blockResponse.id, args.time.id));
+        this.createScheduleBlockTime(new ScheduleBlockClassTime(0, blockResponse.id, args.timeId));
         this.scheduleDateService.createValue(date)
           .subscribe((dateResponse: ScheduleDate) => {
             this.createScheduleDateBlock(new ScheduleDateScheduleBlock(0, dateResponse.id, blockResponse.id));
@@ -364,20 +368,22 @@ export class ScheduleBlockComponent implements OnInit {
   createScheduleDateBlock(dateBlock: ScheduleDateScheduleBlock): void {
     this.scheduleDateScheduleBlockService.createValue(dateBlock)
       .subscribe((dateBlockResponse: ScheduleDateScheduleBlock) => {
-        this.dialogRef.close(this.form.value);
+        this.scheduleBlockService.getScheduleElement(dateBlock.scheduleBlockId).subscribe((el: ScheduleElement) => {
+          this.dialogRef.close({status: 1, meta: this.scheduleElement});
+        });
       });
   }
 
   createScheduleBlockTeacher(blockTeacher: ScheduleBlockTeacher): void {
     this.scheduleBlockTeacherService.createValue(blockTeacher)
-      .subscribe((blockResponse) => {
+      .subscribe((blockTeacherResponse: ScheduleBlockTeacher) => {
         // nothing
       });
   }
 
   createScheduleBlockRoom(blockRoom: ScheduleBlockClassRoom): void {
     this.scheduleBlockClassRoomService.createValue(blockRoom)
-      .subscribe((blockRoomResponse: ScheduleDate) => {
+      .subscribe((blockRoomResponse: ScheduleBlockClassRoom) => {
         // nothing
       });
 
@@ -385,7 +391,7 @@ export class ScheduleBlockComponent implements OnInit {
 
   createScheduleBlockTime(blockTime: ScheduleBlockClassTime): void {
     this.scheduleBlockClassTimeService.createValue(blockTime)
-      .subscribe((blockClassTimeResponse) => {
+      .subscribe((blockClassTimeResponse: ScheduleBlockClassTime) => {
         // nothing
       });
   }
