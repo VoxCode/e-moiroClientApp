@@ -72,6 +72,8 @@ export class ScheduleComponent implements OnInit {
   selectedFilter: any;
   timedWeek: any = [];
   timedMonday: any = [];
+  timedMondayFirstShift: any = [];
+  timedMondaySecondShift: any = [];
   timedWeekGeneric: any = [];
   timedWeekFirstShift: any = [];
   timedWeekSecondShift: any = [];
@@ -110,6 +112,8 @@ export class ScheduleComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.loadSecondaryData();
+
     this.settings.setControl('start', new FormControl(
       this.getFirstDayOfWeek(new Date())
     ));
@@ -119,7 +123,6 @@ export class ScheduleComponent implements OnInit {
     this.settings.setControl('shift', new FormControl(0));
 
     this.selectedShift = 0;
-    // all other load procs is inside this one
     // this.loadScheduleDates();
     this.loadScheduleDatesRange(this.settings.value.start, this.settings.value.end);
   }
@@ -187,7 +190,6 @@ export class ScheduleComponent implements OnInit {
 
     console.log('tarr');
     console.log(this.timedWeek);
-    this.divideWeekElementsByShift();
   }
 
   generateGenericWeekArray(): void {
@@ -224,9 +226,6 @@ export class ScheduleComponent implements OnInit {
     this.classTimeService.getValues()
       .subscribe((data: ClassTime[]) => {
         this.times = data.sort((a, b) => this.compare(a.id, b.id));
-        this.generateTimedMonday();
-        this.generateTimedWeekArray();
-        this.generateGenericWeekArray();
       });
   }
 
@@ -274,11 +273,7 @@ export class ScheduleComponent implements OnInit {
       .subscribe((data: any) => {
         this.scheduleData = [];
         this.parseScheduleElements(data);
-        this.loadTimes();
-        this.loadRooms();
-        this.loadGroups();
-        this.loadTeachers();
-        this.loadCurriculumTopics();
+        this.reassembleArrays();
       });
   }
 
@@ -288,12 +283,20 @@ export class ScheduleComponent implements OnInit {
       .subscribe((data: any) => {
         this.scheduleData = [];
         this.parseScheduleElements(data);
-        this.loadTimes();
-        this.loadRooms();
-        this.loadGroups();
-        this.loadTeachers();
-        this.loadCurriculumTopics();
+        if (this.selectedFilter != null)
+        {
+          this.filterSchedule();
+        }
+        this.reassembleArrays();
       });
+  }
+
+  loadSecondaryData(): void {
+    this.loadTimes();
+    this.loadRooms();
+    this.loadGroups();
+    this.loadTeachers();
+    this.loadCurriculumTopics();
   }
 
   addRoom(): void {
@@ -319,7 +322,8 @@ export class ScheduleComponent implements OnInit {
       .subscribe((blockDeleteResponse: ScheduleBlock) => {
         this.scheduleDateService.deleteValue(args.dateId).subscribe((dateDeleteResponse: ScheduleDate) => {
           // reload schedule data or update the arrays
-          this.scheduleData = this.scheduleData.filter((x) =>  x.scheduleBlockId !== args.scheduleBlockId);
+          this.scheduleData = this.scheduleData.filter((x) => x.scheduleBlockId !== args.scheduleBlockId);
+          this.reassembleArrays();
         });
       });
   }
@@ -358,7 +362,7 @@ export class ScheduleComponent implements OnInit {
         scheduleElement: el,
       }
     });
-    // status 0 - none, 1 - element added, 2 - element updated
+    // status 0 - none, 1 - element added, 2 - element updated, 3 - element deleted
 
     dialogRef.afterClosed().subscribe(result => {
       switch (result.status) {
@@ -370,10 +374,11 @@ export class ScheduleComponent implements OnInit {
           break;
         case 2:
           setTimeout(() => {
-            this.generateTimedMonday();
-            this.generateTimedWeekArray();
-            this.generateGenericWeekArray();
+            this.reassembleArrays();
           }, 100);
+          break;
+        case 3:
+          console.log('dialog result status 3');
           break;
         default:
           console.log('dialog result default');
@@ -410,9 +415,11 @@ export class ScheduleComponent implements OnInit {
     });
   }
 
-  divideWeekElementsByShift(): void {
+  divideTimedElementsByShift(): void {
     this.timedWeekFirstShift = this.getElementsByShift(this.timedWeek, 1);
     this.timedWeekSecondShift = this.getElementsByShift(this.timedWeek, 2);
+    this.timedMondayFirstShift = this.getElementsByShift(this.timedMonday, 1);
+    this.timedMondaySecondShift = this.getElementsByShift(this.timedMonday, 2);
   }
 
   getElementsByShift(schedule: any[], shift: number): any[] {
@@ -424,5 +431,29 @@ export class ScheduleComponent implements OnInit {
     // return this.timedWeekGeneric.filter(x => x.rowTime.shift === this.settings.value.shift);
   }
 
+  reassembleArrays(): void {
+    this.generateTimedMonday();
+    this.generateTimedWeekArray();
+    this.generateGenericWeekArray();
+    this.divideTimedElementsByShift();
+  }
 
+  filterSchedule(): void {
+    console.log(this.selectedFilter);
+    const option = this.selectedFilter.data;
+    switch (this.selectedFilter.type) {
+      case 'group':
+        this.scheduleData = this.scheduleData.filter((x) => x.groupId === option.id);
+        break;
+      case 'teacher':
+        this.scheduleData = this.scheduleData.filter((x) => x.teacher.id === option.id);
+        break;
+      case 'room':
+        this.scheduleData = this.scheduleData.filter((x) => x.roomId === option.id);
+        break;
+      default:
+        console.log('Filter default!');
+        break;
+    }
+  }
 }

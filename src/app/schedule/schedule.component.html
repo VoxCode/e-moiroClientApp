@@ -89,9 +89,9 @@
                        placeholder="Поиск"
                        [appendTo]="'body'"
                        [(ngModel)]="selectedFilter">
-              <ng-option *ngFor="let option of this.groups" [value]="option.id">ПК - {{option.groupNumber}}</ng-option>
-              <ng-option *ngFor="let option of this.teachers" [value]="option.id">{{option.fullNameForm}}</ng-option>
-              <ng-option *ngFor="let option of this.roomData" [value]="option.id">Аудитория {{option.name}}</ng-option>
+              <ng-option *ngFor="let option of this.groups" [value]="{type: 'group', data: option}">ПК - {{option.groupNumber}}</ng-option>
+              <ng-option *ngFor="let option of this.teachers" [value]="{type: 'teacher', data: option}">{{option.fullNameForm}}</ng-option>
+              <ng-option *ngFor="let option of this.roomData" [value]="{type: 'room', data: option}">Аудитория {{option.name}}</ng-option>
             </ng-select>
           </div>
           <div class="set-el">
@@ -124,11 +124,11 @@
                     <th>Суббота</th>
                   </tr>
                   </thead>
-                  <tr>
+                  <tr >
                     <td class="fillable" *ngFor="let col of timedWeekGeneric"
-                        style="height: 0; vertical-align: top;">
+                        style="height: 50px; vertical-align: top;">
                       <div class="fill" (click)="onCellClick('empty div',{date: col.date});">
-                        <div *ngFor="let cell of col.scell" style="display: flex; justify-content: center;">
+                        <div *ngFor="let cell of col.scell" class="cellWrap">
                           <app-schedule-cell [scheduleElement]="cell"
                                              [matMenuTriggerFor]="menu"
                                              [matMenuTriggerData]="{menuTrigger: menuTrigger, cell: cell}"
@@ -167,25 +167,58 @@
                     <th>Понедельник</th>
                   </tr>
                   </thead>
-                  <tr *ngFor="let row of timedMonday">
-                    <td> {{row.rowTime.classTimeStart | date:'HH:mm'}}
-                      - {{row.rowTime.classTimeEnd | date:'HH:mm'}}<br>
-                      {{row.rowTime.secondTimeStart | date:'HH:mm'}}
-                      - {{row.rowTime.secondTimeEnd | date:'HH:mm'}}</td>
-                    <td class="fillable" *ngFor="let col of row.scol" style="height: 0">
+                  <ng-container *ngIf="this.settings.value.shift !==2">
+                    <tr>
+                      <td colspan="999" class="shiftCell">
+                        <h5>Первая смена</h5>
+                      </td>
+                    </tr>
+                    <tr  *ngFor="let row of this.timedMondayFirstShift">
+                      <td class="timeColumn"> {{row.rowTime.classTimeStart | date:'HH:mm'}}
+                        - {{row.rowTime.classTimeEnd | date:'HH:mm'}}<br>
+                        {{row.rowTime.secondTimeStart | date:'HH:mm'}}
+                        - {{row.rowTime.secondTimeEnd | date:'HH:mm'}}</td>
+                      <td style="height: 0" *ngFor="let col of row.scol">
 
-                      <div class="fill" (click)="onCellClick('empty div')">
-                        <div *ngFor="let cell of col.scell" style="display: flex; justify-content: center;">
-                          <app-schedule-cell [scheduleElement]="cell"
-                                             [matMenuTriggerFor]="menu"
-                                             [matMenuTriggerData]="{menuTrigger: menuTrigger, cell: cell}"
-                                             #menuTrigger="matMenuTrigger"
-                                             (click)="$event.stopPropagation()"
-                          ></app-schedule-cell>
+                        <div class="fill" (click)="onCellClick('empty div')">
+                          <div *ngFor="let cell of col.scell" class="cellWrap">
+                            <app-schedule-cell [scheduleElement]="cell"
+                                               [matMenuTriggerFor]="menu"
+                                               [matMenuTriggerData]="{menuTrigger: menuTrigger, cell: cell}"
+                                               #menuTrigger="matMenuTrigger"
+                                               (click)="$event.stopPropagation()"
+                            ></app-schedule-cell>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
+                      </td>
+                    </tr>
+                  </ng-container>
+                  <ng-container *ngIf="this.settings.value.shift !==1">
+                    <tr>
+                      <td colspan="999" class="shiftCell">
+                        <h5>Вторая смена</h5>
+                      </td>
+                    </tr>
+                    <tr  *ngFor="let row of this.timedMondaySecondShift">
+                      <td class="timeColumn"> {{row.rowTime.classTimeStart | date:'HH:mm'}}
+                        - {{row.rowTime.classTimeEnd | date:'HH:mm'}}<br>
+                        {{row.rowTime.secondTimeStart | date:'HH:mm'}}
+                        - {{row.rowTime.secondTimeEnd | date:'HH:mm'}}</td>
+                      <td style="height: 0" *ngFor="let col of row.scol">
+
+                        <div class="fill" (click)="onCellClick('empty div')">
+                          <div *ngFor="let cell of col.scell" class="cellWrap">
+                            <app-schedule-cell [scheduleElement]="cell"
+                                               [matMenuTriggerFor]="menu"
+                                               [matMenuTriggerData]="{menuTrigger: menuTrigger, cell: cell}"
+                                               #menuTrigger="matMenuTrigger"
+                                               (click)="$event.stopPropagation()"
+                            ></app-schedule-cell>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
                 </table>
                 <table class="mainSchedule">
                   <thead>
@@ -205,16 +238,20 @@
                       </td>
                     </tr>
                     <tr *ngFor="let row of this.timedWeekFirstShift">
-                      <td> {{row.rowTime.classTimeStart | date:'HH:mm'}}
+                      <td class="timeColumn"> {{row.rowTime.classTimeStart | date:'HH:mm'}}
                         - {{row.rowTime.classTimeEnd | date:'HH:mm'}}<br>
                         {{row.rowTime.secondTimeStart | date:'HH:mm'}}
                         - {{row.rowTime.secondTimeEnd | date:'HH:mm'}}</td>
-                      <td class="fillable" *ngFor="let col of row.scol" style="height: 0">
-                        <div *ngFor="let cell of col.scell">
-                          <app-schedule-cell [scheduleElement]="cell"
-                                             (click)="onCellClick('cell', cell)"></app-schedule-cell>
-                        </div>
-                        <div class="fill" *ngIf="col.scell.length < 1" (click)="onCellClick('empty div')">
+                      <td style="height: 0" *ngFor="let col of row.scol">
+                        <div class="fill" (click)="onCellClick('empty div')">
+                          <div *ngFor="let cell of col.scell" class="cellWrap">
+                            <app-schedule-cell [scheduleElement]="cell"
+                                               [matMenuTriggerFor]="menu"
+                                               [matMenuTriggerData]="{menuTrigger: menuTrigger, cell: cell}"
+                                               #menuTrigger="matMenuTrigger"
+                                               (click)="$event.stopPropagation()"
+                            ></app-schedule-cell>
+                          </div>
                         </div>
                       </td>
                     </tr>
@@ -226,16 +263,20 @@
                       </td>
                     </tr>
                     <tr *ngFor="let row of this.timedWeekSecondShift">
-                      <td> {{row.rowTime.classTimeStart | date:'HH:mm'}}
+                      <td class="timeColumn"> {{row.rowTime.classTimeStart | date:'HH:mm'}}
                         - {{row.rowTime.classTimeEnd | date:'HH:mm'}}<br>
                         {{row.rowTime.secondTimeStart | date:'HH:mm'}}
                         - {{row.rowTime.secondTimeEnd | date:'HH:mm'}}</td>
-                      <td class="fillable" *ngFor="let col of row.scol" style="height: 0">
-                        <div *ngFor="let cell of col.scell">
-                          <app-schedule-cell [scheduleElement]="cell"
-                                             (click)="onCellClick('cell', cell)"></app-schedule-cell>
-                        </div>
-                        <div class="fill" *ngIf="col.scell.length < 1" (click)="onCellClick('empty div')">
+                      <td *ngFor="let col of row.scol" style="height: 0">
+                        <div class="fill" (click)="onCellClick('empty div')">
+                          <div *ngFor="let cell of col.scell" class="cellWrap">
+                            <app-schedule-cell [scheduleElement]="cell"
+                                               [matMenuTriggerFor]="menu"
+                                               [matMenuTriggerData]="{menuTrigger: menuTrigger, cell: cell}"
+                                               #menuTrigger="matMenuTrigger"
+                                               (click)="$event.stopPropagation()"
+                            ></app-schedule-cell>
+                          </div>
                         </div>
                       </td>
                     </tr>

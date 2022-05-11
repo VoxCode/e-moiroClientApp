@@ -22,4 +22,21 @@ export class ScheduleCellComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  parseSubgroup(subgroup: number): string {
+    switch (subgroup) {
+      case 0:
+        return 'Вся группа';
+        break;
+      case 1:
+        return 'Первая подгруппа';
+        break;
+      case 2:
+        return 'Вторая подгруппа';
+        break;
+      default:
+        return 'default';
+        break;
+    }
+  }
 }
