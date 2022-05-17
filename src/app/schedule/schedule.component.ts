@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {AgendaService, DayService, MonthService, WeekService, WorkWeekService} from '@syncfusion/ej2-angular-schedule';
 import {ClassRoom} from '../models/schedule-models/ClassRoom';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
@@ -40,6 +40,9 @@ import {ScheduleBlock} from '../models/schedule-models/ScheduleBlock';
 import {ClassTime} from '../models/schedule-models/СlassTime';
 import {ClassTimeService} from '../services/schedule-services/class-time.service';
 import {ScheduleClassTimes} from './schedule-class-times';
+import { fromEvent } from 'rxjs';
+import {debounceTime, distinctUntilChanged, map, switchMap} from 'rxjs/operators';
+import {interval} from 'rxjs/dist/types';
 
 
 @Component({
@@ -57,10 +60,10 @@ import {ScheduleClassTimes} from './schedule-class-times';
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},],
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}, ],
 
 })
-export class ScheduleComponent implements OnInit {
+export class ScheduleComponent implements OnInit, AfterViewInit {
 
   settings = new FormGroup({
     filterElement: new FormControl(),
@@ -118,14 +121,20 @@ export class ScheduleComponent implements OnInit {
       this.getFirstDayOfWeek(new Date())
     ));
     this.settings.setControl('end', new FormControl(
-      new Date(new Date().setDate(this.getFirstDayOfWeek(new Date()).getDate() + 6))
+      new Date(this.getFirstDayOfWeek(new Date()).getTime() + (6 * 24 * 60 * 60 * 1000))
     ));
     this.settings.setControl('shift', new FormControl(0));
 
     this.selectedShift = 0;
     // this.loadScheduleDates();
     this.loadScheduleDatesRange(this.settings.value.start, this.settings.value.end);
+
   }
+
+  ngAfterViewInit(): void {
+    this.setupButtons();
+  }
+
 
   applySearch(): void {
     this.loadScheduleDatesRange(this.settings.value.start, this.settings.value.end);
@@ -277,14 +286,17 @@ export class ScheduleComponent implements OnInit {
       });
   }
 
-
+  //  request: any;
   loadScheduleDatesRange(s: Date, e: Date): void {
+    // console.log('unsub');
+    // if(this.request != null)
+    //   this.request.unsubscribe();
+    //  this.request =
     this.scheduleBlockService.getScheduleRange(s, e)
       .subscribe((data: any) => {
         this.scheduleData = [];
         this.parseScheduleElements(data);
-        if (this.selectedFilter != null)
-        {
+        if (this.selectedFilter != null) {
           this.filterSchedule();
         }
         this.reassembleArrays();
@@ -456,4 +468,44 @@ export class ScheduleComponent implements OnInit {
         break;
     }
   }
+
+  setupButtons(): void{
+    const buttons = document.getElementsByName('loadingButton');
+    buttons.forEach(x => {
+      const el$ = fromEvent(x, 'click');
+      el$.pipe(
+        map((i: any) => i.currentTarget.value),
+        debounceTime(500),
+        distinctUntilChanged(),
+        switchMap(() => interval(1000) )
+      )
+        .subscribe(() => {
+          console.log('dobounced button');
+          this.applySearch();
+        });
+    });
+ }
+
+  arrowForward(): void {
+
+    console.log('forward');
+    const prevStart = new Date(this.settings.value.start);
+    console.log(prevStart);
+
+    const nextStart = this.getFirstDayOfWeek(new Date(prevStart.getTime() + (7 * 24 * 60 * 60 * 1000)));
+    const nextEnd = new Date(nextStart.getTime() + (6 * 24 * 60 * 60 * 1000));
+    this.settings.controls.start.setValue(nextStart);
+    this.settings.controls.end.setValue(nextEnd);
+  }
+
+  arrowBackward(): void {
+    console.log('backward');
+    const prevStart = new Date(this.settings.value.start);
+
+    const nextStart = this.getFirstDayOfWeek(new Date(prevStart.getTime() - (7 * 24 * 60 * 60 * 1000)));
+    const nextEnd = new Date(nextStart.getTime() + (6 * 24 * 60 * 60 * 1000));
+    this.settings.controls.start.setValue(nextStart);
+    this.settings.controls.end.setValue(nextEnd);
+  }
+
 }
