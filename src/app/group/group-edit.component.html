@@ -32,38 +32,44 @@
       <mdb-error *ngIf="trainingProgramId.invalid && (trainingProgramId.dirty || trainingProgramId.touched)"></mdb-error>
       <br><br>
 
-      <div class="form-item" *ngIf="form.get('calendarYear') as calendarYear">
-      <ejs-datepicker id="calendarYear" formControlName="calendarYear" format="yyyy" start="Decade" depth="Decade" placeholder="Календарный год">
-      </ejs-datepicker>
-        <div *ngIf="calendarYear.invalid && (calendarYear.dirty || calendarYear.touched)" class="e-error">
-          <div *ngIf="calendarYear.errors.required">
-            Введите календарный год
-          </div>
-          <div *ngIf="calendarYear.errors.max">
-            You have entered {{ calendarYear.value | date : 'MM/dd/yyyy' }}.
-          </div>
-        </div>
+      <div class="form-item" *ngIf="form.get('calendarYear') as control">
+        <mat-form-field appearance="fill">
+          <mat-label>Введите календарный год</mat-label>
+          <input matInput [formControl]="control" [matDatepicker]="picker">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker startView="multi-year"></mat-datepicker>
+          <mat-error *ngIf="control.invalid && (control.dirty || control.touched)">
+            Обязательно для заполнения
+          </mat-error>
+        </mat-form-field>
       </div>
 
-      <div class="form-item" *ngIf="form.get('classStartDate') as control">
-      <ejs-datepicker id="classStartDate" formControlName="classStartDate" format="dd MMMM yyyy" placeholder="Дата начала"></ejs-datepicker>
-        <div *ngIf="control.invalid && (control.dirty || control.touched)" class="e-error">
-        <div *ngIf="control.errors.required">
-          Введите дату начала.
-        </div>
-        </div>
+      <div class="form-item datepicker-inline" *ngIf="form.get('classStartDate') as control">
+        <mat-form-field appearance="fill">
+          <mat-label>Выберите дату начала</mat-label>
+          <input matInput [formControl]="control" [matDatepicker]="picker">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="control.invalid && (control.dirty || control.touched)">
+            Обязательно для заполнения
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-item datepicker-inline" *ngIf="form.get('classEndDate') as control">
+        <mat-form-field appearance="fill">
+          <mat-label>Выберите дату окончания</mat-label>
+          <input matInput [formControl]="control" [matDatepicker]="picker">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="control.invalid && (control.dirty || control.touched)">
+            Обязательно для заполнения
+          </mat-error>
+        </mat-form-field>
       </div>
 
-        <div class="form-item" *ngIf="form.get('classEndDate') as control">
-      <ejs-datepicker id="classEndDate" formControlName="classEndDate" format="dd MMMM yyyy" placeholder="Дата конца"></ejs-datepicker>
-          <div *ngIf="control.invalid && (control.dirty || control.touched)" class="e-error">
-        <div *ngIf="control.errors.required">
-          Введите дату конца.
-        </div>
-          </div>
-      </div>
-
-
+      <mat-error *ngIf="form.errors?.calendarYearValidator">
+        Даты начала и окончания должны быть в пределах одного календарного года!
+      </mat-error>
     </form>
   </div>
   <div class="modal-footer">

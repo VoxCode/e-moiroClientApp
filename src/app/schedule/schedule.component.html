@@ -30,11 +30,11 @@
                   mat-flat-button color="warn">Удалить
           </button>
           <button style="margin: 0px 5px"
-                  (click)="onCellClick('cell', cell);menuTrigger.closeMenu();"
+                  (click)="onCellClick('Редактирование занятия', cell);menuTrigger.closeMenu();"
                   mat-flat-button color="primary">Редактировать
           </button>
           <button style="margin: 0px 5px"
-                  (click)="onCellClick('empty div');menuTrigger.closeMenu();"
+                  (click)="onCellClick('Новое занятие');menuTrigger.closeMenu();"
                   mat-flat-button color="primary">Добавить новую запись
           </button>
         </div>
@@ -109,6 +109,11 @@
     <mat-tab-group mat-align-tabs="center" (selectedTabChange)="setupButtons()">
       <mat-tab label="Неделя">
         <ng-template matTabContent>
+<!--          <ng-container *ngIf="showSpinner" >-->
+<!--            <div *ngIf="showSpinner" class="spinner">-->
+<!--              <mat-spinner></mat-spinner>-->
+<!--            </div>-->
+<!--          </ng-container>-->
           <div style="display: table">
             <div style="display: table-cell; vertical-align: middle">
               <button mat-fab color="primary" name="loadingButton"
@@ -116,7 +121,10 @@
                 <mat-icon>arrow_back_ios</mat-icon>
               </button>
             </div>
-            <div style="display: table-cell; width: 100%; vertical-align: middle">
+            <div *ngIf="showSpinner" class="spinner">
+              <mat-spinner></mat-spinner>
+            </div>
+            <div *ngIf="!showSpinner" style="display: table-cell; width: 100%; vertical-align: middle">
               <div class="row-eq-height">
                 <table class="mainSchedule">
                   <thead>
@@ -132,7 +140,7 @@
                   <tr>
                     <td class="fillable" *ngFor="let col of timedWeekGeneric"
                         style="height: 50px; vertical-align: top;">
-                      <div class="fill" (click)="onCellClick('empty div',{date: col.date});">
+                      <div class="fill" (click)="onCellClick('Новое занятие',{date: col.date});">
                         <div *ngFor="let cell of col.scell" class="cellWrap">
                           <app-schedule-cell [scheduleElement]="cell"
                                              [matMenuTriggerFor]="menu"
@@ -158,6 +166,11 @@
       </mat-tab>
       <mat-tab label="Неделя (с разделением по времени)">
         <ng-template matTabContent>
+<!--          <ng-container *ngIf="showSpinner" >-->
+<!--            <div class="spinner">-->
+<!--              <mat-spinner></mat-spinner>-->
+<!--            </div>-->
+<!--          </ng-container>-->
           <div style="display: table">
             <div style="display: table-cell; vertical-align: middle">
               <button mat-fab color="primary" name="loadingButton"
@@ -165,7 +178,10 @@
                 <mat-icon>arrow_back_ios</mat-icon>
               </button>
             </div>
-            <div style="display: table-cell; width: 100%; vertical-align: middle">
+            <div *ngIf="showSpinner" class="spinner">
+              <mat-spinner></mat-spinner>
+            </div>
+            <div *ngIf="!showSpinner" style="display: table-cell; width: 100%; vertical-align: middle">
               <div class="row-eq-height">
                 <table class="mainSchedule" style="max-width: 300px">
                   <thead>
@@ -187,7 +203,7 @@
                         - {{row.rowTime.secondTimeEnd | date:'HH:mm'}}</td>
                       <td style="height: 0" *ngFor="let col of row.scol">
 
-                        <div class="fill" (click)="onCellClick('empty div')">
+                        <div class="fill" (click)="onCellClick('Новое занятие')">
                           <div *ngFor="let cell of col.scell" class="cellWrap">
                             <app-schedule-cell [scheduleElement]="cell"
                                                [matMenuTriggerFor]="menu"
@@ -213,7 +229,7 @@
                         - {{row.rowTime.secondTimeEnd | date:'HH:mm'}}</td>
                       <td style="height: 0" *ngFor="let col of row.scol">
 
-                        <div class="fill" (click)="onCellClick('empty div')">
+                        <div class="fill" (click)="onCellClick('Новое занятие')">
                           <div *ngFor="let cell of col.scell" class="cellWrap">
                             <app-schedule-cell [scheduleElement]="cell"
                                                [matMenuTriggerFor]="menu"
@@ -250,7 +266,7 @@
                         {{row.rowTime.secondTimeStart | date:'HH:mm'}}
                         - {{row.rowTime.secondTimeEnd | date:'HH:mm'}}</td>
                       <td style="height: 0" *ngFor="let col of row.scol">
-                        <div class="fill" (click)="onCellClick('empty div')">
+                        <div class="fill" (click)="onCellClick('Новое занятие')">
                           <div *ngFor="let cell of col.scell" class="cellWrap">
                             <app-schedule-cell [scheduleElement]="cell"
                                                [matMenuTriggerFor]="menu"
@@ -275,7 +291,7 @@
                         {{row.rowTime.secondTimeStart | date:'HH:mm'}}
                         - {{row.rowTime.secondTimeEnd | date:'HH:mm'}}</td>
                       <td *ngFor="let col of row.scol" style="height: 0">
-                        <div class="fill" (click)="onCellClick('empty div')">
+                        <div class="fill" (click)="onCellClick('Новое занятие')">
                           <div *ngFor="let cell of col.scell" class="cellWrap">
                             <app-schedule-cell [scheduleElement]="cell"
                                                [matMenuTriggerFor]="menu"
@@ -302,6 +318,9 @@
       </mat-tab>
       <mat-tab label="Месяц">
         <ng-template matTabContent>
+          <div *ngIf="showSpinner" class="spinner">
+            <mat-spinner></mat-spinner>
+          </div>
         </ng-template>
       </mat-tab>
     </mat-tab-group>

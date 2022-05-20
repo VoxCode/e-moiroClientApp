@@ -55,6 +55,14 @@ div.set-el > ng-select{
   min-width: 300px;
 }
 
+div.spinner {
+  height: 30vh;
+  width: 100%;
+  display: table-cell;
+  text-align: -webkit-center;
+  vertical-align: middle;
+}
+
 fillable {
   height: 0;
 }

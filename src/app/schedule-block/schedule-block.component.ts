@@ -31,7 +31,7 @@ import {
   MAT_MOMENT_DATE_FORMATS,
   MomentDateAdapter
 } from '@angular/material-moment-adapter';
-import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {ScheduleClassTimes} from '../schedule/schedule-class-times';
 import DateTimeFormat = Intl.DateTimeFormat;
@@ -39,6 +39,9 @@ import {ScheduleDate} from '../models/schedule-models/ScheduleDate';
 import {ScheduleDateScheduleBlock} from '../models/schedule-models/ScheduleDateScheduleBlock';
 import {ScheduleDateScheduleBlockService} from '../services/schedule-services/schedule-date-schedule-block.service';
 import {ScheduleDateService} from '../services/schedule-services/schedule-date.service';
+import {Observable} from 'rxjs/dist/types';
+import {map, startWith} from 'rxjs/operators';
+import {MY_FORMATS} from '../utils/material-date-format';
 
 @Component({
   selector: 'app-schedule-block',
@@ -63,23 +66,10 @@ import {ScheduleDateService} from '../services/schedule-services/schedule-date.s
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},],
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS}, ],
   encapsulation: ViewEncapsulation.None
 })
 export class ScheduleBlockComponent implements OnInit {
-
-  public selectedGroup: Group;
-  public selectedTopic: CurriculumTopicTrainingProgram;
-  public selectedTopicAux: CurriculumTopicTrainingProgram;
-  public selectedTeacher: Teacher;
-  public selectedTeacherAux: Teacher;
-  public selectedRoom: ClassRoom;
-  public selectedRoomAux: ClassRoom;
-
-  public combineTopic = false;
-  public combineRoom = false;
-  public combineTeacher = false;
-  public divideSubGroups = false;
 
   prevDate: Date;
 
@@ -99,9 +89,9 @@ export class ScheduleBlockComponent implements OnInit {
   public form: FormGroup = new FormGroup({
     id: new FormControl({value: '', disabled: true}),
     groupId: new FormControl('', Validators.required),
-    topicId: new FormControl('', Validators.required),
-    teacherId: new FormControl('', Validators.required),
-    roomId: new FormControl('', Validators.required),
+    topicId: new FormControl('', [Validators.required, this.requireMatchTopic.bind(this)]),
+    teacherId: new FormControl('', [Validators.required, this.requireMatchTeacher.bind(this)]),
+    roomId: new FormControl('', [Validators.required, this.requireMatchRoom.bind(this)]),
     date: new FormControl('', Validators.required),
     timeId: new FormControl('', Validators.required),
     subgroup: new FormControl('', Validators.required),
@@ -126,7 +116,19 @@ export class ScheduleBlockComponent implements OnInit {
 
   sundayDatesFilter = (d: Date): boolean => {
     const day = new Date(d).getDay();
-    return day !== 0 ;
+    return day !== 0;
+  }
+
+  displayTopic(value: number): string {
+    return value ? this.curriculumTopicTrainingPrograms.find(el => el.id === value).topicTitle : undefined;
+  }
+
+  displayTeacher(value: number): string {
+    return value ? this.teachers.find(el => el.id === value).fullNameForm : undefined;
+  }
+
+  displayRoom(value: number): string {
+    return value ? this.rooms.find(el => el.id === value).name : undefined;
   }
 
   constructor(
@@ -147,8 +149,9 @@ export class ScheduleBlockComponent implements OnInit {
   ) {
   }
 
-
   ngOnInit(): void {
+
+
     this.groups = this.data.groups;
     this.rooms = this.data.rooms;
     this.curriculumTopicTrainingPrograms = this.data.topics;
@@ -172,19 +175,18 @@ export class ScheduleBlockComponent implements OnInit {
       const prevDay = this.prevDate.getDay();
       const newDay = new Date(x).getDay();
       if (newDay !== prevDay) {
-        if (newDay !== 1 && prevDay === 1)
-        {
+        if (newDay !== 1 && prevDay === 1) {
           this.form.controls.timeId.patchValue(undefined);
           this.form.controls.timeId.markAsTouched();
         }
-        if (newDay === 1 && prevDay !== 1)
-        {
+        if (newDay === 1 && prevDay !== 1) {
           this.form.controls.timeId.patchValue(undefined);
           this.form.controls.timeId.markAsTouched();
         }
       }
       this.prevDate = new Date(x);
     });
+
 
 
     // if (this.data.scheduleElement !== undefined) {
@@ -195,7 +197,7 @@ export class ScheduleBlockComponent implements OnInit {
     // }
 
     console.log('editor init');
-    if (this.scheduleElement.scheduleBlockId) {
+    if (this.scheduleElement.scheduleBlockId != null) {
       this.form.controls.id.patchValue(this.scheduleElement.scheduleBlockId);
       this.form.controls.groupId.patchValue(this.scheduleElement.groupId);
       this.form.controls.topicId.patchValue(this.scheduleElement.topicId);
@@ -204,6 +206,9 @@ export class ScheduleBlockComponent implements OnInit {
       this.form.controls.date.patchValue(this.scheduleElement.date);
       this.form.controls.timeId.patchValue(this.scheduleElement.time.id);
       this.form.controls.subgroup.patchValue(this.scheduleElement.subgroup);
+    }
+    else {
+      this.form.get('date').setValue(this.data.date);
     }
 
     console.log(this.scheduleElement);
@@ -223,26 +228,6 @@ export class ScheduleBlockComponent implements OnInit {
     console.log(this.times);
   }
 
-  MergeWithSubGroup(val: string, checked: boolean = true): void {
-    switch (val) {
-      case 'divideSubGroups':
-        this.divideSubGroups = checked;
-        this.combineTopic = checked;
-        this.combineRoom = checked;
-        this.combineTeacher = checked;
-        break;
-      case 'combineTopic':
-        this.combineTopic = !this.combineTopic;
-        break;
-      case 'combineRoom':
-        this.combineRoom = !this.combineRoom;
-        break;
-      case 'combineTeacher':
-        this.combineTeacher = !this.combineTeacher;
-        break;
-    }
-  }
-
   save(): void {
     // this.scheduleElement.topic = "qwewedsfdsfdsfwe";
     if (this.scheduleElement.scheduleBlockId !== undefined) {
@@ -252,6 +237,30 @@ export class ScheduleBlockComponent implements OnInit {
       this.createScheduleBlock(this.form.value);
       console.log('Created');
     }
+  }
+
+  private requireMatchTopic(control: FormControl): ValidationErrors | null {
+    const selection: any = control.value;
+    if (this.curriculumTopicTrainingPrograms.filter(x => x.id === selection).length > 0) {
+      return null;
+    }
+    return {requireMatch: true};
+  }
+
+  private requireMatchTeacher(control: FormControl): ValidationErrors | null {
+    const selection: any = control.value;
+    if (this.teachers.filter(x => x.id === selection).length > 0) {
+      return null;
+    }
+    return {requireMatch: true};
+  }
+
+  private requireMatchRoom(control: FormControl): ValidationErrors | null {
+    const selection: any = control.value;
+    if (this.rooms.filter(x => x.id === selection).length > 0) {
+      return null;
+    }
+    return {requireMatch: true};
   }
 
   dayOfTheWeek(): number {
@@ -400,6 +409,8 @@ export class ScheduleBlockComponent implements OnInit {
     console.log(text + title);
   }
 
-
+  qwe() {
+    console.log(this.form);
+  }
 }
 

@@ -29,7 +29,7 @@ export class ScheduleBlockService {
   }
 
   getScheduleRange(s: Date, e: Date): Observable<any> {
-    return this.http.get(this.url + '/ScheduleElementsRange' + '?' + `s=${s.toISOString()}&e=${e.toISOString()}`);
+    return this.http.get(this.url + '/ScheduleElementsRange' + '?' + `s=${s.toISOString()}&e=${e.toISOString()}`, );
   }
 
   createValue(scheduleBlock: ScheduleBlock): Observable<any> {

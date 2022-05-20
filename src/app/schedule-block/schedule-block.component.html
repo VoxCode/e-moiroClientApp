@@ -4,7 +4,7 @@
 
 <h1 mat-dialog-title>{{data.title}}</h1>
 
-<div mat-dialog-content style="overflow: visible !important;">
+<div style="overflow: visible !important;">
   <form [formGroup]="form">
 
     <div class="md-form" *ngIf="groups.length !== 0">
@@ -21,21 +21,13 @@
 
 
     <div *ngIf="form.get('date') as date">
-      <div style="display: inline-block">
-        <mat-form-field appearance="fill">
-          <mat-label>Дата проведения</mat-label>
-          <input matInput [matDatepickerFilter]="sundayDatesFilter" [matDatepicker]="picker" formControlName="date">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-      </div>
-      <div style="display: inline-block; margin-left: 50px;  vertical-align: center;">
-        <mdb-checkbox (change)="MergeWithSubGroup('divideSubGroups', $event.checked)">Разделить по подгруппам
-        </mdb-checkbox>
-      </div>
-      <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Дата проведения</mat-label>
+        <input matInput [matDatepickerFilter]="sundayDatesFilter" [matDatepicker]="picker" formControlName="date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
         <mat-error *ngIf="date.invalid && (date.dirty || date.touched)">Обязательно для заполнения</mat-error>
-      </div>
+      </mat-form-field>
     </div>
 
     <div *ngIf="form.get('subgroup') as subgroup">
@@ -57,7 +49,7 @@
       </mat-form-field>
     </div>
 
-    <div *ngIf="form.get('timeId') as timeField">
+    <div style="width: 23vh;" *ngIf="form.get('timeId') as timeField">
       <mat-form-field>
         <mat-label>Время</mat-label>
         <mat-select formControlName="timeId">
@@ -95,93 +87,77 @@
       </mat-form-field>
     </div>
 
-
-    <div class="container" *ngIf="curriculumTopicTrainingPrograms.length !== 0">
-      <div class="left">
-        <div>
-          <ng-select [items]="this.curriculumTopicTrainingPrograms" [clearable]="false"
-                     formControlName="topicId"
-                     bindValue="id"
-                     bindLabel="topicTitle"
-                     placeholder="Тема">
-          </ng-select>
-          <div style="color: red" *ngIf="topicId.invalid && (topicId.dirty || topicId.touched)">Обязательно для
-            заполнения
-          </div>
-        </div>
-      </div>
-      <!--      <div class="middle" >-->
-      <!--        <div class="mergeButton">-->
-      <!--          <button *ngIf="divideSubGroups"-->
-      <!--                  type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="MergeWithSubGroup('combineTopic')"-->
-      <!--                  mdbWavesEffect><mdb-icon fas icon="sign-in-alt" size="lg"></mdb-icon></button>-->
-      <!--        </div>-->
-      <!--      </div>-->
-      <!--      <div class="right" >-->
-      <!--        <ng-select [items]="this.curriculumTopicTrainingPrograms" [clearable]="false" [disabled]="!combineTopic" *ngIf="divideSubGroups"-->
-      <!--                   bindValue=""-->
-      <!--                   bindLabel="topicTitle"-->
-      <!--                   [(ngModel)]="selectedTopicAux"-->
-      <!--                   placeholder="Тема">-->
-      <!--        </ng-select>-->
-      <!--      </div>-->
+    <div *ngIf="curriculumTopicTrainingPrograms.length !== 0">
+      <mat-form-field>
+        <mat-label>
+          Тема
+        </mat-label>
+        <input
+          placeholder="Тема"
+          aria-label="Выберите тему"
+          matInput
+          [formControl]="topicId"
+          [matAutocomplete]="auto">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayTopic.bind(this)">
+          <mat-option *ngFor="let option of curriculumTopicTrainingPrograms" [value]="option.id">
+            {{option.topicTitle}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="topicId.invalid || topicId.errors?.requireMatchTopic && (topicId.dirty || topicId.touched)">
+          Обязательно для заполнения
+        </mat-error>
+      </mat-form-field>
     </div>
 
-    <div class="container" *ngIf="teachers.length !== 0">
-      <div class="left">
-        <ng-select [items]="this.teachers" [clearable]="false"
-                   formControlName="teacherId"
-                   bindValue="id"
-                   bindLabel="fullNameForm"
-                   placeholder="Преподаватель">
-        </ng-select>
-        <div style="color: red" *ngIf="teacherId.invalid && (teacherId.dirty || teacherId.touched)">Обязательно для
-          заполнения
-        </div>
-      </div>
-      <!--      <div class="middle">-->
-      <!--        <button *ngIf="divideSubGroups"-->
-      <!--                type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="MergeWithSubGroup('combineTeacher')"-->
-      <!--                mdbWavesEffect><mdb-icon fas icon="sign-in-alt" size="lg"></mdb-icon></button>-->
-      <!--      </div>-->
-      <!--      <div class="right" >-->
-      <!--        <ng-select [items]="this.teachers" [clearable]="false" [disabled]="!combineTeacher" *ngIf="divideSubGroups"-->
-      <!--                   bindValue=""-->
-      <!--                   bindLabel="fullNameForm"-->
-      <!--                   [(ngModel)]="selectedTeacherAux"-->
-      <!--                   placeholder="Преподаватель">-->
-      <!--        </ng-select>-->
-      <!--      </div>-->
+    <div *ngIf="teachers.length !== 0">
+      <mat-form-field>
+        <mat-label id="qwe"
+                   style="backface-visibility: hidden !important; transform: translateZ(0) !important; display: flex; align-items: center">
+          Преподаватель
+        </mat-label>
+        <input
+          placeholder="Преподаватель"
+          aria-label="Выберите преподавателя"
+          matInput
+          [formControl]="teacherId"
+          [matAutocomplete]="auto">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayTeacher.bind(this)">
+          <mat-option *ngFor="let option of teachers" [value]="option.id">
+            {{option.fullNameForm}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error
+          *ngIf="teacherId.invalid || teacherId.errors?.requireMatchTeacher && (teacherId.dirty || teacherId.touched)">
+          Обязательно для заполнения
+        </mat-error>
+      </mat-form-field>
     </div>
 
-    <div class="container" *ngIf="rooms.length !== 0">
-      <div class="left">
-        <ng-select [items]="this.rooms" [clearable]="false"
-                   formControlName="roomId"
-                   bindValue="id"
-                   bindLabel="name"
-                   placeholder="Аудитория">
-        </ng-select>
-        <div style="color: red" *ngIf="roomId.invalid && (roomId.dirty || roomId.touched)">Обязательно для заполнения
-        </div>
-      </div>
-      <!--      <div class="middle">-->
-      <!--        <button *ngIf="divideSubGroups"-->
-      <!--                type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="MergeWithSubGroup('combineRoom')"-->
-      <!--                mdbWavesEffect><mdb-icon fas icon="sign-in-alt" size="lg"></mdb-icon></button>-->
-      <!--      </div>-->
-      <!--      <div class="right">-->
-      <!--        <ng-select [items]="this.rooms" [clearable]="false" [disabled]="!combineRoom" *ngIf="divideSubGroups"-->
-      <!--                   bindValue=""-->
-      <!--                   bindLabel="name"-->
-      <!--                   [(ngModel)]="selectedRoomAux"-->
-      <!--                   placeholder="Аудитория">-->
-      <!--        </ng-select>-->
-      <!--      </div>-->
+    <div *ngIf="rooms.length !== 0">
+      <mat-form-field>
+        <mat-label>
+          Аудитория
+        </mat-label>
+        <input
+          placeholder="Выберите аудиторию"
+          aria-label="Выберите аудиторию"
+          matInput
+          [formControl]="roomId"
+          [matAutocomplete]="auto">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayRoom.bind(this)">
+          <mat-option *ngFor="let option of rooms" [value]="option.id">
+            {{option.name}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="roomId.invalid || roomId.errors?.requireMatchRoom && (roomId.dirty || roomId.touched)">
+          Обязательно для заполнения
+        </mat-error>
+      </mat-form-field>
+
     </div>
   </form>
 </div>
-
+<button mat-button (click)="qwe()">view</button>
 <div mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Отмена</button>
   <button mat-button (click)="save()" [disabled]="form.invalid" cdkFocusInitial>Сохранить</button>

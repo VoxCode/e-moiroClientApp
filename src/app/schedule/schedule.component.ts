@@ -40,9 +40,9 @@ import {ScheduleBlock} from '../models/schedule-models/ScheduleBlock';
 import {ClassTime} from '../models/schedule-models/СlassTime';
 import {ClassTimeService} from '../services/schedule-services/class-time.service';
 import {ScheduleClassTimes} from './schedule-class-times';
-import { fromEvent } from 'rxjs';
+import {fromEvent, interval} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map, switchMap} from 'rxjs/operators';
-import {interval} from 'rxjs/dist/types';
+import {MY_FORMATS} from "../utils/material-date-format";
 
 
 @Component({
@@ -60,7 +60,7 @@ import {interval} from 'rxjs/dist/types';
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}, ],
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS}, ],
 
 })
 export class ScheduleComponent implements OnInit, AfterViewInit {
@@ -81,6 +81,9 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
   timedWeekFirstShift: any = [];
   timedWeekSecondShift: any = [];
   times: ClassTime[];
+
+  currentRequest: any;
+  showSpinner: boolean;
 
   teachers: Teacher[] = [];
   curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[] = [];
@@ -115,6 +118,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
+    this.showSpinner = false;
     this.loadSecondaryData();
 
     this.settings.setControl('start', new FormControl(
@@ -292,7 +296,11 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
     // if(this.request != null)
     //   this.request.unsubscribe();
     //  this.request =
-    this.scheduleBlockService.getScheduleRange(s, e)
+    this.showSpinner = true;
+    if (this.currentRequest != null) {
+      this.currentRequest.unsubscribe();
+    }
+    const obs$ = this.scheduleBlockService.getScheduleRange(s, e)
       .subscribe((data: any) => {
         this.scheduleData = [];
         this.parseScheduleElements(data);
@@ -301,6 +309,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
         }
         this.reassembleArrays();
       });
+    this.currentRequest = obs$;
   }
 
   loadSecondaryData(): void {
@@ -366,6 +375,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
       maxWidth: '800px',
       data: {
         title,
+        date: new Date(),
         groups: this.groups,
         rooms: this.roomData,
         topics: this.curriculumTopicTrainingPrograms,
@@ -444,10 +454,12 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
   }
 
   reassembleArrays(): void {
+    this.showSpinner = true;
     this.generateTimedMonday();
     this.generateTimedWeekArray();
     this.generateGenericWeekArray();
     this.divideTimedElementsByShift();
+    this.showSpinner = false;
   }
 
   filterSchedule(): void {
@@ -469,25 +481,22 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setupButtons(): void{
+  setupButtons(): void {
     const buttons = document.getElementsByName('loadingButton');
     buttons.forEach(x => {
       const el$ = fromEvent(x, 'click');
       el$.pipe(
-        map((i: any) => i.currentTarget.value),
-        debounceTime(500),
-        distinctUntilChanged(),
-        switchMap(() => interval(1000) )
+        debounceTime(500)
       )
         .subscribe(() => {
           console.log('dobounced button');
           this.applySearch();
         });
     });
- }
+  }
 
   arrowForward(): void {
-
+    this.setupButtons();
     console.log('forward');
     const prevStart = new Date(this.settings.value.start);
     console.log(prevStart);
@@ -499,6 +508,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
   }
 
   arrowBackward(): void {
+    this.setupButtons();
     console.log('backward');
     const prevStart = new Date(this.settings.value.start);
 

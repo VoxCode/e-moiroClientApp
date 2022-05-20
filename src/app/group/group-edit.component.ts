@@ -2,11 +2,12 @@ import {AfterViewInit, ChangeDetectorRef, Component,  ElementRef, HostListener, 
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {CertificationTypeService} from '../services/certification-type.service';
 import {CertificationType} from '../models/CertificationType';
-import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {IsDeleteComponent} from '../is-delete/is-delete.component';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {TrainingProgramService} from '../services/training-program.service';
+import {from} from "rxjs/dist/types";
 
 
 @Component({
@@ -32,13 +33,13 @@ export class GroupEditComponent implements OnInit {
 
   public form: FormGroup = new FormGroup({
     id: new FormControl({value: '', disabled: true}),
-    calendarYear: new FormControl('', Validators.required),
+    calendarYear: new FormControl({value: '', disabled: true}),
     classStartDate: new FormControl('', Validators.required),
     classEndDate: new FormControl('', Validators.required),
     trainingProgramId: new FormControl('', Validators.required),
     trainingProgram: new FormControl({value: '', disabled: true}),
     groupNumber: new FormControl('', Validators.required)
-  });
+  }, { validators: [this.calendarYearValidator.bind(this)]});
 
   constructor(public modalRef: MDBModalRef, private trainingProgramService: TrainingProgramService) { }
 
@@ -55,6 +56,7 @@ export class GroupEditComponent implements OnInit {
 
   editRow(): void {
     this.editableRow = this.form.getRawValue();
+    this.editableRow.calendarYear = this.editableRow.classStartDate;
     this.editableRow.trainingProgram = this.trainingPrograms.find(p => p.id === +this.editableRow.trainingProgramId).name;
     this.saveButtonClicked.next(this.editableRow);
     this.modalRef.hide();
@@ -69,5 +71,12 @@ export class GroupEditComponent implements OnInit {
       .subscribe((data: TrainingProgram[]) => {
         this.trainingPrograms = data;
       });
+  }
+
+  private calendarYearValidator(fg: FormGroup): ValidationErrors | null {
+    if (new Date(fg.controls.classStartDate.value).getFullYear() !== new Date(fg.controls.classEndDate.value).getFullYear()) {
+      return {calendarYearValidator: true};
+    }
+    return null;
   }
 }
