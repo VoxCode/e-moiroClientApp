@@ -29,13 +29,13 @@
           <div class="addButton">
             <button *ngIf="i === trainingProgramTeacherDeveloper.length - 1" type="button" mdbBtn color="gray"
                     size="sm" class="relative waves-light" (click)="addDeveloper()"
-                    mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+                    mdbWavesEffect matTooltip="Добавить разработчика"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
             <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editSelectedTeacher(teacherDevelopers[i])"
-                    mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
+                    mdbWavesEffect matTooltip="Редактировать разработчика"><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
           </div>
           <div class="delButton">
             <button type="button" mdbBtn color="gray" size="sm" class="relative waves-light" (click)="removeDeveloper(i, el.id)"
-                    mdbWavesEffect><mdb-icon fas icon="trash" size="lg"></mdb-icon></button>
+                    mdbWavesEffect matTooltip="Удалить разработчика"><mdb-icon fas icon="trash" size="lg"></mdb-icon></button>
           </div>
           <br>
         </div>
@@ -60,13 +60,13 @@
           <div class="addButton">
             <button *ngIf="i === trainingProgramTeacherReviewer.length - 1" type="button" mdbBtn color="gray"
                     size="sm" class="relative waves-light" (click)="addReviewer()"
-                    mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+                    mdbWavesEffect matTooltip="Добавить рецензента"><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
             <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editSelectedTeacher(teacherReviewers[i])"
-                    mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
+                    mdbWavesEffect matTooltip="Редактировать рецензента"><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
           </div>
           <div class="delButton">
             <button type="button" mdbBtn color="gray" size="sm" class="relative waves-light"
-                    (click)="removeReviewer(i, el.id)" mdbWavesEffect><mdb-icon fas icon="trash" size="lg"></mdb-icon></button>
+                    (click)="removeReviewer(i, el.id)" mdbWavesEffect matTooltip="Удалить рецензента"><mdb-icon fas icon="trash" size="lg"></mdb-icon></button>
           </div>
           <br>
         </div>
@@ -75,7 +75,7 @@
   </div>
   <br>
   <button style="float: right" type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="addNewTeacher()"
-          mdbWavesEffect>Добавить нового преподавателя</button>
+          mdbWavesEffect>Новый разработчик/рецензент</button>
   <br>
   <button type="button" [routerLink]="['/' + globals.role +'/trainingProgramIntroductionStep', id]"
           mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Далее</button><br>

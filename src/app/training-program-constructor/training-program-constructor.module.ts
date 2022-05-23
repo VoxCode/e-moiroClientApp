@@ -25,19 +25,22 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {OccupationFormClassTimeEditFormComponent} from './training-program-main-step/occupation-form-class-hour-child/occupation-form-class-time-edit-form.component';
 import {TrainingProgramGuidedTestWorkStepComponent} from './training-program-guided-test-work-step/training-program-guided-test-work-step.component';
 import {GuidedTestWorkTopicChildComponent} from './training-program-guided-test-work-step/guided-test-work-topic-child/guided-test-work-topic-child.component';
+import {AngularMaterialModule} from '../angular-material/angular-material.module';
+
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    FormsModule,
-    MDBBootstrapModule.forRoot(),
-    AppRoutingModule,
-    DragDropModule,
-    DocumentEditorContainerModule,
-    DocumentEditorAllModule,
-    NgSelectModule,
-    ReactiveFormsModule
-  ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        MDBBootstrapModule.forRoot(),
+        AppRoutingModule,
+        DragDropModule,
+        DocumentEditorContainerModule,
+        DocumentEditorAllModule,
+        NgSelectModule,
+        ReactiveFormsModule,
+        AngularMaterialModule,
+    ],
   declarations: [
     TrainingProgramIntroductionStepComponent,
     DocumentEditorFormComponent,
@@ -56,7 +59,7 @@ import {GuidedTestWorkTopicChildComponent} from './training-program-guided-test-
     OccupationFormClassHourChildComponent,
     TrainingProgramGuidedTestWorkStepComponent,
     OccupationFormClassTimeEditFormComponent,
-    GuidedTestWorkTopicChildComponent
+    GuidedTestWorkTopicChildComponent,
   ],
   exports: [],
   providers: [TrainingProgramConstructorService]

@@ -16,6 +16,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 const MatComponents = [
@@ -35,6 +36,7 @@ const MatComponents = [
   MatMenuModule,
   MatProgressSpinnerModule,
   CommonModule,
+  MatTooltipModule,
 ];
 
 

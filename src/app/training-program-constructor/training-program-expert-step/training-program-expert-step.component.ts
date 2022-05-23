@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TrainingProgram} from '../../models/TrainingProgram';
 import {Globals} from '../../globals';
 import {ActivatedRoute} from '@angular/router';
@@ -9,12 +9,15 @@ import {TeacherService} from '../../services/teacher.service';
 import {TrainingProgramConstructorService} from '../training-program-constructor.service';
 import {TeacherEditComponent} from '../../teacher/teacher-edit.component';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
+import {MAT_TOOLTIP_DEFAULT_OPTIONS} from '@angular/material/tooltip';
+import {TOOLTIP_DEFAULTS} from '../../utils/material-tooltip-options';
 
 @Component({
   selector: 'app-training-program-expert-step',
   templateUrl: './training-program-expert-step.component.html',
   styleUrls: ['./training-program-expert-step.component.scss'],
   providers: [
+    {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: TOOLTIP_DEFAULTS},
     TrainingProgramTeacherService,
     TeacherService,
   ]
@@ -38,7 +41,8 @@ export class TrainingProgramExpertStepComponent implements OnInit {
     private teacherService: TeacherService,
     private route: ActivatedRoute,
     private modalService: MDBModalService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
@@ -57,10 +61,15 @@ export class TrainingProgramExpertStepComponent implements OnInit {
     this.teacherService.getValues()
       .subscribe((teachers: Teacher[]) => {
         teachers.forEach((teacher: Teacher) => {
-          teacher.fullNameForm = teacher.lastName + ' ' + teacher.firstName + ' ' +
-            teacher.patronymicName + ' (' + teacher.academicRank + ')';
+          if (teacher.academicRank !== '') {
+            teacher.fullNameForm = teacher.lastName + ' ' + teacher.firstName + ' ' +
+              teacher.patronymicName + ' (' + teacher.academicRank + ')';
+          } else {
+            teacher.fullNameForm = Teacher.getFullName(teacher);
+          }
           this.teachers.push(teacher);
         });
+        this.teachers = this.teachers.sort(Teacher.compare);
         this.loadTrainingProgramTeacher();
       });
   }
@@ -76,16 +85,14 @@ export class TrainingProgramExpertStepComponent implements OnInit {
             this.trainingProgramTeacherDeveloper.forEach((obj) => {
               this.teacherDevelopers.push(this.teachers.find(a => a.id === obj.teacherId));
             });
-          }
-          else {
+          } else {
             this.trainingProgramTeacherDeveloper = [{}];
           }
           if (this.trainingProgramTeacherReviewer.length !== 0) {
             this.trainingProgramTeacherReviewer.forEach((obj) => {
               this.teacherReviewers.push(this.teachers.find(a => a.id === obj.teacherId));
             });
-          }
-          else {
+          } else {
             this.trainingProgramTeacherReviewer = [{}];
           }
         }
@@ -118,8 +125,7 @@ export class TrainingProgramExpertStepComponent implements OnInit {
     const expertId = 1;
     if (!this.trainingProgramTeacherDeveloper[index].id) {
       this.create(teacherId, expertId, index);
-    }
-    else {
+    } else {
       this.update(teacherId, expertId, index);
     }
   }
@@ -128,8 +134,7 @@ export class TrainingProgramExpertStepComponent implements OnInit {
     const expertId = 2;
     if (!this.trainingProgramTeacherReviewer[index].id) {
       this.create(teacherId, expertId, index);
-    }
-    else {
+    } else {
       this.update(teacherId, expertId, index);
     }
   }
@@ -143,12 +148,11 @@ export class TrainingProgramExpertStepComponent implements OnInit {
       .subscribe((trainingProgramTeacherResponse: TrainingProgramTeacher) => {
         console.log('Create was successful!');
         if (expertId === 1) {
-        this.trainingProgramTeacherDeveloper[index] = trainingProgramTeacherResponse;
-      }
-      else if (expertId === 2) {
-        this.trainingProgramTeacherReviewer[index] = trainingProgramTeacherResponse;
-      }
-    });
+          this.trainingProgramTeacherDeveloper[index] = trainingProgramTeacherResponse;
+        } else if (expertId === 2) {
+          this.trainingProgramTeacherReviewer[index] = trainingProgramTeacherResponse;
+        }
+      });
   }
 
   update(teacherId: number, expertId: number, index: number): void {
@@ -156,8 +160,7 @@ export class TrainingProgramExpertStepComponent implements OnInit {
     if (expertId === 1) {
       trainingProgramTeacher = this.trainingProgramTeacherDeveloper[index];
       trainingProgramTeacher.teacherId = teacherId;
-    }
-    else if (expertId === 2) {
+    } else if (expertId === 2) {
       trainingProgramTeacher = this.trainingProgramTeacherReviewer[index];
       trainingProgramTeacher.teacherId = teacherId;
     }
@@ -231,7 +234,8 @@ export class TrainingProgramExpertStepComponent implements OnInit {
       fourth: '',
       fifth: '',
       sixth: '',
-      seventh: false};
+      seventh: false
+    };
   }
 
   modalOption(el: any): any {

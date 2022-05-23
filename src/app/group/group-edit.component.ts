@@ -7,14 +7,14 @@ import {Subject} from 'rxjs';
 import {IsDeleteComponent} from '../is-delete/is-delete.component';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {TrainingProgramService} from '../services/training-program.service';
-import {from} from "rxjs/dist/types";
+import {from} from 'rxjs/dist/types';
 
 
 @Component({
 
   selector: 'app-group-edit',
   templateUrl: './group-edit.component.html',
-  styleUrls: ['../styles/modal-form-style.scss'],
+  styleUrls: ['../styles/modal-form-style.scss', './group-edit.component.scss'],
   providers: [ TrainingProgramService],
 
 })
@@ -52,6 +52,7 @@ export class GroupEditComponent implements OnInit {
     this.form.controls.classStartDate.patchValue(this.editableRow.classStartDate);
     this.form.controls.classEndDate.patchValue(this.editableRow.classEndDate);
     this.form.controls.trainingProgramId.patchValue(this.editableRow.trainingProgramId);
+    console.log(this.form);
   }
 
   editRow(): void {
@@ -74,6 +75,14 @@ export class GroupEditComponent implements OnInit {
   }
 
   private calendarYearValidator(fg: FormGroup): ValidationErrors | null {
+    const start = fg.controls.classStartDate.value;
+    const end = fg.controls.classEndDate.value;
+    console.log('qwe');
+    console.log(start);
+    console.log(end);
+    if ((start == null || start == '') || (end == null || end == '')) {
+      return null;
+    }
     if (new Date(fg.controls.classStartDate.value).getFullYear() !== new Date(fg.controls.classEndDate.value).getFullYear()) {
       return {calendarYearValidator: true};
     }

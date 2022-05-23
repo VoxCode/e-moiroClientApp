@@ -128,7 +128,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     const trainingProgram = new TrainingProgram(0, el.second, el.third, el.fifteenth, el.fourth, el.fifth,
       el.sixth, el.seventh, el.eight, el.ninth, el.tenth, el.eleventh, el.twelfth, el.thirteenth, el.fourteenth);
     const date = Date.now();
-    trainingProgram.dateOfCreation = new Date(date + 10800000);
+    trainingProgram.dateOfCreation = new Date(date);
     this.valueService.createValue(trainingProgram)
       .subscribe((trainingProgramResponse: TrainingProgram) => {
         console.log(trainingProgramResponse);
