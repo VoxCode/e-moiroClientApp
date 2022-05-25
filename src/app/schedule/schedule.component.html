@@ -60,8 +60,8 @@
           <mat-form-field appearance="fill">
             <mat-label>Выберете промежуток</mat-label>
             <mat-date-range-input [formGroup]="settings" [rangePicker]="picker">
-              <input matStartDate formControlName="start" placeholder="Начальная дата" >
-              <input matEndDate formControlName="end" placeholder="Конечная Дата" >
+              <input matStartDate formControlName="start" placeholder="Начальная дата">
+              <input matEndDate formControlName="end" placeholder="Конечная Дата">
             </mat-date-range-input>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
@@ -99,25 +99,26 @@
           </div>
           <div class="set-el">
             <button mat-mini-fab color="primary" name="loadingButton">
-<!--              (click)="applySearch()"-->
+              <!--              (click)="applySearch()"-->
               <mat-icon>search</mat-icon>
             </button>
           </div>
         </div>
       </mat-expansion-panel>
     </div>
+
     <mat-tab-group mat-align-tabs="center" (selectedTabChange)="setupButtons()">
       <mat-tab label="Неделя">
         <ng-template matTabContent>
-<!--          <ng-container *ngIf="showSpinner" >-->
-<!--            <div *ngIf="showSpinner" class="spinner">-->
-<!--              <mat-spinner></mat-spinner>-->
-<!--            </div>-->
-<!--          </ng-container>-->
+          <!--          <ng-container *ngIf="showSpinner" >-->
+          <!--            <div *ngIf="showSpinner" class="spinner">-->
+          <!--              <mat-spinner></mat-spinner>-->
+          <!--            </div>-->
+          <!--          </ng-container>-->
           <div style="display: table">
             <div style="display: table-cell; vertical-align: middle">
               <button mat-fab color="primary" name="loadingButton"
-              (click)="arrowBackward()">
+                      (click)="arrowBackward()">
                 <mat-icon>arrow_back_ios</mat-icon>
               </button>
             </div>
@@ -166,11 +167,11 @@
       </mat-tab>
       <mat-tab label="Неделя (с разделением по времени)">
         <ng-template matTabContent>
-<!--          <ng-container *ngIf="showSpinner" >-->
-<!--            <div class="spinner">-->
-<!--              <mat-spinner></mat-spinner>-->
-<!--            </div>-->
-<!--          </ng-container>-->
+          <!--          <ng-container *ngIf="showSpinner" >-->
+          <!--            <div class="spinner">-->
+          <!--              <mat-spinner></mat-spinner>-->
+          <!--            </div>-->
+          <!--          </ng-container>-->
           <div style="display: table">
             <div style="display: table-cell; vertical-align: middle">
               <button mat-fab color="primary" name="loadingButton"
@@ -309,7 +310,7 @@
             </div>
             <div style="display: table-cell; vertical-align: middle">
               <button mat-fab color="primary" name="loadingButton"
-              (click)="arrowForward()">
+                      (click)="arrowForward()">
                 <mat-icon>arrow_forward_ios</mat-icon>
               </button>
             </div>
@@ -318,8 +319,57 @@
       </mat-tab>
       <mat-tab label="Месяц">
         <ng-template matTabContent>
-          <div *ngIf="showSpinner" class="spinner">
-            <mat-spinner></mat-spinner>
+          <div style="display: table">
+            <div style="display: table-cell; vertical-align: middle">
+              <button mat-fab color="primary" name="loadingButton"
+                      (click)="arrowBackward()">
+                <mat-icon>arrow_back_ios</mat-icon>
+              </button>
+            </div>
+            <div *ngIf="showSpinner" class="spinner">
+              <mat-spinner></mat-spinner>
+            </div>
+            <div *ngIf="!showSpinner" style="display: table-cell; width: 100%; vertical-align: middle">
+              <div class="row-eq-height">
+                <table class="mainSchedule">
+                  <thead>
+                  <tr style="text-align: center">
+                    <th>Понедельник</th>
+                    <th>Вторник</th>
+                    <th>Среда</th>
+                    <th>Четверг</th>
+                    <th>Пятница</th>
+                    <th>Суббота</th>
+                    <th>Воскресенье</th>
+                  </tr>
+                  </thead>
+                  <tr *ngFor="let index of [0,1,2,3,4,5,]">
+                    <td class="fillable"
+                        style="height: 50px; vertical-align: top;" *ngFor="let day of monthGeneric">
+                      <div class="fill" (click)="onCellClick('Новое занятие',{date: day.date});">
+                        <div class="cellWrap">
+                          {{day.date}}
+                          {{index}}
+                          <app-schedule-cell *ngFor="let cell of day.cells"
+                                             [scheduleElement]="cell"
+                                             [matMenuTriggerFor]="menu"
+                                             [matMenuTriggerData]="{menuTrigger: menuTrigger, cell: cell}"
+                                             #menuTrigger="matMenuTrigger"
+                                             (click)="$event.stopPropagation()"
+                          ></app-schedule-cell>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div style="display: table-cell; vertical-align: middle">
+              <button mat-fab color="primary" name="loadingButton"
+                      (click)="arrowForward()">
+                <mat-icon>arrow_forward_ios</mat-icon>
+              </button>
+            </div>
           </div>
         </ng-template>
       </mat-tab>
