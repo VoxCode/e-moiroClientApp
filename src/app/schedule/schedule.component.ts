@@ -42,7 +42,7 @@ import {ClassTimeService} from '../services/schedule-services/class-time.service
 import {ScheduleClassTimes} from './schedule-class-times';
 import {fromEvent, interval} from 'rxjs';
 import {debounceTime, distinctUntilChanged, last, map, switchMap} from 'rxjs/operators';
-import {MY_FORMATS} from "../utils/material-date-format";
+import {MY_FORMATS} from '../utils/material-date-format';
 
 
 @Component({
@@ -60,7 +60,7 @@ import {MY_FORMATS} from "../utils/material-date-format";
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},],
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS}, ],
 
 })
 export class ScheduleComponent implements OnInit, AfterViewInit {
@@ -82,6 +82,9 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
   timedWeekSecondShift: any = [];
   monthGeneric: any = [];
   times: ClassTime[];
+
+  weeks: any = [];
+  days: any = [];
 
   currentRequest: any;
   showSpinner: boolean;
@@ -132,6 +135,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
 
     this.selectedShift = 0;
     // this.loadScheduleDates();
+
     this.loadScheduleDatesRange(this.settings.value.start, this.settings.value.end);
 
   }
@@ -142,8 +146,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
 
 
   applySearch(): void {
-    this.generateMonthArray();
-    //this.loadScheduleDatesRange(this.settings.value.start, this.settings.value.end);
+    this.loadScheduleDatesRange(this.settings.value.start, this.settings.value.end);
   }
 
   getFirstDayOfWeek(d: Date): Date {
@@ -231,7 +234,6 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
     this.monthGeneric = [];
     const dayInMl = 86400000;
     const start = new Date(this.settings.controls.start.value);
-    const end = new Date(this.settings.controls.end.value);
     const firstDayOfTheMonth = new Date(start.getFullYear(), start.getMonth(), 1);
     const lastDayOfTheMonth = new Date(start.getFullYear(), start.getMonth() + 1, 0);
     let arrayStart;
@@ -246,14 +248,20 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
     } else {
       arrayEnd = lastDayOfTheMonth;
     }
+
+
     for (let i = arrayStart.getTime(); i <= arrayEnd.getTime(); i = i + dayInMl) {
-      this.monthGeneric.push(
-        {
-          date: new Date(i),
-          cells: []
-        }
-      );
+      const day = {
+        date: new Date(i),
+        cells: this.scheduleData.filter(x => x.date.getTime() === i)
+      };
+      this.monthGeneric.push(day);
     }
+    const weekRange = this.monthGeneric.length / 7;
+    this.weeks = Array(weekRange).fill(1).map((x, i) => i * 7);
+    this.days = Array(7).fill(1).map((x, i) => i);
+    console.log(weekRange);
+    console.log(this.weeks);
     console.log(this.monthGeneric);
   }
 
@@ -492,6 +500,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
     this.generateTimedWeekArray();
     this.generateGenericWeekArray();
     this.divideTimedElementsByShift();
+    this.generateMonthArray();
     this.showSpinner = false;
   }
 

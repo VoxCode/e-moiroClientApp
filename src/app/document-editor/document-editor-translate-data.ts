@@ -2468,7 +2468,7 @@ L10n.load({
       'Read only': 'Только для чтения',
       Protections: 'Ограждения',
       'Error in establishing connection with web server': 'Ошибка при установлении соединения с веб-сервером',
-      Single: 'одинарный',
+      Single: 'не замужем',
       Double: 'двойной',
       'New comment': 'Новый комментарий',
       Comments: 'Комментарии',
@@ -2485,7 +2485,7 @@ L10n.load({
     },
     kanban: {
       items: 'Предметы',
-      min: 'Минимум',
+      min: 'Min',
       max: 'Максимум',
       cardsSelected: 'Выбранные карты',
       addTitle: 'Добавить новую карту',

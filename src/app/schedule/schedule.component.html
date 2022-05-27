@@ -343,23 +343,31 @@
                     <th>Воскресенье</th>
                   </tr>
                   </thead>
-                  <tr *ngFor="let index of [0,1,2,3,4,5,]">
-                    <td class="fillable"
-                        style="height: 50px; vertical-align: top;" *ngFor="let day of monthGeneric">
-                      <div class="fill" (click)="onCellClick('Новое занятие',{date: day.date});">
-                        <div class="cellWrap">
-                          {{day.date}}
-                          {{index}}
-                          <app-schedule-cell *ngFor="let cell of day.cells"
-                                             [scheduleElement]="cell"
-                                             [matMenuTriggerFor]="menu"
-                                             [matMenuTriggerData]="{menuTrigger: menuTrigger, cell: cell}"
-                                             #menuTrigger="matMenuTrigger"
-                                             (click)="$event.stopPropagation()"
-                          ></app-schedule-cell>
+                  <tr *ngFor="let weekIndex of weeks">
+                    <ng-container>
+                      <td class="fillable"
+                          style="height: 50px; vertical-align: top;" *ngFor="let dayIndex of days">
+                        <div class="fill" [ngClass]="{'not-current-month': monthGeneric[dayIndex + weekIndex].date.getTime() < settings.controls.start.value.getTime()}"
+                             (click)="onCellClick('Новое занятие',{date: monthGeneric[dayIndex + weekIndex].date});">
+                          <div style="color: rgba(0, 0, 0, 0.5);">
+                            <span style="font-size: 0.8em">
+                            {{monthGeneric[dayIndex + weekIndex].date.getDate()}}
+                              </span>
+                          </div>
+                          <div style="display: table-cell" >
+                            <div class="cellWrap" *ngFor="let cell of monthGeneric[dayIndex + weekIndex].cells">
+                              <app-schedule-cell
+                                [scheduleElement]="cell"
+                                [matMenuTriggerFor]="menu"
+                                [matMenuTriggerData]="{menuTrigger: menuTrigger, cell: cell}"
+                                #menuTrigger="matMenuTrigger"
+                                (click)="$event.stopPropagation()"
+                              ></app-schedule-cell>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </td>
+                      </td>
+                    </ng-container>
                   </tr>
                 </table>
               </div>

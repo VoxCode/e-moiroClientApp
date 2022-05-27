@@ -19,6 +19,7 @@ td {
   justify-content: center;
   padding: 5px;
 }
+
 .row-eq-height {
   display: -webkit-box;
   display: -webkit-flex;
@@ -100,6 +101,10 @@ h1, h2 {
 h3, h4, h5, h6{
   line-height: 1.45;
   margin: 0 0 5px;
+}
+
+not-current-month{
+  background: rgba(112,112,112,0.2);
 }
 
 
