@@ -8,6 +8,10 @@ import {
 import {DocxGeneratorDataTemplate} from '../docx-generator-data-template/docx-generator-data-template';
 import {DocxGeneratorScheduleTemplate} from './schedule-document-template/schedule-document-template';
 import {TableScheduleGenerator} from './schedule-document-template/schedule-table-generator';
+import {Group} from "../models/Group";
+import {ScheduleBlockCurriculumTopicTrainingProgram} from "../models/schedule-models/ScheduleBlockCurriculumTopicTrainingProgram";
+import {TrainingProgram} from "../models/TrainingProgram";
+import {GroupScheduleGenerator} from "../models/generator-models/GroupScheduleGenerator";
 
 export class DocumentCreatorSchedule {
   docxGeneratorDataTemplate: DocxGeneratorDataTemplate = new DocxGeneratorDataTemplate(28);
@@ -16,7 +20,10 @@ export class DocumentCreatorSchedule {
   sections: any[] = [];
 
   constructor(
-    isBLR: boolean = false,
+    private group: Group,
+    private trainingProgram: TrainingProgram,
+    private scheduleBlocks: GroupScheduleGenerator[],
+    private isBLR: boolean = false,
   ) { }
 
   public create(): Document {
@@ -51,7 +58,7 @@ export class DocumentCreatorSchedule {
           Date.now(),
           Date.now()),
         this.docxGeneratorScheduleTemplate.trainingProgramInfoATP(5, 'kek', true),
-        this.tableScheduleGenerator.insertTable(),
+        this.tableScheduleGenerator.insertTable(scheduleBlocks),
         this.docxGeneratorScheduleTemplate.signatureSchedule(),
         this.docxGeneratorDataTemplate.emptyParagraph(),
       ]

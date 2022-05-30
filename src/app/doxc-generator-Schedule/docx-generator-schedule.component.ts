@@ -30,6 +30,8 @@ import {ScheduleBlockClassTime} from '../models/schedule-models/ScheduleBlockCla
 import {ScheduleBlockClassRoom} from '../models/schedule-models/ScheduleBlockClassRoom';
 import {ScheduleBlockCurriculumTopicTrainingProgram} from '../models/schedule-models/ScheduleBlockCurriculumTopicTrainingProgram';
 import {ScheduleBlockTeacher} from '../models/schedule-models/ScheduleBlockTeacher';
+import {DatePipe} from "@angular/common";
+import {Teacher} from "../models/Teacher";
 
 @Component({
   selector: 'app-docx-generator',
@@ -43,13 +45,15 @@ import {ScheduleBlockTeacher} from '../models/schedule-models/ScheduleBlockTeach
     ScheduleBlockTeacherService,
     ScheduleBlockCurriculumTopicTrainingProgramService,
     ScheduleBlockClassRoomService,
-    ScheduleBlockClassTimeService
+    ScheduleBlockClassTimeService,
+    DatePipe
   ]
 })
 
 export class DocxGeneratorScheduleComponent implements OnInit {
 
   constructor(
+    private datePipe: DatePipe,
     private route: ActivatedRoute,
     private groupService: GroupService,
     private trainingProgramService: TrainingProgramService,
@@ -71,7 +75,7 @@ export class DocxGeneratorScheduleComponent implements OnInit {
   group: Group;
   trainingProgram: TrainingProgram;
   scheduleDates: ScheduleDate[] = [];
-  scheduleBlocks: {date: Date, room: string, time: string, topic: string, teacher: string}[];
+  scheduleBlocks: GroupScheduleGenerator[] = [];
 
   ngOnInit(): void {
     const date = new Date();
@@ -82,7 +86,7 @@ export class DocxGeneratorScheduleComponent implements OnInit {
 
   loadGroup(id: number): void {
     this.groupService.getValue(id)
-      .subscribe((data: GroupScheduleGenerator) => {
+      .subscribe((data: Group) => {
         if (data) {
           this.group = data;
           this.loadTrainingProgram(data.trainingProgramId);
@@ -93,7 +97,7 @@ export class DocxGeneratorScheduleComponent implements OnInit {
 
   loadTrainingProgram(id: number): void {
     this.trainingProgramService.getValueForDocxGenerator(id)
-      .subscribe((data: TrainingProgramGenerator) => {
+      .subscribe((data: TrainingProgram) => {
         if (data) {
           this.trainingProgram = data;
         }
@@ -106,47 +110,38 @@ export class DocxGeneratorScheduleComponent implements OnInit {
         if (data.length > 0) {
           this.scheduleDates = data;
           data.forEach((x) => {
-            this.loadScheduleBlocks(x.id);
+            this.loadScheduleBlocks(x.id, x.date);
           });
         }
       });
   }
 
-  loadScheduleBlocks(dateId: number): void {
+  loadScheduleBlocks(dateId: number, date: Date): void {
     this.scheduleDateScheduleBlockService.getValuesFromScheduleDate(dateId)
       .subscribe((data: ScheduleDateScheduleBlock[]) => {
         if (data.length > 0) {
           data.forEach((x) => {
-            const block = {
-              room: new ScheduleBlockClassRoom(),
-              time: new ScheduleBlockClassTime(),
-              topic: new ScheduleBlockCurriculumTopicTrainingProgram(),
-              teacher: new ScheduleBlockTeacher()
-            };
             this.scheduleBlockClassRoomService.getValuesFromScheduleBlock(x.scheduleBlockId)
               .subscribe((room: ScheduleBlockClassRoom) => {
                 if (room) {
-                  block.room = room;
                   this.scheduleBlockClassTimeService.getValuesFromScheduleBlock(x.scheduleBlockId)
                     .subscribe((time: ScheduleBlockClassTime) => {
                       if (time) {
-                        block.time = time;
                         this.scheduleBlockCurriculumTopicTrainingProgramService.getValuesFromScheduleBlock(x.scheduleBlockId)
                           .subscribe((topic: ScheduleBlockCurriculumTopicTrainingProgram) => {
                             if (topic) {
-                              block.topic = topic;
                               this.scheduleBlockTeacherService.getValuesFromScheduleBlock(x.scheduleBlockId)
                                 .subscribe((teacher: ScheduleBlockTeacher) => {
                                   if (teacher) {
                                     this.scheduleBlocks.push({
-                                      date: new Date(),
-                                      room: room.name.toString(),
-                                      time: '',
-                                      topic: topic.topicTitle,
-                                      teacher: ''
+                                      date: new Date(date),
+                                      room: room[0].name.toString(),
+                                      time: `${this.transformToHours(time[0].classTimeStart)} - ${this.transformToHours(time[0].classTimeEnd)}\n` +
+                                        `${this.transformToHours(time[0].secondTimeStart)} - ${this.transformToHours(time[0].secondTimeEnd)}`,
+                                      topic: topic[0].topicTitle,
+                                      teacher: Teacher.getFullName(teacher[0])
                                     });
-                                    block.teacher = teacher;
-                                    console.log(block);
+                                    console.log(this.scheduleBlocks);
                                   }
                                 });
                             }
@@ -160,10 +155,16 @@ export class DocxGeneratorScheduleComponent implements OnInit {
       });
   }
 
-// time, room,  for group tipics - teachers -
+  transformToHours(date: Date): string {
+    return this.datePipe.transform(date, 'HH:mm');
+  }
 
+// time, room,  for group tipics - teachers -
   public getDocument(): void {
     const documentCreator = new DocumentCreatorSchedule(
+      this.group,
+      this.trainingProgram,
+      this.scheduleBlocks,
       this.isBLR,
     );
     const docxTmp = documentCreator.create();

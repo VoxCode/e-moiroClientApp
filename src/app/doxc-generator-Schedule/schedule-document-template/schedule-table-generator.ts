@@ -18,62 +18,70 @@ export class TableScheduleGenerator {
   private child: any = [];
   private header: TableScheduleHeader;
   private size: number;
+
   // private c: number;
 
   constructor(
-    // private GroupSchedule: GroupScheduleGenerator,
+    private scheduleBlocks: GroupScheduleGenerator[],
   ) {
     this.header = new TableScheduleHeader();
     this.child.push(this.header.insert());
     this.size = 24;
     // this.c = 0;
 
+    let finalTree;
+    scheduleBlocks.sort((a, b) => a.date > b.date ? 1 : -1)
+      .forEach((block) => {
+        new ScheduleRowTree([block.date.toLocaleDateString(), block.date.getDay().toString(), block.time],
+          );
+      });
+
     const tree = new ScheduleRowTree([
-      'Date',
-      'Day',
-      'Time',
+        'Date',
+        'Day',
+        'Time',
       ],
       [
+        new ScheduleRowTree([
+            'theme1'
+          ],
+          [
             new ScheduleRowTree([
-                  'theme1'
+                'teacher1',
+                'f1',
+                'f1',
               ],
-              [
-                    new ScheduleRowTree([
-                            'teacher1',
-                            'f1',
-                            'f1',
-                      ],
-                      []
-                    ),
-                new ScheduleRowTree([
-                    'teacher2',
-                    'f2',
-                    'f2',
-                  ],
-                  []
-                ),
-              ]
+              []
             ),
             new ScheduleRowTree([
-                    'theme2'
+                'teacher2',
+                'f2',
+                'f2',
               ],
-              [
-                    new ScheduleRowTree([
-                            'teacher3',
-                            'f3',
-                            'f3',
-                      ],
-                      []
-                    ),
-                    new ScheduleRowTree([
-                            'teacher4',
-                            'f4',
-                            'f4',
-                      ],
-                      []
-                    ),
-              ]
+              []
             ),
+          ]
+        ),
+        new ScheduleRowTree([
+            'theme2'
+          ],
+          [
+            new ScheduleRowTree([
+                'teacher3',
+                'f3',
+                'f3',
+              ],
+              []
+            ),
+            new ScheduleRowTree([
+                'teacher4',
+                'f4',
+                'f4',
+              ],
+              []
+            ),
+          ]
+        ),
         new ScheduleRowTree([
             'theme2'
           ],
@@ -90,15 +98,15 @@ export class TableScheduleGenerator {
               ],
               [
                 new ScheduleRowTree([
-                  'f4',
-                ],
-                [
-                  new ScheduleRowTree([
-                    'f45',
+                    'f4',
                   ],
-                  []
-                  ),
-                ]
+                  [
+                    new ScheduleRowTree([
+                        'f45',
+                      ],
+                      []
+                    ),
+                  ]
                 ),
               ]
             ),
@@ -119,7 +127,7 @@ export class TableScheduleGenerator {
   }
 
 
-  public generateRowTree(GroupSchedule: GroupScheduleGenerator): ScheduleRowTree{
+  public generateRowTree(GroupSchedule: GroupScheduleGenerator): ScheduleRowTree {
 
     // let rowTree: ScheduleRowTree;
     // GroupSchedule.scheduleDateScheduleBlock.forEach(block =>{
@@ -128,7 +136,7 @@ export class TableScheduleGenerator {
     return undefined;
   }
 
-  public generateRows(rowTree: ScheduleRowTree, isSub: boolean = false, cells: TableCell[]): boolean{
+  public generateRows(rowTree: ScheduleRowTree, isSub: boolean = false, cells: TableCell[]): boolean {
     console.log('-----------------');
     console.log(isSub);
     if (rowTree.getFields.length > 0) {
@@ -140,23 +148,21 @@ export class TableScheduleGenerator {
     }
 
     if (rowTree.getSubs.length > 0) {
-        rowTree.getSubs.forEach(sub => {
-          // console.log('/////////' + isSub + '/////////');
-          if (isSub) {
-            console.log('P1');
-            // console.log(rowTree.calcRowSpan());
-            this.generateRows(sub, !isSub, undefined);
-          }
-          else {
-            console.log('P2');
-            // console.log(rowTree.calcRowSpan());
-            this.generateRows(sub, isSub, cells);
-            isSub = true;
-          }
-        });
-        isSub = false;
-    }
-    else {
+      rowTree.getSubs.forEach(sub => {
+        // console.log('/////////' + isSub + '/////////');
+        if (isSub) {
+          console.log('P1');
+          // console.log(rowTree.calcRowSpan());
+          this.generateRows(sub, !isSub, undefined);
+        } else {
+          console.log('P2');
+          // console.log(rowTree.calcRowSpan());
+          this.generateRows(sub, isSub, cells);
+          isSub = true;
+        }
+      });
+      isSub = false;
+    } else {
       console.log('push');
       this.child.push(
         new TableRow({
@@ -170,7 +176,7 @@ export class TableScheduleGenerator {
   }
 
   // tslint:disable-next-line:typedef
-  public pushFields(tree: ScheduleRowTree, cells: TableCell[], rowSpan: number){
+  public pushFields(tree: ScheduleRowTree, cells: TableCell[], rowSpan: number) {
     tree.getFields.forEach((field, index) => {
       console.log('index: ' + index);
       cells.push(
