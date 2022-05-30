@@ -98,7 +98,7 @@
             </ng-select>
           </div>
           <div class="set-el">
-            <button mat-mini-fab color="primary" name="loadingButton">
+            <button mat-mini-fab color="primary" name="loadingButton" (click)="search()">
               <!--              (click)="applySearch()"-->
               <mat-icon>search</mat-icon>
             </button>
@@ -107,7 +107,7 @@
       </mat-expansion-panel>
     </div>
 
-    <mat-tab-group mat-align-tabs="center" (selectedTabChange)="setupButtons()">
+    <mat-tab-group mat-align-tabs="center">
       <mat-tab label="Неделя">
         <ng-template matTabContent>
           <!--          <ng-container *ngIf="showSpinner" >-->
@@ -347,7 +347,10 @@
                     <ng-container>
                       <td class="fillable"
                           style="height: 50px; vertical-align: top;" *ngFor="let dayIndex of days">
-                        <div class="fill" [ngClass]="{'not-current-month': monthGeneric[dayIndex + weekIndex].date.getTime() < settings.controls.start.value.getTime()}"
+                        <div class="fill" [ngClass]="{
+                        'not-current-month': monthGeneric[dayIndex + weekIndex].date < getFirstDayOfMonth(settings.controls.start.value) ||
+                        monthGeneric[dayIndex + weekIndex].date > getLastDayOfMonth(settings.controls.start.value) ||
+                        getDayOfWeek(monthGeneric[dayIndex + weekIndex].date) === 0}"
                              (click)="onCellClick('Новое занятие',{date: monthGeneric[dayIndex + weekIndex].date});">
                           <div style="color: rgba(0, 0, 0, 0.5);">
                             <span style="font-size: 0.8em">

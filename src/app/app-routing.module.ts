@@ -46,6 +46,7 @@ import {TrainingProgramGuidedTestWorkStepComponent} from './training-program-con
 import {ScheduleComponent} from './schedule/schedule.component';
 import {JournalDocGeneratorComponent} from './journal-doc-generator/journal-doc-generator.component';
 import {JournalComponent} from './journal/journal.component';
+import {RoomComponent} from "./room/room.component";
 
 const adminRoutes: Routes = [
   { path: 'trainingProgramExpertStep/:id', component: TrainingProgramExpertStepComponent },
@@ -58,7 +59,7 @@ const adminRoutes: Routes = [
   { path: 'trainingProgramGuidedTestWorkStep/:id', component: TrainingProgramGuidedTestWorkStepComponent },
   { path: 'docxGeneratorTP/:id', component:  DocxGeneratorTPComponent },
   { path: 'docxGeneratorATP/:id', component:  DocxGeneratorATPComponent },
-  { path: 'docxGeneratorSchedule', component: DocxGeneratorScheduleComponent },
+  { path: 'docxGeneratorSchedule/:id', component: DocxGeneratorScheduleComponent },
   { path: 'curriculumTopicAddForm/:id', component: CurriculumTopicAddFormComponent },
   { path: 'additionalLiterature', component: AdditionalLiteratureComponent },
   { path: 'regulation', component: RegulationComponent },
@@ -68,6 +69,7 @@ const adminRoutes: Routes = [
   { path: 'department', component: DepartmentComponent },
   { path: 'formOfEducation', component: FormOfEducationComponent },
   { path: 'group', component: GroupComponent },
+  { path: 'room', component: RoomComponent },
   { path: 'mainLiterature', component: MainLiteratureComponent },
   { path: 'occupationForm', component: OccupationFormComponent },
   { path: 'teacher', component: TeacherComponent },

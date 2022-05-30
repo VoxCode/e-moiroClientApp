@@ -1,0 +1,23 @@
+<div class="modal-content" >
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">×</span>
+    </button>
+    <h4 class="modal-title w-100" id="myModalLabel">Помещения</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form">
+      <div style="display: inline; width: 20px" class="md-textarea">
+        <label for="name">Название</label>
+        <input id="name" type="text" class="form-control"
+               formControlName="name" mdbInput mdbValidate [validateSuccess]="false">
+        <mdb-error *ngIf="name.invalid && (name.dirty || name.touched)"></mdb-error>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
+            [disabled]="form.invalid" (click)="saveRoom()">Сохранить
+    </button>
+  </div>
+</div>

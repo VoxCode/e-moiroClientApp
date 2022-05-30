@@ -1,23 +1,51 @@
-<div class="modal-content" >
-  <div class="modal-header">
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">×</span>
-    </button>
-    <h4 class="modal-title w-100" id="myModalLabel">Помещения</h4>
+<h1>Аудитории</h1>
+<div class="row">
+  <div class="col-sm-2">
+    <app-curriculum-topic-list></app-curriculum-topic-list>
   </div>
-  <div class="modal-body">
-    <form [formGroup]="form">
-      <div style="display: inline; width: 20px" class="md-textarea">
-        <label for="roomName">Название</label>
-        <input id="roomName" type="text" class="form-control"
-                  formControlName="roomName" mdbInput mdbValidate [validateSuccess]="false">
-        <mdb-error *ngIf="roomName.invalid && (roomName.dirty || roomName.touched)"></mdb-error>
+  <div class="col-sm">
+    <div class="col-md-4 mx-auto">
+      <div class="md-form">
+        <input type="text" class="form-control" [(ngModel)]="searchText" (keyup)="searchItems()" id="search-input"
+               mdbInput>
+        <label for="search-input">Поиск</label>
       </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect
-            [disabled]="form.invalid" (click)="saveRoom()">Сохранить
-    </button>
+    </div>
+    <div class="addButton">
+      <button type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="addRow()"
+              mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
+    </div>
+    <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" class="z-depth-1">
+      <thead class="sticky-top">
+      <tr>
+        <th *ngFor="let head of headerElements; let i = index" [mdbTableSort]="elements"
+            [sortBy]="headerElements[i]"
+            scope="col">{{head | titlecase}}
+        </th>
+      </tr>
+      </thead>
+      <tbody #row>
+      <tr mdbTableCol *ngFor="let el of elements; let i = index">
+        <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{el.rowNumber}}</th>
+        <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.name}}</td>
+        <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+          <div>
+            <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
+                    mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
+          </div>
+          <div>
+            <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)"
+                    mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
+          </div>
+      </tr>
+      </tbody>
+      <tfoot class="grey lighten-5 w-100">
+      <tr>
+        <td colspan="100%">
+          <mdb-table-pagination [tableEl]="tableEl" paginationAlign="" [searchDataSource]="elements"></mdb-table-pagination>
+        </td>
+      </tr>
+      </tfoot>
+    </table>
   </div>
 </div>

@@ -85,6 +85,7 @@ import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import {ViewerHelloPageComponent} from './viewer-area/viewer-hello-page.component/viewer-hello-page.component';
 import {GuidedTestWorkAssignmentEditComponent} from './guided-test-work-assignment/guided-test-work-assignment-edit.component';
+import { RoomEditComponent } from './room/room-edit/room-edit.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -153,7 +154,8 @@ registerLocaleData(localeRu, 'ru');
     ScheduleCellComponent,
     IsDeleteComponent,
     ViewerHelloPageComponent,
-    GuidedTestWorkAssignmentEditComponent
+    GuidedTestWorkAssignmentEditComponent,
+    RoomEditComponent
   ],
   imports: [
     BrowserModule,

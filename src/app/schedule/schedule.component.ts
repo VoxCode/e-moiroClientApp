@@ -96,6 +96,8 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
   scheduleData: ScheduleElement[] = [];
   public modalRef: MDBModalRef;
 
+  $search: Subject<void> = new Subject<void>();
+
   public saveButtonClicked: Subject<any> = new Subject<any>();
   formatTeacherName: any = Teacher.getFullName;
   private selectedShift: number;
@@ -138,10 +140,11 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
 
     this.loadScheduleDatesRange(this.settings.value.start, this.settings.value.end);
 
+    this.setupButtons();
   }
 
   ngAfterViewInit(): void {
-    this.setupButtons();
+
   }
 
 
@@ -154,6 +157,18 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
     const day = date.getDay();
     const diff = date.getDate() - day + (day === 0 ? -6 : 1);
     return new Date(date.setDate(diff));
+  }
+  getFirstDayOfMonth(d: Date): Date{
+    const date = new Date(d);
+    return new Date(date.getFullYear(), date.getMonth(), 1);
+  }
+  getLastDayOfMonth(d: Date): Date{
+    const date = new Date(d);
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  }
+
+  getDayOfWeek(d: Date): number{
+    return new Date(d).getDay();
   }
 
   generateTimedMonday(): void {
@@ -234,8 +249,8 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
     this.monthGeneric = [];
     const dayInMl = 86400000;
     const start = new Date(this.settings.controls.start.value);
-    const firstDayOfTheMonth = new Date(start.getFullYear(), start.getMonth(), 1);
-    const lastDayOfTheMonth = new Date(start.getFullYear(), start.getMonth() + 1, 0);
+    const firstDayOfTheMonth = this.getFirstDayOfMonth(start);
+    const lastDayOfTheMonth = this.getLastDayOfMonth(start);
     let arrayStart;
     let arrayEnd;
     if (firstDayOfTheMonth.getDay() !== 1) {
@@ -411,12 +426,15 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
   }
 
   onCellClick(title: string, el: ScheduleElement = new ScheduleElement()): void {
+    if (el.date?.getDay() === 0) {
+      return;
+    }
     const dialogRef = this.matDialog.open(ScheduleBlockComponent, {
       minWidth: '800px',
       maxWidth: '800px',
       data: {
         title,
-        date: new Date(),
+        date: el.date,
         groups: this.groups,
         rooms: this.roomData,
         topics: this.curriculumTopicTrainingPrograms,
@@ -524,21 +542,30 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
   }
 
   setupButtons(): void {
-    const buttons = document.getElementsByName('loadingButton');
-    buttons.forEach(x => {
-      const el$ = fromEvent(x, 'click');
-      el$.pipe(
-        debounceTime(500)
-      )
-        .subscribe(() => {
-          console.log('dobounced button');
-          this.applySearch();
-        });
+    // .distinctUntilChanged()
+    // .switchMap(() => this.http.post(...post params))
+    this.$search.pipe(debounceTime(500)).subscribe(() => {
+      console.log('dobounced button');
+      this.applySearch();
     });
+    // const buttons = document.getElementsByName('loadingButton');
+    // buttons.forEach(x => {
+    //   const el$ = fromEvent(x, 'click');
+    //   el$.pipe(
+    //     debounceTime(500)
+    //   )
+    //     .subscribe(() => {
+    //       console.log('dobounced button');
+    //       this.applySearch();
+    //     });
+    // });
+  }
+
+  search(): void {
+    this.$search.next();
   }
 
   arrowForward(): void {
-    this.setupButtons();
     console.log('forward');
     const prevStart = new Date(this.settings.value.start);
     console.log(prevStart);
@@ -547,10 +574,10 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
     const nextEnd = new Date(nextStart.getTime() + (6 * 24 * 60 * 60 * 1000));
     this.settings.controls.start.setValue(nextStart);
     this.settings.controls.end.setValue(nextEnd);
+    this.search();
   }
 
   arrowBackward(): void {
-    this.setupButtons();
     console.log('backward');
     const prevStart = new Date(this.settings.value.start);
 
@@ -558,6 +585,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
     const nextEnd = new Date(nextStart.getTime() + (6 * 24 * 60 * 60 * 1000));
     this.settings.controls.start.setValue(nextStart);
     this.settings.controls.end.setValue(nextEnd);
+    this.search();
   }
 
 }
