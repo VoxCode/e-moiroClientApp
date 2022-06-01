@@ -15,7 +15,7 @@
           </div>
         </div>
         <div class="addButton">
-          <button type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="addRow()"
+          <button matTooltip="Добавить" type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="addRow()"
                   mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
         </div>
           <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" class="z-depth-1">
@@ -40,18 +40,18 @@
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.fourteenth}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.sixteenth | date:'medium'}}</td>
               <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-                <button type="button" mdbBtn color="yellow" size="sm" class="relative waves-light"
+                <button matTooltip="Сгенерировать УП" type="button" mdbBtn color="yellow" size="sm" class="relative waves-light"
                         [routerLink]="['/' + globals.role +'/docxGeneratorTP', el.first]"
                         mdbWavesEffect><mdb-icon fas icon="file-word" size="sm"></mdb-icon><a class="btn-text"> УП</a></button>
-                <button type="button" mdbBtn color="gray" size="sm" class="relative waves-light"
+                <button matTooltip="Сгенерировать УТП" type="button" mdbBtn color="gray" size="sm" class="relative waves-light"
                         [routerLink]="['/' + globals.role +'/docxGeneratorATP', el.first]"
                         mdbWavesEffect><mdb-icon fas icon="file-word" size="sm"></mdb-icon><a class="btn-text"> УТП</a></button>
-                <button type="button" mdbBtn color="green" size="sm" class="relative waves-light"
+                <button matTooltip="Конструктор учебных программ" type="button" mdbBtn color="green" size="sm" class="relative waves-light"
                         [routerLink]="['/' + globals.role +'/trainingProgramExpertStep', el.first]"
                         mdbWavesEffect><mdb-icon fas icon="chalkboard-teacher" size="lg"></mdb-icon></button>
-                <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
+                <button matTooltip="Редактировать" type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
                         mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
-                <button *ngIf="globals.role === 'admin'" type="button"
+                <button matTooltip="Удалить" *ngIf="globals.role === 'admin'" type="button"
                         mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)"
                         mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
               </td>

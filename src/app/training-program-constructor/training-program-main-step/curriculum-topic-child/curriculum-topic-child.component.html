@@ -36,15 +36,15 @@
     </div>
     <hr>
 
-    <button *ngIf="i == done.length - 1" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+    <button *ngIf="i == done.length - 1" matTooltip="Добавить тему" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
             (click)="curriculumTopicAddForm()" mdbWavesEffect>
       <mdb-icon fas icon="plus" size="lg"></mdb-icon>
     </button>
-    <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+    <button matTooltip="Редактировать тему" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
             (click)="curriculumTopicEditForm(item)" mdbWavesEffect>
       <mdb-icon fas icon="edit" size="lg"></mdb-icon>
     </button>
-    <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
+    <button matTooltip="Удалить тему" type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
             (click)="deleteCurriculumTopicTrainingProgram(item, i)" mdbWavesEffect>
       <mdb-icon fas icon="trash-alt" size="lg"></mdb-icon>
     </button>

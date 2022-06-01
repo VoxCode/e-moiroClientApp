@@ -1,5 +1,5 @@
 <div *ngIf="occupationFormClassHours.length === 0">
-  <button  type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
+  <button matTooltip="Добавить форму и время занятия" type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
           (click)="occupationFormClassTimeCrateForm()" mdbWavesEffect>
     <mdb-icon fas icon="plus" size="lg"></mdb-icon>
   </button>
@@ -11,15 +11,15 @@
       <h6><strong>{{i+1}}. {{item.fullName}} {{item.classHours}} {{ item.classHours | i18nPlural:plurals.result }}</strong></h6>
     </div>
     <div class="col-sm-6">
-      <button *ngIf="i === occupationFormClassHours.length - 1" type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
+      <button *ngIf="i === occupationFormClassHours.length - 1" matTooltip="Добавить форму и время занятия" type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
               (click)="occupationFormClassTimeCrateForm()" mdbWavesEffect>
         <mdb-icon fas icon="clock" size="lg"></mdb-icon>
       </button>
 
-      <button type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
+      <button matTooltip="Редактировать" type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
               (click)="editSelectedOccupationFormClassHour(item)" mdbWavesEffect>
         <mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
-      <button type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
+      <button matTooltip="Удалить" type="button" mdbBtn color="ghostwhite" size="sm" class="relative waves-light"
               (click)="deleteOccupationFormClassHours(item, i)" mdbWavesEffect>
         <mdb-icon fas icon="trash" size="lg"></mdb-icon>
       </button>

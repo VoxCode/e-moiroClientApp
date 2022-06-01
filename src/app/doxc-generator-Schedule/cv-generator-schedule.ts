@@ -16,7 +16,7 @@ import {GroupScheduleGenerator} from "../models/generator-models/GroupScheduleGe
 export class DocumentCreatorSchedule {
   docxGeneratorDataTemplate: DocxGeneratorDataTemplate = new DocxGeneratorDataTemplate(28);
   docxGeneratorScheduleTemplate: DocxGeneratorScheduleTemplate = new DocxGeneratorScheduleTemplate(24);
-  tableScheduleGenerator: TableScheduleGenerator = new TableScheduleGenerator();
+  tableScheduleGenerator: TableScheduleGenerator = new TableScheduleGenerator(this.scheduleBlocks);
   sections: any[] = [];
 
   constructor(
@@ -58,7 +58,7 @@ export class DocumentCreatorSchedule {
           Date.now(),
           Date.now()),
         this.docxGeneratorScheduleTemplate.trainingProgramInfoATP(5, 'kek', true),
-        this.tableScheduleGenerator.insertTable(scheduleBlocks),
+        this.tableScheduleGenerator.insertTable(),
         this.docxGeneratorScheduleTemplate.signatureSchedule(),
         this.docxGeneratorDataTemplate.emptyParagraph(),
       ]

@@ -100,7 +100,7 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
   }
 
   crate(el: any): void {
-    const curriculumTopic = new CurriculumTopic(0, el.second, el.last, this.globals.name);
+    const curriculumTopic = new CurriculumTopic(0, el.second, el.last, this.globals.userId);
     this.valueService.createValue(curriculumTopic)
       .subscribe((curriculumTopicResponse: CurriculumTopic) => {
         const index = this.elements.length + 1;

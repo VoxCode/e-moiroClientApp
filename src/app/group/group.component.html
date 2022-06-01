@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="addButton">
-      <button type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="addRow()"
+      <button matTooltip="Добавить" type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="addRow()"
               mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
     </div>
     <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" class="z-depth-1">
@@ -33,23 +33,23 @@
         <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.classEndDate | date : 'dd.MM.yyyy'}}</td>
         <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
           <div>
-            <button type="button" mdbBtn color="yellow" size="sm" class="relative waves-light"
+            <button matTooltip="Журнал" type="button" mdbBtn color="yellow" size="sm" class="relative waves-light"
                     style="padding: 0.5rem 0.5rem;"
                     [routerLink]="['/' + globals.role +'/journalDocxGenerator/', el.id]"
                     mdbWavesEffect><mdb-icon fas icon="file-word" size="sm"></mdb-icon><a class="btn-text"><br>Журнал</a></button>
           </div>
           <div>
-            <button type="button" mdbBtn color="green" size="sm" class="relative waves-light"
+            <button matTooltip="Сгенерировать расписание" type="button" mdbBtn color="green" size="sm" class="relative waves-light"
                     style="padding: 0.5rem 0.5rem;"
                     [routerLink]="['/' + globals.role +'/docxGeneratorSchedule', el.id]"
                     mdbWavesEffect><mdb-icon fas icon="file-word" size="sm"></mdb-icon><a class="btn-text"><br>Расписа-ние</a></button>
           </div>
           <div>
-            <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
+            <button matTooltip="Редактировать" type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
                     mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
           </div>
           <div>
-            <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)"
+            <button matTooltip="Удалить" type="button" mdbBtn color="danger" size="sm" class="relative waves-light" (click)="delete(el)"
                     mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon></button>
           </div>
       </tr>

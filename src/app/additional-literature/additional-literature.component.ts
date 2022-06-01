@@ -98,7 +98,7 @@ export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
   }
 
   crate(el: any): void {
-    const additionalLiterature = new AdditionalLiterature(0, el.last, this.globals.name);
+    const additionalLiterature = new AdditionalLiterature(0, el.last, this.globals.userId);
     this.valueService.createValue(additionalLiterature)
       .subscribe((additionalLiteratureResponse: AdditionalLiterature) => {
         const index = this.elements.length + 1;

@@ -17,7 +17,7 @@
       <div class="col-sm-6">
         <div class="example-container">
           <h2>Перечень</h2>
-          <button *ngIf="done.length === 0" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+          <button matTooltip="Добавить" *ngIf="done.length === 0" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
                   (click)="trainingProgramRegulationCrateForm()" mdbWavesEffect>
             <mdb-icon fas icon="plus" size="sm"></mdb-icon>
           </button>
@@ -30,15 +30,15 @@
             <div class="example-box" *ngFor="let item of done; index as i" cdkDrag>{{i+1}}. {{item.content}}
               <br><br>
               <div class="buttons">
-                <button *ngIf="i == done.length - 1" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+                <button matTooltip="Добавить" *ngIf="i == done.length - 1" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
                         (click)="trainingProgramRegulationCrateForm()" mdbWavesEffect>
                   <mdb-icon fas icon="plus" size="lg"></mdb-icon>
                 </button>
-                <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+                <button matTooltip="Редактировать" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
                         (click)="trainingProgramRegulationEditForm(item)" mdbWavesEffect>
                   <mdb-icon fas icon="edit" size="lg"></mdb-icon>
                 </button>
-                <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
+                <button matTooltip="Удалить" type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
                         (click)="deleteTrainingProgramRegulation(item, i)" mdbWavesEffect>
                   <mdb-icon fas icon="trash-alt" size="lg"></mdb-icon>
                 </button>

@@ -10,7 +10,7 @@
     <h4><strong>Раздел {{(i+1)}}</strong></h4>
     <h5><strong>«{{item.name.toUpperCase()}}»‎</strong></h5>
 
-    <button  type="button" mdbBtn color="gray" size="sm" class="relative waves-light"
+    <button matTooltip="Редактировать название раздела" type="button" mdbBtn color="gray" size="sm" class="relative waves-light"
             (click)="curriculumSectionEditForm(item)" mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon>
     </button><br><br>
     <app-max-variable-topic-hours *ngIf="occupationForms"

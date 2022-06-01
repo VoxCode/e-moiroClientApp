@@ -30,8 +30,8 @@ import {ScheduleBlockClassTime} from '../models/schedule-models/ScheduleBlockCla
 import {ScheduleBlockClassRoom} from '../models/schedule-models/ScheduleBlockClassRoom';
 import {ScheduleBlockCurriculumTopicTrainingProgram} from '../models/schedule-models/ScheduleBlockCurriculumTopicTrainingProgram';
 import {ScheduleBlockTeacher} from '../models/schedule-models/ScheduleBlockTeacher';
-import {DatePipe} from "@angular/common";
-import {Teacher} from "../models/Teacher";
+import {DatePipe} from '@angular/common';
+import {Teacher} from '../models/Teacher';
 
 @Component({
   selector: 'app-docx-generator',
@@ -161,17 +161,19 @@ export class DocxGeneratorScheduleComponent implements OnInit {
 
 // time, room,  for group tipics - teachers -
   public getDocument(): void {
-    const documentCreator = new DocumentCreatorSchedule(
-      this.group,
-      this.trainingProgram,
-      this.scheduleBlocks,
-      this.isBLR,
-    );
-    const docxTmp = documentCreator.create();
-    Packer.toBlob(docxTmp).then(blob => {
-      this.docx.push(blob);
-      this.myDocx = blob;
-    });
+    setTimeout(() => {
+      const documentCreator = new DocumentCreatorSchedule(
+        this.group,
+        this.trainingProgram,
+        this.scheduleBlocks,
+        this.isBLR,
+      );
+      const docxTmp = documentCreator.create();
+      Packer.toBlob(docxTmp).then(blob => {
+        this.docx.push(blob);
+        this.myDocx = blob;
+      });
+    }, 2000);
   }
 
   generateDocRU(): void {

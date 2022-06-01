@@ -98,7 +98,7 @@ export class RegulationComponent implements OnInit, AfterViewInit {
   }
 
   crate(el: any): void {
-    const regulation = new Regulation(0, el.last, this.globals.name);
+    const regulation = new Regulation(0, el.last, this.globals.userId);
     this.valueService.createValue(regulation)
       .subscribe((regulationResponse: Regulation) => {
         const index = this.elements.length + 1;

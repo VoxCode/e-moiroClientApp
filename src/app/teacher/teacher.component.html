@@ -15,7 +15,7 @@
           </div>
         </div>
         <div class="addButton">
-          <button type="button" mdbBtn color="primary" class="relative waves-light" size="sm"
+          <button matTooltip="Добавить" type="button" mdbBtn color="primary" class="relative waves-light" size="sm"
                   (click)="addRow()" mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
         </div>
         <table mdbTable #tableEl="mdbTable" stickyHeader="true" hover="true" class="z-depth-1">
@@ -38,12 +38,12 @@
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
               <mdb-checkbox [disabled]="true" [(ngModel)]="el.seventh" [default]="true"></mdb-checkbox></td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-              <button *ngIf="el.seventh && globals.role === 'admin'" type="button" mdbBtn color="success" size="sm" class="relative waves-light"
+              <button matTooltip="Привязать к кафедре" *ngIf="el.seventh && globals.role === 'admin'" type="button" mdbBtn color="success" size="sm" class="relative waves-light"
                       (click)="addTeacherDepartment(el.first)"
                       mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
-              <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
+              <button matTooltip="Редактировать" type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
                       mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
-              <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
+              <button matTooltip="Удалить" type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
                       (click)="delete(el)" *ngIf="globals.role === 'admin'" mdbWavesEffect>
                 <mdb-icon fas icon="trash-alt" size="lg"></mdb-icon>
               </button>

@@ -5,7 +5,7 @@ import {
   Table,
   TableCell,
   TableRow,
-  TextDirection,
+  TextDirection, TextRun,
   VerticalAlign, VerticalMergeType,
   WidthType
 } from 'docx';
@@ -26,14 +26,18 @@ export class TableScheduleGenerator {
   ) {
     this.header = new TableScheduleHeader();
     this.child.push(this.header.insert());
-    this.size = 24;
+    this.size = 20;
     // this.c = 0;
 
-    let finalTree;
+    let finalTree: ScheduleRowTree[] = [];
+    console.log(scheduleBlocks.sort((a, b) => a.date > b.date ? 1 : -1));
     scheduleBlocks.sort((a, b) => a.date > b.date ? 1 : -1)
       .forEach((block) => {
-        new ScheduleRowTree([block.date.toLocaleDateString(), block.date.getDay().toString(), block.time],
-          );
+        finalTree.push(
+          new ScheduleRowTree([block.date.toLocaleDateString(), block.date.getDay().toString(), block.time],
+            [new ScheduleRowTree([block.topic],
+              [new ScheduleRowTree([block.teacher, '2', block.room], [])])])
+        );
       });
 
     const tree = new ScheduleRowTree([
@@ -120,8 +124,11 @@ export class TableScheduleGenerator {
     // console.log('=======================================');
     // console.log(tree);
     tree.generateSubsStyle();
-    this.generateRows(tree, false, undefined);
-    this.generateRows(tree, false, undefined);
+    finalTree.forEach((x) => {
+      this.generateRows(x, false, undefined);
+    });
+    //this.generateRows(tree, false, undefined);
+    //this.generateRows(tree, false, undefined);
     // this.scheduleRows.push(a);
     // this.generateTableRow();
   }
@@ -200,7 +207,13 @@ export class TableScheduleGenerator {
 
     return new TableCell({
       children: [new Paragraph({
-        text,
+        children: [
+          new TextRun({
+            text,
+            size,
+            font: 'TimesNewRoman'
+          }),
+        ],
         alignment: AlignmentType.CENTER,
       })],
       rowSpan: rSpan,

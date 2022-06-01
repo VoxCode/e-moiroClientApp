@@ -30,10 +30,10 @@
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.second}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.last}}</td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
-              <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+              <button matTooltip="Редактировать" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
                       *ngIf="el.second !== 'admin'" (click)="editRow(el)"
                       mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>
-              <button type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
+              <button matTooltip="Удалить" type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
                       *ngIf="el.second !== 'admin'" (click)="delete(el)"
                       mdbWavesEffect><mdb-icon fas icon="trash-alt" size="lg"></mdb-icon>
               </button>

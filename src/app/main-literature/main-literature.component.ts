@@ -98,7 +98,7 @@ export class MainLiteratureComponent implements OnInit, AfterViewInit {
   }
 
   crate(el: any): void {
-    const mainLiterature = new MainLiterature(0, el.last, this.globals.name);
+    const mainLiterature = new MainLiterature(0, el.last, this.globals.userId);
     this.valueService.createValue(mainLiterature)
       .subscribe((mainLiteratureResponse: MainLiterature) => {
         const index = this.elements.length + 1;

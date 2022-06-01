@@ -100,7 +100,7 @@ export class FinalExaminationComponent implements OnInit, AfterViewInit {
   }
 
   crate(el: any): void {
-    const finalExamination = new FinalExamination(0, el.last, el.second, el.third, this.globals.name);
+    const finalExamination = new FinalExamination(0, el.last, el.second, el.third, this.globals.userId);
     this.valueService.createValue(finalExamination)
       .subscribe((finalExaminationResponse: FinalExamination) => {
         const index = this.elements.length + 1;
