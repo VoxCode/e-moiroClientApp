@@ -23,6 +23,11 @@ body{
   right:-24px;
 }
 
+.cdk-overlay-container {
+  position: fixed;
+  z-index: 1100 !important;
+}
+
 .qwe .custom-dialog-container .mat-dialog-container .mat-dialog-title .mat-dialog-content .container ng-star-inserted > div{
   overflow: visible !important;
 }

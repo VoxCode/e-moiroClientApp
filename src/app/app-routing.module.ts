@@ -68,8 +68,6 @@ const adminRoutes: Routes = [
   { path: 'certificationType', component: CertificationTypeComponent },
   { path: 'department', component: DepartmentComponent },
   { path: 'formOfEducation', component: FormOfEducationComponent },
-  { path: 'group', component: GroupComponent },
-  { path: 'room', component: RoomComponent },
   { path: 'mainLiterature', component: MainLiteratureComponent },
   { path: 'occupationForm', component: OccupationFormComponent },
   { path: 'teacher', component: TeacherComponent },
@@ -80,6 +78,8 @@ const adminRoutes: Routes = [
   { path: 'user', component: UserComponent },
   { path: 'expert', component: ExpertComponent },
   { path: 'schedule', component: ScheduleComponent },
+  { path: 'group', component: GroupComponent },
+  { path: 'room', component: RoomComponent },
   { path: 'journalDocxGenerator/:id', component: JournalDocGeneratorComponent},
   { path: 'journal', component: JournalComponent},
   { path: '**', redirectTo: 'trainingProgram'}
@@ -108,6 +108,9 @@ const creatorRoutes: Routes = [
   { path: 'docxGeneratorATP/:id', component:  DocxGeneratorATPComponent },
   { path: 'studentCategory', component: StudentCategoryComponent },
   { path: 'teacher', component: TeacherComponent },
+  { path: 'schedule', component: ScheduleComponent },
+  { path: 'group', component: GroupComponent },
+  { path: 'room', component: RoomComponent },
   { path: '**', redirectTo: 'trainingProgram'}
 ];
 

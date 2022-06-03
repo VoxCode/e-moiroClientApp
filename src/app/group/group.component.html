@@ -33,13 +33,13 @@
         <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.classEndDate | date : 'dd.MM.yyyy'}}</td>
         <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
           <div>
-            <button matTooltip="Журнал" type="button" mdbBtn color="yellow" size="sm" class="relative waves-light"
+            <button disabled matTooltip="Журнал" type="button" mdbBtn color="yellow" size="sm" class="relative waves-light"
                     style="padding: 0.5rem 0.5rem;"
                     [routerLink]="['/' + globals.role +'/journalDocxGenerator/', el.id]"
                     mdbWavesEffect><mdb-icon fas icon="file-word" size="sm"></mdb-icon><a class="btn-text"><br>Журнал</a></button>
           </div>
           <div>
-            <button matTooltip="Сгенерировать расписание" type="button" mdbBtn color="green" size="sm" class="relative waves-light"
+            <button disabled matTooltip="Сгенерировать расписание" type="button" mdbBtn color="green" size="sm" class="relative waves-light"
                     style="padding: 0.5rem 0.5rem;"
                     [routerLink]="['/' + globals.role +'/docxGeneratorSchedule', el.id]"
                     mdbWavesEffect><mdb-icon fas icon="file-word" size="sm"></mdb-icon><a class="btn-text"><br>Расписа-ние</a></button>
