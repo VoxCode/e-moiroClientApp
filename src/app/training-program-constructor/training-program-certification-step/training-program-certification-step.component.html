@@ -1,59 +1,30 @@
 <div class="container-fluid">
   <div class="backButton">
-    <button [routerLink]="'/' + globals.role +'/trainingProgram'" type="button" size="sm" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>
-      <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon> Выход</button>
-  </div><br>
+    <button [routerLink]="'/' + globals.role +'/trainingProgram'" type="button" size="sm" mdbBtn color="primary"
+            class="relative waves-light" mdbWavesEffect>
+      <mdb-icon fas icon="arrow-left" size="lg"></mdb-icon>
+      Выход
+    </button>
+  </div>
+  <br>
   <h4 *ngIf="trainingProgram">Учебная программа: <strong>«{{trainingProgram.name}}»</strong></h4><br>
   <h5 *ngIf="trainingProgram">Тип итоговой аттестации: <strong>{{certificationType.name}}</strong></h5>
 
-  <app-training-program-stepper *ngIf="trainingProgram" [id]="id" [isDistanceLearning]="trainingProgram.isDistanceLearning"></app-training-program-stepper>
+  <app-training-program-stepper *ngIf="trainingProgram" [id]="id"
+                                [isDistanceLearning]="trainingProgram.isDistanceLearning"></app-training-program-stepper>
 
-  <h3><strong>Перетащите необходимые элементы</strong></h3>
-
-  <div cdkDropListGroup>
-    <div class="row">
-      <div class="col-sm-6"><br>
-        <app-template-offer [todo]="todo" [heading]="heading" ></app-template-offer>
-      </div>
-      <div class="col-sm-6">
-        <div class="example-container">
-          <h2>Перечень</h2>
-          <button *ngIf="done.length === 0" matTooltip="Создать вопрос" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                  (click)="trainingProgramFinalExaminationCrateForm()" mdbWavesEffect>
-            <mdb-icon fas icon="plus" size="sm"></mdb-icon>
-          </button>
-
-          <div
-            cdkDropList
-            [cdkDropListData]="done"
-            class="example-list"
-            (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let item of done; index as i" cdkDrag>{{i+1}}. {{item.content}}
-              <br><br>
-              <div class="buttons">
-                <button matTooltip="Создать вопрос" type="button" *ngIf="i == done.length - 1" mdbBtn color="primary" size="sm" class="relative waves-light"
-                        (click)="trainingProgramFinalExaminationCrateForm()" mdbWavesEffect>
-                  <mdb-icon fas icon="plus" size="lg"></mdb-icon>
-                </button>
-                <button matTooltip="Редактировать" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-                        (click)="trainingProgramFinalExaminationEditForm(item)" mdbWavesEffect>
-                  <mdb-icon fas icon="edit" size="lg"></mdb-icon>
-                </button>
-                <button matTooltip="Удалить" type="button" mdbBtn color="danger" size="sm" class="relative waves-light"
-                        (click)="deleteTrainingProgramFinalExamination(item, i)" mdbWavesEffect>
-                  <mdb-icon fas icon="trash-alt" size="lg"></mdb-icon>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <br><br>
+  <ng-container *ngIf="certificationType.id === 5">
+    <app-business-game-form></app-business-game-form>
+  </ng-container>
+  <ng-container *ngIf="certificationType.id !== 5 && certificationType.id != undefined">
+    <app-questions-form></app-questions-form>
+  </ng-container>
 
   <button type="button" [routerLink]="['/' + globals.role +'/trainingProgramMainStep', id]"
-          mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Назад</button>
+          mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Назад
+  </button>
   <button type="button" [routerLink]="['/' + globals.role +'/trainingProgramMainLiteratureStep', id]"
-          mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Далее</button><br>
+          mdbBtn color="primary" size="sm" class="relative waves-light" mdbWavesEffect>Далее
+  </button>
+  <br>
 </div>

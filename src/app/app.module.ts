@@ -79,6 +79,7 @@ import { JournalDocGeneratorComponent } from './journal-doc-generator/journal-do
 import { JournalComponent } from './journal/journal.component';
 import { ScheduleCellComponent } from './schedule-cell/schedule-cell.component';
 import {AngularMaterialModule} from './angular-material/angular-material.module';
+import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
 
 import {IsDeleteComponent} from './is-delete/is-delete.component';
 import { registerLocaleData } from '@angular/common';
@@ -86,6 +87,7 @@ import localeRu from '@angular/common/locales/ru';
 import {ViewerHelloPageComponent} from './viewer-area/viewer-hello-page.component/viewer-hello-page.component';
 import {GuidedTestWorkAssignmentEditComponent} from './guided-test-work-assignment/guided-test-work-assignment-edit.component';
 import { RoomEditComponent } from './room/room-edit/room-edit.component';
+
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -155,7 +157,7 @@ registerLocaleData(localeRu, 'ru');
     IsDeleteComponent,
     ViewerHelloPageComponent,
     GuidedTestWorkAssignmentEditComponent,
-    RoomEditComponent
+    RoomEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -175,6 +177,7 @@ registerLocaleData(localeRu, 'ru');
     DragDropModule,
     DatePickerModule,
     DropDownListModule,
+    RichTextEditorModule,
     JwtModule.forRoot({
       config: {
         tokenGetter
@@ -198,7 +201,7 @@ registerLocaleData(localeRu, 'ru');
       useClass: ErrorInterceptorService,
       multi: true
     },
-    { provide: LOCALE_ID, useValue: 'ru' }
+    {provide: LOCALE_ID, useValue: 'ru'}
   ],
   bootstrap: [AppComponent]
 })

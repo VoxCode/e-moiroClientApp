@@ -31,6 +31,7 @@
     "@syncfusion/ej2-angular-navigations": "^19.1.63",
     "@syncfusion/ej2-angular-schedule": "=19.2.56",
     "@syncfusion/ej2-dropdowns": "^19.1.65",
+    "@syncfusion/ej2-angular-richtexteditor": "^19.3.53-6125",
     "@types/chart.js": "^2.9.34",
     "angular-bootstrap-md": "^11.1.0",
     "animate.css": "^4.1.1",

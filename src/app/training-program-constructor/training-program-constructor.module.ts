@@ -26,21 +26,26 @@ import {OccupationFormClassTimeEditFormComponent} from './training-program-main-
 import {TrainingProgramGuidedTestWorkStepComponent} from './training-program-guided-test-work-step/training-program-guided-test-work-step.component';
 import {GuidedTestWorkTopicChildComponent} from './training-program-guided-test-work-step/guided-test-work-topic-child/guided-test-work-topic-child.component';
 import {AngularMaterialModule} from '../angular-material/angular-material.module';
+import { BusinessGameFormComponent } from './training-program-certification-step/business-game-form/business-game-form.component';
+import { SyncfusionRichTextEditorComponent } from '../document-editor/rich-text-editor/syncfusion-rich-text-editor.component';
+import {RichTextEditorModule} from '@syncfusion/ej2-angular-richtexteditor';
+import { QuestionsFormComponent } from './training-program-certification-step/questions-form/questions-form.component';
 
 
 @NgModule({
-    imports: [
-        BrowserModule,
-        FormsModule,
-        MDBBootstrapModule.forRoot(),
-        AppRoutingModule,
-        DragDropModule,
-        DocumentEditorContainerModule,
-        DocumentEditorAllModule,
-        NgSelectModule,
-        ReactiveFormsModule,
-        AngularMaterialModule,
-    ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    MDBBootstrapModule.forRoot(),
+    AppRoutingModule,
+    DragDropModule,
+    DocumentEditorContainerModule,
+    DocumentEditorAllModule,
+    NgSelectModule,
+    ReactiveFormsModule,
+    AngularMaterialModule,
+    RichTextEditorModule,
+  ],
   declarations: [
     TrainingProgramIntroductionStepComponent,
     DocumentEditorFormComponent,
@@ -60,6 +65,9 @@ import {AngularMaterialModule} from '../angular-material/angular-material.module
     TrainingProgramGuidedTestWorkStepComponent,
     OccupationFormClassTimeEditFormComponent,
     GuidedTestWorkTopicChildComponent,
+    BusinessGameFormComponent,
+    SyncfusionRichTextEditorComponent,
+    QuestionsFormComponent
   ],
   exports: [],
   providers: [TrainingProgramConstructorService]
