@@ -92,12 +92,22 @@ export class SecondDocumentPart {
 
     this.children.push(this.docxGeneratorDataTemplate.titleText('Материалы для итоговой аттестации слушателей'));
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-    this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Вопросы для проведения зачета', 0 , true));
-    this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-    this.trainingProgram.trainingProgramFinalExaminations.forEach((object, i) => {
-      this.children.push(this.docxGeneratorDataTemplate.someText((i + 1) +
-        '. ' + object.content, 720));
-    });
+    console.log(this.trainingProgram.certificationTypeId);
+    if (this.trainingProgram.certificationTypeId === 5) {
+      this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Собеседование (деловая игра)', 0, true));
+      this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+      this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Certification placeholder', 0, true));
+      //this.children.push(this.docxGeneratorDataTemplate.someText(
+      //  this.trainingProgram.trainingProgramFinalExaminations[0].content, 720));
+    }
+    else {
+      this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Вопросы для проведения зачета', 0, true));
+      this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
+      this.trainingProgram.trainingProgramFinalExaminations.forEach((object, i) => {
+        this.children.push(this.docxGeneratorDataTemplate.someText((i + 1) +
+          '. ' + object.content, 720));
+      });
+    }
     this.children.push(this.docxGeneratorDataTemplate.pageBreak());
 
     if (this.trainingProgram.isDistanceLearning) {

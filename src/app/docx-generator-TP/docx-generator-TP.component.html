@@ -8,6 +8,6 @@
 <button type="button" mdbBtn color="green" size="sm" class="relative waves-light"
         [routerLink]="['/' + globals.role +'/trainingProgramExpertStep', id]"
         mdbWavesEffect>Конструктор</button>
-<app-document-ed *ngIf="docx[0]" [docxType]="1" [docx]="docx" [trainingProgramName]="trainingProgram.name"></app-document-ed>
+<app-document-ed #docEd *ngIf="docx[0]" [docxType]="1" [docx]="docx" [trainingProgramName]="trainingProgram.name"></app-document-ed>
 
 

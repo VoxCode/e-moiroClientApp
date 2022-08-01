@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {TrainingProgramService} from '../services/training-program.service';
 import {ActivatedRoute} from '@angular/router';
 import {TrainingProgramCurriculumSection} from '../models/TrainingProgramCurriculumSection';
@@ -31,6 +31,10 @@ import {Base64ToBlob} from '../base64-to-blob/base64-to-blob';
 import {Globals} from '../globals';
 import {GuidedTestWorkAssignment} from '../models/GuidedTestWorkAssignment';
 import {GuidedTestWorkAssignmentService} from '../services/guided-test-work-assignment.service';
+import {DocumentEdComponent} from "../document-editor/document-ed/document-ed.component";
+import {DocumentEditorContainerComponent} from "@syncfusion/ej2-angular-documenteditor";
+import { asBlob } from 'html-docx-js-typescript';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-docx-generator',
@@ -55,7 +59,10 @@ import {GuidedTestWorkAssignmentService} from '../services/guided-test-work-assi
   ]
 })
 
-export class DocxGeneratorTPComponent implements OnInit{
+export class DocxGeneratorTPComponent implements OnInit {
+
+  @ViewChild('docEd') docEd: DocumentEdComponent;
+
   id: number;
   trainingProgram: TrainingProgramGenerator;
   docx: any[] = [];
@@ -82,7 +89,8 @@ export class DocxGeneratorTPComponent implements OnInit{
     private docxMergeService: DocxMergeService,
     private route: ActivatedRoute,
     public globals: Globals
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
@@ -206,8 +214,7 @@ export class DocxGeneratorTPComponent implements OnInit{
           this.trainingProgram.trainingProgramIntroduction = data;
           if (this.trainingProgram.isDistanceLearning) {
             this.loadGuidedTestWorkAssignment();
-          }
-          else {
+          } else {
             this.getDocument();
           }
         }
@@ -222,6 +229,21 @@ export class DocxGeneratorTPComponent implements OnInit{
           this.getDocument();
         }
       });
+  }
+
+  replaceCertification(): void {
+    this.docEd.getEditorInstance()
+      .documentEditor.searchModule.findAll('Certification placeholder');
+    if (this.docEd.getEditorInstance()
+      .documentEditor.searchModule.searchResults.length > 0) {
+      // Replace all the occurences of given text
+      this.docEd.getEditorInstance()
+        .documentEditor.searchModule.searchResults.replaceAll('werwer');
+    }
+    this.docEd.getEditorInstance()
+      .documentEditor.search.find('Certification placeholder', 'None');
+    this.docEd.getEditorInstance()
+      .documentEditor.search.searchResults.navigate();
   }
 
   public getDocument(): void {
@@ -249,16 +271,38 @@ export class DocxGeneratorTPComponent implements OnInit{
 
         Packer.toBlob(secondDocxTmp).then(blob2 => {
           blobArray = [];
-          blobArray.push(blob2);
-          blobArray.push(resultBlob);
+          asBlob('<p><i>Задачи:</i></p><p>qweqwe</p><p><i>Сценарий</i></p><p><i>gfgfghfghfhfghf</i></p><p><i>Вводная часть</i></p><p><br></p><p><i>Основная часть</i></p><p><br></p><p><i>Заключительная часть</i></p><p><br></p>').then(data => {
+
+
+            //blobArray.push(blob2);
+          blobArray.push(data);
+            blobArray.push(data);
 
           this.docxMergeService.merge(blobArray).subscribe((result2) => {
             const resultBlob2 = new Base64ToBlob().generate(result2, this.wordDocxType, 512);
+            console.log(resultBlob2);
+
             this.docx.push(resultBlob2);
+            //this.replaceCertification();
+            // asBlob('<p><i>Задачи:</i></p><p>qweqwe</p><p><i>Сценарий</i></p><p><i>gfgfghfghfhfghf</i></p><p><i>Вводная часть</i></p><p><br></p><p><i>Основная часть</i></p><p><br></p><p><i>Заключительная часть</i></p><p><br></p>').then(data => {
+            //   //saveAs(data, 'file.docx');
+            //   //this.docx.push(data);
+            //   blobArray = [];
+            //   blobArray.push(resultBlob2);
+            //   blobArray.push(data);
+            //   console.log(data);
+            //   console.log(resultBlob2);
+            //   this.docxMergeService.merge(blobArray).subscribe((result3) => {
+            //     const resultBlob3 = new Base64ToBlob().generate(result3, this.wordDocxType, 512);
+            //     this.docx.push(resultBlob3);
+            //   });
+            // });
             this.loading = false;
+          });
           });
         });
       });
     });
+
   }
 }
