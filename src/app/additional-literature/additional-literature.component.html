@@ -31,6 +31,10 @@
           <tr mdbTableCol *ngFor="let el of elements; let i = index">
             <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{el.id}}</th>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.last}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" >
+              <ng-container *ngIf="el.accessDateEnabled; else elseBlock">{{el.accessDate| date:'dd.MM.y'}}</ng-container>
+              <ng-template #elseBlock>Не используется</ng-template>
+            </td>
             <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
               <button matTooltip="Редактировать" type="button" mdbBtn color="primary" size="sm" class="relative waves-light" (click)="editRow(el)"
                       mdbWavesEffect><mdb-icon fas icon="edit" size="lg"></mdb-icon></button>

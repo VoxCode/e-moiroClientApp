@@ -78,6 +78,8 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
               id: obj.id,
               trainingProgramId: obj.trainingProgramId,
               content: obj.content,
+              accessDate: obj.accessDate,
+              accessDateEnabled: obj.accessDateEnabled,
               serialNumber: obj.serialNumber
             });
           });
@@ -92,7 +94,9 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
         mainLiteratures.forEach((mainLiterature) => {
           this.todo.push({
             mainLiteratureId: mainLiterature.id,
-            content: mainLiterature.content
+            content: mainLiterature.content,
+            accessDate: mainLiterature.accessDate,
+            accessDateEnabled: mainLiterature.accessDateEnabled,
           });
         });
       }
@@ -108,7 +112,9 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
         console.log('Save was successful!');
         this.todo.push({
           additionalLiteratureId: mainLiteratureTemplateResponse.id,
-          content: mainLiteratureTemplateResponse.content
+          content: mainLiteratureTemplateResponse.content,
+          accessDate: mainLiteratureTemplateResponse.accessDate,
+          accessDateEnabled: mainLiteratureTemplateResponse.accessDateEnabled,
         });
       });
   }
@@ -126,6 +132,8 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
       item.id,
       item.trainingProgramId,
       item.content,
+      item.accessDate,
+      item.accessDateEnabled,
       item.serialNumber
     );
     this.trainingProgramMainLiteratureService.updateValue(trainingProgramMainLiterature)
@@ -155,6 +163,8 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
           0,
           this.id,
           object.content,
+          object.accessDate,
+          object.accessDateEnabled,
           ++index
         );
         this.trainingProgramMainLiteratureService.createValue(trainingProgramMainLiterature)
@@ -163,6 +173,8 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
             object.id = trainingProgramMainLiteratureResponse.id;
             object.trainingProgramId = trainingProgramMainLiteratureResponse.trainingProgramId;
             object.content = trainingProgramMainLiteratureResponse.content;
+            object.accessDate = trainingProgramMainLiteratureResponse.accessDate;
+            object.accessDateEnabled = trainingProgramMainLiteratureResponse.accessDateEnabled;
             object.mainLiteratureId = undefined;
           });
       }
@@ -172,6 +184,8 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
         trainingProgramMainLiterature.trainingProgramId = +object.trainingProgramId;
         trainingProgramMainLiterature.content = object.content;
         trainingProgramMainLiterature.serialNumber = ++index;
+        trainingProgramMainLiterature.accessDate = object.accessDate;
+        trainingProgramMainLiterature.accessDateEnabled = object.accessDateEnabled;
         trainingProgramMainLiteratures.push(trainingProgramMainLiterature);
       }
     });
@@ -187,6 +201,8 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
         0,
         this.id,
         newElement.last,
+        newElement.accessDate,
+        newElement.accessDateEnabled,
         this.done.length + 1
       );
       this.crateTrainingProgramMainLiterature(trainingProgramAdditionalLiterature);
@@ -199,16 +215,20 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
   trainingProgramMainLiteratureEditForm(item: any): void {
     const el = this.emptyEl();
     el.last = item.content;
+    el.accessDate = item.accessDate;
+    el.accessDateEnabled = item.accessDateEnabled;
     el.isCrate = false;
     this.modalRef = this.modalService.show(MainLiteratureEditComponent, this.modalOption(el));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       item.content = newElement.last;
+      item.accessDate = newElement.accessDate;
+      item.accessDateEnabled = newElement.accessDateEnabled;
       this.updateTrainingProgramMainLiterature(item);
     });
   }
 
   emptyEl(): any {
-    return {id: 0, first: '', last: '', isCrate: true};
+    return {id: 0, first: '', last: '', accessDate: '', accessDateEnabled: false, isCrate: true};
   }
 
   modalOption(el: any): any {
@@ -232,6 +252,8 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
       id: model.id,
       trainingProgramId: model.trainingProgramId,
       content: model.content,
+      accessDate: model.accessDate,
+      accessDateEnabled: model.accessDateEnabled,
       serialNumber: model.serialNumber
     };
   }

@@ -76,6 +76,8 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
               id: trainingProgramRegulation.id,
               trainingProgramId: trainingProgramRegulation.trainingProgramId,
               content: trainingProgramRegulation.content,
+              accessDate: trainingProgramRegulation.accessDate,
+              accessDateEnabled: trainingProgramRegulation.accessDateEnabled,
               serialNumber: trainingProgramRegulation.serialNumber
             });
           });
@@ -90,7 +92,9 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
         regulations.forEach((regulation) => {
           this.todo.push({
             regulationId: regulation.id,
-            content: regulation.content
+            content: regulation.content,
+            accessDate: regulation.accessDate,
+            accessDateEnabled: regulation.accessDateEnabled,
           });
         });
       }
@@ -106,7 +110,9 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
         console.log('Save was successful!');
         this.todo.push({
           regulationId: regulationTemplateResponse.id,
-          content: regulationTemplateResponse.content
+          content: regulationTemplateResponse.content,
+          accessDate: regulation.accessDate,
+          accessDateEnabled: regulation.accessDateEnabled,
         });
       });
   }
@@ -124,6 +130,8 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
       item.id,
       item.trainingProgramId,
       item.content,
+      item.accessDate,
+      item.accessDateEnabled,
       item.serialNumber
     );
     this.trainingProgramRegulationService.updateValue(trainingProgramRegulation)
@@ -153,6 +161,8 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
           0,
           this.id,
           object.content,
+          object.accessDate,
+          object.accessDateEnabled,
           ++index
         );
         this.trainingProgramRegulationService.createValue(trainingProgramRegulation)
@@ -161,6 +171,8 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
             object.id = trainingProgramRegulationResponse.id;
             object.trainingProgramId = trainingProgramRegulationResponse.trainingProgramId;
             object.content = trainingProgramRegulationResponse.content;
+            object.accessDate = trainingProgramRegulationResponse.accessDate;
+            object.accessDateEnabled = trainingProgramRegulationResponse.accessDateEnabled;
             object.regulationId = undefined;
           });
       }
@@ -170,6 +182,8 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
         trainingProgramRegulation.trainingProgramId = +object.trainingProgramId;
         trainingProgramRegulation.content = object.content;
         trainingProgramRegulation.serialNumber = ++index;
+        trainingProgramRegulation.accessDate = object.accessDate;
+        trainingProgramRegulation.accessDateEnabled = object.accessDateEnabled;
         trainingProgramRegulations.push(trainingProgramRegulation);
       }
     });
@@ -185,6 +199,8 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
         0,
         this.id,
         newElement.last,
+        newElement.accessDate,
+        newElement.accessDateEnabled,
         this.done.length + 1
       );
       this.crateTrainingProgramRegulation(trainingProgramRegulation);
@@ -197,16 +213,20 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   trainingProgramRegulationEditForm(item: any): void {
     const el = this.emptyEl();
     el.last = item.content;
+    el.accessDate = item.accessDate;
+    el.accessDateEnabled = item.accessDateEnabled;
     el.isCrate = false;
     this.modalRef = this.modalService.show(RegulationEditComponent, this.modalOption(el));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       item.content = newElement.last;
+      item.accessDate = newElement.accessDate;
+      item.accessDateEnabled = newElement.accessDateEnabled;
       this.updateTrainingProgramRegulation(item);
     });
   }
 
   emptyEl(): any {
-    return {id: 0, first: '', last: '', isCrate: true};
+    return {id: 0, first: '', last: '', accessDate: '', accessDateEnabled: false, isCrate: true};
   }
 
   modalOption(el: any): any {
@@ -230,6 +250,8 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
       id: model.id,
       trainingProgramId: model.trainingProgramId,
       content: model.content,
+      accessDate: model.accessDate,
+      accessDateEnabled: model.accessDateEnabled,
       serialNumber: model.serialNumber
     };
   }

@@ -76,6 +76,8 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
               id: obj.id,
               trainingProgramId: obj.trainingProgramId,
               content: obj.content,
+              accessDate: obj.accessDate,
+              accessDateEnabled: obj.accessDateEnabled,
               serialNumber: obj.serialNumber
             });
           });
@@ -90,7 +92,9 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
         additionalLiteratures.forEach((additionalLiterature) => {
           this.todo.push({
             additionalLiteratureId: additionalLiterature.id,
-            content: additionalLiterature.content
+            content: additionalLiterature.content,
+            accessDate: additionalLiterature.accessDate,
+            accessDateEnabled: additionalLiterature.accessDateEnabled,
           });
         });
       }
@@ -106,7 +110,9 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
         console.log('Save was successful!');
         this.todo.push({
           additionalLiteratureId: additionalLiteratureTemplateResponse.id,
-          content: additionalLiteratureTemplateResponse.content
+          content: additionalLiteratureTemplateResponse.content,
+          accessDate: additionalLiteratureTemplateResponse.accessDate,
+          accessDateEnabled: additionalLiteratureTemplateResponse.accessDateEnabled,
         });
       });
   }
@@ -124,6 +130,8 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
       item.id,
       item.trainingProgramId,
       item.content,
+      item.accessDate,
+      item.accessDateEnabled,
       item.serialNumber
     );
     this.trainingProgramAdditionalLiteratureService.updateValue(trainingProgramAdditionalLiterature)
@@ -153,6 +161,8 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
           0,
           this.id,
           object.content,
+          object.accessDate,
+          object.accessDateEnabled,
           ++index
         );
         this.trainingProgramAdditionalLiteratureService.createValue(trainingProgramAdditionalLiterature)
@@ -161,6 +171,8 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
             object.id = trainingProgramAdditionalLiteratureResponse.id;
             object.trainingProgramId = trainingProgramAdditionalLiteratureResponse.trainingProgramId;
             object.content = trainingProgramAdditionalLiteratureResponse.content;
+            object.accessDate = trainingProgramAdditionalLiteratureResponse.accessDate;
+            object.accessDateEnabled = trainingProgramAdditionalLiteratureResponse.accessDateEnabled;
             object.additionalLiteratureId = undefined;
           });
       }
@@ -170,6 +182,8 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
         trainingProgramAdditionalLiterature.trainingProgramId = +object.trainingProgramId;
         trainingProgramAdditionalLiterature.content = object.content;
         trainingProgramAdditionalLiterature.serialNumber = ++index;
+        trainingProgramAdditionalLiterature.accessDate = object.accessDate;
+        trainingProgramAdditionalLiterature.accessDateEnabled = object.accessDateEnabled;
         trainingProgramAdditionalLiteratures.push(trainingProgramAdditionalLiterature);
       }
       this.trainingProgramAdditionalLiteratureService.updateSerialNumbers(trainingProgramAdditionalLiteratures)
@@ -186,6 +200,8 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
         0,
         this.id,
         newElement.last,
+        newElement.accessDate,
+        newElement.accessDateEnabled,
         this.done.length + 1
       );
       this.crateTrainingProgramAdditionalLiterature(trainingProgramAdditionalLiterature);
@@ -198,16 +214,20 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
   trainingProgramAdditionalLiteratureEditForm(item: any): void {
     const el = this.emptyEl();
     el.last = item.content;
+    el.accessDate = item.accessDate;
+    el.accessDateEnabled = item.accessDateEnabled;
     el.isCrate = false;
     this.modalRef = this.modalService.show(AdditionalLiteratureEditComponent, this.modalOption(el));
     this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
       item.content = newElement.last;
+      item.accessDate = newElement.accessDate;
+      item.accessDateEnabled = newElement.accessDateEnabled;
       this.updateTrainingProgramAdditionalLiterature(item);
     });
   }
 
   emptyEl(): any {
-    return {id: 0, first: '', last: '', isCrate: true};
+    return {id: 0, first: '', last: '', accessDate: '', accessDateEnabled: false, isCrate: true};
   }
 
   modalOption(el: any): any {
@@ -231,6 +251,8 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
       id: model.id,
       trainingProgramId: model.trainingProgramId,
       content: model.content,
+      accessDate: model.accessDate,
+      accessDateEnabled: model.accessDateEnabled,
       serialNumber: model.serialNumber
     };
   }

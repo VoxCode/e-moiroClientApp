@@ -13,6 +13,7 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 import {TrainingProgramFinalExamination} from '../../../models/TrainingProgramFinalExamination';
 import {IsDeleteComponent} from '../../../is-delete/is-delete.component';
 import {FinalExaminationEditComponent} from '../../../final-examination/final-examination-edit.component';
+import {log} from "util";
 
 @Component({
   selector: 'app-questions-form',
@@ -103,6 +104,21 @@ export class QuestionsFormComponent implements OnInit {
       if (finalExaminations.length !== 0) {
         finalExaminations.sort((a, b) => b.id - a.id);
         finalExaminations.forEach((finalExamination) => {
+          console.log(this.certificationType.name);
+          this.todo.push({
+            finalExaminationId: finalExamination.id,
+            content: finalExamination.content
+          });
+        });
+      }
+    });
+  }
+  loadDepartmentFinalExamination(): void{
+    this.finalExaminationService.getValue(this.certificationType.id).subscribe((finalExaminations: FinalExamination[]) => {
+      if (finalExaminations.length !== 0) {
+        finalExaminations.sort((a, b) => b.id - a.id);
+        finalExaminations.forEach((finalExamination) => {
+          console.log(this.certificationType.name);
           this.todo.push({
             finalExaminationId: finalExamination.id,
             content: finalExamination.content

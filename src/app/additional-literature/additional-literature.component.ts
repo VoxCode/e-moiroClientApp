@@ -19,7 +19,7 @@ export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
   @ViewChild('row', {static: true}) row: ElementRef;
 
   elements: any = [];
-  headElements = ['Номер', 'Содержание', 'Команда'];
+  headElements = ['Номер', 'Содержание', 'Дата доступа', 'Команда'];
   searchText = '';
   previous: string;
   modalRef: MDBModalRef;
@@ -89,7 +89,9 @@ export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
         id: (++index).toString(),
         first: obj.id,
         last: obj.content,
-        author: obj.authorIndex});
+        author: obj.authorIndex,
+        accessDate: obj.accessDate,
+        accessDateEnabled: obj.accessDateEnabled});
     });
     this.mdbTable.setDataSource(this.elements);
     this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
@@ -98,7 +100,7 @@ export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
   }
 
   crate(el: any): void {
-    const additionalLiterature = new AdditionalLiterature(0, el.last, this.globals.userId);
+    const additionalLiterature = new AdditionalLiterature(0, el.last, this.globals.userId, el.accessDate, el.accessDateEnabled);
     this.valueService.createValue(additionalLiterature)
       .subscribe((additionalLiteratureResponse: AdditionalLiterature) => {
         const index = this.elements.length + 1;
@@ -106,14 +108,16 @@ export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
           id: index.toString(),
           first: additionalLiteratureResponse.id,
           last: additionalLiteratureResponse.content,
-          author: additionalLiteratureResponse.authorIndex
+          author: additionalLiteratureResponse.authorIndex,
+          accessDate: additionalLiteratureResponse.accessDate,
+          accessDateEnabled: additionalLiteratureResponse.accessDateEnabled,
         });
         this.mdbTable.setDataSource(this.elements);
       });
   }
 
   save(el: any): void {
-    const additionalLiterature = new AdditionalLiterature(el.first, el.last, el.author);
+    const additionalLiterature = new AdditionalLiterature(el.first, el.last, el.author, new Date(el.accessDate), el.accessDateEnabled);
     this.valueService.updateValue(additionalLiterature).subscribe();
   }
 
@@ -157,7 +161,7 @@ export class AdditionalLiteratureComponent implements OnInit, AfterViewInit {
   }
 
   emptyEl(): any {
-    return {id: 0, first: '', last: ''};
+    return {id: 0, first: '', last: '', accessDate: '', accessDateEnabled: false};
   }
 
   modalOption(el: any): any {

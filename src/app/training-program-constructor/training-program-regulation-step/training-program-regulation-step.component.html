@@ -28,6 +28,7 @@
             class="example-list"
             (cdkDropListDropped)="drop($any($event))">
             <div class="example-box" *ngFor="let item of done; index as i" cdkDrag>{{i+1}}. {{item.content}}
+              <ng-container *ngIf="item.accessDateEnabled">– Дата доступа : {{ item.accessDate | date:'dd.MM.y'}}</ng-container>
               <br><br>
               <div class="buttons">
                 <button matTooltip="Добавить" *ngIf="i == done.length - 1" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"

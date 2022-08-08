@@ -3,6 +3,7 @@ import { HttpClient} from '@angular/common/http';
 import { FinalExamination } from '../models/FinalExamination';
 import { environment } from '../../environments/environment';
 import {Observable} from 'rxjs';
+import {Department} from "../models/Department";
 
 @Injectable()
 export class FinalExaminationService {
@@ -20,6 +21,9 @@ export class FinalExaminationService {
   }
   getFinalExamination(certificationTypeId: number, curriculumTopicIdArray: number[]): Observable<any> {
     return this.http.post(this.url + '/' + certificationTypeId, curriculumTopicIdArray);
+  }
+  getFinalExaminationDepartment(department: number): Observable<any> {
+    return this.http.get(this.url + '/' + department);
   }
   createValue(finalExamination: FinalExamination): Observable<any> {
     return this.http.post(this.url, finalExamination);

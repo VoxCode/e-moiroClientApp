@@ -19,7 +19,7 @@ export class RegulationComponent implements OnInit, AfterViewInit {
   @ViewChild('row', { static: true }) row: ElementRef;
 
   elements: any = [];
-  headElements = ['Номер', 'Содержание', 'Команда'];
+  headElements = ['Номер', 'Содержание', 'Дата доступа', 'Команда'];
   searchText = '';
   previous: string;
   modalRef: MDBModalRef;
@@ -89,7 +89,9 @@ export class RegulationComponent implements OnInit, AfterViewInit {
         id: (++index).toString(),
         first: obj.id,
         last: obj.content,
-        author: obj.authorIndex});
+        author: obj.authorIndex,
+        accessDate: obj.accessDate,
+        accessDateEnabled: obj.accessDateEnabled});
     });
     this.mdbTable.setDataSource(this.elements);
     this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
@@ -98,7 +100,7 @@ export class RegulationComponent implements OnInit, AfterViewInit {
   }
 
   crate(el: any): void {
-    const regulation = new Regulation(0, el.last, this.globals.userId);
+    const regulation = new Regulation(0, el.last, this.globals.userId, el.accessDate, el.accessDateEnabled);
     this.valueService.createValue(regulation)
       .subscribe((regulationResponse: Regulation) => {
         const index = this.elements.length + 1;
@@ -106,14 +108,16 @@ export class RegulationComponent implements OnInit, AfterViewInit {
           id: index.toString(),
           first: regulationResponse.id,
           last: regulationResponse.content,
-          author: regulationResponse.authorIndex
+          author: regulationResponse.authorIndex,
+          accessDate: regulationResponse.accessDate,
+          accessDateEnabled: regulationResponse.accessDateEnabled,
         });
         this.mdbTable.setDataSource(this.elements);
       });
   }
 
   save(el: any): void {
-    const regulation = new Regulation(el.first, el.last, el.author);
+    const regulation = new Regulation(el.first, el.last, el.author, new Date(el.accessDate), el.accessDateEnabled);
     this.valueService.updateValue(regulation).subscribe();
   }
 
@@ -158,7 +162,7 @@ export class RegulationComponent implements OnInit, AfterViewInit {
   }
 
   emptyEl(): any {
-    return {id: 0, first: '', last: ''};
+    return {id: 0, first: '', last: '', accessDate: '', accessDateEnabled: false};
   }
 
   modalOption(el: any): any {

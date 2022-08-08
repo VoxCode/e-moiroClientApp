@@ -14,6 +14,20 @@
         <mdb-error *ngIf="last.invalid && (last.dirty || last.touched)"></mdb-error>
       </div><br>
       <div>
+        <div style="display: inline-block; padding: 20px;">
+          <mdb-checkbox formControlName="accessDateEnabled">Использовать дату доступа:</mdb-checkbox>
+        </div>
+        <div style="display: inline-block;" *ngIf="form.get('accessDate') as date" >
+          <mat-form-field appearance="fill" >
+            <mat-label>Дата доступа</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="accessDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="date.invalid && (date.dirty || date.touched)">Обязательно для заполнения</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div>
         <mdb-checkbox *ngIf="editableRow.isCrate" [default]="true" formControlName="third">Добавить в общий доступ</mdb-checkbox>
       </div>
     </form>

@@ -52,7 +52,26 @@ export class TrainingProgramMainStepComponent implements OnInit{
         if (data.length !== 0){
           data.sort((a, b) => a.id - b.id);
           this.occupationForms = data;
-          this.loadTemplateCurriculumTopics();
+          //this.loadTemplateCurriculumTopics();
+          //this.loadTemplateCurriculumTopicsByDepartment();
+          this.loadAllTemplateCurriculumTopics();
+        }
+      });
+  }
+
+  loadAllTemplateCurriculumTopics(): void { // Загружаю предложку с фильтрацией
+    this.curriculumTopicService.getValues()
+      .subscribe((curriculumTopics: CurriculumTopic[]) => {
+        if (curriculumTopics.length !== 0) {
+          curriculumTopics.sort((a, b) => b.id - a.id);
+          curriculumTopics.forEach((curriculumTopic) => {
+            this.todo.push({
+              curriculumTopicId: curriculumTopic.id,
+              topicTitle: curriculumTopic.topicTitle,
+              isVariable: false,
+              annotation: curriculumTopic.annotation
+            });
+          });
         }
       });
   }
@@ -60,6 +79,23 @@ export class TrainingProgramMainStepComponent implements OnInit{
   loadTemplateCurriculumTopics(): void { // Загружаю предложку с фильтрацией
     this.curriculumTopicService.getValuesFromFilter(
       this.trainingProgram.studentCategoryId, this.trainingProgram.departmentId, this.globals.userId)
+      .subscribe((curriculumTopics: CurriculumTopic[]) => {
+        if (curriculumTopics.length !== 0) {
+          curriculumTopics.sort((a, b) => b.id - a.id);
+          curriculumTopics.forEach((curriculumTopic) => {
+            this.todo.push({
+              curriculumTopicId: curriculumTopic.id,
+              topicTitle: curriculumTopic.topicTitle,
+              isVariable: false,
+              annotation: curriculumTopic.annotation
+            });
+          });
+        }
+      });
+  }
+  loadTemplateCurriculumTopicsByDepartment(): void { // Загружаю предложку, отфильтрованную по кафедре
+    this.curriculumTopicService.getValuesByDepartment(
+      this.trainingProgram.studentCategoryId, this.trainingProgram.departmentId)
       .subscribe((curriculumTopics: CurriculumTopic[]) => {
         if (curriculumTopics.length !== 0) {
           curriculumTopics.sort((a, b) => b.id - a.id);
