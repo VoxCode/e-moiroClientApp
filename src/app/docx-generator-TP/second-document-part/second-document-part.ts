@@ -137,23 +137,26 @@ export class SecondDocumentPart {
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
     this.children.push(this.docxGeneratorDataTemplate.someText('Основная', 720, true));
     this.trainingProgram.trainingProgramMainLiteratures.forEach((object, i) => {
-      this.children.push(this.docxGeneratorDataTemplate.someText((i + 1) +
-        '. ' + object.content, 720));
+      let text = (i + 1) + '. ' + object.content;
+      text += object.accessDateEnabled ? ` – Дата доступа: ${new Date(object.accessDate).toLocaleDateString()}` : '';
+      this.children.push(this.docxGeneratorDataTemplate.someText(text, 720));
       indx = i + 1;
     });
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
     this.children.push(this.docxGeneratorDataTemplate.someText('Дополнительная', 720, true));
     this.trainingProgram.trainingProgramAdditionalLiteratures.forEach((object) => {
       indx = indx + 1;
-      this.children.push(this.docxGeneratorDataTemplate.someText((indx) +
-        '. ' + object.content, 720));
+      let text = indx + '. ' + object.content;
+      text += object.accessDateEnabled ? ` – Дата доступа: ${new Date(object.accessDate).toLocaleDateString()}` : '';
+      this.children.push(this.docxGeneratorDataTemplate.someText(text, 720));
     });
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
     this.children.push(this.docxGeneratorDataTemplate.someText('Нормативные правовые акты', 720, true));
     this.trainingProgram.trainingProgramRegulations.forEach((object) => {
       indx = indx + 1;
-      this.children.push(this.docxGeneratorDataTemplate.someText((indx) +
-        '. ' + object.content, 720));
+      let text = indx + '. ' + object.content;
+      text += object.accessDateEnabled ? ` – Дата доступа: ${new Date(object.accessDate).toLocaleDateString()}` : '';
+      this.children.push(this.docxGeneratorDataTemplate.someText(text, 720));
     });
 
     this.sections.push( {
