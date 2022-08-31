@@ -138,7 +138,7 @@ export class SecondDocumentPart {
     this.children.push(this.docxGeneratorDataTemplate.someText('Основная', 720, true));
     this.trainingProgram.trainingProgramMainLiteratures.forEach((object, i) => {
       let text = (i + 1) + '. ' + object.content;
-      text += object.accessDateEnabled ? ` – Дата доступа: ${new Date(object.accessDate).toLocaleDateString()}` : '';
+      text += object.accessDateEnabled ? ` – Дата доступа: ${new Date(object.accessDate).toLocaleDateString()}.` : '';
       this.children.push(this.docxGeneratorDataTemplate.someText(text, 720));
       indx = i + 1;
     });
@@ -147,7 +147,7 @@ export class SecondDocumentPart {
     this.trainingProgram.trainingProgramAdditionalLiteratures.forEach((object) => {
       indx = indx + 1;
       let text = indx + '. ' + object.content;
-      text += object.accessDateEnabled ? ` – Дата доступа: ${new Date(object.accessDate).toLocaleDateString()}` : '';
+      text += object.accessDateEnabled ? ` – Дата доступа: ${new Date(object.accessDate).toLocaleDateString()}.` : '';
       this.children.push(this.docxGeneratorDataTemplate.someText(text, 720));
     });
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
@@ -155,7 +155,7 @@ export class SecondDocumentPart {
     this.trainingProgram.trainingProgramRegulations.forEach((object) => {
       indx = indx + 1;
       let text = indx + '. ' + object.content;
-      text += object.accessDateEnabled ? ` – Дата доступа: ${new Date(object.accessDate).toLocaleDateString()}` : '';
+      text += object.accessDateEnabled ? ` – Дата доступа: ${new Date(object.accessDate).toLocaleDateString()}.` : '';
       this.children.push(this.docxGeneratorDataTemplate.someText(text, 720));
     });
 

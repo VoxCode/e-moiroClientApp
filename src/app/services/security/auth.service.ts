@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {RoleChangeModel} from '../../models/RoleChangeModel';
 import {Globals} from '../../globals';
+import {PermissionManagerService} from './prmissions-manager.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class AuthService {
   constructor(
     private globals: Globals,
     private http: HttpClient,
-    private jwtHelper: JwtHelperService) { }
+    private jwtHelper: JwtHelperService,
+    private permissionManager: PermissionManagerService) { }
 
   public isUserAuthenticated = (userRole: string): boolean => {
     return this.getRole() === userRole;
@@ -30,6 +32,7 @@ export class AuthService {
       this.globals.role = this.getRedirectPath(decodedToken.role);
       this.globals.name = decodedToken.unique_name;
       this.globals.userId = decodedToken.nameid;
+      this.permissionManager.reloadUserState();
       return decodedToken.role;
     }
   }

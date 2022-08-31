@@ -5,7 +5,9 @@ import { environment } from '../../environments/environment';
 import {Department} from '../models/Department';
 import {Observable} from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class TeacherService {
   public url = environment.apiUrl + 'api/teachers';
   constructor(private http: HttpClient) { }
@@ -16,6 +18,10 @@ export class TeacherService {
 
   getValue(id: number): Observable<any> {
     return this.http.get(this.url + '/' + id);
+  }
+
+  GetValueByUserId(id: string): Observable<any> {
+    return this.http.get(this.url + '/GetTeacherByUserId/' + id);
   }
 
   createValue(teacher: Teacher): Observable<any> {

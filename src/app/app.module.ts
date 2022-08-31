@@ -87,6 +87,8 @@ import localeRu from '@angular/common/locales/ru';
 import {ViewerHelloPageComponent} from './viewer-area/viewer-hello-page.component/viewer-hello-page.component';
 import {GuidedTestWorkAssignmentEditComponent} from './guided-test-work-assignment/guided-test-work-assignment-edit.component';
 import { RoomEditComponent } from './room/room-edit/room-edit.component';
+import {PermissionsFactory} from './user-state/permissions-factory';
+import {PermissionManagerService} from './services/security/prmissions-manager.service';
 
 
 export function tokenGetter(): string {
@@ -189,6 +191,8 @@ registerLocaleData(localeRu, 'ru');
   ],
   providers: [
     AuthService,
+    PermissionManagerService,
+    PermissionsFactory,
     Globals,
     CommonService,
     {
