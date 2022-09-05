@@ -88,7 +88,8 @@ import {ViewerHelloPageComponent} from './viewer-area/viewer-hello-page.componen
 import {GuidedTestWorkAssignmentEditComponent} from './guided-test-work-assignment/guided-test-work-assignment-edit.component';
 import { RoomEditComponent } from './room/room-edit/room-edit.component';
 import {PermissionsFactory} from './user-state/permissions-factory';
-import {PermissionManagerService} from './services/security/prmissions-manager.service';
+import {PermissionManagerService} from './services/security/permissions-manager.service';
+import {PermissionsDirective} from "./directives/permissions-directive";
 
 
 export function tokenGetter(): string {
@@ -160,6 +161,7 @@ registerLocaleData(localeRu, 'ru');
     ViewerHelloPageComponent,
     GuidedTestWorkAssignmentEditComponent,
     RoomEditComponent,
+    PermissionsDirective,
   ],
   imports: [
     BrowserModule,

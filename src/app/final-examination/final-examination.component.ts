@@ -5,12 +5,13 @@ import {FinalExamination} from '../models/FinalExamination';
 import {FinalExaminationEditComponent} from './final-examination-edit.component';
 import {IsDeleteComponent} from '../is-delete/is-delete.component';
 import {Globals} from '../globals';
+import {PermissionManagerService} from '../services/security/permissions-manager.service';
 
 @Component({
   selector: 'app-final-examination',
   templateUrl: './final-examination.component.html',
   styleUrls: ['./final-examination.component.scss'],
-  providers: [FinalExaminationService]
+  providers: [FinalExaminationService, PermissionManagerService]
 })
 export class FinalExaminationComponent implements OnInit, AfterViewInit {
 
@@ -26,6 +27,7 @@ export class FinalExaminationComponent implements OnInit, AfterViewInit {
 
   constructor(
     private valueService: FinalExaminationService,
+    public perm: PermissionManagerService,
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService,
     public globals: Globals) { }

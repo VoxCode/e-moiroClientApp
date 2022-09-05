@@ -11,14 +11,22 @@ export class PermissionManagerService {
   constructor(private globals: Globals,
               private permissionsFactory: PermissionsFactory) { }
 
-  isPermissionGranted(permission: PermissionType): boolean {
-    const permissions = this.globals.permissions;
-    for (const perm of permissions) {
+  public isPermissionGranted(permission: PermissionType): boolean {
+    for (const perm of this.globals.permissions) {
       if (perm === permission){
         return true;
       }
     }
     return false;
+  }
+
+  public isDepartmentRelatedPermissionGranted(): boolean{
+    for (const perm of this.globals.permissions) {
+      if (perm === PermissionType.DEPARTMENTRELATED){
+        console.log(perm);
+        return true;
+      }
+    }
   }
 
   reloadUserState(): void{

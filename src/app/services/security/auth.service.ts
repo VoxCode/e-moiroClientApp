@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {RoleChangeModel} from '../../models/RoleChangeModel';
 import {Globals} from '../../globals';
-import {PermissionManagerService} from './prmissions-manager.service';
+import {PermissionManagerService} from './permissions-manager.service';
 
 @Injectable({
   providedIn: 'root'

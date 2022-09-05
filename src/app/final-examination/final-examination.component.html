@@ -14,7 +14,7 @@
             <label for="search-input">Поиск</label>
           </div>
         </div>
-        <div class="addButton">
+        <div *getPermission = "'DEPARTMENTRELATED'" class="addButton">
           <button matTooltip="Добавить" type="button" mdbBtn color="primary" class="relative waves-light" size="sm" (click)="addRow()"
                   mdbWavesEffect><mdb-icon fas icon="plus" size="lg"></mdb-icon></button>
         </div>
