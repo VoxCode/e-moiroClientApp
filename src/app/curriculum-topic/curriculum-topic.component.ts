@@ -103,6 +103,10 @@ export class CurriculumTopicComponent implements OnInit, AfterViewInit {
     const curriculumTopic = new CurriculumTopic(0, el.second, el.last, this.globals.userId);
     this.valueService.createValue(curriculumTopic)
       .subscribe((curriculumTopicResponse: CurriculumTopic) => {
+        this.valueService.connectToDepartments(curriculumTopicResponse.id, this.globals.departments)
+          .subscribe((Response: any) => {
+            //console.log(Response);
+          });
         const index = this.elements.length + 1;
         this.mdbTable.addRow({
           id: index.toString(),

@@ -22,8 +22,11 @@ export class FinalExaminationService {
   getFinalExamination(certificationTypeId: number, curriculumTopicIdArray: number[]): Observable<any> {
     return this.http.post(this.url + '/' + certificationTypeId, curriculumTopicIdArray);
   }
-  getFinalExaminationDepartment(department: number): Observable<any> {
-    return this.http.get(this.url + '/' + department);
+  getFinalExaminationDepartment(certificationTypeId: number, departmentId: number): Observable<any> {
+    return this.http.get(this.url + '/GetByDepartment/' + certificationTypeId + '/' + departmentId);
+  }
+  connectToDepartments(finalExaminationId: number, departments: Department[]): Observable<any>{
+    return this.http.put(this.url + '/ConnectToDepartments/' + finalExaminationId, departments);
   }
   createValue(finalExamination: FinalExamination): Observable<any> {
     return this.http.post(this.url, finalExamination);

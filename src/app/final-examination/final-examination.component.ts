@@ -105,6 +105,10 @@ export class FinalExaminationComponent implements OnInit, AfterViewInit {
     const finalExamination = new FinalExamination(0, el.last, el.second, el.third, this.globals.userId);
     this.valueService.createValue(finalExamination)
       .subscribe((finalExaminationResponse: FinalExamination) => {
+        this.valueService.connectToDepartments(finalExaminationResponse.id, this.globals.departments)
+          .subscribe((Response: any) => {
+            //console.log(Response);
+            });
         const index = this.elements.length + 1;
         this.mdbTable.addRow({
           id: index.toString(),

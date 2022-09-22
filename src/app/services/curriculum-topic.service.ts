@@ -4,6 +4,7 @@ import { CurriculumTopic } from '../models/CurriculumTopic';
 import { environment } from '../../environments/environment';
 import {Observable} from 'rxjs';
 import {TrainingProgram} from '../models/TrainingProgram';
+import {Department} from "../models/Department";
 
 @Injectable()
 export class CurriculumTopicService {
@@ -24,6 +25,9 @@ export class CurriculumTopicService {
   }
   getFromTrainingProgram(trainingProgramId: number): Observable<any> {
     return this.http.get(this.url + '/TrainingProgram/' + trainingProgramId);
+  }
+  connectToDepartments(curriculumTopicId: number, departments: Department[]): Observable<any>{
+    return this.http.put(this.url + '/ConnectToDepartments/' + curriculumTopicId, departments);
   }
   createValue(curriculumTopic: CurriculumTopic): Observable<any> {
     return this.http.post(this.url, curriculumTopic);

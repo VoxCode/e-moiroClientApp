@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {TrainingProgram} from '../../../models/TrainingProgram';
 import {FinalExamination} from '../../../models/FinalExamination';
 import {CertificationType} from '../../../models/CertificationType';
@@ -13,7 +13,6 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 import {TrainingProgramFinalExamination} from '../../../models/TrainingProgramFinalExamination';
 import {IsDeleteComponent} from '../../../is-delete/is-delete.component';
 import {FinalExaminationEditComponent} from '../../../final-examination/final-examination-edit.component';
-import {log} from "util";
 
 @Component({
   selector: 'app-questions-form',
@@ -26,12 +25,12 @@ import {log} from "util";
   ]
 })
 export class QuestionsFormComponent implements OnInit {
+  @Input('training-program') trainingProgram: TrainingProgram;
+  @Input('certification-type') certificationType: CertificationType = new CertificationType();
   id: number;
   todo = [];
   done = [];
-  trainingProgram: TrainingProgram;
   finalExamination: FinalExamination = new FinalExamination();
-  certificationType: CertificationType = new CertificationType();
   modalRef: MDBModalRef;
   heading = 'Рекомендуемые вопросы';
 
@@ -46,8 +45,8 @@ export class QuestionsFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.params.id;
-    this.loadTrainingProgram();
+    this.id = this.trainingProgram.id;
+    this.loadTrainingProgramFinalExamination();
   }
 
   drop(event: CdkDragDrop<string[]>): void {
@@ -61,15 +60,6 @@ export class QuestionsFormComponent implements OnInit {
         event.currentIndex);
       this.save();
     }
-  }
-
-  loadTrainingProgram(): void {
-    this.trainingProgramConstructorService.TrainingProgram(this.id)
-      .subscribe((trainingProgramResponse: TrainingProgram) => {
-        this.trainingProgram = trainingProgramResponse;
-        this.loadTrainingProgramFinalExamination();
-        this.loadCertificationType();
-      });
   }
 
   loadTrainingProgramFinalExamination(): void {
@@ -86,15 +76,27 @@ export class QuestionsFormComponent implements OnInit {
             });
           });
         }
+        this.loadFinalExaminationsByDepartment();
       });
   }
 
-  loadCertificationType(): void {
-    this.certificationTypeService.getValue(this.trainingProgram.certificationTypeId)
-      .subscribe((certificationType: CertificationType) => {
-        if (certificationType){
-          this.certificationType = certificationType;
-          this.loadFinalExamination();
+
+  loadFinalExaminationsByDepartment(): void {
+    this.finalExaminationService.getFinalExaminationDepartment(this.certificationType.id, this.trainingProgram.departmentId)
+      .subscribe((finalExaminations: FinalExamination[]) => {
+        if (finalExaminations.length !== 0) {
+          finalExaminations.sort((a, b) => b.id - a.id);
+          finalExaminations.forEach((finalExamination) => {
+            if (this.done.find(e => e.id === finalExamination.id))
+            {
+              console.log(finalExamination);
+              this.todo.push({
+                finalExaminationId: finalExamination.id,
+                content: finalExamination.content
+              });
+            }
+          });
+          console.log(finalExaminations);
         }
       });
   }
@@ -104,21 +106,6 @@ export class QuestionsFormComponent implements OnInit {
       if (finalExaminations.length !== 0) {
         finalExaminations.sort((a, b) => b.id - a.id);
         finalExaminations.forEach((finalExamination) => {
-          console.log(this.certificationType.name);
-          this.todo.push({
-            finalExaminationId: finalExamination.id,
-            content: finalExamination.content
-          });
-        });
-      }
-    });
-  }
-  loadDepartmentFinalExamination(): void{
-    this.finalExaminationService.getValue(this.certificationType.id).subscribe((finalExaminations: FinalExamination[]) => {
-      if (finalExaminations.length !== 0) {
-        finalExaminations.sort((a, b) => b.id - a.id);
-        finalExaminations.forEach((finalExamination) => {
-          console.log(this.certificationType.name);
           this.todo.push({
             finalExaminationId: finalExamination.id,
             content: finalExamination.content

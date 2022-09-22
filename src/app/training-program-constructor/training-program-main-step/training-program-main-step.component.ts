@@ -53,8 +53,8 @@ export class TrainingProgramMainStepComponent implements OnInit{
           data.sort((a, b) => a.id - b.id);
           this.occupationForms = data;
           //this.loadTemplateCurriculumTopics();
-          //this.loadTemplateCurriculumTopicsByDepartment();
-          this.loadAllTemplateCurriculumTopics();
+          this.loadTemplateCurriculumTopicsByDepartment();
+          //this.loadAllTemplateCurriculumTopics();
         }
       });
   }
@@ -98,7 +98,7 @@ export class TrainingProgramMainStepComponent implements OnInit{
       this.trainingProgram.studentCategoryId, this.trainingProgram.departmentId)
       .subscribe((curriculumTopics: CurriculumTopic[]) => {
         if (curriculumTopics.length !== 0) {
-          curriculumTopics.sort((a, b) => b.id - a.id);
+          curriculumTopics.sort((a, b) => b.topicTitle.localeCompare(a.topicTitle));
           curriculumTopics.forEach((curriculumTopic) => {
             this.todo.push({
               curriculumTopicId: curriculumTopic.id,
