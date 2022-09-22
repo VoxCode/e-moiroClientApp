@@ -7,4 +7,9 @@ export class UserState {
   departments: Department[] = [];
   permissions: PermissionType[] = [];
 
+  public UserState(){ // include wont work until you explicitly initialize array
+    this.departments = [];
+    this.permissions = [];
+  }
+
 }

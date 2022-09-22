@@ -23,7 +23,6 @@ export class PermissionManagerService {
   public isDepartmentRelatedPermissionGranted(): boolean{
     for (const perm of this.globals.permissions) {
       if (perm === PermissionType.DEPARTMENTRELATED){
-        console.log(perm);
         return true;
       }
     }

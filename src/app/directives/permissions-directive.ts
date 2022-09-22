@@ -11,7 +11,12 @@ export class PermissionsDirective {
     private permissionManagerS: PermissionManagerService
   ) { }
   @Input() set getPermission(permission: PermissionType){
-    this.isGranted(permission);
+    if (this.permissionManagerS.isDepartmentRelatedPermissionGranted()) {
+      this.viewContainer.createEmbeddedView(this.templateRef);
+    } else {
+      this.viewContainer.clear();
+    }
+    //this.isGranted(permission);
   }
   private isGranted(permission: PermissionType): void {
     if (this.permissionManagerS.isPermissionGranted(permission)) {

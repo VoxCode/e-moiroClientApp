@@ -14,20 +14,23 @@ export class PermissionsFactory {
     private teacherService: TeacherService) {
   }
 
+  tempPermList: PermissionType[] = [];
 
   public setInstance(): void {
-    this.globals.permissions = [];
-    this.checkDepartments();
+    this.getFromLocalStorage();
     switch (this.globals.role) {
       case 'admin':
         this.pushCRUD();
+        this.checkDepartments();
         break;
       case 'editor':
         this.pushCRUD();
+        this.checkDepartments();
         break;
 
       case 'creator':
         this.pushCRUD();
+        this.checkDepartments();
         break;
 
       case 'dean':
@@ -44,8 +47,16 @@ export class PermissionsFactory {
     }
   }
 
+  private getFromLocalStorage(): void{
+    this.globals.permissions = JSON.parse(localStorage.getItem('permissions'));
+  }
+
+  private writeToLocalStorage(): void{
+    localStorage.setItem('permissions', JSON.stringify(this.tempPermList));
+    this.globals.permissions = this.tempPermList;
+  }
+
   checkDepartments(): void {
-    console.log(this.globals);
     this.teacherService.GetValueByUserId(this.globals.userId)
       .subscribe((teacher: Teacher) => {
         if (teacher) {
@@ -56,10 +67,11 @@ export class PermissionsFactory {
               if (departments.length > 0) {
                 this.globals.departments = departments;
                 this.pushDepartmentRelated();
-                console.log(this.globals);
               }
+              this.writeToLocalStorage();
             });
         }
+        this.writeToLocalStorage();
       });
   }
 
@@ -67,36 +79,29 @@ export class PermissionsFactory {
 
   }
 
+  private tryPush(permission: PermissionType): void{
+    if (!this.tempPermList.includes(permission)){
+      //this.globals.permissions.push(permission);
+      this.tempPermList.push(permission);
+    }
+  }
 
   private pushCRUD(): void {
-    this.globals.permissions.push(PermissionType.CREATE);
-    this.globals.permissions.push(PermissionType.DELETE);
-    this.globals.permissions.push(PermissionType.READ);
-    this.globals.permissions.push(PermissionType.UPDATE);
+    this.tryPush(PermissionType.CREATE);
+    this.tryPush(PermissionType.DELETE);
+    this.tryPush(PermissionType.READ);
+    this.tryPush(PermissionType.UPDATE);
   }
 
   private pushDepartmentRelated(): void{
-    this.globals.permissions.push(PermissionType.DEPARTMENTRELATED);
+    this.tryPush(PermissionType.DEPARTMENTRELATED);
   }
 
   private pushTeacherRelated(): void{
-    this.globals.permissions.push(PermissionType.TEACHERRELATED);
+    this.tryPush(PermissionType.TEACHERRELATED);
   }
 
   private onlyRead(): void {
-    this.globals.permissions.push(PermissionType.READ);
-  }
-
-  private verifiedCreator(): void {
-    this.globals.permissions.push(PermissionType.CREATE);
-    this.globals.permissions.push(PermissionType.DELETE);
-    this.globals.permissions.push(PermissionType.READ);
-    this.globals.permissions.push(PermissionType.UPDATE);
-  }
-
-  private nonVerifiedCreator(): void {
-    this.globals.permissions.push(PermissionType.DELETE);
-    this.globals.permissions.push(PermissionType.READ);
-    this.globals.permissions.push(PermissionType.UPDATE);
+    this.tryPush(PermissionType.READ);
   }
 }
