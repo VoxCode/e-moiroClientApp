@@ -1,10 +1,12 @@
-<div class="modal-content" >
+<div class="modal-content">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">×</span>
     </button>
     <h4 class="modal-title w-100" id="myModalLabel">Учебная программа</h4>
   </div>
+  <button (click)="getLol()">Сохранить
+  </button>
   <div class="modal-body">
     <form [formGroup]="form">
       <div class="md-textarea">
@@ -17,30 +19,41 @@
       <div class="md-form">
         <label for="third">Количество часов</label>
         <input id="third" type="number" class="form-control" formControlName="third" mdbInput mdbValidate
-                  [validateSuccess]="false">
-        <mdb-error *ngIf="third.invalid && (third.dirty || third.touched)">Обязательно для заполнения</mdb-error>
+               [validateSuccess]="false">
+        <div *ngIf="third.invalid && (third.dirty || third.touched)">
+          <mdb-error *ngIf="third.errors.required">Обязательно для заполнения</mdb-error>
+          <mdb-error *ngIf="third.errors.numberRange">Число должно находиться в диапазоне от 36 до 100
+          </mdb-error>
+        </div>
       </div>
 
       <div class="md-form">
         <label for="fifteenth">Количество недель</label>
         <input id="fifteenth" type="number" class="form-control" formControlName="fifteenth" mdbInput mdbValidate
                [validateSuccess]="false">
-        <mdb-error *ngIf="fifteenth.invalid && (fifteenth.dirty || fifteenth.touched)">Обязательно для заполнения</mdb-error>
+        <div *ngIf="fifteenth.invalid && (fifteenth.dirty || fifteenth.touched)">
+          <mdb-error *ngIf="fifteenth.errors.required">Обязательно для заполнения</mdb-error>
+          <mdb-error *ngIf="fifteenth.errors.numberRange">Число должно находиться в диапазоне от 1 до 10
+          </mdb-error>
+        </div>
       </div>
 
       <div>
         <mdb-checkbox [default]="true" (change)="changeIsDistanceLearning($event.checked)"
-                      formControlName="fourth">Дистанционное обучение</mdb-checkbox>
+                      formControlName="fourth">Дистанционное обучение
+        </mdb-checkbox>
       </div>
 
       <div>
         <mdb-checkbox *ngIf="this.isDistanceLearning == true" [default]="true"
-                      formControlName="fifth">Контрольная работа</mdb-checkbox>
+                      formControlName="fifth">Контрольная работа
+        </mdb-checkbox>
       </div>
 
       <div>
         <mdb-checkbox *ngIf="this.isDistanceLearning == true" [default]="true"
-                      formControlName="sixth">Самостоятельная работа</mdb-checkbox>
+                      formControlName="sixth">Самостоятельная работа
+        </mdb-checkbox>
       </div>
       <br><br>
 

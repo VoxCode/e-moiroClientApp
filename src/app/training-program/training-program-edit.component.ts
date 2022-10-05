@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {DepartmentService} from '../services/department.service';
@@ -11,6 +11,7 @@ import {CertificationType} from '../models/CertificationType';
 import {FormOfEducation} from '../models/FormOfEducation';
 import {FormOfEducationService} from '../services/form-of-education.service';
 import {StudentCategoryEditComponent} from '../student-category/student-category-edit.component';
+import {NumberRangeValidator} from '../validators/number-range-validator';
 
 @Component({
   selector: 'app-modal-edit',
@@ -24,6 +25,12 @@ import {StudentCategoryEditComponent} from '../student-category/student-category
   ]
 })
 export class TrainingProgramEditComponent implements OnInit{
+  minHours = 36;
+  maxHours = 100;
+  minWeeks = 36;
+  maxWeeks = 36;
+  formOfEducationLock = 'заочная';
+
   departments: Department[];
   studentCategories: StudentCategory[];
   certificationTypes: CertificationType[];
@@ -53,7 +60,8 @@ export class TrainingProgramEditComponent implements OnInit{
     id: new FormControl({value: '', disabled: true}),      // index
     first: new FormControl({value: '', disabled: true}),   // id
     second: new FormControl('', Validators.required),      // name
-    third: new FormControl('', Validators.required),       // numberOfHours
+    third: new FormControl('',
+      [Validators.required, NumberRangeValidator(this.minHours, this.maxHours)]),       // numberOfHours
     fourth: new FormControl(''),                           // isDistanceLearning
     fifth: new FormControl(''),                            // isControlWork
     sixth: new FormControl(''),                            // isTestWork
@@ -61,7 +69,8 @@ export class TrainingProgramEditComponent implements OnInit{
     ninth: new FormControl('', Validators.required),       // studentCategoryId
     eleventh: new FormControl('', Validators.required),    // certificationTypeId
     thirteenth: new FormControl('', Validators.required),  // formOfEducationId
-    fifteenth: new FormControl('', Validators.required)    // numberOfWeeks
+    fifteenth: new FormControl('',
+      [Validators.required, NumberRangeValidator(this.minWeeks, this.maxWeeks)])    // numberOfWeeks
   });
 
   constructor(
@@ -80,6 +89,22 @@ export class TrainingProgramEditComponent implements OnInit{
     this.loadStudentCategory();
     this.loadCertificationType();
     this.loadFormOfEducation();
+
+    this.form.get('fourth').valueChanges
+      .subscribe(dist => {
+        if (dist === true ) {// если включена дистанционка, то лочим форму обучения на заочной
+          if (this.formOfEducations !== undefined ) {
+            const aux = this.formOfEducations.find(x => x.name.toLowerCase().includes(this.formOfEducationLock));
+            this.form.get('thirteenth').setValue(aux.id);
+            this.form.get('thirteenth').disable();
+          }
+        }
+        else { // если дистанционка отключена, то разлочить форму обучения
+          this.form.get('thirteenth').enable();
+        }
+      });
+
+
     this.isDistanceLearning = this.editableRow.fourth;
     this.form.controls.id.patchValue(this.editableRow.id);
     this.form.controls.first.patchValue(this.editableRow.first);
@@ -93,6 +118,10 @@ export class TrainingProgramEditComponent implements OnInit{
     this.form.controls.eleventh.patchValue(this.editableRow.eleventh);
     this.form.controls.thirteenth.patchValue(this.editableRow.thirteenth);
     this.form.controls.fifteenth.patchValue(this.editableRow.fifteenth);
+
+
+
+
   }
 
   editRow(): void {
@@ -142,6 +171,7 @@ export class TrainingProgramEditComponent implements OnInit{
     this.formOfEducationService.getValues()
       .subscribe((data: FormOfEducation[]) => {
         this.formOfEducations = data;
+        this.form.get('fourth').updateValueAndValidity({ onlySelf: false, emitEvent: true });
       });
   }
 
@@ -183,5 +213,35 @@ export class TrainingProgramEditComponent implements OnInit{
         editableRow: el
       }
     };
+  }
+
+  private lockDistanceToFormOfEducationId(fg: FormGroup): ValidationErrors | null {
+
+    fg.get('fourth').valueChanges
+      .subscribe(dist => {
+        if (dist === true ) {
+          const aux = this.formOfEducations.find(x => x.name.toLowerCase().includes(this.formOfEducationLock));
+          console.log(aux);
+          fg.controls.thirteenth.setValue(1);
+          return {calendarYearValidator: true};
+        }
+      console.log('firstname value changed');
+
+    });
+
+
+    const distance = fg.controls.fourth.value;
+
+    if (distance === true ) {
+      const aux = this.formOfEducations.find(x => x.name.toLowerCase().includes(this.formOfEducationLock));
+      console.log(aux);
+      fg.controls.thirteenth.setValue(1);
+      return {calendarYearValidator: true};
+    }
+    return null;
+  }
+
+  getLol() {
+    console.log(this.form.controls.fifteenth.errors);
   }
 }
