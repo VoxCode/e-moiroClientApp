@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TrainingProgram} from '../../models/TrainingProgram';
 import {ActivatedRoute} from '@angular/router';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
@@ -38,12 +38,12 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
     private trainingProgramMainLiteratureService: TrainingProgramMainLiteratureService,
     private route: ActivatedRoute,
     private modalService: MDBModalService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
-    this.loadMainLiterature();
   }
 
   drop(event: CdkDragDrop<string[]>): void {
@@ -84,6 +84,7 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
             });
           });
         }
+        this.loadMainLiterature();
       });
   }
 
@@ -92,12 +93,14 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
       if (mainLiteratures.length !== 0) {
         mainLiteratures.sort((a, b) => b.id - a.id);
         mainLiteratures.forEach((mainLiterature) => {
-          this.todo.push({
-            mainLiteratureId: mainLiterature.id,
-            content: mainLiterature.content,
-            accessDate: mainLiterature.accessDate,
-            accessDateEnabled: mainLiterature.accessDateEnabled,
-          });
+          if (!this.done.find(e => e.content === mainLiterature.content)) {
+            this.todo.push({
+              mainLiteratureId: mainLiterature.id,
+              content: mainLiterature.content,
+              accessDate: mainLiterature.accessDate,
+              accessDateEnabled: mainLiterature.accessDateEnabled,
+            });
+          }
         });
       }
     });
@@ -149,6 +152,12 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
       if (newElement) {
         this.trainingProgramMainLiteratureService.deleteValue(item.id).subscribe(() => {
           this.done.splice(index, 1);
+          this.todo.push({
+            additionalLiteratureId: item.id,
+            content: item.content,
+            accessDate: item.accessDate,
+            accessDateEnabled: item.accessDateEnabled,
+          });
           console.log('Delete was successful');
         });
       }
@@ -177,8 +186,7 @@ export class TrainingProgramMainLiteratureStepComponent implements OnInit {
             object.accessDateEnabled = trainingProgramMainLiteratureResponse.accessDateEnabled;
             object.mainLiteratureId = undefined;
           });
-      }
-      else {
+      } else {
         const trainingProgramMainLiterature: TrainingProgramMainLiterature = new TrainingProgramMainLiterature();
         trainingProgramMainLiterature.id = +object.id;
         trainingProgramMainLiterature.trainingProgramId = +object.trainingProgramId;

@@ -52,9 +52,9 @@ export class TrainingProgramMainStepComponent implements OnInit{
         if (data.length !== 0){
           data.sort((a, b) => a.id - b.id);
           this.occupationForms = data;
-          //this.loadTemplateCurriculumTopics();
+          // this.loadTemplateCurriculumTopics();
           this.loadTemplateCurriculumTopicsByDepartment();
-          //this.loadAllTemplateCurriculumTopics();
+          // this.loadAllTemplateCurriculumTopics();
         }
       });
   }

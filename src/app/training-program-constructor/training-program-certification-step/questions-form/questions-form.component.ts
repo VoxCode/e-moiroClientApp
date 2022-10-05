@@ -13,6 +13,8 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 import {TrainingProgramFinalExamination} from '../../../models/TrainingProgramFinalExamination';
 import {IsDeleteComponent} from '../../../is-delete/is-delete.component';
 import {FinalExaminationEditComponent} from '../../../final-examination/final-examination-edit.component';
+import {Department} from '../../../models/Department';
+import {DepartmentService} from '../../../services/department.service';
 
 @Component({
   selector: 'app-questions-form',
@@ -21,7 +23,8 @@ import {FinalExaminationEditComponent} from '../../../final-examination/final-ex
   providers: [
     FinalExaminationService,
     TrainingProgramFinalExaminationService,
-    CertificationTypeService
+    CertificationTypeService,
+    DepartmentService
   ]
 })
 export class QuestionsFormComponent implements OnInit {
@@ -40,6 +43,7 @@ export class QuestionsFormComponent implements OnInit {
     private finalExaminationService: FinalExaminationService,
     private trainingProgramFinalExaminationService: TrainingProgramFinalExaminationService,
     private certificationTypeService: CertificationTypeService,
+    private departmentService: DepartmentService,
     private route: ActivatedRoute,
     private modalService: MDBModalService,
   ) { }
@@ -87,16 +91,13 @@ export class QuestionsFormComponent implements OnInit {
         if (finalExaminations.length !== 0) {
           finalExaminations.sort((a, b) => b.id - a.id);
           finalExaminations.forEach((finalExamination) => {
-            if (this.done.find(e => e.id === finalExamination.id))
-            {
-              console.log(finalExamination);
+            if (!this.done.find(e => e.content === finalExamination.content)) {
               this.todo.push({
                 finalExaminationId: finalExamination.id,
                 content: finalExamination.content
               });
             }
           });
-          console.log(finalExaminations);
         }
       });
   }
@@ -122,11 +123,21 @@ export class QuestionsFormComponent implements OnInit {
     finalExamination.authorIndex = this.globals.userId;
     this.finalExaminationService.createValue(finalExamination)
       .subscribe((finalExaminationTemplateResponse: FinalExamination) => {
-        console.log('Save was successful!');
-        this.todo.push({
-          finalExaminationId: finalExaminationTemplateResponse.id,
-          content: finalExaminationTemplateResponse.content
+        this.departmentService.getValue(this.trainingProgram.departmentId).
+          subscribe((dep: Department) => {
+            if (dep){
+              this.finalExaminationService.connectToDepartments(finalExaminationTemplateResponse.id,
+                [dep])
+                .subscribe((connectionResponse: any) => {
+                  console.log('connected to ' + dep.name);
+                });
+            }
         });
+        console.log('Save was successful!');
+        // this.t1odo.push({
+        //   finalExaminationId: finalExaminationTemplateResponse.id,
+        //   content: finalExaminationTemplateResponse.content
+        // });
       });
   }
 
@@ -158,6 +169,10 @@ export class QuestionsFormComponent implements OnInit {
       if (newElement) {
         this.trainingProgramFinalExaminationService.deleteValue(item.id).subscribe(() => {
           this.done.splice(index, 1);
+          this.todo.push({
+            finalExaminationId: item.id,
+            content: item.content
+          });
           console.log('Delete was successful!');
         });
       }

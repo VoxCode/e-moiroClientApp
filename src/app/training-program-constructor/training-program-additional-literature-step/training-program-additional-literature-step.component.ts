@@ -42,7 +42,6 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
-    this.loadAdditionalLiterature();
   }
 
   drop(event: CdkDragDrop<string[]>): void {
@@ -82,6 +81,7 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
             });
           });
         }
+        this.loadAdditionalLiterature();
       });
   }
 
@@ -90,12 +90,14 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
       if (additionalLiteratures.length !== 0) {
         additionalLiteratures.sort((a, b) => b.id - a.id);
         additionalLiteratures.forEach((additionalLiterature) => {
-          this.todo.push({
-            additionalLiteratureId: additionalLiterature.id,
-            content: additionalLiterature.content,
-            accessDate: additionalLiterature.accessDate,
-            accessDateEnabled: additionalLiterature.accessDateEnabled,
-          });
+          if (!this.done.find(e => e.content === additionalLiterature.content)) {
+            this.todo.push({
+              additionalLiteratureId: additionalLiterature.id,
+              content: additionalLiterature.content,
+              accessDate: additionalLiterature.accessDate,
+              accessDateEnabled: additionalLiterature.accessDateEnabled,
+            });
+          }
         });
       }
     });
@@ -147,6 +149,12 @@ export class TrainingProgramAdditionalLiteratureStepComponent implements OnInit 
       if (newElement) {
         this.trainingProgramAdditionalLiteratureService.deleteValue(item.id).subscribe(() => {
           this.done.splice(index, 1);
+          this.todo.push({
+            additionalLiteratureId: item.id,
+            content: item.content,
+            accessDate: item.accessDate,
+            accessDateEnabled: item.accessDateEnabled,
+          });
           console.log('Delete was successful!');
         });
       }

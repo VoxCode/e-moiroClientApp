@@ -42,7 +42,6 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
-    this.loadRegulation();
   }
 
   drop(event: CdkDragDrop<string[]>): void {
@@ -82,6 +81,7 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
             });
           });
         }
+        this.loadRegulation();
       });
   }
 
@@ -90,12 +90,14 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
       if (regulations.length !== 0) {
         regulations.sort((a, b) => b.id - a.id);
         regulations.forEach((regulation) => {
-          this.todo.push({
-            regulationId: regulation.id,
-            content: regulation.content,
-            accessDate: regulation.accessDate,
-            accessDateEnabled: regulation.accessDateEnabled,
-          });
+          if (!this.done.find(e => e.content === regulation.content)) {
+            this.todo.push({
+              regulationId: regulation.id,
+              content: regulation.content,
+              accessDate: regulation.accessDate,
+              accessDateEnabled: regulation.accessDateEnabled,
+            });
+          }
         });
       }
     });
@@ -147,6 +149,12 @@ export class TrainingProgramRegulationStepComponent implements OnInit {
       if (newElement) {
         this.trainingProgramRegulationService.deleteValue(item.id).subscribe(() => {
           this.done.splice(index, 1);
+          this.todo.push({
+            regulationId: item.id,
+            content: item.content,
+            accessDate: item.accessDate,
+            accessDateEnabled: item.accessDateEnabled,
+          });
           console.log('Delete was successful!');
         });
       }
