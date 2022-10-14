@@ -50,6 +50,7 @@ export class DocumentEdComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.onCreate();
+
   }
 
   public onFileChange(e: any): void {
@@ -67,10 +68,6 @@ export class DocumentEdComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
-  public getEditorInstance(): DocumentEditorContainerComponent{
-    return this.container;
-  }
-
   onCreate(): any {
     if (this.docx.length > 1) {
       this.docxMergeService.merge(this.docx).subscribe((data: string) => {
@@ -80,45 +77,6 @@ export class DocumentEdComponent implements OnInit, OnChanges, AfterViewInit {
     else {
       this.loadFile(this.docx[0]);
     }
-
-    // const sfdt = {
-    //   "sections": [
-    //     {
-    //       "blocks": [
-    //         {
-    //           "inlines": [
-    //             {
-    //               "characterFormat": {
-    //                 "bold": true,
-    //                 "italic": true
-    //               },
-    //               "text": "Adventure Works Cycles, the fictitious company on which the AdventureWorks sample databases are based, is a large, multinational manufacturing company. The company manufactures and sells metal and composite bicycles to North American, European and Asian commercial markets. While its base operation is located in Bothell, Washington with 290 employees, several regional sales teams are located throughout their market base."
-    //             }
-    //           ]
-    //         }
-    //       ]
-    //     }
-    //   ]
-    // };
-    //
-    // setInterval(() => {
-    //   console.log("asfdsfsdfsdfsfsdfsf");
-    //   if (this.container.documentEditor !== undefined && this.container.documentEditor.isDocumentLoaded) {
-    //     //this.container.documentEditor.searchModule.findAll('Certification placeholder');
-    //     if (this.container.documentEditor.searchModule.searchResults.length > 0) {
-    //       // Replace all the occurences of given text
-    //       //this.container.documentEditor.searchModule.searchResults.navigate();
-    //       //this.container.documentEditor.searchModule.searchResults.getTextSearchResultsOffset();
-    //
-    //       //this.container.documentEditor.editor.paste(JSON.stringify(sfdt));
-    //       //this.container.documentEditor.searchModule.searchResults.replaceAll(JSON.stringify(sfdt));
-    //     }
-    //   }
-    //   else{
-    //     console.log('not loaded');
-    //   }
-    // }, 1000);
-
   }
 
   public onPrint(): void {
