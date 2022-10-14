@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 
 import {MatIconModule} from '@angular/material/icon';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatInputModule} from '@angular/material/input';
+import {MatInputModule, MatTextareaAutosize} from '@angular/material/input';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialogModule} from '@angular/material/dialog';

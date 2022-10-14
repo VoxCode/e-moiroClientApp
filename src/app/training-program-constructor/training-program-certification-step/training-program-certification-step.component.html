@@ -14,7 +14,10 @@
                                 [isDistanceLearning]="trainingProgram.isDistanceLearning"></app-training-program-stepper>
 
   <ng-container *ngIf="certificationType.id === 5">
-    <app-business-game-form></app-business-game-form>
+    <app-business-game-form
+      [trainingProgram]="trainingProgram"
+      [certificationType]="certificationType"
+    ></app-business-game-form>
   </ng-container>
   <ng-container *ngIf="certificationType.id !== 5 && certificationType.id != undefined">
     <app-questions-form [training-program]="trainingProgram" [certification-type]="certificationType"></app-questions-form>

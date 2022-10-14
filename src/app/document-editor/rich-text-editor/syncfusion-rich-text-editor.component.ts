@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, Output, ViewChild, EventEmitter, OnDestroy} from '@angular/core';
 import {
   HtmlEditorService,
   ImageService,
@@ -16,10 +16,15 @@ import {
 })
 export class SyncfusionRichTextEditorComponent implements OnInit {
 
+  @ViewChild('RTE')
+  public RTE: RichTextEditorComponent;
+  @Input() content: string;
+  @Output() richTextContentEmitter = new EventEmitter<string>();
+
   public tools: object = {
     items: ['Undo', 'Redo', '|',
       'Bold', 'Italic', 'Underline', '|',
-      'Formats', 'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
+      'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
       'Indent', 'Outdent', '|', 'SourceCode', '|', 'FullScreen']
   };
   // @ViewChild('richTextEditor') rte: RichTextEditorComponent;
@@ -39,9 +44,21 @@ export class SyncfusionRichTextEditorComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    //this.rte.format = {};
-    //this.rte.ent.Document.ParagraphFormat.LineSpacing = 0.1;
-    //const defaultRTE: SyncfusionRichTextEditorComponent = new SyncfusionRichTextEditorComponent();
   }
 
+  onRTECreate(e: any): void {
+    this.setValue(this.content);
+  }
+
+  getValue(): string{
+    return this.RTE.value;
+  }
+
+  setValue(val: string): void{
+    this.RTE.writeValue(val);
+  }
+
+  saveRichText(): void {
+    this.richTextContentEmitter.emit(this.getValue());
+  }
 }

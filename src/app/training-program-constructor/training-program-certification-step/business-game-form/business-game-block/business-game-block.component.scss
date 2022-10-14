@@ -2,7 +2,7 @@
   min-width: 200px;
   max-width: 100%;
   margin: 0 25px 25px 0;
-  display: inline-block;
+  display: block;
   vertical-align: top;
   border: black solid 1px;
   border-radius: 5px;
@@ -32,6 +32,7 @@
   box-sizing: border-box;
   background: white;
   font-size: 14px;
+  display: flex;
 }
 
 
@@ -61,4 +62,20 @@ button{
 
 .buttons{
   text-align: right;
+}
+
+.fullwidth {
+  width: 100%;
+  overflow: auto;
+  min-height: 50px;
+}
+
+.sub-row-right-col {
+  display: inline-grid;
+  width: auto;
+  text-align: right;
+}
+.sub-row-left-col {
+  display: inline-block;
+  width: 100%;
 }

@@ -26,7 +26,7 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
-  public someText(txt: string, indent?: number, bld?: boolean, caps?: boolean ): Paragraph{
+  public someText(txt: string, indent?: number, bld?: boolean, italics?: boolean, caps?: boolean ): Paragraph{
     return new Paragraph({
       style: 'default',
       alignment: AlignmentType.JUSTIFIED,
@@ -39,10 +39,12 @@ export class DocxGeneratorDataTemplate {
           text: txt,
           allCaps: caps,
           bold: bld,
+          italics
         })
       ]
     });
   }
+
 
   public guidedTestWorkAssignmentSomeTextItalic(testWorkHours: number, indent?: number): Paragraph {
     const text = this.classHoursEndingDeclination(testWorkHours);
