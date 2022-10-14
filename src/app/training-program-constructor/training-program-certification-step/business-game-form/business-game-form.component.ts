@@ -9,9 +9,10 @@ import {Globals} from '../../../globals';
 import {TrainingProgramConstructorService} from '../../training-program-constructor.service';
 import {ActivatedRoute} from '@angular/router';
 import {FinalExamination} from '../../../models/FinalExamination';
-import {SyncfusionRichTextEditorComponent} from "../../../document-editor/rich-text-editor/syncfusion-rich-text-editor.component";
-import {CdkTextareaAutosize} from "@angular/cdk/text-field";
-import {take} from "rxjs/operators";
+import {SyncfusionRichTextEditorComponent} from '../../../document-editor/rich-text-editor/syncfusion-rich-text-editor.component';
+import {CdkTextareaAutosize} from '@angular/cdk/text-field';
+import {take} from 'rxjs/operators';
+import {BusinessGame} from "./business-game";
 
 @Component({
   selector: 'app-business-game-form',
@@ -29,7 +30,7 @@ export class BusinessGameFormComponent implements OnInit {
   @Input() trainingProgram: TrainingProgram;
   @Input() certificationType: CertificationType;
 
-  scenario: any[] = ['qwe', 'asd', 'zxc'];
+  bGameObject: BusinessGame = new BusinessGame();
 
   finalExamination: FinalExamination = new FinalExamination();
   businessGame: TrainingProgramFinalExamination = new TrainingProgramFinalExamination();
@@ -41,6 +42,7 @@ export class BusinessGameFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.bGameObject.createEmpty();
     this.loadTrainingProgramFinalExamination(this.trainingProgram.id);
   }
 
@@ -58,8 +60,10 @@ export class BusinessGameFormComponent implements OnInit {
           this.businessGame.trainingProgramId = obj.trainingProgramId;
           this.businessGame.content = obj.content;
           this.businessGame.serialNumber = obj.serialNumber;
+          this.bGameObject.parseToView(this.businessGame.content);
           console.log('loaded game');
           console.log(obj);
+          console.log(this.bGameObject);
         }
         else {
           this.businessGame.id = 0;
@@ -91,6 +95,7 @@ export class BusinessGameFormComponent implements OnInit {
   }
 
   save(): void {
+    this.businessGame.content = this.bGameObject.parseToStore();
     if (this.businessGame.id > 0)
     {
       this.updateTrainingProgramFinalExamination(this.businessGame);
@@ -100,25 +105,25 @@ export class BusinessGameFormComponent implements OnInit {
     }
   }
 
-  updateBusinessGameContent(value: string): void{
-    this.businessGame.content = value;
-    console.log(this.businessGame.content);
-    this.save();
+  updateBusinessGameContent(str: string): void{
+    //this.businessGame.content = this.bGameObject.parseToStore();
+    //this.save();
   }
 
-  addScenarioField() {
-    this.scenario.push('');
-  }
-
-  updateScenarioField() {
-
-  }
-
-  removeScenarioField() {
-
-  }
-
-  saveBusinessGame() {
-
+  updateData(newVal: string[], key: string): void {
+    switch (key) {
+      case 'task':
+        this.bGameObject.task = newVal;
+        break;
+      case 'intro':
+        this.bGameObject.intro = newVal;
+        break;
+      case 'main':
+        this.bGameObject.main = newVal;
+        break;
+      case 'ending':
+        this.bGameObject.ending = newVal;
+        break;
+    }
   }
 }
