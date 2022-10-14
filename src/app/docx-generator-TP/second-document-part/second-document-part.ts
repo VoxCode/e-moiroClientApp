@@ -3,6 +3,7 @@ import {DocxGeneratorDataTemplate} from '../../docx-generator-data-template/docx
 import {TrainingProgramGenerator} from '../../models/generator-models/TrainingProgramGenerator';
 import {GuidedTestWorkAssignment} from '../../models/GuidedTestWorkAssignment';
 import {CurriculumTopicTrainingProgramGenerator} from '../../models/generator-models/CurriculumTopicTrainingProgramGenerator';
+import {BusinessGame} from '../../training-program-constructor/training-program-certification-step/business-game-form/business-game';
 
 export class SecondDocumentPart {
 
@@ -92,13 +93,29 @@ export class SecondDocumentPart {
 
     this.children.push(this.docxGeneratorDataTemplate.titleText('Материалы для итоговой аттестации слушателей'));
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-    console.log(this.trainingProgram.certificationTypeId);
     if (this.trainingProgram.certificationTypeId === 5) {
+      const bGameObject: BusinessGame = new BusinessGame();
+      bGameObject.parseToView(this.trainingProgram.trainingProgramFinalExaminations[0].content);
+
       this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Собеседование (деловая игра)', 0, true));
       this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-      this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Certification placeholder', 0, true));
-      //this.children.push(this.docxGeneratorDataTemplate.someText(
-      //  this.trainingProgram.trainingProgramFinalExaminations[0].content, 720));
+      this.children.push(this.docxGeneratorDataTemplate.someText('Задачи:', 720, false, true));
+      bGameObject.task.forEach((text, i) => {
+        this.children.push(this.docxGeneratorDataTemplate.someText(text, 720));
+      });
+      this.children.push(this.docxGeneratorDataTemplate.someText('Сценарий', 720, false, true));
+      this.children.push(this.docxGeneratorDataTemplate.someText('Вводная часть:', 720, false, true));
+      bGameObject.intro.forEach((text, i) => {
+        this.children.push(this.docxGeneratorDataTemplate.someText(text, 720));
+      });
+      this.children.push(this.docxGeneratorDataTemplate.someText('Основаная часть:', 720, false, true));
+      bGameObject.main.forEach((text, i) => {
+        this.children.push(this.docxGeneratorDataTemplate.someText(text, 720));
+      });
+      this.children.push(this.docxGeneratorDataTemplate.someText('Заключительная часть:', 720, false, true));
+      bGameObject.ending.forEach((text, i) => {
+        this.children.push(this.docxGeneratorDataTemplate.someText(text, 720));
+      });
     }
     else {
       this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Вопросы для проведения зачета', 0, true));
