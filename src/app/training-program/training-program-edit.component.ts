@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {DepartmentService} from '../services/department.service';
@@ -27,8 +27,8 @@ import {NumberRangeValidator} from '../validators/number-range-validator';
 export class TrainingProgramEditComponent implements OnInit{
   minHours = 36;
   maxHours = 100;
-  minWeeks = 36;
-  maxWeeks = 36;
+  minWeeks = 1;
+  maxWeeks = 10;
   formOfEducationLock = 'заочная';
 
   departments: Department[];
@@ -213,35 +213,5 @@ export class TrainingProgramEditComponent implements OnInit{
         editableRow: el
       }
     };
-  }
-
-  private lockDistanceToFormOfEducationId(fg: FormGroup): ValidationErrors | null {
-
-    fg.get('fourth').valueChanges
-      .subscribe(dist => {
-        if (dist === true ) {
-          const aux = this.formOfEducations.find(x => x.name.toLowerCase().includes(this.formOfEducationLock));
-          console.log(aux);
-          fg.controls.thirteenth.setValue(1);
-          return {calendarYearValidator: true};
-        }
-      console.log('firstname value changed');
-
-    });
-
-
-    const distance = fg.controls.fourth.value;
-
-    if (distance === true ) {
-      const aux = this.formOfEducations.find(x => x.name.toLowerCase().includes(this.formOfEducationLock));
-      console.log(aux);
-      fg.controls.thirteenth.setValue(1);
-      return {calendarYearValidator: true};
-    }
-    return null;
-  }
-
-  getLol() {
-    console.log(this.form.controls.fifteenth.errors);
   }
 }
