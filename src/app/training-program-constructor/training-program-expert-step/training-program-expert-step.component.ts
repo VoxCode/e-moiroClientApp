@@ -29,6 +29,7 @@ export class TrainingProgramExpertStepComponent implements OnInit {
   trainingProgram: TrainingProgram;
   trainingProgramTeacherDeveloper: TrainingProgramTeacher[] = [{}];
   trainingProgramTeacherReviewer: TrainingProgramTeacher[] = [{}];
+  DevelopersHolder: {teacherId: number, };
   teacherDevelopers: Teacher[] = [];
   teacherReviewers: Teacher[] = [];
   teachers: Teacher[] = [];
@@ -108,14 +109,21 @@ export class TrainingProgramExpertStepComponent implements OnInit {
   }
 
   removeDeveloper(i: number, id: number): void {
+    const teacherIdToRemove = this.trainingProgramTeacherDeveloper[i].teacherId;
+    const teacherDevIndex = this.teacherDevelopers.findIndex((x) => x.id === teacherIdToRemove);
     this.trainingProgramTeacherDeveloper.splice(i, 1);
+    let aux = this.teacherDevelopers.splice(teacherDevIndex, 1);
+    console.log(aux);
     if (id) {
       this.trainingProgramTeacherService.deleteValue(id).subscribe();
     }
   }
 
   removeReviewer(i: number, id: number): void {
+    const teacherIdToRemove = this.trainingProgramTeacherReviewer[i].teacherId;
+    const teacherReviewerIndex = this.teacherReviewers.findIndex((x) => x.id === teacherIdToRemove);
     this.trainingProgramTeacherReviewer.splice(i, 1);
+    this.teacherReviewers.splice(teacherReviewerIndex, 1);
     if (id) {
       this.trainingProgramTeacherService.deleteValue(id).subscribe();
     }
