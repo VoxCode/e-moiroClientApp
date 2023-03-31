@@ -11,18 +11,40 @@
   <br>
 
   <div class="example-box"  *ngFor="let item of done; index as i" cdkDrag>
-    <div id="curriculumTitle"><b>{{i+1}}. {{item.topicTitle}}</b></div><br>
-    <div id="curriculumAnnotation">{{item.annotation}}</div><br>
-    <div id="isVariable">
-      <mdb-checkbox (change)="updateCurriculumTopicTrainingProgram(item)"
-                    [(ngModel)]="item.isVariable" [default]="true">Вариативная
-      </mdb-checkbox>
-    </div><br>
 
-    <app-occupation-form-class-hour-child
-    [curriculumTopicTrainingProgramId]="item.curriculumTopicTrainingProgramId"
-    [occupationForms]="occupationForms">
-    </app-occupation-form-class-hour-child><br>
+    <div [ngSwitch]="item.curriculumTopicTypeId">
+      <ng-template ngSwitchCase="1">
+      </ng-template>
+      <ng-template ngSwitchCase="2">
+        <div id="curriculumTitle"><b>{{i+1}}. {{item.topicTitle}}</b></div><br>
+        <app-business-game-viewer [businessGameBaseString]="item.annotation"></app-business-game-viewer>
+        <br>
+        <div id="isVariable">
+          <mdb-checkbox (change)="updateCurriculumTopicTrainingProgram(item)"
+                        [(ngModel)]="item.isVariable" [default]="true">Вариативная
+          </mdb-checkbox>
+        </div><br>
+        <app-occupation-form-class-hour-child
+          [curriculumTopicTrainingProgramId]="item.curriculumTopicTrainingProgramId"
+          [occupationForms]="occupationForms">
+        </app-occupation-form-class-hour-child><br>
+      </ng-template>
+      <ng-template ngSwitchDefault>
+        <div id="curriculumTitle"><b>{{i+1}}. {{item.topicTitle}}</b></div><br>
+        <div id="curriculumAnnotation">{{item.annotation}}</div><br>
+        <div id="isVariable">
+          <mdb-checkbox (change)="updateCurriculumTopicTrainingProgram(item)"
+                        [(ngModel)]="item.isVariable" [default]="true">Вариативная
+          </mdb-checkbox>
+        </div><br>
+
+        <app-occupation-form-class-hour-child
+          [curriculumTopicTrainingProgramId]="item.curriculumTopicTrainingProgramId"
+          [occupationForms]="occupationForms">
+        </app-occupation-form-class-hour-child><br></ng-template>
+    </div>
+
+
     <div *ngIf="trainingProgram.isTestWork">
       <label style="font-size: large">Управляемая самостоятельная работа
         <input [value]="" type="number" min="0" max="10"

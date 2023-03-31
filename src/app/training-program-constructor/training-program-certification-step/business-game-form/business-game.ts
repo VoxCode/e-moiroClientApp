@@ -1,5 +1,6 @@
 export class BusinessGame {
   constructor(
+    public bGameTitle?: string,
     public task?: string[],
     public intro?: string[],
     public main?: string[],

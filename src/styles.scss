@@ -32,6 +32,10 @@ body{
   overflow: visible !important;
 }
 
+.mat-dialog-container{
+  position: relative;
+}
+
 .errorIE {
   margin: 0 auto;
   background-color: white;

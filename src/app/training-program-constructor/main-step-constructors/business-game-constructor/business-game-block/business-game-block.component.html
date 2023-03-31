@@ -1,22 +1,25 @@
 
   <div class="example-container">
-    <h2>{{title}}</h2>
+    <div class="block-title">
+    {{title}}
     <button *ngIf="dataFields.length === 0" matTooltip="Создать" type="button" mdbBtn color="primary" size="sm"
             class="relative waves-light"
             mdbWavesEffect
             (click)="addField()">
       <mdb-icon fas icon="plus" size="sm"></mdb-icon>
     </button>
-
+    </div>
     <div class="example-list">
       <div class="example-box" *ngFor="let item of dataFields; index as i">
         <div class="sub-row-left-col">
+          <mat-form-field class="fullwidth" appearance="fill">
         <textarea class="fullwidth" [value]="item"
                   (change)="textareaValueChange($event, i)"
                   cdkTextareaAutosize
                   cdkAutosizeMinRows="1"
                   cdkAutosizeMaxRows="5"
                   matInput></textarea>
+          </mat-form-field>
         </div>
         <div class="buttons sub-row-right-col" >
           <button matTooltip="Добавить" type="button" *ngIf="i == dataFields.length - 1" mdbBtn color="primary"

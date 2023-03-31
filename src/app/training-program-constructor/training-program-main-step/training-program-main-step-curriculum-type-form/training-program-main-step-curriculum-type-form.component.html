@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Выберите шаблон:</h2>
+<button mat-icon-button class="close-dialog-button" [mat-dialog-close]="true">
+  <mat-icon class="close-icon" color="primary">close</mat-icon>
+</button>
+
+<mat-dialog-content class="mat-typography">
+  <div class="button-row">
+    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="1">Лекция</button>
+    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="2">Деловая игра</button>
+    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="3">Круглый стол</button>
+    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="4">Тренинг</button>
+  </div>
+  <p></p>
+</mat-dialog-content>

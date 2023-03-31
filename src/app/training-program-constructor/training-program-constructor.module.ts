@@ -30,7 +30,10 @@ import { BusinessGameFormComponent } from './training-program-certification-step
 import { SyncfusionRichTextEditorComponent } from '../document-editor/rich-text-editor/syncfusion-rich-text-editor.component';
 import {RichTextEditorModule} from '@syncfusion/ej2-angular-richtexteditor';
 import { QuestionsFormComponent } from './training-program-certification-step/questions-form/questions-form.component';
-import { BusinessGameBlockComponent } from './training-program-certification-step/business-game-form/business-game-block/business-game-block.component';
+import { BusinessGameBlockComponent } from './main-step-constructors/business-game-constructor/business-game-block/business-game-block.component';
+import { BusinessGameConstructorComponent } from './main-step-constructors/business-game-constructor/business-game-constructor.component';
+import { BusinessGameViewerComponent } from './main-step-constructors/business-game-constructor/business-game-viewer/business-game-viewer.component';
+import { TrainingProgramMainStepCurriculumTypeFormComponent } from './training-program-main-step/training-program-main-step-curriculum-type-form/training-program-main-step-curriculum-type-form.component';
 
 
 @NgModule({
@@ -69,7 +72,10 @@ import { BusinessGameBlockComponent } from './training-program-certification-ste
     BusinessGameFormComponent,
     SyncfusionRichTextEditorComponent,
     QuestionsFormComponent,
-    BusinessGameBlockComponent
+    BusinessGameBlockComponent,
+    BusinessGameConstructorComponent,
+    BusinessGameViewerComponent,
+    TrainingProgramMainStepCurriculumTypeFormComponent
   ],
   exports: [],
   providers: [TrainingProgramConstructorService]

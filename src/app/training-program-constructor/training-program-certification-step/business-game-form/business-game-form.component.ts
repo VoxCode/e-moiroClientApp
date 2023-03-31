@@ -13,6 +13,8 @@ import {SyncfusionRichTextEditorComponent} from '../../../document-editor/rich-t
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {take} from 'rxjs/operators';
 import {BusinessGame} from "./business-game";
+import {BusinessGameConstructorComponent} from "../../main-step-constructors/business-game-constructor/business-game-constructor.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-business-game-form',
@@ -33,10 +35,11 @@ export class BusinessGameFormComponent implements OnInit {
   bGameObject: BusinessGame = new BusinessGame();
 
   finalExamination: FinalExamination = new FinalExamination();
-  businessGame: TrainingProgramFinalExamination = new TrainingProgramFinalExamination();
+  businessGameInTrainingProgramFinalExamination: TrainingProgramFinalExamination = new TrainingProgramFinalExamination();
 
   constructor(
     public globals: Globals,
+    public dialog: MatDialog,
     private finalExaminationService: FinalExaminationService,
     private trainingProgramFinalExaminationService: TrainingProgramFinalExaminationService,
   ) { }
@@ -47,7 +50,7 @@ export class BusinessGameFormComponent implements OnInit {
   }
 
   writeToRichText(): void {
-    this.rte.setValue(this.businessGame.content);
+    this.rte.setValue(this.businessGameInTrainingProgramFinalExamination.content);
   }
 
   loadTrainingProgramFinalExamination(trainingProgramId: number): void {
@@ -56,19 +59,19 @@ export class BusinessGameFormComponent implements OnInit {
         if (trainingProgramFinalExaminations.length !== 0){
           trainingProgramFinalExaminations.sort((a, b) => a.serialNumber - b.serialNumber);
           const obj = trainingProgramFinalExaminations[0];
-          this.businessGame.id = obj.id;
-          this.businessGame.trainingProgramId = obj.trainingProgramId;
-          this.businessGame.content = obj.content;
-          this.businessGame.serialNumber = obj.serialNumber;
-          this.bGameObject.parseToView(this.businessGame.content);
+          this.businessGameInTrainingProgramFinalExamination.id = obj.id;
+          this.businessGameInTrainingProgramFinalExamination.trainingProgramId = obj.trainingProgramId;
+          this.businessGameInTrainingProgramFinalExamination.content = obj.content;
+          this.businessGameInTrainingProgramFinalExamination.serialNumber = obj.serialNumber;
+          this.bGameObject.parseToView(this.businessGameInTrainingProgramFinalExamination.content);
           console.log('loaded game');
           console.log(obj);
           console.log(this.bGameObject);
         }
         else {
-          this.businessGame.id = 0;
-          this.businessGame.trainingProgramId = this.trainingProgram.id;
-          this.businessGame.content = '<p><i>Задачи:</i></p><br>\n' +
+          this.businessGameInTrainingProgramFinalExamination.id = 0;
+          this.businessGameInTrainingProgramFinalExamination.trainingProgramId = this.trainingProgram.id;
+          this.businessGameInTrainingProgramFinalExamination.content = '<p><i>Задачи:</i></p><br>\n' +
             '<p><i>Сценарий</i></p>\n' +
             '<p><i>Вводная часть</i></p><br>\n' +
             '<p><i>Основная часть</i></p><br>\n' +
@@ -82,7 +85,7 @@ export class BusinessGameFormComponent implements OnInit {
   createTrainingProgramFinalExamination(trainingProgramFinalExamination: TrainingProgramFinalExamination): void {
     this.trainingProgramFinalExaminationService.createValue(trainingProgramFinalExamination)
       .subscribe((trainingProgramFinalExaminationResponse: TrainingProgramFinalExamination) => {
-        this.businessGame = trainingProgramFinalExaminationResponse;
+        this.businessGameInTrainingProgramFinalExamination = trainingProgramFinalExaminationResponse;
         console.log('Create was successful!');
       });
   }
@@ -95,35 +98,35 @@ export class BusinessGameFormComponent implements OnInit {
   }
 
   save(): void {
-    this.businessGame.content = this.bGameObject.parseToStore();
-    if (this.businessGame.id > 0)
+    this.businessGameInTrainingProgramFinalExamination.content = this.bGameObject.parseToStore();
+    if (this.businessGameInTrainingProgramFinalExamination.id > 0)
     {
-      this.updateTrainingProgramFinalExamination(this.businessGame);
+      this.updateTrainingProgramFinalExamination(this.businessGameInTrainingProgramFinalExamination);
     }
     else {
-      this.createTrainingProgramFinalExamination(this.businessGame);
+      this.createTrainingProgramFinalExamination(this.businessGameInTrainingProgramFinalExamination);
     }
   }
 
-  updateBusinessGameContent(str: string): void{
-    //this.businessGame.content = this.bGameObject.parseToStore();
-    //this.save();
-  }
+  editBusinessGame(): void {
+    const auxBGameObject = new BusinessGame().parseToView(this.businessGameInTrainingProgramFinalExamination.content);
+    const dialogRef = this.dialog.open(BusinessGameConstructorComponent, {
+      width: '80vw',
+      maxWidth: '80vw',
+      data: {bGameObject: auxBGameObject, params: {topicNeeded: false }}
+    });
 
-  updateData(newVal: string[], key: string): void {
-    switch (key) {
-      case 'task':
-        this.bGameObject.task = newVal;
-        break;
-      case 'intro':
-        this.bGameObject.intro = newVal;
-        break;
-      case 'main':
-        this.bGameObject.main = newVal;
-        break;
-      case 'ending':
-        this.bGameObject.ending = newVal;
-        break;
-    }
+    dialogRef.componentInstance.bGameChange.subscribe((res) => {
+      this.bGameObject = res;
+      this.save();
+    });
+
+    dialogRef.afterClosed().subscribe((res: BusinessGame) => {
+      if (!res) {
+        return;
+      }
+      this.bGameObject = res;
+      this.save();
+    });
   }
 }

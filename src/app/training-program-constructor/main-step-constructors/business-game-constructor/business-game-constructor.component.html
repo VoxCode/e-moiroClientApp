@@ -1,0 +1,37 @@
+<div class="dialog-title-wrapper" mat-dialog-title>
+  <h3 class="dialog-title">
+    <div>
+      <button mat-icon-button class="close-dialog-button" (click)="closeWithoutsaving()">
+        <mat-icon class="close-icon" color="primary">close</mat-icon>
+      </button>
+      <strong>Заполните необходимые элементы</strong>
+      <button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+              (click)="save()" mdbWavesEffect>
+        Сохранить
+      </button>
+    </div>
+  </h3>
+  <div *ngIf="data.params.topicNeeded" class="fullwidth">
+    <mat-form-field class="fullwidth" appearance="fill">
+      <mat-label>Тема</mat-label>
+    <textarea  [(ngModel)]="businessGame.bGameTitle"
+               (ngModelChange)="updateTitle()"
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="5"
+              cdkTextareaAutosize
+              matInput></textarea>
+    </mat-form-field>
+  </div>
+</div>
+
+<div mat-dialog-content>
+  <app-business-game-block [dataFields]="businessGame.task" (dataChanged)="updateData($event,'task')"
+                           title="Задачи"></app-business-game-block>
+  <app-business-game-block [dataFields]="businessGame.intro" (dataChanged)="updateData($event,'intro')"
+                           title="Вводная часть"></app-business-game-block>
+  <app-business-game-block [dataFields]="businessGame.main" (dataChanged)="updateData($event,'main')"
+                           title="Основная часть"></app-business-game-block>
+  <app-business-game-block [dataFields]="businessGame.ending" (dataChanged)="updateData($event,'ending')"
+                           title="Заключительная часть"></app-business-game-block>
+</div>
+

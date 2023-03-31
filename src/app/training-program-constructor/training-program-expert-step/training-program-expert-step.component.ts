@@ -11,6 +11,7 @@ import {TeacherEditComponent} from '../../teacher/teacher-edit.component';
 import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
 import {MAT_TOOLTIP_DEFAULT_OPTIONS} from '@angular/material/tooltip';
 import {TOOLTIP_DEFAULTS} from '../../utils/material-tooltip-options';
+import {StaticData} from "../../static-data/static-data";
 
 @Component({
   selector: 'app-training-program-expert-step',
@@ -20,6 +21,7 @@ import {TOOLTIP_DEFAULTS} from '../../utils/material-tooltip-options';
     {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: TOOLTIP_DEFAULTS},
     TrainingProgramTeacherService,
     TeacherService,
+    StaticData,
   ]
 })
 
@@ -37,6 +39,7 @@ export class TrainingProgramExpertStepComponent implements OnInit {
 
   constructor(
     public globals: Globals,
+    public staticData: StaticData,
     public  trainingProgramConstructorService: TrainingProgramConstructorService,
     private trainingProgramTeacherService: TrainingProgramTeacherService,
     private teacherService: TeacherService,
@@ -79,8 +82,8 @@ export class TrainingProgramExpertStepComponent implements OnInit {
     this.trainingProgramTeacherService.getValuesFromTrainingProgram(this.id)
       .subscribe((data: TrainingProgramTeacher[]) => {
         if (data.length !== 0) {
-          this.trainingProgramTeacherDeveloper = data.filter(a => a.expertId === 1);
-          this.trainingProgramTeacherReviewer = data.filter(a => a.expertId === 2);
+          this.trainingProgramTeacherDeveloper = data.filter(a => a.expertId === this.staticData.trainingProgramExperts.DEVELOPER_TYPE_ID);
+          this.trainingProgramTeacherReviewer = data.filter(a => a.expertId === this.staticData.trainingProgramExperts.REVIEWER_TYPE_ID);
 
           if (this.trainingProgramTeacherDeveloper.length !== 0) {
             this.trainingProgramTeacherDeveloper.forEach((obj) => {
@@ -130,7 +133,7 @@ export class TrainingProgramExpertStepComponent implements OnInit {
   }
 
   saveDeveloper(teacherId: number, index: number): void {
-    const expertId = 1;
+    const expertId = this.staticData.trainingProgramExperts.DEVELOPER_TYPE_ID;
     if (!this.trainingProgramTeacherDeveloper[index].id) {
       this.create(teacherId, expertId, index);
     } else {
@@ -139,7 +142,7 @@ export class TrainingProgramExpertStepComponent implements OnInit {
   }
 
   saveReviewer(teacherId: number, index: number): void {
-    const expertId = 2;
+    const expertId = this.staticData.trainingProgramExperts.REVIEWER_TYPE_ID;
     if (!this.trainingProgramTeacherReviewer[index].id) {
       this.create(teacherId, expertId, index);
     } else {
@@ -155,9 +158,9 @@ export class TrainingProgramExpertStepComponent implements OnInit {
     this.trainingProgramTeacherService.createValue(trainingProgramTeacher)
       .subscribe((trainingProgramTeacherResponse: TrainingProgramTeacher) => {
         console.log('Create was successful!');
-        if (expertId === 1) {
+        if (expertId === this.staticData.trainingProgramExperts.DEVELOPER_TYPE_ID) {
           this.trainingProgramTeacherDeveloper[index] = trainingProgramTeacherResponse;
-        } else if (expertId === 2) {
+        } else if (expertId === this.staticData.trainingProgramExperts.REVIEWER_TYPE_ID) {
           this.trainingProgramTeacherReviewer[index] = trainingProgramTeacherResponse;
         }
       });
@@ -165,10 +168,10 @@ export class TrainingProgramExpertStepComponent implements OnInit {
 
   update(teacherId: number, expertId: number, index: number): void {
     let trainingProgramTeacher: TrainingProgramTeacher;
-    if (expertId === 1) {
+    if (expertId === this.staticData.trainingProgramExperts.DEVELOPER_TYPE_ID) {
       trainingProgramTeacher = this.trainingProgramTeacherDeveloper[index];
       trainingProgramTeacher.teacherId = teacherId;
-    } else if (expertId === 2) {
+    } else if (expertId === this.staticData.trainingProgramExperts.REVIEWER_TYPE_ID) {
       trainingProgramTeacher = this.trainingProgramTeacherReviewer[index];
       trainingProgramTeacher.teacherId = teacherId;
     }

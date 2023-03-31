@@ -1,15 +1,11 @@
-<h3><strong>Заполните необходимые элементы</strong></h3>
-<!--<app-rich-text-editor #RTE-->
-<!--                      (richTextContentEmitter)="updateBusinessGameContent($event)"-->
-<!--                      [content]="businessGame.content"></app-rich-text-editor>-->
+<h3><strong>Деловая игра</strong></h3>
+<app-business-game-viewer [businessGameBaseString]="bGameObject.parseToStore()">
 
-<app-business-game-block [dataFields]="bGameObject.task" (dataChanged)="updateData($event,'task')" title="Задачи"></app-business-game-block>
-<app-business-game-block [dataFields]="bGameObject.intro" (dataChanged)="updateData($event,'intro')" title="Вводная часть"></app-business-game-block>
-<app-business-game-block [dataFields]="bGameObject.main" (dataChanged)="updateData($event,'main')" title="Основная часть"></app-business-game-block>
-<app-business-game-block [dataFields]="bGameObject.ending" (dataChanged)="updateData($event,'ending')" title="Заключительная часть"></app-business-game-block>
-
-<button type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
-        (click)="save()" mdbWavesEffect>
-  Сохранить
+</app-business-game-viewer>
+<button matTooltip="Редактировать деловую игру" type="button" mdbBtn color="primary" size="sm" class="relative waves-light"
+        (click)="editBusinessGame()" mdbWavesEffect>
+  <mdb-icon fas icon="edit" size="lg"></mdb-icon>
 </button>
+
+
 

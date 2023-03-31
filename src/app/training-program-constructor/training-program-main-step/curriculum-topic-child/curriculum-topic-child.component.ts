@@ -12,13 +12,19 @@ import {CurriculumTopic} from '../../../models/CurriculumTopic';
 import {Globals} from '../../../globals';
 import {CurriculumTopicService} from '../../../services/curriculum-topic.service';
 import {IsDeleteComponent} from '../../../is-delete/is-delete.component';
+import {TrainingProgramMainStepCurriculumTypeFormComponent} from "../training-program-main-step-curriculum-type-form/training-program-main-step-curriculum-type-form.component";
+import {MatDialog} from "@angular/material/dialog";
+import {BusinessGameConstructorComponent} from "../../main-step-constructors/business-game-constructor/business-game-constructor.component";
+import {StaticData} from "../../../static-data/static-data";
+import {BusinessGame} from "../../training-program-certification-step/business-game-form/business-game";
 
 @Component({
   selector: 'app-curriculum-topic-child',
   templateUrl: './curriculum-topic-child.component.html',
   styleUrls: ['./curriculum-topic-child.component.scss'],
   providers: [
-    CurriculumTopicTrainingProgramService
+    CurriculumTopicTrainingProgramService,
+    StaticData,
   ]
 })
 export class CurriculumTopicChildComponent implements OnInit {
@@ -40,9 +46,12 @@ export class CurriculumTopicChildComponent implements OnInit {
 
   constructor(
     public globals: Globals,
+    public staticData: StaticData,
+    public dialog: MatDialog,
     private modalService: MDBModalService,
     private curriculumTopicTrainingProgramService: CurriculumTopicTrainingProgramService,
-    private curriculumTopicService: CurriculumTopicService) { }
+    private curriculumTopicService: CurriculumTopicService) {
+  }
 
   ngOnInit(): void {
     this.loadCurriculumTopicTrainingPrograms();
@@ -64,7 +73,9 @@ export class CurriculumTopicChildComponent implements OnInit {
   loadCurriculumTopicTrainingPrograms(): void {
     this.curriculumTopicTrainingProgramService.getFromTrainingProgramCurriculumSection(this.trainingProgramCurriculumSection.id)
       .subscribe((curriculumTopicTrainingPrograms: CurriculumTopicTrainingProgram[]) => {
-        if (!curriculumTopicTrainingPrograms || curriculumTopicTrainingPrograms.length === 0) { return; }
+        if (!curriculumTopicTrainingPrograms || curriculumTopicTrainingPrograms.length === 0) {
+          return;
+        }
         curriculumTopicTrainingPrograms
           .sort((a, b) => a.serialNumber - b.serialNumber);
         curriculumTopicTrainingPrograms.forEach((curriculumTopicTrainingProgram) => {
@@ -89,9 +100,10 @@ export class CurriculumTopicChildComponent implements OnInit {
     curriculumTopicTrainingProgram.serialNumber = item.serialNumber;
     curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = item.trainingProgramCurriculumSectionId;
     curriculumTopicTrainingProgram.testWorkHours = item.testWorkHours;
+    curriculumTopicTrainingProgram.curriculumTopicTypeId = item.curriculumTopicTypeId;
     this.curriculumTopicTrainingProgramService.updateValue(curriculumTopicTrainingProgram).subscribe(() => {
-        console.log('Update was successful');
-      });
+      console.log('Update was successful');
+    });
   }
 
   deleteCurriculumTopicTrainingProgram(item: any, index: number): void {
@@ -117,7 +129,11 @@ export class CurriculumTopicChildComponent implements OnInit {
           ++index,
           this.trainingProgramCurriculumSection.id,
           object.topicTitle,
-          object.annotation);
+          object.annotation,
+          object.testWorkHours,
+          object.curriculumTopicTypeId);
+        curriculumTopicTrainingProgram.curriculumTopicTypeId = object.curriculumTopicTypeId;
+        console.log(curriculumTopicTrainingProgram);
         this.curriculumTopicTrainingProgramService.createValue(curriculumTopicTrainingProgram)
           .subscribe((curriculumTopicTrainingProgramResponse: CurriculumTopicTrainingProgram) => {
             object.serialNumber = curriculumTopicTrainingProgramResponse.serialNumber;
@@ -125,9 +141,9 @@ export class CurriculumTopicChildComponent implements OnInit {
             object.testWorkHours = 0;
             object.curriculumTopicId = undefined;
             object.trainingProgramCurriculumSectionId = this.trainingProgramCurriculumSection.id;
+            object.curriculumTopicTypeId = curriculumTopicTrainingProgramResponse.curriculumTopicTypeId;
           });
-      }
-      else {
+      } else {
         const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram();
         curriculumTopicTrainingProgram.id = object.curriculumTopicTrainingProgramId;
         curriculumTopicTrainingProgram.isVariable = object.isVariable;
@@ -136,7 +152,9 @@ export class CurriculumTopicChildComponent implements OnInit {
         curriculumTopicTrainingProgram.serialNumber = ++index;
         curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId = this.trainingProgramCurriculumSection.id;
         curriculumTopicTrainingProgram.testWorkHours = object.testWorkHours;
+        curriculumTopicTrainingProgram.curriculumTopicTypeId = object.curriculumTopicTypeId;
         curriculumTopicTrainingPrograms.push(curriculumTopicTrainingProgram);
+        console.log(curriculumTopicTrainingProgram);
       }
     });
     this.curriculumTopicTrainingProgramService.updateSerialNumbers(curriculumTopicTrainingPrograms).subscribe(() => {
@@ -157,47 +175,157 @@ export class CurriculumTopicChildComponent implements OnInit {
   }
 
   curriculumTopicAddForm(): void {
-    this.modalRef = this.modalService.show(CurriculumTopicEditComponent, this.modalOption(this.emptyEl()));
-    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
-      const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram(
-        0,
-        false,
-        this.done.length + 1,
-        this.trainingProgramCurriculumSection.id,
-        newElement.second,
-        newElement.last);
-      this.crateCurriculumTopicTrainingProgram(curriculumTopicTrainingProgram);
-      if (newElement.third) {
-        const element = {id: 0, first: '', second: newElement.second, last: newElement.last};
-        this.modalRef = this.modalService.show(CurriculumTopicTemplateComponent, this.modalOption(element));
-        this.modalRef.content.saveButtonClicked.subscribe((newTemplateElement: any) => {
-          const curriculumTopicTemplate = new CurriculumTopic(
-            0,
-            newTemplateElement.second,
-            newTemplateElement.last,
-            this.globals.userId
-          );
-          this.crateCurriculumTopicTemplate(curriculumTopicTemplate);
-        });
+    const dialogTypeRef = this.dialog.open(TrainingProgramMainStepCurriculumTypeFormComponent);
+
+    dialogTypeRef.afterClosed().subscribe(type => {
+      console.log(`Dialog result: ${type}`);
+      switch (type) {
+        case this.staticData.trainingProgramCurriculumType.DEFAULT:
+          this.modalRef = this.modalService.show(CurriculumTopicEditComponent, this.modalOption(this.emptyEl()));
+          this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+            const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram(
+              0,
+              false,
+              this.done.length + 1,
+              this.trainingProgramCurriculumSection.id,
+              newElement.second,
+              newElement.last);
+            this.crateCurriculumTopicTrainingProgram(curriculumTopicTrainingProgram);
+            if (newElement.third) {
+              const element = {id: 0, first: '', second: newElement.second, last: newElement.last};
+              this.modalRef = this.modalService.show(CurriculumTopicTemplateComponent, this.modalOption(element));
+              this.modalRef.content.saveButtonClicked.subscribe((newTemplateElement: any) => {
+                const curriculumTopicTemplate = new CurriculumTopic(
+                  0,
+                  newTemplateElement.second,
+                  newTemplateElement.last,
+                  this.globals.userId
+                );
+                this.crateCurriculumTopicTemplate(curriculumTopicTemplate);
+              });
+            }
+          });
+          break;
+        case this.staticData.trainingProgramCurriculumType.BUSINESS_GAME:
+          const dialogRef = this.dialog.open(BusinessGameConstructorComponent, {
+            width: '80vw',
+            maxWidth: '80vw',
+            data: {bGameObject: null, params: {topicNeeded: true }}
+          });
+
+          dialogRef.afterClosed().subscribe((res: BusinessGame) => {
+            console.log(res);
+            const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram(
+              0,
+              false,
+              this.done.length + 1,
+              this.trainingProgramCurriculumSection.id,
+              res.bGameTitle,
+              res.parseToStore(),
+              0,
+              this.staticData.trainingProgramCurriculumType.BUSINESS_GAME);
+            this.crateCurriculumTopicTrainingProgram(curriculumTopicTrainingProgram);
+          });
+
+          break;
+        case this.staticData.trainingProgramCurriculumType.ROUND_TABLE:
+          break;
+        case this.staticData.trainingProgramCurriculumType.TRAINING:
+          break;
+        default:
+          break;
       }
     });
+    //this.modalRef = this.modalService.show(TrainingProgramMainStepCurriculumTypeFormComponent, this.modalOption(this.emptyEl()));
+    // this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+    //   switch (newElement.type) {
+    //     case 1:
+    //       break;
+    //     case 2:
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    // });
+
+
+    // this.modalRef = this.modalService.show(CurriculumTopicEditComponent, this.modalOption(this.emptyEl()));
+    // this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+    //   const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram(
+    //     0,
+    //     false,
+    //     this.done.length + 1,
+    //     this.trainingProgramCurriculumSection.id,
+    //     newElement.second,
+    //     newElement.last);
+    //   this.crateCurriculumTopicTrainingProgram(curriculumTopicTrainingProgram);
+    //   if (newElement.third) {
+    //     const element = {id: 0, first: '', second: newElement.second, last: newElement.last};
+    //     this.modalRef = this.modalService.show(CurriculumTopicTemplateComponent, this.modalOption(element));
+    //     this.modalRef.content.saveButtonClicked.subscribe((newTemplateElement: any) => {
+    //       const curriculumTopicTemplate = new CurriculumTopic(
+    //         0,
+    //         newTemplateElement.second,
+    //         newTemplateElement.last,
+    //         this.globals.userId
+    //       );
+    //       this.crateCurriculumTopicTemplate(curriculumTopicTemplate);
+    //     });
+    //   }
+    // });
   }
 
   curriculumTopicEditForm(item: any): void {
-    const el = this.emptyEl();
-    el.second = item.topicTitle;
-    el.last = item.annotation;
-    el.isCrate = false;
-    this.modalRef = this.modalService.show(CurriculumTopicEditComponent, this.modalOption(el));
-    this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
-      item.topicTitle = newElement.second;
-      item.annotation = newElement.last;
-      this.updateCurriculumTopicTrainingProgram(item);
-    });
+
+    switch (item.curriculumTopicTypeId) {
+      case this.staticData.trainingProgramCurriculumType.DEFAULT:
+        break;
+      case this.staticData.trainingProgramCurriculumType.BUSINESS_GAME:
+        const auxBGameObject = new BusinessGame().parseToView(item.annotation);
+        auxBGameObject.bGameTitle = item.topicTitle;
+        const dialogRef = this.dialog.open(BusinessGameConstructorComponent, {
+          width: '80vw',
+          maxWidth: '80vw',
+          data: {bGameObject: auxBGameObject, params: {topicNeeded: true }},
+        });
+
+        dialogRef.componentInstance.bGameChange.subscribe((res) => {
+          item.topicTitle = res.bGameTitle;
+          item.annotation = res.parseToStore();
+          this.updateCurriculumTopicTrainingProgram(item);
+        });
+
+        dialogRef.afterClosed().subscribe((res: BusinessGame) => {
+          if (!res) {
+            return;
+          }
+          item.topicTitle = res.bGameTitle;
+          item.annotation = res.parseToStore();
+          this.updateCurriculumTopicTrainingProgram(item);
+        });
+
+        break;
+      case this.staticData.trainingProgramCurriculumType.ROUND_TABLE:
+        break;
+      case this.staticData.trainingProgramCurriculumType.TRAINING:
+        break;
+      default:
+        const el = this.emptyEl();
+        el.second = item.topicTitle;
+        el.last = item.annotation;
+        el.isCrate = false;
+        this.modalRef = this.modalService.show(CurriculumTopicEditComponent, this.modalOption(el));
+        this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
+          item.topicTitle = newElement.second;
+          item.annotation = newElement.last;
+          this.updateCurriculumTopicTrainingProgram(item);
+        });
+        break;
+    }
   }
 
   emptyEl(): any {
-    return { id: 0, first: '', second: '', last: '', isCrate: true };
+    return {id: 0, first: '', second: '', last: '', isCrate: true};
   }
 
   modalOption(el: any): any {
@@ -224,7 +352,8 @@ export class CurriculumTopicChildComponent implements OnInit {
       serialNumber: curriculumTopicTrainingProgram.serialNumber,
       annotation: curriculumTopicTrainingProgram.annotation,
       trainingProgramCurriculumSectionId: curriculumTopicTrainingProgram.trainingProgramCurriculumSectionId,
-      testWorkHours: curriculumTopicTrainingProgram.testWorkHours
+      testWorkHours: curriculumTopicTrainingProgram.testWorkHours,
+      curriculumTopicTypeId: curriculumTopicTrainingProgram.curriculumTopicTypeId
     };
   }
 }

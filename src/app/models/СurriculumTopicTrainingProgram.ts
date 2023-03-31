@@ -6,5 +6,7 @@ export class CurriculumTopicTrainingProgram {
     public trainingProgramCurriculumSectionId?: number,
     public topicTitle?: string,
     public annotation?: string,
-    public testWorkHours?: number){ }
+    public testWorkHours?: number,
+    public curriculumTopicTypeId?: number
+  ){ }
 }
