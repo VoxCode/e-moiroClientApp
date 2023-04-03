@@ -28,7 +28,6 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class BusinessGameFormComponent implements OnInit {
 
-  @ViewChild('RTE') rte: SyncfusionRichTextEditorComponent;
   @Input() trainingProgram: TrainingProgram;
   @Input() certificationType: CertificationType;
 
@@ -47,10 +46,6 @@ export class BusinessGameFormComponent implements OnInit {
   ngOnInit(): void {
     this.bGameObject.createEmpty();
     this.loadTrainingProgramFinalExamination(this.trainingProgram.id);
-  }
-
-  writeToRichText(): void {
-    this.rte.setValue(this.businessGameInTrainingProgramFinalExamination.content);
   }
 
   loadTrainingProgramFinalExamination(trainingProgramId: number): void {
@@ -78,7 +73,6 @@ export class BusinessGameFormComponent implements OnInit {
             '<p><i>Заключительная часть</i></p><br>';
           console.log('new game');
         }
-        this.writeToRichText();
       });
   }
 

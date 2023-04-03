@@ -1,34 +1,64 @@
+import {BusinessGameBlock} from '../../main-step-constructors/business-game-constructor/business-game-block/business-game-block';
+
 export class BusinessGame {
   constructor(
     public bGameTitle?: string,
-    public task?: string[],
-    public intro?: string[],
-    public main?: string[],
-    public ending?: string[],
-  ) { }
+    public bGameBlocks?: BusinessGameBlock[],
+  ) {
+    this.bGameBlocks = [];
+  }
 
-  public parseToStore(): string{
+  public parseToStore(): string {
     let aux = '';
-    aux += this.task.join('<br>') + '<p>';
-    aux += this.intro.join('<br>') + '<p>';
-    aux += this.main.join('<br>') + '<p>';
-    aux += this.ending.join('<br>') + '<p>';
+    this.bGameBlocks.forEach((block) => {
+      aux += block.parseToStore();
+    });
     return aux;
   }
 
-  public parseToView(baseString: string): BusinessGame{
-    const aux = baseString.split('<p>');
-    this.task = aux[0].split('<br>').filter(e =>  e);
-    this.intro = aux[1].split('<br>').filter(e =>  e);
-    this.main = aux[2].split('<br>').filter(e =>  e);
-    this.ending = aux[3].split('<br>').filter(e =>  e);
+  public parseToView(baseString: string): BusinessGame {
+    this.bGameBlocks = [];
+    const aux = baseString.split('<p>').filter(e => e);
+    aux.forEach((blockBaseString: string, index) => {
+      const auxbGameBlock: BusinessGameBlock = new BusinessGameBlock();
+      this.bGameBlocks.push(auxbGameBlock.parseToView(blockBaseString));
+    });
     return this;
   }
 
-  createEmpty(): void{
-    this.task = [];
-    this.intro = [];
-    this.main = [];
-    this.ending = [];
+  createEmpty(): void {
+    this.bGameTitle = '';
+    this.bGameBlocks = [];
+  }
+
+
+  createTemplate(blockTitles: string[]): BusinessGameBlock[] {
+    const blocks: BusinessGameBlock[] = [];
+    blockTitles.forEach((blockTitle) => {
+      const block = new BusinessGameBlock();
+      block.title = blockTitle;
+      blocks.push(block);
+    });
+    return blocks;
+  }
+
+  createBusinessGameTemplate(): void {
+    this.bGameTitle = 'Деловая игра';
+    this.bGameBlocks = this.createTemplate(['Задачи', 'Сценарий', 'Вводная часть', 'Основная часть', 'Заключительная часть']);
+  }
+
+  createRoundTableTemplate(): void {
+    this.bGameTitle = 'Круглый стол';
+    this.bGameBlocks = this.createTemplate(['Задачи', 'Вопросы для обсуждения']);
+  }
+
+  createTrainingTemplate(): void {
+    this.bGameTitle = 'Тренинг';
+    this.bGameBlocks = this.createTemplate(['Задачи', 'Сценарий', 'Вводная часть', 'Основная часть', 'Заключительная часть']);
+  }
+
+  createConferenceTemplate(): void {
+    this.bGameTitle = 'Конференция';
+    this.bGameBlocks = this.createTemplate(['Задачи', 'План']);
   }
 }

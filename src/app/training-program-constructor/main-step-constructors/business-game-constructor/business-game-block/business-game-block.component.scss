@@ -22,7 +22,7 @@
 }
 
 .example-box {
-  padding: 20px 10px;
+  padding: 0.5vh 0.5vw;
   border-bottom: solid 1px #ccc;
   color: rgba(0, 0, 0, 0.87);
   flex-direction: row;
@@ -80,4 +80,5 @@ button{
 
 .block-title{
 align-self: center;
+  display: flex;
 }

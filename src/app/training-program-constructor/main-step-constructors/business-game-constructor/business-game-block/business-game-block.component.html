@@ -1,46 +1,62 @@
-
-  <div class="example-container">
-    <div class="block-title">
-    {{title}}
-    <button *ngIf="dataFields.length === 0" matTooltip="Создать" type="button" mdbBtn color="primary" size="sm"
+<div class="example-container">
+  <div class="block-title">
+    <mat-form-field class="fullwidth" appearance="fill">
+      <mat-label>Заголовок</mat-label>
+      <textarea class="fullwidth" [value]="businessGameBlock.title"
+                (change)="textareaValueChange($event, -1)"
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5"
+                matInput></textarea>
+    </mat-form-field>
+    <button *ngIf="businessGameBlock.dataFields.length === 0" matTooltip="Создать" type="button" mdbBtn color="primary"
+            size="sm"
             class="relative waves-light"
             mdbWavesEffect
             (click)="addField()">
       <mdb-icon fas icon="plus" size="sm"></mdb-icon>
     </button>
-    </div>
-    <div class="example-list">
-      <div class="example-box" *ngFor="let item of dataFields; index as i">
-        <div class="sub-row-left-col">
-          <mat-form-field class="fullwidth" appearance="fill">
-        <textarea class="fullwidth" [value]="item"
-                  (change)="textareaValueChange($event, i)"
-                  cdkTextareaAutosize
-                  cdkAutosizeMinRows="1"
-                  cdkAutosizeMaxRows="5"
-                  matInput></textarea>
-          </mat-form-field>
-        </div>
-        <div class="buttons sub-row-right-col" >
-          <button matTooltip="Добавить" type="button" *ngIf="i == dataFields.length - 1" mdbBtn color="primary"
-                  size="sm" class="relative waves-light" mdbWavesEffect
-                  (click)="addField()">
-            <mdb-icon fas icon="plus" size="lg"></mdb-icon>
-          </button>
-          <!--          <button matTooltip="Редактировать" type="button" mdbBtn color="primary" size="sm"-->
-          <!--                  class="relative waves-light"  mdbWavesEffect-->
-          <!--                  (click)="updateValue(item)">-->
-          <!--            <mdb-icon fas icon="edit" size="lg"></mdb-icon>-->
-          <!--          </button>-->
-          <button matTooltip="Удалить" type="button" mdbBtn color="danger" size="sm"
-                  class="relative waves-light" mdbWavesEffect
-                  (click)="deleteValue(i)">
-            <mdb-icon fas icon="trash-alt" size="lg"></mdb-icon>
-          </button>
-        </div>
+    <button matTooltip="Удалить" type="button" mdbBtn color="danger" size="sm"
+            class="relative waves-light" mdbWavesEffect
+            (click)="deleteBlock()">
+      <mdb-icon fas icon="trash-alt" size="lg"></mdb-icon>
+    </button>
+  </div>
+  <div *ngIf="businessGameBlock.dataFields.length > 0" class="example-list">
+    <div  class="example-box" *ngFor="let item of businessGameBlock.dataFields; index as i">
+      <div class="sub-row-left-col">
+        <mat-form-field class="fullwidth" appearance="fill">
+          <mat-label>qwe</mat-label>
+          <textarea class="fullwidth" [value]="item"
+                    (change)="textareaValueChange($event, i)"
+                    cdkTextareaAutosize
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"
+                    matInput></textarea>
+        </mat-form-field>
+      </div>
+      <div class="buttons sub-row-right-col">
+
+        <!--          <button matTooltip="Редактировать" type="button" mdbBtn color="primary" size="sm"-->
+        <!--                  class="relative waves-light"  mdbWavesEffect-->
+        <!--                  (click)="updateValue(item)">-->
+        <!--            <mdb-icon fas icon="edit" size="lg"></mdb-icon>-->
+        <!--          </button>-->
+        <button matTooltip="Удалить" type="button" mdbBtn color="danger" size="sm"
+                class="relative waves-light" mdbWavesEffect
+                (click)="deleteValue(i)">
+          <mdb-icon fas icon="trash-alt" size="lg"></mdb-icon>
+        </button>
+        <button matTooltip="Добавить" type="button" *ngIf="i == businessGameBlock.dataFields.length - 1" mdbBtn
+                color="primary"
+                size="sm" class="relative waves-light" mdbWavesEffect
+                (click)="addField()">
+          <mdb-icon fas icon="plus" size="lg"></mdb-icon>
+        </button>
       </div>
     </div>
-
-
   </div>
+
+
+</div>
 

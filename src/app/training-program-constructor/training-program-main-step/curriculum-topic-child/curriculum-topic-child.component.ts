@@ -207,72 +207,92 @@ export class CurriculumTopicChildComponent implements OnInit {
           });
           break;
         case this.staticData.trainingProgramCurriculumType.BUSINESS_GAME:
-          const dialogRef = this.dialog.open(BusinessGameConstructorComponent, {
-            width: '80vw',
-            maxWidth: '80vw',
-            data: {bGameObject: null, params: {topicNeeded: true }}
-          });
-
-          dialogRef.afterClosed().subscribe((res: BusinessGame) => {
-            console.log(res);
-            const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram(
-              0,
-              false,
-              this.done.length + 1,
-              this.trainingProgramCurriculumSection.id,
-              res.bGameTitle,
-              res.parseToStore(),
-              0,
-              this.staticData.trainingProgramCurriculumType.BUSINESS_GAME);
-            this.crateCurriculumTopicTrainingProgram(curriculumTopicTrainingProgram);
-          });
-
+          const businessGame = new BusinessGame();
+          businessGame.createBusinessGameTemplate();
+          this.openAddBusinessGameConstructor(this.staticData.trainingProgramCurriculumType.BUSINESS_GAME, businessGame);
           break;
         case this.staticData.trainingProgramCurriculumType.ROUND_TABLE:
+          const roundTable = new BusinessGame();
+          roundTable.createRoundTableTemplate();
+          this.openAddBusinessGameConstructor(this.staticData.trainingProgramCurriculumType.ROUND_TABLE, roundTable);
           break;
         case this.staticData.trainingProgramCurriculumType.TRAINING:
+          const training = new BusinessGame();
+          training.createTrainingTemplate();
+          this.openAddBusinessGameConstructor(this.staticData.trainingProgramCurriculumType.TRAINING, training);
+          break;
+        case this.staticData.trainingProgramCurriculumType.CONFERENCE:
+          const conference = new BusinessGame();
+          conference.createConferenceTemplate();
+          this.openAddBusinessGameConstructor(this.staticData.trainingProgramCurriculumType.CONFERENCE, conference);
           break;
         default:
           break;
       }
     });
-    //this.modalRef = this.modalService.show(TrainingProgramMainStepCurriculumTypeFormComponent, this.modalOption(this.emptyEl()));
-    // this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
-    //   switch (newElement.type) {
-    //     case 1:
-    //       break;
-    //     case 2:
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    // });
+  }
 
+  openAddBusinessGameConstructor(typeId: number, template: BusinessGame): void {
+    const dialogRef = this.dialog.open(BusinessGameConstructorComponent, {
+      width: '80vw',
+      maxWidth: '80vw',
+      data: {bGameObject: template, params: {topicNeeded: true}}
+    });
 
-    // this.modalRef = this.modalService.show(CurriculumTopicEditComponent, this.modalOption(this.emptyEl()));
-    // this.modalRef.content.saveButtonClicked.subscribe((newElement: any) => {
-    //   const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram(
-    //     0,
-    //     false,
-    //     this.done.length + 1,
-    //     this.trainingProgramCurriculumSection.id,
-    //     newElement.second,
-    //     newElement.last);
-    //   this.crateCurriculumTopicTrainingProgram(curriculumTopicTrainingProgram);
-    //   if (newElement.third) {
-    //     const element = {id: 0, first: '', second: newElement.second, last: newElement.last};
-    //     this.modalRef = this.modalService.show(CurriculumTopicTemplateComponent, this.modalOption(element));
-    //     this.modalRef.content.saveButtonClicked.subscribe((newTemplateElement: any) => {
-    //       const curriculumTopicTemplate = new CurriculumTopic(
-    //         0,
-    //         newTemplateElement.second,
-    //         newTemplateElement.last,
-    //         this.globals.userId
-    //       );
-    //       this.crateCurriculumTopicTemplate(curriculumTopicTemplate);
-    //     });
-    //   }
-    // });
+    dialogRef.componentInstance.bGameChange.subscribe((res) => {
+      if (res) {
+        const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram(
+          0,
+          false,
+          this.done.length + 1,
+          this.trainingProgramCurriculumSection.id,
+          res.bGameTitle,
+          res.parseToStore(),
+          0,
+          typeId);
+        this.crateCurriculumTopicTrainingProgram(curriculumTopicTrainingProgram);
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((res: BusinessGame) => {
+      if (res) {
+        const curriculumTopicTrainingProgram = new CurriculumTopicTrainingProgram(
+          0,
+          false,
+          this.done.length + 1,
+          this.trainingProgramCurriculumSection.id,
+          res.bGameTitle,
+          res.parseToStore(),
+          0,
+          typeId);
+        this.crateCurriculumTopicTrainingProgram(curriculumTopicTrainingProgram);
+      }
+    });
+  }
+
+  openEditBusinessGameConstructor(item: any): void{
+    const auxBGameObject = new BusinessGame().parseToView(item.annotation);
+    auxBGameObject.bGameTitle = item.topicTitle;
+    const dialogRef = this.dialog.open(BusinessGameConstructorComponent, {
+      width: '80vw',
+      maxWidth: '80vw',
+      data: {bGameObject: auxBGameObject, params: {topicNeeded: true}},
+    });
+
+    dialogRef.componentInstance.bGameChange.subscribe((res) => {
+      item.topicTitle = res.bGameTitle;
+      item.annotation = res.parseToStore();
+      this.updateCurriculumTopicTrainingProgram(item);
+    });
+
+    dialogRef.afterClosed().subscribe((res: BusinessGame) => {
+      if (!res) {
+        return;
+      }
+      item.topicTitle = res.bGameTitle;
+      item.annotation = res.parseToStore();
+      this.updateCurriculumTopicTrainingProgram(item);
+    });
   }
 
   curriculumTopicEditForm(item: any): void {
@@ -281,33 +301,16 @@ export class CurriculumTopicChildComponent implements OnInit {
       case this.staticData.trainingProgramCurriculumType.DEFAULT:
         break;
       case this.staticData.trainingProgramCurriculumType.BUSINESS_GAME:
-        const auxBGameObject = new BusinessGame().parseToView(item.annotation);
-        auxBGameObject.bGameTitle = item.topicTitle;
-        const dialogRef = this.dialog.open(BusinessGameConstructorComponent, {
-          width: '80vw',
-          maxWidth: '80vw',
-          data: {bGameObject: auxBGameObject, params: {topicNeeded: true }},
-        });
-
-        dialogRef.componentInstance.bGameChange.subscribe((res) => {
-          item.topicTitle = res.bGameTitle;
-          item.annotation = res.parseToStore();
-          this.updateCurriculumTopicTrainingProgram(item);
-        });
-
-        dialogRef.afterClosed().subscribe((res: BusinessGame) => {
-          if (!res) {
-            return;
-          }
-          item.topicTitle = res.bGameTitle;
-          item.annotation = res.parseToStore();
-          this.updateCurriculumTopicTrainingProgram(item);
-        });
-
+        this.openEditBusinessGameConstructor(item);
         break;
       case this.staticData.trainingProgramCurriculumType.ROUND_TABLE:
+        this.openEditBusinessGameConstructor(item);
         break;
       case this.staticData.trainingProgramCurriculumType.TRAINING:
+        this.openEditBusinessGameConstructor(item);
+        break;
+      case this.staticData.trainingProgramCurriculumType.CONFERENCE:
+        this.openEditBusinessGameConstructor(item);
         break;
       default:
         const el = this.emptyEl();

@@ -2,7 +2,8 @@ import {Component, Input, OnInit, Output, ViewChild, EventEmitter, Inject} from 
 import {SyncfusionRichTextEditorComponent} from '../../../document-editor/rich-text-editor/syncfusion-rich-text-editor.component';
 import {BusinessGame} from '../../training-program-certification-step/business-game-form/business-game';
 import {Globals} from '../../../globals';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {BusinessGameBlock} from './business-game-block/business-game-block';
 
 
 @Component({
@@ -13,7 +14,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
     Globals,
   ]
 })
-//{provide: MAT_DIALOG_DATA, useValue: {bGameObject: null, params: {topicNeeded: true }}}
+// {provide: MAT_DIALOG_DATA, useValue: {bGameObject: null, params: {topicNeeded: true }}}
 export class BusinessGameConstructorComponent implements OnInit {
   @ViewChild('RTE') rte: SyncfusionRichTextEditorComponent;
   @Input() businessGame: BusinessGame;
@@ -42,6 +43,7 @@ export class BusinessGameConstructorComponent implements OnInit {
       this.businessGame = this.data.bGameObject;
     }
 
+
     // if (!this.businessGame){
     //   this.businessGame = new BusinessGame();
     //   this.businessGame.createEmpty();
@@ -50,21 +52,7 @@ export class BusinessGameConstructorComponent implements OnInit {
     this.currentEditTimeOutId = undefined;
   }
 
-  updateData(newVal: string[], key: string): void {
-    switch (key) {
-      case 'task':
-        this.businessGame.task = newVal;
-        break;
-      case 'intro':
-        this.businessGame.intro = newVal;
-        break;
-      case 'main':
-        this.businessGame.main = newVal;
-        break;
-      case 'ending':
-        this.businessGame.ending = newVal;
-        break;
-    }
+  updateData(newVal: BusinessGameBlock, updatedObject: BusinessGameBlock): void {
     this.resetTimer();
   }
 
@@ -79,7 +67,7 @@ export class BusinessGameConstructorComponent implements OnInit {
     this.dialogRef.close(this.businessGame);
   }
 
-  resetTimer(){
+  resetTimer(): void{
     if (this.currentEditTimeOutId){
       clearTimeout(this.currentEditTimeOutId);
     }
@@ -93,5 +81,16 @@ export class BusinessGameConstructorComponent implements OnInit {
       clearTimeout(this.currentEditTimeOutId);
     }
     this.dialogRef.close(false);
+  }
+
+  addBlock(): void {
+    const aux = new BusinessGameBlock();
+    aux.createEmpty();
+    this.businessGame.bGameBlocks.push(aux);
+    console.log(this.businessGame);
+  }
+
+  deleteBlock(index: number): void {
+    this.businessGame.bGameBlocks.splice(index, 1);
   }
 }

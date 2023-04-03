@@ -5,10 +5,11 @@
 
 <mat-dialog-content class="mat-typography">
   <div class="button-row">
-    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="1">Лекция</button>
-    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="2">Деловая игра</button>
-    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="3">Круглый стол</button>
-    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="4">Тренинг</button>
+    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="staticData.trainingProgramCurriculumType.DEFAULT">Лекция</button>
+    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="staticData.trainingProgramCurriculumType.BUSINESS_GAME">Деловая игра</button>
+    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="staticData.trainingProgramCurriculumType.ROUND_TABLE">Круглый стол</button>
+    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="staticData.trainingProgramCurriculumType.TRAINING">Тренинг</button>
+    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="staticData.trainingProgramCurriculumType.CONFERENCE">Конференция</button>
   </div>
   <p></p>
 </mat-dialog-content>

@@ -14,24 +14,32 @@
   <div *ngIf="data.params.topicNeeded" class="fullwidth">
     <mat-form-field class="fullwidth" appearance="fill">
       <mat-label>Тема</mat-label>
-    <textarea  [(ngModel)]="businessGame.bGameTitle"
-               (ngModelChange)="updateTitle()"
-              cdkAutosizeMinRows="1"
-              cdkAutosizeMaxRows="5"
-              cdkTextareaAutosize
-              matInput></textarea>
+      <textarea [(ngModel)]="businessGame.bGameTitle"
+                (ngModelChange)="updateTitle()"
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5"
+                cdkTextareaAutosize
+                matInput></textarea>
     </mat-form-field>
   </div>
 </div>
 
 <div mat-dialog-content>
-  <app-business-game-block [dataFields]="businessGame.task" (dataChanged)="updateData($event,'task')"
-                           title="Задачи"></app-business-game-block>
-  <app-business-game-block [dataFields]="businessGame.intro" (dataChanged)="updateData($event,'intro')"
-                           title="Вводная часть"></app-business-game-block>
-  <app-business-game-block [dataFields]="businessGame.main" (dataChanged)="updateData($event,'main')"
-                           title="Основная часть"></app-business-game-block>
-  <app-business-game-block [dataFields]="businessGame.ending" (dataChanged)="updateData($event,'ending')"
-                           title="Заключительная часть"></app-business-game-block>
+  <div  *ngIf="businessGame.bGameBlocks.length > 0">
+    <div *ngFor="let block of businessGame.bGameBlocks; index as i">
+      <app-business-game-block [businessGameBlock]="block"
+                               (dataChanged)="updateData($event,block)"
+      (blockDeleted)="deleteBlock(i)"></app-business-game-block>
+    </div>
+  </div>
+  <button matTooltip="Добавить блок" type="button" mdbBtn color="primary" size="sm"
+          class="relative waves-light fullwidth" mdbWavesEffect
+          (click)="addBlock()">
+    <mdb-icon fas icon="plus" size="lg"></mdb-icon>
+  </button>
 </div>
+
+<!--<mat-dialog-actions align="end">-->
+
+<!--</mat-dialog-actions>-->
 

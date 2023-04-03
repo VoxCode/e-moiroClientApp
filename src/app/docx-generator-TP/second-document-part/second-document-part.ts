@@ -55,6 +55,15 @@ export class SecondDocumentPart {
           case this.staticData.trainingProgramCurriculumType.BUSINESS_GAME:
             this.insertBusinessGame(obj.annotation, this.children);
             break;
+          case this.staticData.trainingProgramCurriculumType.ROUND_TABLE:
+            this.insertBusinessGame(obj.annotation, this.children);
+            break;
+          case this.staticData.trainingProgramCurriculumType.TRAINING:
+            this.insertBusinessGame(obj.annotation, this.children);
+            break;
+          case this.staticData.trainingProgramCurriculumType.CONFERENCE:
+            this.insertBusinessGame(obj.annotation, this.children);
+            break;
           default:
             this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
             break;
@@ -119,6 +128,7 @@ export class SecondDocumentPart {
     this.children.push(this.docxGeneratorDataTemplate.titleText('Материалы для итоговой аттестации слушателей'));
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
     if (this.trainingProgram.certificationTypeId === 5) {
+      this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Собеседование (деловая игра)', 0, true));
       this.insertBusinessGame(this.trainingProgram.trainingProgramFinalExaminations[0].content, this.children);
     } else {
       this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Вопросы для проведения зачета', 0, true));
@@ -232,34 +242,13 @@ export class SecondDocumentPart {
   insertBusinessGame(baseString: string, pushArray: any): void{
     const bGameObject: BusinessGame = new BusinessGame();
     //bGameObject.parseToView(this.trainingProgram.trainingProgramFinalExaminations[0].content);
-    bGameObject.parseToView(baseString);
 
-    pushArray.push(this.docxGeneratorDataTemplate.someTextCenter('Собеседование (деловая игра)', 0, true));
-    pushArray.push(this.docxGeneratorDataTemplate.emptyParagraph());
-    if (bGameObject.task.length > 0) {
-      pushArray.push(this.docxGeneratorDataTemplate.someText('Задачи:', 720, false, true));
-      bGameObject.task.forEach((text, i) => {
+    bGameObject.parseToView(baseString);
+    bGameObject.bGameBlocks.forEach((block) => {
+      pushArray.push(this.docxGeneratorDataTemplate.someText(block.title + ':', 720, false, true));
+      block.dataFields.forEach((text) => {
         pushArray.push(this.docxGeneratorDataTemplate.someText(text, 720));
       });
-    }
-    pushArray.push(this.docxGeneratorDataTemplate.someText('Сценарий', 720, false, true));
-    if (bGameObject.intro.length > 0) {
-      pushArray.push(this.docxGeneratorDataTemplate.someText('Вводная часть:', 720, false, true));
-      bGameObject.intro.forEach((text, i) => {
-        pushArray.push(this.docxGeneratorDataTemplate.someText(text, 720));
-      });
-    }
-    if (bGameObject.main.length > 0) {
-      pushArray.push(this.docxGeneratorDataTemplate.someText('Основаная часть:', 720, false, true));
-      bGameObject.main.forEach((text, i) => {
-        pushArray.push(this.docxGeneratorDataTemplate.someText(text, 720));
-      });
-    }
-    if (bGameObject.ending.length > 0) {
-      pushArray.push(this.docxGeneratorDataTemplate.someText('Заключительная часть:', 720, false, true));
-      bGameObject.ending.forEach((text, i) => {
-        pushArray.push(this.docxGeneratorDataTemplate.someText(text, 720));
-      });
-    }
+    });
   }
 }

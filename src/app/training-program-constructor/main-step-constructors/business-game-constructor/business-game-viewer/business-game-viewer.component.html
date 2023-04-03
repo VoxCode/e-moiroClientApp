@@ -1,28 +1,6 @@
-<div *ngIf="businessGame.task.length > 0">
-  <i>Задачи:</i>
-  <div *ngFor="let item of businessGame.task; index as i">
-    {{item}}
-  </div>
-</div>
-
-<div *ngIf="businessGame.intro.length > 0">
-  <div><i>Сценарий</i></div>
-  <div><i>Вводная часть</i></div>
-  <div *ngFor="let item of businessGame.intro; index as i">
-    {{item}}
-  </div>
-</div>
-
-<div *ngIf="businessGame.main.length > 0">
-  <i>Основная Часть</i>
-  <div *ngFor="let item of businessGame.main; index as i">
-    {{item}}
-  </div>
-</div>
-
-<div *ngIf="businessGame.ending.length > 0">
-  <i>Заключительная часть</i>
-  <div *ngFor="let item of businessGame.ending; index as i">
-    {{item}}
+<div *ngFor="let block of businessGame.bGameBlocks; index as i">
+  <i>{{block.title}}:</i>
+  <div *ngFor="let dataField of block.dataFields; index as i">
+    {{dataField}}
   </div>
 </div>

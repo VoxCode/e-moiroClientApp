@@ -1,5 +1,6 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import {log} from "util";
+import {BusinessGameBlock} from "./business-game-block";
+
 
 @Component({
   selector: 'app-business-game-block',
@@ -8,9 +9,9 @@ import {log} from "util";
 })
 export class BusinessGameBlockComponent implements OnInit {
 
-  @Input() title: string;
-  @Input() dataFields: string[] = [];
-  @Output() dataChanged = new EventEmitter<string[]>();
+  @Input() businessGameBlock: BusinessGameBlock = new BusinessGameBlock();
+  @Output() dataChanged = new EventEmitter<BusinessGameBlock>();
+  @Output() blockDeleted = new EventEmitter<boolean>();
 
   constructor() { }
 
@@ -18,21 +19,30 @@ export class BusinessGameBlockComponent implements OnInit {
   }
 
   changeData(): void {
-    this.dataChanged.emit(this.dataFields);
+    this.dataChanged.emit(this.businessGameBlock);
   }
 
   addField(): void {
-    this.dataFields.push('');
+    this.businessGameBlock.dataFields.push('');
     this.changeData();
   }
 
   deleteValue(index: number): void {
-    this.dataFields.splice(index, 1);
+    this.businessGameBlock.dataFields.splice(index, 1);
     this.changeData();
   }
 
   textareaValueChange(event: any, index: number): void {
-    this.dataFields[index] = event.target.value;
+    if (index < 0){
+      this.businessGameBlock.title = event.target.value;
+    }
+    else {
+      this.businessGameBlock.dataFields[index] = event.target.value;
+    }
     this.changeData();
+  }
+
+  deleteBlock(): void {
+    this.blockDeleted.emit(true);
   }
 }
