@@ -191,7 +191,7 @@ export class DocxGeneratorDataTemplate {
           break: 1
         }),
         new TextRun({
-          text: '\t__________ ' + 'И.П.Кондратьева',
+          text: '\t__________ ' + 'Ф.В. Дробеня',
           size : this.size,
           break: 1
         }),

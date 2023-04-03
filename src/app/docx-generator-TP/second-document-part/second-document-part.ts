@@ -4,6 +4,8 @@ import {TrainingProgramGenerator} from '../../models/generator-models/TrainingPr
 import {GuidedTestWorkAssignment} from '../../models/GuidedTestWorkAssignment';
 import {CurriculumTopicTrainingProgramGenerator} from '../../models/generator-models/CurriculumTopicTrainingProgramGenerator';
 import {BusinessGame} from '../../training-program-constructor/training-program-certification-step/business-game-form/business-game';
+import {Injector} from '@angular/core';
+import {StaticData} from '../../static-data/static-data';
 
 export class SecondDocumentPart {
 
@@ -13,11 +15,13 @@ export class SecondDocumentPart {
   children: any[] = [];
   allInvariantCurriculumTopics: CurriculumTopicTrainingProgramGenerator[][] = [];
   testWorkAllClassHours = 0;
+  staticData: StaticData = new StaticData();
 
   constructor(
     private trainingProgram: TrainingProgramGenerator,
-    private guidedTestWorkAssignments: GuidedTestWorkAssignment[]
-  ) { }
+    private guidedTestWorkAssignments: GuidedTestWorkAssignment[],
+  ) {
+  }
 
   public create(): Document {
     this.children.push(this.docxGeneratorDataTemplate
@@ -25,8 +29,7 @@ export class SecondDocumentPart {
         this.trainingProgram.certificationTypeName + '.', 720, true));
     this.children.push(this.docxGeneratorDataTemplate.pageBreak());
     this.children.push(this.docxGeneratorDataTemplate.titleText('содержание'));
-    this.trainingProgram.trainingProgramCurriculumSections.forEach((object, index) =>
-    {
+    this.trainingProgram.trainingProgramCurriculumSections.forEach((object, index) => {
       this.allInvariantCurriculumTopics.push([]);
       this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
       this.children.push(this.docxGeneratorDataTemplate.titleText(index + 1 + '.' + object.name));
@@ -36,7 +39,7 @@ export class SecondDocumentPart {
       const invariantCurriculumTopicsList = object.curriculumTopicTrainingPrograms.filter(a => !a.isVariable);
       const variableCurriculumTopicsList = object.curriculumTopicTrainingPrograms.filter(a => a.isVariable);
 
-      this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Инвариантная часть', 0,  true));
+      this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Инвариантная часть', 0, true));
 
       let i = 1;
       invariantCurriculumTopicsList.forEach(obj => {
@@ -45,8 +48,19 @@ export class SecondDocumentPart {
         const tmpString = this.docxGeneratorDataTemplate.classHoursStringBuilder(obj, this.trainingProgram.isDistanceLearning);
         this.children.push(this.docxGeneratorDataTemplate
           .someTextCurriculumTopics((index + 1) + '.' + i + '. ' + obj.topicTitle, tmpString, 0, true));
-        this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
+        switch (obj.curriculumTopicTypeId) {
+          case this.staticData.trainingProgramCurriculumType.DEFAULT:
+            this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
+            break;
+          case this.staticData.trainingProgramCurriculumType.BUSINESS_GAME:
+            this.insertBusinessGame(obj.annotation, this.children);
+            break;
+          default:
+            this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
+            break;
+        }
         i++;
+
         // if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isControlWork) {
         //   if (obj.testWorkHours !== 0) {
         //     this.children.push(this.docxGeneratorDataTemplate
@@ -61,7 +75,7 @@ export class SecondDocumentPart {
       });
 
       if (variableCurriculumTopicsList.length !== 0) {
-        this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Вариативная часть', 0,  true));
+        this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Вариативная часть', 0, true));
       }
 
       let j = 1;
@@ -69,8 +83,19 @@ export class SecondDocumentPart {
         const tmpString = this.docxGeneratorDataTemplate.classHoursStringBuilder(obj, this.trainingProgram.isDistanceLearning);
         this.children.push(this.docxGeneratorDataTemplate
           .someTextCurriculumTopics(obj.topicTitle, tmpString, 0, true));
-        this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
+        switch (obj.curriculumTopicTypeId) {
+          case this.staticData.trainingProgramCurriculumType.DEFAULT:
+            this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
+            break;
+          case this.staticData.trainingProgramCurriculumType.BUSINESS_GAME:
+            this.insertBusinessGame(obj.annotation, this.children);
+            break;
+          default:
+            this.children.push(this.docxGeneratorDataTemplate.someText(obj.annotation, 720));
+            break;
+        }
         j++;
+
         // if (this.trainingProgram.isDistanceLearning && this.trainingProgram.isTestWork) {
         //   if (obj.testWorkHours !== 0) {
         //     this.children.push(this.docxGeneratorDataTemplate
@@ -94,30 +119,8 @@ export class SecondDocumentPart {
     this.children.push(this.docxGeneratorDataTemplate.titleText('Материалы для итоговой аттестации слушателей'));
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
     if (this.trainingProgram.certificationTypeId === 5) {
-      const bGameObject: BusinessGame = new BusinessGame();
-      bGameObject.parseToView(this.trainingProgram.trainingProgramFinalExaminations[0].content);
-
-      this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Собеседование (деловая игра)', 0, true));
-      this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-      this.children.push(this.docxGeneratorDataTemplate.someText('Задачи:', 720, false, true));
-      bGameObject.task.forEach((text, i) => {
-        this.children.push(this.docxGeneratorDataTemplate.someText(text, 720));
-      });
-      this.children.push(this.docxGeneratorDataTemplate.someText('Сценарий', 720, false, true));
-      this.children.push(this.docxGeneratorDataTemplate.someText('Вводная часть:', 720, false, true));
-      bGameObject.intro.forEach((text, i) => {
-        this.children.push(this.docxGeneratorDataTemplate.someText(text, 720));
-      });
-      this.children.push(this.docxGeneratorDataTemplate.someText('Основаная часть:', 720, false, true));
-      bGameObject.main.forEach((text, i) => {
-        this.children.push(this.docxGeneratorDataTemplate.someText(text, 720));
-      });
-      this.children.push(this.docxGeneratorDataTemplate.someText('Заключительная часть:', 720, false, true));
-      bGameObject.ending.forEach((text, i) => {
-        this.children.push(this.docxGeneratorDataTemplate.someText(text, 720));
-      });
-    }
-    else {
+      this.insertBusinessGame(this.trainingProgram.trainingProgramFinalExaminations[0].content, this.children);
+    } else {
       this.children.push(this.docxGeneratorDataTemplate.someTextCenter('Вопросы для проведения зачета', 0, true));
       this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
       this.trainingProgram.trainingProgramFinalExaminations.forEach((object, i) => {
@@ -186,7 +189,7 @@ export class SecondDocumentPart {
       this.children.push(this.docxGeneratorDataTemplate.someText(text, 720));
     });
 
-    this.sections.push( {
+    this.sections.push({
       properties: {
         page: {
           margin: {
@@ -211,7 +214,7 @@ export class SecondDocumentPart {
       creator: 'MOIRO',
       title: 'Document of MOIRO',
       styles: {
-        paragraphStyles: [ {
+        paragraphStyles: [{
           id: 'default',
           name: 'My Standard style',
           basedOn: 'Normal',
@@ -224,5 +227,39 @@ export class SecondDocumentPart {
       },
       sections: this.sections,
     });
+  }
+
+  insertBusinessGame(baseString: string, pushArray: any): void{
+    const bGameObject: BusinessGame = new BusinessGame();
+    //bGameObject.parseToView(this.trainingProgram.trainingProgramFinalExaminations[0].content);
+    bGameObject.parseToView(baseString);
+
+    pushArray.push(this.docxGeneratorDataTemplate.someTextCenter('Собеседование (деловая игра)', 0, true));
+    pushArray.push(this.docxGeneratorDataTemplate.emptyParagraph());
+    if (bGameObject.task.length > 0) {
+      pushArray.push(this.docxGeneratorDataTemplate.someText('Задачи:', 720, false, true));
+      bGameObject.task.forEach((text, i) => {
+        pushArray.push(this.docxGeneratorDataTemplate.someText(text, 720));
+      });
+    }
+    pushArray.push(this.docxGeneratorDataTemplate.someText('Сценарий', 720, false, true));
+    if (bGameObject.intro.length > 0) {
+      pushArray.push(this.docxGeneratorDataTemplate.someText('Вводная часть:', 720, false, true));
+      bGameObject.intro.forEach((text, i) => {
+        pushArray.push(this.docxGeneratorDataTemplate.someText(text, 720));
+      });
+    }
+    if (bGameObject.main.length > 0) {
+      pushArray.push(this.docxGeneratorDataTemplate.someText('Основаная часть:', 720, false, true));
+      bGameObject.main.forEach((text, i) => {
+        pushArray.push(this.docxGeneratorDataTemplate.someText(text, 720));
+      });
+    }
+    if (bGameObject.ending.length > 0) {
+      pushArray.push(this.docxGeneratorDataTemplate.someText('Заключительная часть:', 720, false, true));
+      bGameObject.ending.forEach((text, i) => {
+        pushArray.push(this.docxGeneratorDataTemplate.someText(text, 720));
+      });
+    }
   }
 }
