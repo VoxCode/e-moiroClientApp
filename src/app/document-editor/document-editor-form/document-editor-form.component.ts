@@ -18,6 +18,7 @@ import {
 import {DocumentEditorTranslateData} from '../document-editor-translate-data';
 import {WordToSfdtService} from '../../services/word-to-sfdt.service';
 import {L10n} from "@syncfusion/ej2-base";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-document-editor-form',
@@ -34,7 +35,7 @@ import {L10n} from "@syncfusion/ej2-base";
 })
 
 export class DocumentEditorFormComponent implements OnInit, OnChanges, AfterViewInit {
-  public hostUrl = 'https://ej2services.syncfusion.com/production/web-services/';
+  public hostUrl = environment.docEditorApiUrl;
 
   @Input() docxContent: Blob;
   @Output() saveButtonClicked: EventEmitter<any> = new EventEmitter<any>();
@@ -51,7 +52,7 @@ export class DocumentEditorFormComponent implements OnInit, OnChanges, AfterView
   ) { }
 
   ngAfterViewInit(): void {
-    this.container.serviceUrl = this.hostUrl + 'api/documenteditor/';
+    this.container.serviceUrl = this.hostUrl;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

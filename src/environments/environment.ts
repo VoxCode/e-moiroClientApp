@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  docEditorApiUrl: 'https://localhost:44358/api/WordToSDFT/',
   apiUrl: 'https://localhost:44358/' // ---IIS
   //apiUrl: 'https://api.smart.moiro.by/'
   // apiUrl: 'http://localhost:5009/'  // ---Kestrel

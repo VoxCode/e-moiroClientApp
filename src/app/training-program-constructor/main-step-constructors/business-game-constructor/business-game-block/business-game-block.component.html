@@ -26,7 +26,6 @@
     <div  class="example-box" *ngFor="let item of businessGameBlock.dataFields; index as i">
       <div class="sub-row-left-col">
         <mat-form-field class="fullwidth" appearance="fill">
-          <mat-label>qwe</mat-label>
           <textarea class="fullwidth" [value]="item"
                     (change)="textareaValueChange($event, i)"
                     cdkTextareaAutosize
