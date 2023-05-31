@@ -21,6 +21,8 @@ export class CurriculumSectionChildComponent implements OnInit {
   @Input() trainingProgram: TrainingProgram;
   @Input() occupationForms: OccupationForm[];
   @Output() newTodoValue = new EventEmitter<CurriculumTopic>();
+  @Output() removeTodoValue = new EventEmitter<CurriculumTopic>();
+  @Output() trainingProgramTopicsDownloaded = new EventEmitter<CurriculumTopic[]>();
   trainingProgramCurriculumSections: TrainingProgramCurriculumSection[] = [];
   trainingProgramCurriculumSectionSelectList: TrainingProgramCurriculumSection[] = [];
   modalRef: MDBModalRef;
@@ -71,8 +73,16 @@ export class CurriculumSectionChildComponent implements OnInit {
     });
   }
 
-  addNewTemplate(newTemplate: CurriculumTopic ): void {
+  addNewTemplate(newTemplate: CurriculumTopic): void {
     this.newTodoValue.emit(newTemplate);
+  }
+
+  removeTemplate(template: CurriculumTopic): void {
+    this.removeTodoValue.emit(template);
+  }
+
+  filterTemplates($event: CurriculumTopic[]): void {
+    this.trainingProgramTopicsDownloaded.emit($event);
   }
 
   curriculumSectionAddForm(): void {
@@ -115,4 +125,6 @@ export class CurriculumSectionChildComponent implements OnInit {
       }
     };
   }
+
+
 }

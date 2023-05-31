@@ -33,7 +33,6 @@ export class BusinessGameConstructorComponent implements OnInit {
     if (!this.data){
       this.data = {bGameObject: null, params: {topicNeeded: true }};
     }
-    console.log(Boolean(this.data.bGameObject));
     if (this.data.bGameObject){
       this.businessGame = this.data.bGameObject;
     }

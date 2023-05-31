@@ -23,7 +23,9 @@
       [trainingProgram]="trainingProgram"
       [trainingProgramCurriculumSection]="item"
       [occupationForms]="occupationForms"
-      (newTodoValue)="addNewTemplate($event)">
+      (newTodoValue)="addNewTemplate($event)"
+      (removeTodoValue)="removeTemplate($event)"
+      (trainingProgramTopicsDownloaded)="filterTemplates($event)">
     </app-curriculum-topic-child>
 
   </div>

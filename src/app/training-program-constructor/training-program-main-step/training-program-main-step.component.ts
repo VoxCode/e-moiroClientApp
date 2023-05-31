@@ -93,6 +93,7 @@ export class TrainingProgramMainStepComponent implements OnInit{
         }
       });
   }
+
   loadTemplateCurriculumTopicsByDepartment(): void { // Загружаю предложку, отфильтрованную по кафедре
     this.curriculumTopicService.getValuesByDepartment(
       this.trainingProgram.studentCategoryId, this.trainingProgram.departmentId)
@@ -104,7 +105,8 @@ export class TrainingProgramMainStepComponent implements OnInit{
               curriculumTopicId: curriculumTopic.id,
               topicTitle: curriculumTopic.topicTitle,
               isVariable: false,
-              annotation: curriculumTopic.annotation
+              annotation: curriculumTopic.annotation,
+              curriculumTopicTypeId: curriculumTopic.curriculumTopicTypeId
             });
           });
         }
@@ -118,5 +120,18 @@ export class TrainingProgramMainStepComponent implements OnInit{
       isVariable: false,
       annotation: newTemplate.annotation
     });
+  }
+
+  removeTemplate(curriculumTopic: CurriculumTopic): void {
+    this.addNewTemplate(curriculumTopic);
+  }
+
+  filterTemplates(curriculumTopics: CurriculumTopic[]): void {
+    this.todo = this.todo.filter((x) => {
+      return !curriculumTopics.some((y) => {
+        return x.topicTitle === y.topicTitle;
+      });
+    });
+
   }
 }

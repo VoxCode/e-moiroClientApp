@@ -22,7 +22,9 @@
           *ngIf="trainingProgram"
           [trainingProgram]="trainingProgram"
           [occupationForms]="occupationForms"
-          (newTodoValue)="addNewTemplate($event)">
+          (newTodoValue)="addNewTemplate($event)"
+          (removeTodoValue)="removeTemplate($event)"
+          (trainingProgramTopicsDownloaded)="filterTemplates($event)">
         </app-curriculum-section-child>
 
       </div>

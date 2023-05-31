@@ -19,8 +19,6 @@ export class BusinessGameBlock {
     // this.dataFields = baseString.split('<br>').filter(e =>  e);
     this.title = aux[0];
     this.dataFields = aux[1].split('<br>').filter(e =>  e);
-    console.log(baseString);
-    console.log(aux);
     return this;
   }
 

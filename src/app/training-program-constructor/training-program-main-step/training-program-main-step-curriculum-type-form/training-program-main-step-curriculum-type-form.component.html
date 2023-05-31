@@ -5,11 +5,16 @@
 
 <mat-dialog-content class="mat-typography">
   <div class="button-row">
-    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="staticData.trainingProgramCurriculumType.DEFAULT">Лекция</button>
-    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="staticData.trainingProgramCurriculumType.BUSINESS_GAME">Деловая игра</button>
-    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="staticData.trainingProgramCurriculumType.ROUND_TABLE">Круглый стол</button>
-    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="staticData.trainingProgramCurriculumType.TRAINING">Тренинг</button>
-    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="staticData.trainingProgramCurriculumType.CONFERENCE">Конференция</button>
+    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="{type: staticData.trainingProgramCurriculumType.DEFAULT, addAsTemplate: addAsTemplate}">Лекция</button>
+    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="{type: staticData.trainingProgramCurriculumType.BUSINESS_GAME, addAsTemplate: addAsTemplate}">Деловая игра</button>
+    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="{type: staticData.trainingProgramCurriculumType.ROUND_TABLE, addAsTemplate: addAsTemplate}">Круглый стол</button>
+    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="{type: staticData.trainingProgramCurriculumType.TRAINING, addAsTemplate: addAsTemplate}">Тренинг</button>
+    <button class="type-button" mat-raised-button color="primary" [mat-dialog-close]="{type: staticData.trainingProgramCurriculumType.CONFERENCE, addAsTemplate: addAsTemplate}">Конференция</button>
+  </div>
+
+  <div class="check-box-div">
+    <br>
+    <mdb-checkbox [(ngModel)]="addAsTemplate" [default]="false" >Добавить в общий доступ</mdb-checkbox>
   </div>
   <p></p>
 </mat-dialog-content>
