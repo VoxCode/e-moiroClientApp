@@ -71,6 +71,10 @@ export class QuestionsFormComponent implements OnInit {
       .subscribe((trainingProgramFinalExaminations: TrainingProgramFinalExamination[]) => {
         if (trainingProgramFinalExaminations.length !== 0){
           trainingProgramFinalExaminations.sort((a, b) => a.serialNumber - b.serialNumber);
+          if (trainingProgramFinalExaminations[0].serialNumber === 0)
+          {
+            trainingProgramFinalExaminations.shift();
+          }
           trainingProgramFinalExaminations.forEach((obj) => {
             this.done.push({
               id: obj.id,

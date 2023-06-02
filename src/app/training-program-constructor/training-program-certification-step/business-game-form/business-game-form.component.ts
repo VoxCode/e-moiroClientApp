@@ -54,26 +54,33 @@ export class BusinessGameFormComponent implements OnInit {
         if (trainingProgramFinalExaminations.length !== 0){
           trainingProgramFinalExaminations.sort((a, b) => a.serialNumber - b.serialNumber);
           const obj = trainingProgramFinalExaminations[0];
-          this.businessGameInTrainingProgramFinalExamination.id = obj.id;
-          this.businessGameInTrainingProgramFinalExamination.trainingProgramId = obj.trainingProgramId;
-          this.businessGameInTrainingProgramFinalExamination.content = obj.content;
-          this.businessGameInTrainingProgramFinalExamination.serialNumber = obj.serialNumber;
-          this.bGameObject.parseToView(this.businessGameInTrainingProgramFinalExamination.content);
-          console.log('loaded game');
-          console.log(obj);
-          console.log(this.bGameObject);
+          if (obj.serialNumber === 0) {
+            this.businessGameInTrainingProgramFinalExamination.id = obj.id;
+            this.businessGameInTrainingProgramFinalExamination.trainingProgramId = obj.trainingProgramId;
+            this.businessGameInTrainingProgramFinalExamination.content = obj.content;
+            this.businessGameInTrainingProgramFinalExamination.serialNumber = obj.serialNumber;
+            this.bGameObject.parseToView(this.businessGameInTrainingProgramFinalExamination.content);
+            console.log('loaded game');
+            console.log(obj);
+            console.log(this.bGameObject);
+          }
+          else {
+            this.createNewBusinessGame();
+          }
         }
         else {
-          this.businessGameInTrainingProgramFinalExamination.id = 0;
-          this.businessGameInTrainingProgramFinalExamination.trainingProgramId = this.trainingProgram.id;
-          this.businessGameInTrainingProgramFinalExamination.content = '<p><i>Задачи:</i></p><br>\n' +
-            '<p><i>Сценарий</i></p>\n' +
-            '<p><i>Вводная часть</i></p><br>\n' +
-            '<p><i>Основная часть</i></p><br>\n' +
-            '<p><i>Заключительная часть</i></p><br>';
-          console.log('new game');
+          this.createNewBusinessGame();
         }
       });
+  }
+
+  createNewBusinessGame(): void{
+    this.businessGameInTrainingProgramFinalExamination.id = 0;
+    this.businessGameInTrainingProgramFinalExamination.trainingProgramId = this.trainingProgram.id;
+    this.businessGameInTrainingProgramFinalExamination.serialNumber = 0;
+    this.bGameObject.createBusinessGameTemplate();
+    this.businessGameInTrainingProgramFinalExamination.content = this.bGameObject.parseToStore();
+    this.save();
   }
 
   createTrainingProgramFinalExamination(trainingProgramFinalExamination: TrainingProgramFinalExamination): void {
