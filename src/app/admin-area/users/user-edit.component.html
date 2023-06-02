@@ -24,7 +24,7 @@
       <div class="mdb-select">
         <label for="last">Роль</label>
         <select id="last" class="browser-default custom-select" formControlName="last">
-          <option *ngFor="let el of roles" [ngValue]="el.name">{{el.name}}</option>
+          <option *ngFor="let el of roles" [ngValue]="el.name">{{el.name | userRole}}</option>
         </select>
       </div>
       <br><br>

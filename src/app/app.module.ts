@@ -89,7 +89,9 @@ import {GuidedTestWorkAssignmentEditComponent} from './guided-test-work-assignme
 import { RoomEditComponent } from './room/room-edit/room-edit.component';
 import {PermissionsFactory} from './user-state/permissions-factory';
 import {PermissionManagerService} from './services/security/permissions-manager.service';
-import {PermissionsDirective} from "./directives/permissions-directive";
+import {PermissionsDirective} from './directives/permissions-directive';
+import { UserRolePipe } from './pipes/user-role.pipe';
+
 
 
 export function tokenGetter(): string {
@@ -162,6 +164,7 @@ registerLocaleData(localeRu, 'ru');
     GuidedTestWorkAssignmentEditComponent,
     RoomEditComponent,
     PermissionsDirective,
+    UserRolePipe,
   ],
   imports: [
     BrowserModule,
