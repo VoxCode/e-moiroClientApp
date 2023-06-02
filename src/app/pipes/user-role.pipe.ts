@@ -15,10 +15,10 @@ export class UserRolePipe implements PipeTransform {
         result = 'Разработчик';
         break;
       case 'editor':
-        result = 'эдитор';
+        result = 'Методист';
         break;
       case 'viewer':
-        result = 'вьюер';
+        result = 'Вьюер';
         break;
       case 'dean':
         result = 'Декан';
