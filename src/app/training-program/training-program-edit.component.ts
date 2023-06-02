@@ -29,7 +29,7 @@ export class TrainingProgramEditComponent implements OnInit{
   maxHours = 100;
   minWeeks = 1;
   maxWeeks = 10;
-  formOfEducationLock = 'заочная';
+  formOfEducationLock = 'дистанционная';
 
   departments: Department[];
   studentCategories: StudentCategory[];
