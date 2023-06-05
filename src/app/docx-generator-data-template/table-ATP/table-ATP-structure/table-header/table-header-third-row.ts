@@ -9,7 +9,7 @@ export class TableHeaderThirdRow {
   private tableCellText = new TableCellDefaultText();
   constructor(private occupationForms: OccupationForm[], isDistance?: boolean) {
 
-    this.child.push(this.tableCellBoldText.insertText('Всего'));
+    this.child.push(this.tableCellText.insertText('всего'));
     occupationForms.forEach(obj => {
       this.child.push(new TableCell({
         children: [

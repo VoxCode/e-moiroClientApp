@@ -12,7 +12,7 @@ export class IntroductionTemplate {
   public create(): Document {
     this.children.push(this.docxGeneratorDataTemplate.someText('Актуальность.', 720,  true));
     this.children.push(this.docxGeneratorDataTemplate.someText(''));
-    this.children.push(this.docxGeneratorDataTemplate.someText('Цель', 720, true));
+    this.children.push(this.docxGeneratorDataTemplate.someText('Цель:', 720, true));
     this.children.push(this.docxGeneratorDataTemplate.someText(''));
     this.children.push(this.docxGeneratorDataTemplate.someText('Задачи:', 720, true));
     this.children.push(this.docxGeneratorDataTemplate.someText(''));

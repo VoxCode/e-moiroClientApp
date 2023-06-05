@@ -46,10 +46,11 @@ export class DocumentCreatorRector {
         })
       },
       children: [
-        this.docxGeneratorDataTemplate.titleMOIRO(),
+        // this.docxGeneratorDataTemplate.titleMOIRO(),
         this.docxGeneratorDataTemplate.emptyParagraph(),
         this.docxGeneratorDataTemplate.approve(this.docxGeneratorDataTemplate.getNowYear(), this.isRector),
         this.docxGeneratorDataTemplate.mainNameDocumentATP('«' + this.trainingProgram.name + '»'),
+        this.docxGeneratorDataTemplate.titleDatesATP(),
         this.docxGeneratorDataTemplate.trainingProgramInfoATP(
           this.trainingProgram.numberOfHours,
           this.trainingProgram.formOfEducationName,

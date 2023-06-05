@@ -4,7 +4,6 @@ import {TrainingProgramGenerator} from '../../models/generator-models/TrainingPr
 import {GuidedTestWorkAssignment} from '../../models/GuidedTestWorkAssignment';
 import {CurriculumTopicTrainingProgramGenerator} from '../../models/generator-models/CurriculumTopicTrainingProgramGenerator';
 import {BusinessGame} from '../../training-program-constructor/training-program-certification-step/business-game-form/business-game';
-import {Injector} from '@angular/core';
 import {StaticData} from '../../static-data/static-data';
 
 export class SecondDocumentPart {
@@ -241,7 +240,6 @@ export class SecondDocumentPart {
 
   insertBusinessGame(baseString: string, pushArray: any): void{
     const bGameObject: BusinessGame = new BusinessGame();
-    //bGameObject.parseToView(this.trainingProgram.trainingProgramFinalExaminations[0].content);
 
     bGameObject.parseToView(baseString);
     bGameObject.bGameBlocks.forEach((block) => {

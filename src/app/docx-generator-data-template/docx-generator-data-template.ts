@@ -152,12 +152,12 @@ export class DocxGeneratorDataTemplate {
       alignment: AlignmentType.CENTER,
       children: [
         new TextRun({
-          text: 'Государственное учреждение образования',
+          text: 'ГОСУДАРСТВЕННОЕ УЧРЕЖДЕНИЕ ОБРАЗОВАНИЯ',
           size : this.size,
           bold : true,
         }),
         new TextRun({
-          text: '«Минский областной институт развития образования»',
+          text: '«МИНСКИЙ ОБЛАСТНОЙ ИНСТИТУТ РАЗВИТИЯ ОБРАЗОВАНИЯ»',
           size : this.size,
           bold : true,
           break: 1
@@ -453,16 +453,10 @@ export class DocxGeneratorDataTemplate {
       alignment: AlignmentType.CENTER,
       children: [
         new TextRun({
-          text: 'УЧЕБНО-ТЕМАТИЧЕСКИЙ ПЛАН',
+          text: 'УЧЕБНО-ТЕМАТИЧЕСКИЙ ПЛАН ПОВЫШЕНИЯ КВАЛИФИКАЦИИ',
           size : this.size,
           bold : true,
           allCaps: true,
-          break: 1
-        }),
-        new TextRun({
-          text: 'повышения квалификации',
-          size : this.size,
-          bold : true,
           break: 1
         }),
         new TextRun({
@@ -475,13 +469,27 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
+  public titleDatesATP(): Paragraph
+  {
+    return new Paragraph({
+      alignment: AlignmentType.CENTER,
+      children: [
+        new TextRun({
+          text: `c 00.00.0000 по 00.00.0000`,
+          size : this.size,
+          bold : true
+        }),
+      ],
+    });
+  }
+
   public studentCategoryMain(exactly: string): Paragraph
   {
     return new Paragraph({
       alignment: AlignmentType.CENTER,
       children: [
         new TextRun({
-          text: exactly,
+          text: `для ${exactly}`,
           size : this.size,
           bold : true,
         }),

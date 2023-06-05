@@ -72,13 +72,13 @@ export class FirstDocumentPart {
       this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
     }
     this.children.push( this.docxGeneratorDataTemplate.someText('Рекомендовано к утверждению:'));
-    this.children.push(this.docxGeneratorDataTemplate.someText(this.trainingProgram.departmentName.toLowerCase()));
+    this.children.push(this.docxGeneratorDataTemplate.someText(this.trainingProgram.departmentName.toLowerCase().replace('кафедра', 'кафедрой')));
     this.children.push(this.docxGeneratorDataTemplate.someText('государственного учреждения образования'));
     this.children.push(this.docxGeneratorDataTemplate.someText('«Минский областной институт развития образования»'));
     this.children.push(this.docxGeneratorDataTemplate
       .someText('Протокол заседания от ____________ ' + this.docxGeneratorDataTemplate.getNowYear() + ' № ______'));
     this.children.push(this.docxGeneratorDataTemplate.emptyParagraph());
-    this.children.push(this.docxGeneratorDataTemplate.someText('научно-методический совет'));
+    this.children.push(this.docxGeneratorDataTemplate.someText('научно-методическим советом'));
     this.children.push(this.docxGeneratorDataTemplate.someText('государственного учреждения образования'));
     this.children.push(this.docxGeneratorDataTemplate.someText('«Минский областной институт развития образования»'));
     this.children.push(this.docxGeneratorDataTemplate
