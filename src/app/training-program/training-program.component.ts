@@ -6,6 +6,7 @@ import {TrainingProgramEditComponent} from './training-program-edit.component';
 import {AuthService} from '../services/security/auth.service';
 import {Globals} from '../globals';
 import {IsDeleteComponent} from '../is-delete/is-delete.component';
+import {TrainingProgramConstructorService} from '../training-program-constructor/training-program-constructor.service';
 
 @Component({
   selector: 'app-training-program',
@@ -33,6 +34,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
     public globals: Globals,
     private authService: AuthService,
     private valueService: TrainingProgramService,
+    private trainingProgramConstructorService: TrainingProgramConstructorService,
     private cdRef: ChangeDetectorRef,
     private modalService: MDBModalService) { }
 
@@ -199,6 +201,7 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
       this.elements[elementIndex] = newElement;
       newElement.sixteenth = el.sixteenth;
       this.save(newElement);
+      this.trainingProgramConstructorService.forceUpdate = true;
     });
     this.mdbTable.setDataSource(this.elements);
   }

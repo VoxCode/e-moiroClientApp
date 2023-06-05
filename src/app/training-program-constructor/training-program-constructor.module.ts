@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {TrainingProgramConstructorService} from './training-program-constructor.service';
 import {TrainingProgramIntroductionStepComponent} from './training-program-introduction-step/training-program-introduction-step.component';
 import {DocumentEditorFormComponent} from '../document-editor/document-editor-form/document-editor-form.component';
 import {TrainingProgramStepperComponent} from './training-program-stepper/training-program-stepper.component';
@@ -78,7 +77,7 @@ import { TrainingProgramMainStepCurriculumTypeFormComponent } from './training-p
     TrainingProgramMainStepCurriculumTypeFormComponent
   ],
   exports: [],
-  providers: [TrainingProgramConstructorService]
+  providers: []
 })
 export class TrainingProgramConstructorModule {
 
