@@ -16,16 +16,21 @@ export class IntroductionTemplate {
     this.children.push(this.docxGeneratorDataTemplate.someText(''));
     this.children.push(this.docxGeneratorDataTemplate.someText('Задачи:', 720, true));
     this.children.push(this.docxGeneratorDataTemplate.someText(''));
-    this.children.push(this.docxGeneratorDataTemplate.someText('Виды учебных занятий:', 720, true));
-    this.children.push(this.docxGeneratorDataTemplate.someText('', ));
+    this.children.push(this.docxGeneratorDataTemplate.someText('Итоговая аттестация проводится в форме', 720));
+    this.children.push(this.docxGeneratorDataTemplate.someText(''));
+    this.children.push(this.docxGeneratorDataTemplate.someText('Условиями реализации учебной программы являются:', 720));
+    this.children.push(this.docxGeneratorDataTemplate.someText(''));
+    this.children.push(this.docxGeneratorDataTemplate.someText('Методы и средства повышения квалификации:', 720, true));
+    this.children.push(this.docxGeneratorDataTemplate.someText(''));
+    this.children.push(this.docxGeneratorDataTemplate.someText('Методы:', 720, false, true));
+    this.children.push(this.docxGeneratorDataTemplate.someText(''));
+    this.children.push(this.docxGeneratorDataTemplate.someText('Cредства:', 720, false, true));
+    this.children.push(this.docxGeneratorDataTemplate.someText(''));
     this.children.push(this.docxGeneratorDataTemplate
-      .someText('Основные требования к результатам учебной деятельности слушателей:', 720, true));
-    this.children.push(this.docxGeneratorDataTemplate.someText('', ));
-
-    this.children.push(this.docxGeneratorDataTemplate.someText('Методы, отвечающие целям повышения квалификации:', 720, true));
-    this.children.push(this.docxGeneratorDataTemplate.someText('', ));
-    this.children.push(this.docxGeneratorDataTemplate.someText('Средства повышения квалификации:', 720, true));
-    this.children.push(this.docxGeneratorDataTemplate.someText('', ));
+      .someTextCenter('ОСНОВНЫЕ ТРЕБОВАНИЯ К РЕЗУЛЬТАТАМ УЧЕБНОЙ ДЕЯТЕЛЬНОСТИ СЛУШАТЕЛЕЙ', 0, true));
+    this.children.push(this.docxGeneratorDataTemplate.someText(''));
+    this.children.push(this.docxGeneratorDataTemplate.someTextCenter('ФОРМИРУЕМЫЕ КОМПЕТЕНЦИИ', 0, true));
+    this.children.push(this.docxGeneratorDataTemplate.someText(''));
 
     this.sections.push( {
       properties: {

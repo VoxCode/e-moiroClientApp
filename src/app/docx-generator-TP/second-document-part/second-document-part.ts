@@ -24,8 +24,13 @@ export class SecondDocumentPart {
 
   public create(): Document {
     this.children.push(this.docxGeneratorDataTemplate
-      .someTextCertificationType('Форма итоговой аттестации', ' - ' +
-        this.trainingProgram.certificationTypeName + '.', 720, true));
+      .someTextCertificationType('Категория слушателей: ',
+        `${this.trainingProgram.studentCategoryName}.`, 720, true));
+    this.children.push(this.docxGeneratorDataTemplate.trainingProgramIntroductionInfo(
+      this.trainingProgram.numberOfHours,
+      this.trainingProgram.formOfEducationName,
+      this.trainingProgram.isDistanceLearning,
+      this.trainingProgram.numberOfWeeks));
     this.children.push(this.docxGeneratorDataTemplate.pageBreak());
     this.children.push(this.docxGeneratorDataTemplate.titleText('содержание'));
     this.trainingProgram.trainingProgramCurriculumSections.forEach((object, index) => {

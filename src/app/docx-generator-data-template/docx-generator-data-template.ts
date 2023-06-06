@@ -497,6 +497,46 @@ export class DocxGeneratorDataTemplate {
     });
   }
 
+  public trainingProgramIntroductionInfo(
+    numberOfHours: number, formOfEducation: string, isDistance: boolean, numberOfWeeks: number): Paragraph {
+    let tmp = '';
+    const weeks = this.weekEndingDeclination(numberOfWeeks);
+    if (isDistance){
+      tmp = '(дистанционная)';
+    }
+    else {
+      if (formOfEducation.toLowerCase() === 'очная') {
+        tmp = '(дневная)';
+      }
+    }
+    return new Paragraph({
+      indent: {
+        left: 720,
+      },
+      children: [
+        new TextRun({
+          text: 'Продолжительность обучения: ',
+          size : this.size,
+          bold: true,
+        }),
+        new TextRun({
+          text: `${numberOfWeeks} ${weeks} (${numberOfHours} ${this.classHoursEndingDeclination(numberOfHours)})` ,
+          size : this.size,
+        }),
+        new TextRun({
+          text: 'Форма получения образования: ',
+          size : this.size,
+          break: 1,
+          bold: true,
+        }),
+        new TextRun({
+          text: `${formOfEducation.toLowerCase()} ${tmp}`,
+          size : this.size,
+        }),
+      ]
+    });
+  }
+
   public trainingProgramInfoATP(
     numberOfHours: number, formOfEducation: string, isDistance: boolean, numberOfWeeks: number): Paragraph {
     let tmp = '';
