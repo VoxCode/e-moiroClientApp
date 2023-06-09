@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {TrainingProgram} from '../../models/TrainingProgram';
 import {Globals} from '../../globals';
@@ -8,6 +8,9 @@ import {TrainingProgramConstructorService} from '../training-program-constructor
 import {IntroductionTemplate} from '../../document-part-templates/introduction-template';
 import {Packer} from 'docx';
 import {Base64ToBlob} from '../../base64-to-blob/base64-to-blob';
+import {Observable} from 'rxjs/dist/types';
+import {ICanComponentDeactivate} from '../../services/guards/can-deactivate.guard';
+import {DocumentEditorFormComponent} from '../../document-editor/document-editor-form/document-editor-form.component';
 
 @Component({
   selector: 'app-training-introduction-step',
@@ -17,8 +20,10 @@ import {Base64ToBlob} from '../../base64-to-blob/base64-to-blob';
     TrainingProgramIntroductionService
   ]
 })
-export class TrainingProgramIntroductionStepComponent implements OnInit {
+export class TrainingProgramIntroductionStepComponent implements OnInit, ICanComponentDeactivate {
 
+  @ViewChild(DocumentEditorFormComponent)
+  private introductionEditor!: DocumentEditorFormComponent;
   id: number;
   trainingProgram: TrainingProgram;
   trainingProgramIntroduction: TrainingProgramIntroduction = new TrainingProgramIntroduction();
@@ -35,6 +40,10 @@ export class TrainingProgramIntroductionStepComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
     this.loadTrainingProgram();
+  }
+
+  canDeactivate(): Observable<boolean> | boolean {
+    return this.introductionEditor.canDeactivate();
   }
 
   loadTrainingProgram(): void {
