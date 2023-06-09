@@ -29,7 +29,6 @@ export class BusinessGameConstructorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data);
     if (!this.data){
       this.data = {bGameObject: null, params: {topicNeeded: true }};
     }

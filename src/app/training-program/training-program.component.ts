@@ -86,7 +86,9 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   loadTrainingProgramForAdmin(): void {
     this.valueService.getValues()
       .subscribe((data: TrainingProgram[]) => {
-        data.sort((a, b) => a.id - b.id);
+        data.sort((a, b) => {
+          return (a.dateOfCreation < b.dateOfCreation) ? 1 : ((a.dateOfCreation > b.dateOfCreation) ? -1 : 0);
+        });
         this.pushData(data);
       });
   }
@@ -94,7 +96,9 @@ export class TrainingProgramComponent implements OnInit, AfterViewInit {
   loadTrainingProgramForCurrentUser(): void {
     this.valueService.getValueForTeacher(this.globals.name)
       .subscribe((data: TrainingProgram[]) => {
-        data.sort((a, b) => a.id - b.id);
+        data.sort((a, b) => {
+          return (a.dateOfCreation < b.dateOfCreation) ? 1 : ((a.dateOfCreation > b.dateOfCreation) ? -1 : 0);
+        });
         this.pushData(data);
       });
   }

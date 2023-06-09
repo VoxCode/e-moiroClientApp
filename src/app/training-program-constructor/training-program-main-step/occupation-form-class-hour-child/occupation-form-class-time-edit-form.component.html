@@ -19,7 +19,7 @@
 
       <div class="md-form">
         <label for="classHours">Количество часов</label>
-        <input id="classHours" type="number" min="0" max="9" class="form-control" formControlName="classHours" mdbInput mdbValidate
+        <input id="classHours" type="number" min="0" max="100" class="form-control" formControlName="classHours" mdbInput mdbValidate
                [validateSuccess]="false" >
         <mdb-error *ngIf="classHours.invalid && (classHours.dirty || classHours.touched)">Некорректно введено число</mdb-error>
       </div>

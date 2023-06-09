@@ -46,11 +46,12 @@ import {TrainingProgramGuidedTestWorkStepComponent} from './training-program-con
 import {ScheduleComponent} from './schedule/schedule.component';
 import {JournalDocGeneratorComponent} from './journal-doc-generator/journal-doc-generator.component';
 import {JournalComponent} from './journal/journal.component';
-import {RoomComponent} from "./room/room.component";
+import {RoomComponent} from './room/room.component';
+import {CanDeactivateGuard} from './services/guards/can-deactivate.guard';
 
 const adminRoutes: Routes = [
   { path: 'trainingProgramExpertStep/:id', component: TrainingProgramExpertStepComponent },
-  { path: 'trainingProgramIntroductionStep/:id', component: TrainingProgramIntroductionStepComponent },
+  { path: 'trainingProgramIntroductionStep/:id', component: TrainingProgramIntroductionStepComponent, canDeactivate: [CanDeactivateGuard]},
   { path: 'trainingProgramMainStep/:id', component: TrainingProgramMainStepComponent },
   { path: 'trainingProgramCertificationStep/:id', component: TrainingProgramCertificationStepComponent },
   { path: 'trainingProgramMainLiteratureStep/:id', component: TrainingProgramMainLiteratureStepComponent },
@@ -97,7 +98,7 @@ const creatorRoutes: Routes = [
   { path: 'mainLiterature', component: MainLiteratureComponent },
   { path: 'regulation', component: RegulationComponent },
   { path: 'trainingProgramExpertStep/:id', component: TrainingProgramExpertStepComponent },
-  { path: 'trainingProgramIntroductionStep/:id', component: TrainingProgramIntroductionStepComponent },
+  { path: 'trainingProgramIntroductionStep/:id', component: TrainingProgramIntroductionStepComponent},
   { path: 'trainingProgramMainStep/:id', component: TrainingProgramMainStepComponent },
   { path: 'trainingProgramCertificationStep/:id', component: TrainingProgramCertificationStepComponent },
   { path: 'trainingProgramMainLiteratureStep/:id', component: TrainingProgramMainLiteratureStepComponent },

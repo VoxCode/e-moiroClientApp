@@ -91,6 +91,7 @@ import {PermissionsFactory} from './user-state/permissions-factory';
 import {PermissionManagerService} from './services/security/permissions-manager.service';
 import {PermissionsDirective} from './directives/permissions-directive';
 import { UserRolePipe } from './pipes/user-role.pipe';
+import { AcceptDeclineDialogComponent } from './accept-decline-dialog/accept-decline-dialog.component';
 
 
 
@@ -165,6 +166,7 @@ registerLocaleData(localeRu, 'ru');
     RoomEditComponent,
     PermissionsDirective,
     UserRolePipe,
+    AcceptDeclineDialogComponent,
   ],
   imports: [
     BrowserModule,
