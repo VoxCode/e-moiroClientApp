@@ -1,13 +1,10 @@
 import {AfterViewInit, ChangeDetectorRef, Component,  ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {MDBModalRef, MDBModalService, MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
-import {CertificationTypeService} from '../services/certification-type.service';
-import {CertificationType} from '../models/CertificationType';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
-import {IsDeleteComponent} from '../is-delete/is-delete.component';
 import {TrainingProgram} from '../models/TrainingProgram';
 import {TrainingProgramService} from '../services/training-program.service';
-import {from} from 'rxjs/dist/types';
+
 
 
 @Component({

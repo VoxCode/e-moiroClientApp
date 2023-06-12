@@ -32,15 +32,11 @@ import {
   MomentDateAdapter
 } from '@angular/material-moment-adapter';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
-import {Subject} from 'rxjs';
-import {ScheduleClassTimes} from '../schedule/schedule-class-times';
-import DateTimeFormat = Intl.DateTimeFormat;
 import {ScheduleDate} from '../models/schedule-models/ScheduleDate';
 import {ScheduleDateScheduleBlock} from '../models/schedule-models/ScheduleDateScheduleBlock';
 import {ScheduleDateScheduleBlockService} from '../services/schedule-services/schedule-date-schedule-block.service';
 import {ScheduleDateService} from '../services/schedule-services/schedule-date.service';
-import {Observable} from 'rxjs/dist/types';
-import {map, startWith} from 'rxjs/operators';
+
 import {MY_FORMATS} from '../utils/material-date-format';
 
 @Component({

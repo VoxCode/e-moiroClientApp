@@ -8,7 +8,7 @@ import {TrainingProgramConstructorService} from '../training-program-constructor
 import {IntroductionTemplate} from '../../document-part-templates/introduction-template';
 import {Packer} from 'docx';
 import {Base64ToBlob} from '../../base64-to-blob/base64-to-blob';
-import {Observable} from 'rxjs/dist/types';
+import {Observable} from 'rxjs';
 import {ICanComponentDeactivate} from '../../services/guards/can-deactivate.guard';
 import {DocumentEditorFormComponent} from '../../document-editor/document-editor-form/document-editor-form.component';
 

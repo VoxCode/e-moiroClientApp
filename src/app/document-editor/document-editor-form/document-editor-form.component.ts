@@ -22,7 +22,7 @@ import {environment} from '../../../environments/environment';
 import {TimerManagerService, Timer} from '../../services/utility/timer-manager.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AcceptDeclineDialogComponent} from '../../accept-decline-dialog/accept-decline-dialog.component';
-import {Observable} from 'rxjs/dist/types';
+import {Observable} from 'rxjs';
 import {ICanComponentDeactivate} from '../../services/guards/can-deactivate.guard';
 
 @Component({
